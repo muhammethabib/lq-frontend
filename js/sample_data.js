@@ -16,6 +16,7 @@
 //       headwordLatin / headwordOttoman the dictionary entry it sits under
 //       dictionary / page               where it was found
 //       readingVerified                 false means the Latin reading is machine-generated
+//   suggestions  offered when nothing matched: the closest spellings, best first
 //       misspelling                     present when the printed form is a known
 //                                       misspelling; .crop names the piece of the
 //                                       scan showing the word as it was printed
@@ -34,6 +35,22 @@ window.LQ_SAMPLE_RESULTS = {
     { text: "nazır", script: "latin", active: false }
   ],
   similarPronunciationCount: 38,
+  // What the endpoint offers when nothing matched: the spellings closest to
+  // what was typed, in both scripts, best first.
+  suggestions: [
+    { ottoman: "ناظر", latin: "nâzır" },
+    { ottoman: "نظری", latin: "nazarî" },
+    { ottoman: "نظره", latin: "nazra" },
+    { ottoman: "منظر", latin: "manzar" },
+    { ottoman: "منظره", latin: "manzara" },
+    { ottoman: "نظارت", latin: "nezâret" },
+    { ottoman: "انتظار", latin: "intizâr" },
+    { ottoman: "مناظره", latin: "münâzara" },
+    { ottoman: "نظریه", latin: "nazariye" },
+    { ottoman: "نظائر", latin: "nezâir" },
+    { ottoman: "نظراً", latin: "nazaran" },
+    { ottoman: "تناظر", latin: "tenâzur" }
+  ],
   groups: [
     {
       key: "lemma",

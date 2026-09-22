@@ -142,10 +142,11 @@ class PageNavigationController extends Stimulus.Controller {
 
   // ==================== the way back to the top ====================
 
-  // Only on a page long enough to have lost it: on a short one the button
-  // would be an answer to a question nobody asked.
+  // Only on a page long enough to have lost the top: on a short one the
+  // button would be an answer to a question nobody asked. A page can become
+  // long after it loads — a search fills the main page with results — so the
+  // length is checked as the reader scrolls rather than once on arrival.
   buildBackToTop() {
-    if (document.documentElement.scrollHeight < window.innerHeight * 2) return;
     const button = document.createElement("button");
     button.type = "button";
     button.className = "back-to-top";
@@ -166,7 +167,8 @@ class PageNavigationController extends Stimulus.Controller {
     let waiting = false;
     const update = () => {
       waiting = false;
-      const wanted = window.scrollY > window.innerHeight * 1.5;
+      const long = document.documentElement.scrollHeight > window.innerHeight * 2;
+      const wanted = long && window.scrollY > window.innerHeight * 1.5;
       if (wanted === shown) return;
       shown = wanted;
       button.classList.toggle("is-shown", shown);

@@ -3303,6 +3303,10 @@ html:has(body.lqs-fit.has-panel-room) { overflow: auto; }
 
 /* While the story is being read the page is the story alone. */
 body.story-open .page-top-row { opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+/* The story has its own way around, so the page's way back to the top stays
+   out of it. While the story is only parked the page cannot scroll at all,
+   so the button never comes up by itself. */
+body.story-open .back-to-top { display: none; }
 
 /* ---------- the prompt at the foot of the main page ---------- */
 

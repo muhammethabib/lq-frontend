@@ -45,6 +45,7 @@
   <script src="../js/page_chrome.js" defer></script>
   <script src="../js/app.js" defer></script>
   <script src="../js/controllers/language_controller.js" defer></script>
+  <script src="../js/controllers/page_navigation_controller.js" defer></script>
   <script src="../js/controllers/page_chrome_controller.js" defer></script>
   <script src="../js/controllers/view_switcher_controller.js" defer></script>
   <script src="../js/controllers/announcement_controller.js" defer></script>
@@ -63,7 +64,7 @@
 <!-- The whole page is one feature: search. The side menu sits inside the same
      root so the language controller can reach both language switches. -->
 <div class="container-fluid p-4 home-surface state-landing"
-     data-controller="home language"
+     data-controller="home language page-navigation"
      data-home-endpoint-value="/search_output/results">
 
   <!-- ============================= side menu ============================= -->
@@ -534,6 +535,15 @@
         </form>
       </div>
 
+    <!-- The way around a long result list. It slides in once the header has
+         scrolled away and names every group the list holds; pressing one
+         opens that group and takes the reader to it. -->
+    <nav class="jump-bar" data-home-target="jumpBar" hidden
+         aria-label="Jump to a group" data-i18n-aria="jumpToAria">
+      <span class="jump-label" data-i18n="jumpTo">Jump to:</span>
+      <span class="jump-links" data-home-target="jumpLinks"></span>
+    </nav>
+
     <!-- ============================== results ============================== -->
     <section class="results-surface" data-home-target="resultsSurface" hidden
              aria-labelledby="resultsHeading">
@@ -585,7 +595,21 @@
         </table>
       </div>
 
-      <p class="results-empty" data-home-target="noMatches" hidden data-i18n="noResults">No results found.</p>
+      <!-- Nothing matched. The word that was looked for is said back, and the
+           spellings closest to it are offered: an Ottoman word can be written
+           several ways, so the answer is nearly always one of these. -->
+      <div class="no-matches" data-home-target="noMatches" hidden>
+        <p class="no-matches-line" data-home-target="noMatchesLine">
+          <span data-i18n="noResultsFor">No results found for</span>
+          <b class="no-matches-term" data-direction="rtl" data-home-target="noMatchesTerm"></b>
+        </p>
+        <p class="no-matches-line" data-home-target="searchFailed" hidden
+           data-i18n="searchFailed">The search could not be completed. Please try again.</p>
+        <section class="suggestions" data-home-target="suggestionsBlock" aria-labelledby="suggestionsHeading">
+          <h2 class="suggestions-title" id="suggestionsHeading" data-i18n="didYouMean">Did you mean?</h2>
+          <ol class="suggestions-list" data-home-target="suggestions"></ol>
+        </section>
+      </div>
     </section>
 
       <p class="results-empty" data-home-target="emptyState" data-i18n="emptyState">

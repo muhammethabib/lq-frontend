@@ -21,7 +21,9 @@ class HomeController extends Stimulus.Controller {
     "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
     "groupCopy",
     "spellingRow", "pronunciationButton", "pronunciationCount",
-    "emptyState", "noMatches"
+    "jumpBar", "jumpLinks",
+    "emptyState", "noMatches", "noMatchesLine", "noMatchesTerm",
+    "searchFailed", "suggestions", "suggestionsBlock"
   ]
 
   static values = {
@@ -71,6 +73,7 @@ class HomeController extends Stimulus.Controller {
     document.removeEventListener("search-keyboard:closed", this.onKeyboardClosed);
     document.removeEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
     this.inputTarget.removeEventListener("keydown", this.onKeyDown);
+    if (this.onPageScroll) window.removeEventListener("scroll", this.onPageScroll);
   }
 
   // The four screens this controller owns. The other two, the entry window
@@ -103,8 +106,17 @@ class HomeController extends Stimulus.Controller {
     this.noMatchesTarget.hidden = true;
   }
 
+  // What the endpoint returns when a word is not in any dictionary: no rows,
+  // and the spellings nearest to the one that was tried.
   emptySample() {
-    return { term: "نظر", totals: { records: 0, dictionaries: 0 }, spellings: [], groups: [] };
+    const sample = window.LQ_SAMPLE_RESULTS || {};
+    return {
+      query: sample.query,
+      totals: { records: 0, dictionaries: 0 },
+      spellings: [],
+      suggestions: sample.suggestions || [],
+      groups: []
+    };
   }
 
   runSearch({ term, script }) {
@@ -504,8 +516,13 @@ class HomeController extends Stimulus.Controller {
     this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
     this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => body.remove());
-    this.noMatchesTarget.textContent = this.translate("searchFailed", "The search could not be completed. Please try again.");
+    // A request that failed is not a word that could not be found, so the
+    // suggestions have nothing to offer and the line says what went wrong.
+    this.noMatchesLineTarget.hidden = true;
+    this.suggestionsBlockTarget.hidden = true;
+    this.searchFailedTarget.hidden = false;
     this.noMatchesTarget.hidden = false;
+    this.element.classList.add("state-no-matches");
   }
 
   receive(results) {
@@ -520,7 +537,6 @@ class HomeController extends Stimulus.Controller {
     this.recordCountTarget.textContent = totals.records || 0;
     this.dictionaryCountTarget.textContent = totals.dictionaries || 0;
     this.pronunciationCountTarget.textContent = results.similarPronunciationCount || 0;
-    this.noMatchesTarget.textContent = this.translate("noResults", "No results found.");
 
     this.renderSpellings();
     this.renderTerm();
@@ -596,8 +612,107 @@ class HomeController extends Stimulus.Controller {
       table.insertAdjacentHTML("beforeend", this.groupHtml(group, rows));
     });
 
+    this.buildJumpBar();
     this.noMatchesTarget.hidden = shown > 0;
+    // With nothing to list, the column headings and the alternative spellings
+    // are headings over an empty table; the surface is the answer instead.
+    this.element.classList.toggle("state-no-matches", shown === 0);
+    if (shown === 0) this.offerSpellings();
     window.LQ.refreshDynamicContent(this.resultsSurfaceTarget);
+  }
+
+  // ==================== the way around a long list ====================
+
+  // One link per group on screen, with the group's own note as its tooltip,
+  // so the reader knows what a group holds before they go to it.
+  buildJumpBar() {
+    const groups = Array.from(this.resultsTableTarget.querySelectorAll("tbody.result-group"));
+    this.jumpLinksTarget.innerHTML = groups.map((body) => {
+      const title = body.querySelector(".group-title");
+      const note = body.querySelector(".group-note");
+      return `
+        <button type="button" class="btn jump-link" data-jump="${this.escape(body.id)}"
+                data-action="click->home#jumpToGroup"
+                ${note ? `data-bs-toggle="tooltip" data-bs-title="${this.escape(note.textContent.trim())}"` : ""}>
+          ${title ? title.innerHTML : body.id}
+        </button>`;
+    }).join("");
+    this.watchScrollForJumpBar();
+  }
+
+  watchScrollForJumpBar() {
+    if (this.onPageScroll) return;
+    this.onPageScroll = () => {
+      if (this.scrollWaiting) return;
+      this.scrollWaiting = true;
+      requestAnimationFrame(() => {
+        this.scrollWaiting = false;
+        this.settleJumpBar();
+      });
+    };
+    window.addEventListener("scroll", this.onPageScroll, { passive: true });
+  }
+
+  // It belongs to the result list, so it is there only while the list is and
+  // only once the list's own heading has gone off the top.
+  settleJumpBar() {
+    const showing = this.element.classList.contains("state-results")
+      && !this.element.classList.contains("state-no-matches")
+      && window.scrollY > 250;
+    this.jumpBarTarget.hidden = !showing;
+    if (!showing) return;
+    // The group the reader is in is the last one whose heading has passed
+    // under the bar.
+    let here = null;
+    this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => {
+      if (body.getBoundingClientRect().top <= 200) here = body.id;
+    });
+    this.jumpLinksTarget.querySelectorAll(".jump-link").forEach((link) => {
+      link.classList.toggle("active", link.dataset.jump === here);
+    });
+  }
+
+  jumpToGroup(event) {
+    const body = document.getElementById(event.currentTarget.dataset.jump);
+    if (!body) return;
+    // A group the reader asked for is opened on the way.
+    body.classList.remove("is-collapsed");
+    const toggle = body.querySelector(".group-toggle");
+    if (toggle) toggle.setAttribute("aria-expanded", "true");
+    window.scrollTo({
+      top: body.getBoundingClientRect().top + window.scrollY - 180,
+      behavior: "smooth"
+    });
+  }
+
+  // An Ottoman word can be written several ways, so when nothing matched the
+  // answer is nearly often one of the spellings nearest to it. Pressing one
+  // searches it, the way pressing any other word on this page does.
+  offerSpellings() {
+    this.noMatchesLineTarget.hidden = false;
+    this.suggestionsBlockTarget.hidden = false;
+    this.searchFailedTarget.hidden = true;
+    const results = this.results || {};
+    const term = (results.query || {}).ottoman || this.inputTarget.value;
+    this.noMatchesTermTarget.textContent = term;
+    const suggestions = results.suggestions || [];
+    this.suggestionsTarget.innerHTML = suggestions.map((one, index) => `
+      <li class="suggestion">
+        <span class="suggestion-number">${index + 1}.</span>
+        <span class="suggestion-pair">
+          <button type="button" class="btn suggestion-word suggestion-ottoman" data-direction="rtl"
+                  data-suggestion="${this.escape(one.ottoman)}" data-suggestion-script="ottoman"
+                  data-action="click->home#searchSuggestion">${this.escape(one.ottoman)}</button>
+          <button type="button" class="btn suggestion-word suggestion-latin"
+                  data-suggestion="${this.escape(one.latin)}" data-suggestion-script="latin"
+                  data-action="click->home#searchSuggestion">${this.escape(one.latin)}</button>
+        </span>
+      </li>`).join("");
+  }
+
+  searchSuggestion(event) {
+    const { suggestion, suggestionScript } = event.currentTarget.dataset;
+    this.runSearch({ term: suggestion, script: suggestionScript });
   }
 
   groupHtml(group, rows) {

@@ -515,6 +515,10 @@ window.LQ_TRANSLATIONS = {
     backToTop: "Başa dön",
 
     // --- The 2026 innovations, read under the main page ---
+    jumpTo: "Şuraya git:",
+    jumpToAria: "Bir gruba git",
+    noResultsFor: "Şunun için sonuç bulunamadı:",
+    didYouMean: "Bunu mu demek istediniz?",
     innovationsLabel: "2026 yenilikleri",
     innovationsBack: "Önceki ekran",
     innovationsOn: "Sonraki ekran",

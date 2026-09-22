@@ -972,3 +972,211 @@
   .home-surface .script-hint { gap: 14px; font-size: 11.5px; }
   .home-surface .script-warning { right: 8px; white-space: normal; max-width: calc(100vw - 32px); }
 }
+
+/* ---------------------------------------------------------------
+   Nothing matched
+   An Ottoman word can be written several ways, so the answer is
+   nearly always one of the spellings nearest to the one tried.
+   --------------------------------------------------------------- */
+
+.home-surface .no-matches {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 32px 32px;
+}
+
+.home-surface .no-matches-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lq-muted);
+  text-align: center;
+}
+
+.home-surface .no-matches-term {
+  position: relative;
+  top: 2px;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lq-claret);
+}
+
+.home-surface .suggestions {
+  width: 336px;
+  max-width: calc(100% - 32px);
+}
+
+.home-surface .suggestions-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.8px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--lq-sapphire);
+}
+
+.home-surface .suggestions-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-surface .suggestion {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 56px;
+}
+
+.home-surface .suggestion-number {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 2;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #5d718c;
+}
+
+.home-surface .suggestion-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 18px;
+  min-height: 52px;
+  padding: 4px 15px;
+}
+
+.home-surface .suggestion-word {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid;
+  border-radius: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.home-surface .suggestion-word:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.home-surface .suggestion-ottoman {
+  justify-self: end;
+  padding: 5px 16px 8px;
+  border-color: var(--lq-osm-border);
+  background: var(--lq-osm-bg);
+  color: var(--lq-red);
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.home-surface .suggestion-ottoman:hover { background: #ffe4e6; color: var(--lq-red); border-color: #fecdd3; }
+
+.home-surface .suggestion-latin {
+  justify-self: start;
+  min-width: 74px;
+  padding: 8px 14px;
+  border-color: var(--lq-line);
+  background: var(--lq-paper-soft);
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.home-surface .suggestion-latin:hover { background: var(--lq-lat-bg); color: var(--lq-focus-latin); border-color: var(--lq-lat-border); }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-surface .suggestion-word:hover { transform: none; }
+}
+
+/* With nothing to list, the column headings and the alternative spellings
+   would be headings over an empty table. */
+.home-surface.state-no-matches .results-table-scroll,
+.home-surface.state-no-matches .results-header-side { display: none; }
+
+/* ---------------------------------------------------------------
+   The way around a long result list
+   It slides in once the list's own heading has scrolled away and
+   names every group the list holds.
+   --------------------------------------------------------------- */
+
+.home-surface .jump-bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 12px;
+  width: min(100% - 64px, 1300px);
+  min-height: 60px;
+  padding: 14px 24px;
+  transform: translateX(-50%);
+  border: 1px solid var(--lq-line);
+  border-top: 0;
+  border-bottom-color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.home-surface .jump-label {
+  margin-right: 16px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.home-surface .jump-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home-surface .jump-link {
+  padding: 9px 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #f1f5f9;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.home-surface .jump-link:hover { background: var(--lq-line); color: var(--lq-sapphire); }
+
+.home-surface .jump-link.active {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(8, 37, 103, 0.2);
+}
+
+@media (max-width: 767.98px) {
+  .home-surface .jump-bar { width: 100%; padding: 10px 12px; }
+  .home-surface .jump-label { margin-right: 10px; }
+  .home-surface .jump-link { padding: 7px 12px; font-size: 11px; }
+}

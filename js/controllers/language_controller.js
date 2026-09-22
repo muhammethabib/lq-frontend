@@ -25,6 +25,11 @@ class LanguageController extends Stimulus.Controller {
     this.originals = {};
     this.apply(this.currentValue);
 
+    // Markup that arrives after this controller has run - the chrome, the
+    // citation window - asks for its own sweep rather than waiting for the
+    // next language change.
+    window.LQ.applyTranslations = (root) => this.sweep(root, this.currentValue);
+
     // The shared chrome is injected after this controller connects, so its
     // markup is swept once it arrives.
     this.onChromeReady = () => this.apply(this.currentValue);
@@ -41,14 +46,8 @@ class LanguageController extends Stimulus.Controller {
   }
 
   apply(language) {
-    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
     document.documentElement.lang = language;
-
-    this.translateText(dictionary);
-    this.translateAttribute(dictionary, "i18nTitle", "title");
-    this.translateAttribute(dictionary, "i18nAria", "aria-label");
-    this.translateAttribute(dictionary, "i18nAlt", "alt");
-    this.translateAttribute(dictionary, "i18nSrc", "src");
+    this.sweep(document, language);
 
     this.optionTargets.forEach((option) => {
       const isActive = option.dataset.language === language;
@@ -62,8 +61,18 @@ class LanguageController extends Stimulus.Controller {
     }));
   }
 
-  translateText(dictionary) {
-    document.querySelectorAll("[data-i18n]").forEach((element) => {
+  // Puts the current language on everything inside root that asks for it.
+  sweep(root, language) {
+    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
+    this.translateText(root, dictionary);
+    this.translateAttribute(root, dictionary, "i18nTitle", "title");
+    this.translateAttribute(root, dictionary, "i18nAria", "aria-label");
+    this.translateAttribute(root, dictionary, "i18nAlt", "alt");
+    this.translateAttribute(root, dictionary, "i18nSrc", "src");
+  }
+
+  translateText(root, dictionary) {
+    root.querySelectorAll("[data-i18n]").forEach((element) => {
       const key = element.dataset.i18n;
       const allowsHtml = element.hasAttribute("data-i18n-html");
       const store = `text:${key}`;
@@ -76,9 +85,9 @@ class LanguageController extends Stimulus.Controller {
   }
 
   // datasetKey is the camelCase form of the data attribute, e.g. "i18nTitle"
-  translateAttribute(dictionary, datasetKey, attribute) {
+  translateAttribute(root, dictionary, datasetKey, attribute) {
     const selector = `[data-${datasetKey.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}]`;
-    document.querySelectorAll(selector).forEach((element) => {
+    root.querySelectorAll(selector).forEach((element) => {
       const key = element.dataset[datasetKey];
       const store = `${attribute}:${key}`;
       if (!(store in this.originals)) {

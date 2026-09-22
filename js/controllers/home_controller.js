@@ -410,10 +410,16 @@ class HomeController extends Stimulus.Controller {
 
   cite(event) {
     const { citeLatin, citeOttoman, citeDictionary, citePage } = event.currentTarget.dataset;
-    // The citation modal is its own feature; until it exists the reference is
-    // put on the clipboard so the action is not a dead end.
-    const reference = `${citeOttoman} (${citeLatin}). ${this.dictionaryLabelFor(citeDictionary)}, p. ${citePage}.`;
-    if (navigator.clipboard) navigator.clipboard.writeText(reference).catch(() => {});
+    // The citation window answers this; it lives on the page once and serves
+    // both the search results and the Word Decoder.
+    document.dispatchEvent(new CustomEvent("citation:open", {
+      detail: {
+        latin: citeLatin,
+        ottoman: citeOttoman,
+        dictionary: citeDictionary,
+        page: citePage
+      }
+    }));
   }
 
   editEntry() {

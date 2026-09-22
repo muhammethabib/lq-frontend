@@ -1113,6 +1113,23 @@ window.LQ_TRANSLATIONS = {
     v2T111: "28 Ekim 2021",
     v2T112: "<b>Düğmelerin üzerine gelince gözüken açıklamalar.</b> Yanında <i>Buton bilgilerini göster</i> yazan kutucuktaki tik işaretini kaldırarak, klavyede imleçle üzerine geldiğinizde çıkan açıklamaları gizleyebilirsiniz.",
     v2T113: "8 Eylül 2022",
-    v2T114: "<b>Bitişiklik zincirleri.</b> Kutuların arasına harflerin bitişiklik durumunu gösteren zincirler ekledik. Soru işaretli zincirlerin üzerine tıklayarak, harflerin bitişik olup olmadığı bilgisini <span lang=\"en\">LexiQamus</span>’la paylaştığınızda, aramanızın sonuçlarını daha da daraltabileceğiz."
+    v2T114: "<b>Bitişiklik zincirleri.</b> Kutuların arasına harflerin bitişiklik durumunu gösteren zincirler ekledik. Soru işaretli zincirlerin üzerine tıklayarak, harflerin bitişik olup olmadığı bilgisini <span lang=\"en\">LexiQamus</span>’la paylaştığınızda, aramanızın sonuçlarını daha da daraltabileceğiz.",
+
+    // --- Citation window ---
+    citeTitle: "Künye Bilgileri",
+    citeSource: "Kaynak bilgileri",
+    citeBookTitle: "Eser adı",
+    citeAuthor: "Yazar",
+    citeYear: "Yıl",
+    citeVolume: "Cilt",
+    citePage: "Sayfa",
+    citeFormats: "Atıf biçimleri",
+    citeCopy: "Künyeyi kopyala",
+    citeCopied: "Kopyalandı",
+    citeVolumeShort: "c.",
+    citePageShort: "s.",
+
+    // --- Citation window, continued ---
+    close: "Kapat"
   }
 };

@@ -47,7 +47,8 @@ window.LQ = {
 
   // A dictionary is shown with its publication year where one is known.
   dictionaryLabel(name) {
-    const year = (window.LQ_DICTIONARY_YEARS || {})[name];
+    const record = (window.LQ_DICTIONARIES || {})[name];
+    const year = record && record.year;
     return year ? `${name}, ${year}` : name;
   }
 };

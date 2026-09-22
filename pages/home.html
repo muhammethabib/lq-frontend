@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/word-decoder.css">
   <link rel="stylesheet" href="../css/ottoman-keyboard.css">
+  <link rel="stylesheet" href="../css/citation.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -23,6 +24,7 @@
   <script src="../vendor/stimulus.umd.js" defer></script>
   <!-- Data files load before the controllers that read them -->
   <script src="../js/translations.js" defer></script>
+  <script src="../js/dictionaries.js" defer></script>
   <script src="../js/sample_data.js" defer></script>
   <script src="../js/decoder_sample_data.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
@@ -33,6 +35,7 @@
   <script src="../js/controllers/home_controller.js" defer></script>
   <script src="../js/controllers/word_decoder_controller.js" defer></script>
   <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
+  <script src="../js/controllers/citation_controller.js" defer></script>
 </head>
 <body>
 
@@ -613,6 +616,84 @@
     <div class="keyboard-panel is-active" data-ottoman-keyboard-target="basicPanel"></div>
     <div class="keyboard-panel" data-ottoman-keyboard-target="advancedPanel"></div>
   </div>
+
+
+  <!-- The citation window. The container stays empty; its markup is in the
+       template below and is put in place when a Cite button is pressed. -->
+  <div class="modal fade citation-modal" id="citationModal" tabindex="-1" aria-hidden="true"
+       data-controller="citation" data-citation-template-value="citationTemplate"></div>
+
+  <template id="citationTemplate">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" data-i18n="citeTitle">Bibliographic Information</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close" data-i18n-aria="close"></button>
+        </div>
+
+        <div class="modal-body">
+          <!-- The word the reference is for, in both scripts -->
+          <p class="citation-word">
+            <span data-direction="rtl" data-citation-field="word"></span>
+            <span class="citation-divider" aria-hidden="true"></span>
+            <span class="citation-reading" data-citation-field="reading"></span>
+          </p>
+
+          <h3 class="citation-heading" data-i18n="citeSource">Source information</h3>
+          <dl class="citation-grid">
+            <dt data-i18n="citeBookTitle">Book title</dt>
+            <dd data-citation-field="title"></dd>
+            <dt data-i18n="citeAuthor">Author</dt>
+            <dd data-citation-field="author"></dd>
+            <dt data-i18n="citeYear">Year</dt>
+            <dd data-citation-field="year"></dd>
+            <dt data-i18n="citeVolume">Volume</dt>
+            <dd data-citation-field="volume"></dd>
+            <dt data-i18n="citePage">Page</dt>
+            <dd data-citation-field="page"></dd>
+          </dl>
+
+          <h3 class="citation-heading" data-i18n="citeFormats">Reference formats</h3>
+          <ul class="nav nav-tabs citation-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="citeApaTab" data-bs-toggle="tab"
+                      data-bs-target="#citeApa" type="button" role="tab"
+                      aria-controls="citeApa" aria-selected="true">APA</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="citeChicagoTab" data-bs-toggle="tab"
+                      data-bs-target="#citeChicago" type="button" role="tab"
+                      aria-controls="citeChicago" aria-selected="false">Chicago</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="citeHarvardTab" data-bs-toggle="tab"
+                      data-bs-target="#citeHarvard" type="button" role="tab"
+                      aria-controls="citeHarvard" aria-selected="false">Harvard</button>
+            </li>
+          </ul>
+          <div class="tab-content citation-panes">
+            <div class="tab-pane fade show active" id="citeApa" role="tabpanel" aria-labelledby="citeApaTab">
+              <p class="citation-reference" data-citation-style="apa"></p>
+            </div>
+            <div class="tab-pane fade" id="citeChicago" role="tabpanel" aria-labelledby="citeChicagoTab">
+              <p class="citation-reference" data-citation-style="chicago"></p>
+            </div>
+            <div class="tab-pane fade" id="citeHarvard" role="tabpanel" aria-labelledby="citeHarvardTab">
+              <p class="citation-reference" data-citation-style="harvard"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn citation-copy" data-action="click->citation#copy">
+            <i data-feather="copy" aria-hidden="true"></i>
+            <span data-citation-label data-i18n="citeCopy">Copy reference</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
 
 </div>
 

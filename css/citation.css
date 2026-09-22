@@ -1,0 +1,157 @@
+/* =========================================================
+   Citation window
+   The Bibliographic Information modal, opened from a Cite
+   button in the results list or the Word Decoder.
+   ========================================================= */
+
+.citation-modal .modal-content {
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--lq-shadow);
+}
+
+.citation-modal .modal-header {
+  align-items: flex-start;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--lq-line);
+}
+.citation-modal .modal-title {
+  margin: 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.32rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+
+.citation-modal .modal-body { padding: 20px 24px 22px; }
+
+/* ---------- the word the reference is for ---------- */
+
+/* The two scripts sit either side of a hairline, the way a result row shows
+   them, so the reader recognises the record they pressed Cite on. */
+.citation-modal .citation-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 0 0 22px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--lq-lat-bg);
+}
+.citation-modal .citation-word [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--lq-red);
+}
+.citation-modal .citation-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--lq-lat-border);
+}
+.citation-modal .citation-reading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+
+/* ---------- source information ---------- */
+
+.citation-modal .citation-heading {
+  margin: 0 0 10px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lq-claret);
+}
+
+.citation-modal .citation-grid {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 2px 16px;
+  margin: 0 0 24px;
+  font-size: .93rem;
+}
+.citation-modal .citation-grid dt {
+  padding: 6px 0;
+  font-weight: 500;
+  color: var(--lq-ink-soft);
+}
+.citation-modal .citation-grid dd {
+  margin: 0;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--lq-line);
+  color: var(--lq-ink);
+}
+.citation-modal .citation-grid dt { border-bottom: 1px solid var(--lq-line); }
+.citation-modal .citation-grid dt:last-of-type,
+.citation-modal .citation-grid dd:last-of-type { border-bottom: 0; }
+
+/* ---------- the three formats ---------- */
+
+.citation-modal .citation-tabs {
+  gap: 4px;
+  border-bottom: 1px solid var(--lq-line);
+}
+.citation-modal .citation-tabs .nav-link {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 8px 14px;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--lq-ink-soft);
+}
+.citation-modal .citation-tabs .nav-link:hover { color: var(--lq-sapphire); }
+.citation-modal .citation-tabs .nav-link.active {
+  border-bottom-color: var(--lq-claret);
+  background: none;
+  color: var(--lq-claret);
+}
+
+.citation-modal .citation-panes { padding-top: 14px; }
+/* The reference itself: set to be read and copied, not skimmed */
+.citation-modal .citation-reference {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-paper-soft);
+  font-size: .93rem;
+  line-height: 1.6;
+  color: var(--lq-ink);
+}
+
+/* ---------- copy ---------- */
+
+.citation-modal .modal-footer {
+  padding: 14px 24px 18px;
+  border-top: 1px solid var(--lq-line);
+}
+.citation-modal .citation-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid var(--lq-sapphire);
+  border-radius: 10px;
+  background: var(--lq-sapphire);
+  font-weight: 600;
+  color: #fff;
+}
+.citation-modal .citation-copy:hover { background: #061d50; border-color: #061d50; color: #fff; }
+.citation-modal .citation-copy svg { width: 15px; height: 15px; }
+/* Confirmation is the button itself, so the reader's eye does not have to
+   leave what they just pressed. */
+.citation-modal .citation-copy.is-copied {
+  background: var(--lq-entry-text);
+  border-color: var(--lq-entry-text);
+}
+
+@media (max-width: 575px) {
+  .citation-modal .citation-grid { grid-template-columns: 96px minmax(0, 1fr); }
+  .citation-modal .citation-word { flex-direction: column; gap: 6px; }
+  .citation-modal .citation-divider { width: 32px; height: 1px; }
+}

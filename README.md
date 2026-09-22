@@ -33,6 +33,7 @@ css/ottoman-keyboard.css              the on-screen keyboard, shared by any fiel
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
 js/page_chrome.js                     the top bar and side menu, written once
+js/dictionaries.js                    the works in the database, with what a citation needs
 js/translations.js                    Turkish strings, keyed by data-i18n
 js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
                                       Latin-to-Ottoman map for physical typing
@@ -61,9 +62,10 @@ docs/                                 the dev team's instructions and review pro
 | Dictionary Digitization and Data Model | `pages/data-model.html` | Built |
 | Lexicon Digitization Project | `pages/lexicon-digitization.html` | Built |
 | Version 2.0: What's New | `pages/lq2-whats-new.html` | Built |
+| Citation window | `pages/home.html`, the `citationTemplate` template | Built |
 
 Every menu entry now leads to a page. The sign-up screen and the dictionary
-entry window are the two pieces still to build.
+page window are the two pieces still to build.
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list

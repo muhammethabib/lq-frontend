@@ -98,32 +98,3 @@ window.LQ_SAMPLE_RESULTS = {
     }
   ]
 };
-
-// Publication year per dictionary, shown next to the dictionary name.
-// On the server this comes from the dictionary record.
-window.LQ_DICTIONARY_YEARS = {
-  "Ahteri-i Kebir": 1826,
-  "Bianchi": 1846,
-  "Burhan-ı Katı": 1797,
-  "Hindoglu": 1838,
-  "Kamus-ı Alam": 1889,
-  "Kamus-ı Ebüssürur": 1884,
-  "Kamus-ı Fransevi": 1882,
-  "Kamus-ı Osmani": 1896,
-  "Kamus-ı Türki": 1899,
-  "Lehçe-i Osmani": 1888,
-  "Lehçetü'l-Lügat": 1802,
-  "Lugat-ı Cudi": 1913,
-  "Lugat-ı Ebuzziya": 1888,
-  "Lugat-ı Naci": 1901,
-  "Lügat-ı Remzi": 1888,
-  "Meninski": 1680,
-  "Müntahabat-ı Lügat-ı Osmaniye": 1852,
-  "Mütercim Asım": 1817,
-  "Redhouse": 1890,
-  "Resimli Kamus-ı Osmani": 1911,
-  "Tuhfe-i Vehbi": 1798,
-  "Tuhfe-i Şahidi": 1515,
-  "Vankulu": 1729,
-  "Şemseddin Sami": 1899
-};

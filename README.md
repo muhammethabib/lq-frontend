@@ -12,28 +12,44 @@ each feature is rebuilt here following `docs/`.
 ## Stack
 
 - Plain HTML, CSS and JavaScript, no build step
-- **Bootstrap 5** for layout and components (CDN)
-- **Stimulus 3** for interactive behaviour (CDN)
-- **jQuery** for AJAX-style data calls (CDN)
-- **Feather** icons (CDN)
+- **Bootstrap 5** for layout, components and the offcanvas menu
+- **Stimulus 3** for interactive behaviour
+- **jQuery** for the data calls
+- **Feather** icons
 
-Local copies of all four live in `vendor/` so pages open offline; see
-`vendor/README.md` for versions.
+All four are served from local copies in `vendor/`, at the versions the
+instructions name, so the pages open offline. See `vendor/README.md`.
 
 No Tailwind, no React/Vue, no SCSS.
 
 ## Folder structure
 
 ```
+index.html                            forwards to the first page
 pages/<feature>.html                  one HTML page per feature
-css/base.css                          brand tokens, fonts, shared page chrome
+css/base.css                          brand tokens, fonts, shared chrome (menu, language switch)
 css/<feature>.css                     one CSS file per feature, scoped under .<feature>-surface
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
+js/translations.js                    Turkish strings, keyed by data-i18n
+js/sample_data.js                     stand-in for the search endpoint
 assets/                               logo and static images
 vendor/                               local copies of Bootstrap, jQuery, Stimulus, Feather
 docs/                                 the dev team's instructions and review prompt
 ```
+
+## What is built
+
+| Page | File | State |
+| --- | --- | --- |
+| Main page (search) | `pages/home.html` | Built |
+| Word Decoder | — | Not started; the tab says so |
+| About, Team, Pricing, User guide, and the other menu pages | — | Not started; the menu links name the files they will live in |
+
+`pages/home.html` is the worked example of every convention below: the root
+container, the Stimulus controller, Bootstrap dropdowns and offcanvas, the
+jQuery call shape, `data-direction` for Ottoman text and `admin-only` for
+staff controls.
 
 ## Conventions (short version)
 
@@ -73,4 +89,7 @@ Open any file in `pages/` directly in a browser, or serve the repo root:
 python3 -m http.server 8000
 ```
 
-then visit `http://localhost:8000/pages/search.html`.
+then visit `http://localhost:8000/`.
+
+The live preview of the current state is at
+https://muhammethabib.github.io/lq-frontend/

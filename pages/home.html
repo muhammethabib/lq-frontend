@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: Bootstrap first, then shared tokens, then this feature -->
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/home.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/jquery.min.js" defer></script>
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <!-- Data files load before the controllers that read them -->
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/sample_data.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+  <script src="../js/controllers/home_controller.js" defer></script>
+</head>
+<body>
+
+<!-- The whole page is one feature: search. The side menu sits inside the same
+     root so the language controller can reach both language switches. -->
+<div class="container-fluid p-4 home-surface state-landing"
+     data-controller="home language"
+     data-home-endpoint-value="/search_output/results">
+
+  <!-- ============================= side menu ============================= -->
+  <!-- The linked pages are not rebuilt in this repository yet; the hrefs name
+       the files they will live in, and the controller opens the one matching
+       the interface language. -->
+  <nav class="offcanvas offcanvas-start side-menu" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
+    <div class="offcanvas-header side-menu-head">
+      <a class="side-menu-logo" href="home.html">
+        <img src="../assets/lexiqamus-logo.png" alt="LexiQamus">
+      </a>
+      <h2 class="visually-hidden" id="sideMenuLabel" data-i18n="menuHeading">Menu</h2>
+      <div class="language-switch" role="group" aria-label="Language">
+        <span class="language-thumb" aria-hidden="true"></span>
+        <button type="button" class="language-option active" data-language="en" aria-pressed="true"
+                data-language-target="option" data-action="click->language#select">EN</button>
+        <button type="button" class="language-option" data-language="tr" aria-pressed="false"
+                data-language-target="option" data-action="click->language#select">TR</button>
+      </div>
+    </div>
+
+    <div class="side-menu-auth">
+      <button type="button" class="btn btn-sm side-auth-ghost" data-i18n="menuSignIn">Sign in</button>
+      <button type="button" class="btn btn-sm side-auth-primary" data-i18n="menuSignUp">Sign up</button>
+    </div>
+
+    <div class="offcanvas-body side-menu-body">
+      <ul class="side-nav">
+        <li>
+          <a class="side-link" href="#" data-page-en="about-en.html" data-page-tr="hakkimizda-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="info"></i><span data-i18n="menuAbout">About</span>
+          </a>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="team-en.html" data-page-tr="ekip-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="users"></i><span data-i18n="menuTeam">Team</span>
+          </a>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="what-is-lexiqamus-en.html" data-page-tr="lexiqamus-nedir-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="help-circle"></i><span data-i18n="menuWhat">What is LexiQamus?</span>
+          </a>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="user-guide-en.html" data-page-tr="kullanim-kilavuzu-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="book-open"></i><span data-i18n="menuGuide">Instructions</span>
+          </a>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="institutional-subscribers-en.html" data-page-tr="kurumsal-uyeler-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="briefcase"></i><span data-i18n="menuInstitutional">Institutional Subscribers</span>
+          </a>
+        </li>
+
+        <!-- Version entries group their own sub-pages; Bootstrap's collapse
+             drives the accordion. -->
+        <li>
+          <button type="button" class="side-link side-link-parent" data-bs-toggle="collapse"
+                  data-bs-target="#menuVersion3" aria-expanded="false" aria-controls="menuVersion3">
+            <i data-feather="search"></i>
+            <span data-i18n="menuLQ3">LexiQamus 3.0</span>
+            <span class="side-year">2026</span>
+            <i class="side-chevron" data-feather="chevron-down"></i>
+          </button>
+          <ul class="collapse side-submenu" id="menuVersion3">
+            <li>
+              <a class="side-sublink" href="#" data-page-en="data-model-en.html" data-page-tr="veri-modeli-tr.html"
+                 data-action="click->home#openPage" data-i18n="menuV3DataModel">Digitization and Data Model</a>
+            </li>
+            <li>
+              <a class="side-sublink" href="#" data-page-en="lq3-whats-new-en.html" data-page-tr="lq3-yenilikler-tr.html"
+                 data-action="click->home#openPage" data-i18n="menuV3WhatsNew">What&rsquo;s New</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <button type="button" class="side-link side-link-parent" data-bs-toggle="collapse"
+                  data-bs-target="#menuVersion2" aria-expanded="false" aria-controls="menuVersion2">
+            <i data-feather="search"></i>
+            <span data-i18n="menuLQ2">LexiQamus 2.0</span>
+            <span class="side-year">2020</span>
+            <i class="side-chevron" data-feather="chevron-down"></i>
+          </button>
+          <ul class="collapse side-submenu" id="menuVersion2">
+            <li>
+              <a class="side-sublink" href="#" data-page-en="lexicon-digitization-en.html" data-page-tr="lexicon-dijitallestirme-tr.html"
+                 data-action="click->home#openPage" data-i18n="menuLexicon">Lexicon Digitization Project</a>
+            </li>
+            <li>
+              <a class="side-sublink" href="#" data-page-en="lq2-new-features-en.html" data-page-tr="lq2-yeni-ozellikler-tr.html"
+                 data-action="click->home#openPage" data-i18n="menuV2WhatsNew">What&rsquo;s New</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="lq1-first-version-en.html" data-page-tr="lq1-ilk-surum-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="search"></i>
+            <span data-i18n="menuLQ1">LexiQamus 1.0</span>
+            <span class="side-year">2016</span>
+          </a>
+        </li>
+
+        <li>
+          <a class="side-link" href="#" data-page-en="suggestions-corrections-history-en.html" data-page-tr="oneri-duzeltme-gecmisi-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="edit-3"></i><span data-i18n="menuUpdates">History of Suggestions and Corrections</span>
+          </a>
+        </li>
+        <li>
+          <a class="side-link" href="#" data-page-en="pricing-en.html" data-page-tr="fiyatlar-tr.html"
+             data-action="click->home#openPage">
+            <i data-feather="tag"></i><span data-i18n="menuPricing">Pricing</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================== top row ============================== -->
+  <div class="home-top-row">
+    <button type="button" class="menu-button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu"
+            aria-controls="sideMenu" aria-label="Menu" data-i18n-aria="menuHeading">
+      <i data-feather="menu"></i>
+    </button>
+
+    <div class="home-top-right">
+      <a class="classic-link" href="https://www.lexiqamus.com/" target="_blank" rel="noopener"
+         title="Open the previous stable version" data-i18n-title="legacyTitle">
+        <span data-i18n="legacyLink">Classic version</span>
+        <i data-feather="external-link"></i>
+      </a>
+
+      <div class="language-switch" role="group" aria-label="Language">
+        <span class="language-thumb" aria-hidden="true"></span>
+        <button type="button" class="language-option active" data-language="en" aria-pressed="true"
+                data-language-target="option" data-action="click->language#select">EN</button>
+        <button type="button" class="language-option" data-language="tr" aria-pressed="false"
+                data-language-target="option" data-action="click->language#select">TR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== branding ============================= -->
+  <div class="branding">
+    <div class="logo-row">
+      <a class="logo-link" href="home.html" aria-label="LexiQamus home" data-i18n-aria="ariaHome">
+        <img src="../assets/lexiqamus-wordmark.svg" alt="LexiQamus">
+      </a>
+      <span class="version-badge">3.0<small>beta</small></span>
+    </div>
+    <p class="tagline" data-i18n="subtitle">Ottoman Turkish Linguistic Analysis Tool</p>
+  </div>
+
+  <!-- ================================ tabs =============================== -->
+  <ul class="nav nav-tabs search-tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="decoderTab" data-bs-toggle="tab" data-bs-target="#decoderPane"
+              type="button" role="tab" aria-controls="decoderPane" aria-selected="false"
+              data-i18n="tabDecoder">Word Decoder</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="searchTab" data-bs-toggle="tab" data-bs-target="#searchPane"
+              type="button" role="tab" aria-controls="searchPane" aria-selected="true"
+              data-i18n="tabSearch">Search</button>
+    </li>
+  </ul>
+
+  <!-- ============================= search card =========================== -->
+  <div class="tab-content">
+
+    <!-- Word Decoder: the letter-box engine is its own feature and is not
+         rebuilt yet, so this pane states that rather than faking it. -->
+    <div class="tab-pane fade" id="decoderPane" role="tabpanel" aria-labelledby="decoderTab" tabindex="0">
+      <div class="search-card text-center">
+        <p class="mb-1 fw-semibold" data-i18n="decoderSoon">The Word Decoder is being rebuilt as its own feature.</p>
+        <p class="mb-0 small text-secondary" data-i18n="decoderSoonNote">
+          It lets you search a word whose letters you cannot fully read, using a wildcard for each unknown letter.
+        </p>
+      </div>
+    </div>
+
+    <div class="tab-pane fade show active" id="searchPane" role="tabpanel" aria-labelledby="searchTab" tabindex="0">
+      <div class="search-card">
+        <form data-action="submit->home#submit">
+          <div class="search-row">
+
+            <div class="search-input-group">
+              <!-- One bar, two scripts. Clicking the left half types Latin,
+                   the right half types Ottoman; the source switch overrides it. -->
+              <div class="script-input-wrapper focus-latin"
+                   data-home-target="inputWrapper"
+                   data-action="click->home#chooseSide">
+
+                <div class="source-switch" role="group" aria-label="Search source"
+                     data-action="click->home#stopSideDetection">
+                  <button type="button" class="source-option active" data-source="ottoman"
+                          data-home-target="sourceOption" data-action="click->home#selectSource"
+                          data-i18n="sourceOttoman">OTT</button>
+                  <button type="button" class="source-option" data-source="english"
+                          data-home-target="sourceOption" data-action="click->home#selectSource"
+                          title="Search English definitions in Redhouse" data-i18n-title="sourceEnglishTitle"
+                          data-i18n="sourceEnglish">ENG</button>
+                </div>
+
+                <div class="placeholder-layer" aria-hidden="true">
+                  <span data-home-target="placeholderLatin"
+                        data-i18n="placeholderLatin">Search using Latin letters&hellip;</span>
+                  <span data-home-target="placeholderEnglish" hidden
+                        data-i18n="placeholderEnglish">Search English definitions in Redhouse&hellip;</span>
+                  <span class="placeholder-ottoman" data-home-target="placeholderOttoman"
+                        data-direction="rtl" data-i18n="placeholderOttoman">عثمانلى حرفلريله آره...</span>
+                </div>
+
+                <input type="text" class="script-input" id="homeSearchInput"
+                       data-home-target="input" data-direction="ltr"
+                       data-action="input->home#handleInput"
+                       autocomplete="off" aria-label="Word to search" data-i18n-aria="ariaMainSearch">
+              </div>
+
+              <button type="submit" class="search-submit" id="homeSearchSubmit"
+                      data-home-target="submit" data-i18n="btnSearch">Search</button>
+            </div>
+
+            <!-- Filters: Bootstrap dropdown, kept open while boxes are ticked -->
+            <div class="dropdown">
+              <button type="button" class="filter-trigger" data-bs-toggle="dropdown"
+                      data-bs-auto-close="outside" aria-expanded="false">
+                <i data-feather="sliders"></i>
+                <span class="filter-label" data-i18n="filtersLabel">Filters</span>
+                <span class="filter-count" data-home-target="filterCount">10</span>
+                <i data-feather="chevron-down"></i>
+              </button>
+
+              <div class="dropdown-menu filter-panel">
+                <div class="filter-panel-head">
+                  <span class="filter-panel-title" data-i18n="filtersTitle">Search Filters</span>
+                  <span>
+                    <button type="button" class="filter-link" data-action="click->home#checkAllFilters"
+                            data-i18n="filtersAll">All</button>
+                    <button type="button" class="filter-link" data-action="click->home#clearAllFilters"
+                            data-i18n="filtersNone">None</button>
+                  </span>
+                </div>
+
+                <div class="filter-columns">
+                  <div class="filter-column" data-filter-group="category">
+                    <span class="filter-column-head" data-i18n="filtersColWord">Word Type</span>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="ENTRY"
+                             data-filter-kind="category" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterEntry">
+                      <span class="form-check-label" data-i18n="catEntry">Headword</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="SUBENTRY"
+                             data-filter-kind="category" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterSubentry">
+                      <span class="form-check-label" data-i18n="catSubentry">Subheadword</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="RELATED"
+                             data-filter-kind="category" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterRelated">
+                      <span class="form-check-label" data-i18n="catRelated">Related</span>
+                    </label>
+                  </div>
+
+                  <div class="filter-column" data-filter-group="group">
+                    <span class="filter-column-head" data-i18n="filtersColMatch">Results</span>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="lemma"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterLemma">
+                      <span class="form-check-label" data-i18n="chipLemma">Lemma</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="inflected"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterInflected">
+                      <span class="form-check-label" data-i18n="chipInflected">Inflected Forms</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="lexicalizedInflected"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterLexicalized">
+                      <span class="form-check-label" data-i18n="chipLexInfl">Lexicalized Inflected Forms</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="derived"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterDerived">
+                      <span class="form-check-label" data-i18n="chipDerived">Derived Forms</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="phrases"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterPhrases">
+                      <span class="form-check-label" data-i18n="chipPhrases">Phrases</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="compounds"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterCompounds">
+                      <span class="form-check-label" data-i18n="chipCompounds">Compounds</span>
+                    </label>
+                    <label class="filter-check form-check">
+                      <input class="form-check-input" type="checkbox" checked value="partial"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterPartial">
+                      <span class="form-check-label" data-i18n="chipPartial">Similar Spellings</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dictionary picker -->
+            <div class="dropdown">
+              <button type="button" class="dictionary-trigger" data-bs-toggle="dropdown"
+                      data-bs-auto-close="outside" aria-expanded="false">
+                <!-- Text is written by the controller, including the "{n} selected" form -->
+                <span data-home-target="dictionaryLabel">All Dictionaries</span>
+                <i data-feather="chevron-down"></i>
+              </button>
+              <div class="dropdown-menu dictionary-panel">
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked
+                         data-home-target="allDictionaries"
+                         data-action="change->home#toggleAllDictionaries" id="dictionaryAll">
+                  <span class="form-check-label fw-bold" data-i18n="selectAll">Select All</span>
+                </label>
+                <hr class="my-2">
+                <!-- One row per digitised dictionary. Rails will render these from
+                     the dictionary table; here they are written out so the
+                     checkboxes are real markup rather than generated on load. -->
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Ahteri-i Kebir"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary0">
+                  <span class="form-check-label">Ahteri-i Kebir, 1826</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Bianchi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary1">
+                  <span class="form-check-label">Bianchi, 1846</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Burhan-ı Katı"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary2">
+                  <span class="form-check-label">Burhan-ı Katı, 1797</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Hindoglu"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary3">
+                  <span class="form-check-label">Hindoglu, 1838</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Kamus-ı Alam"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary4">
+                  <span class="form-check-label">Kamus-ı Alam, 1889</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Kamus-ı Ebüssürur"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary5">
+                  <span class="form-check-label">Kamus-ı Ebüssürur, 1884</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Kamus-ı Fransevi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary6">
+                  <span class="form-check-label">Kamus-ı Fransevi, 1882</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Kamus-ı Osmani"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary7">
+                  <span class="form-check-label">Kamus-ı Osmani, 1896</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Kamus-ı Türki"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary8">
+                  <span class="form-check-label">Kamus-ı Türki, 1899</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lehçe-i Osmani"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary9">
+                  <span class="form-check-label">Lehçe-i Osmani, 1888</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lehçetü'l-Lügat"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary10">
+                  <span class="form-check-label">Lehçetü'l-Lügat, 1802</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lugat-ı Cudi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary11">
+                  <span class="form-check-label">Lugat-ı Cudi, 1913</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lugat-ı Ebuzziya"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary12">
+                  <span class="form-check-label">Lugat-ı Ebuzziya, 1888</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lugat-ı Naci"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary13">
+                  <span class="form-check-label">Lugat-ı Naci, 1901</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Lügat-ı Remzi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary14">
+                  <span class="form-check-label">Lügat-ı Remzi, 1888</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Meninski"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary15">
+                  <span class="form-check-label">Meninski, 1680</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Müntahabat-ı Lügat-ı Osmaniye"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary16">
+                  <span class="form-check-label">Müntahabat-ı Lügat-ı Osmaniye, 1852</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Mütercim Asım"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary17">
+                  <span class="form-check-label">Mütercim Asım, 1817</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Redhouse"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary18">
+                  <span class="form-check-label">Redhouse, 1890</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Resimli Kamus-ı Osmani"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary19">
+                  <span class="form-check-label">Resimli Kamus-ı Osmani, 1911</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Tuhfe-i Vehbi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary20">
+                  <span class="form-check-label">Tuhfe-i Vehbi, 1798</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Tuhfe-i Şahidi"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary21">
+                  <span class="form-check-label">Tuhfe-i Şahidi, 1515</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Vankulu"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary22">
+                  <span class="form-check-label">Vankulu, 1729</span>
+                </label>
+                <label class="form-check">
+                  <input class="form-check-input" type="checkbox" checked value="Şemseddin Sami"
+                         data-home-target="dictionary" data-action="change->home#applyDictionaries"
+                         id="dictionary23">
+                  <span class="form-check-label">Şemseddin Sami, 1899</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <button type="button" class="library-button" data-i18n="dmlBtn">Does My Library Subscribe?</button>
+  </div>
+
+  <!-- ============================== results ============================== -->
+  <section class="results-surface" data-home-target="resultsSurface" hidden
+           aria-labelledby="resultsHeading">
+    <div class="results-accent" data-home-target="resultsAccent" data-script="ottoman"></div>
+
+    <div class="results-header">
+      <div class="results-header-main">
+        <span class="results-label" id="resultsHeading" data-i18n="searchResultsLabel">Search Results</span>
+        <p class="results-term" data-home-target="resultsTerm" data-direction="rtl" data-script="ottoman"></p>
+        <div class="results-stats">
+          <div>
+            <p><b data-home-target="recordCount">0</b> <span data-i18n="recordsFound">Records Found.</span></p>
+            <p><b data-home-target="dictionaryCount">0</b> <span data-i18n="dictsScanned">Dictionaries (17 Volumes) Scanned.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-header-side">
+        <span class="spelling-label" data-i18n="spellingLabel">Search by spelling</span>
+        <!-- Alternative spellings of the same term; picking one re-highlights
+             the rows against it. -->
+        <div class="spelling-row" data-home-target="spellingRow"></div>
+
+        <div class="expand-row">
+          <span class="spelling-label" data-i18n="expandLabel">Expand search</span>
+          <button type="button" class="pronunciation-button" data-home-target="pronunciationButton"
+                  data-action="click->home#togglePronunciation" aria-pressed="false">
+            <i data-feather="volume-2"></i>
+            <span data-i18n="soundsLike">Similar Pronunciation</span>
+            <span class="pronunciation-count" data-home-target="pronunciationCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-table-scroll">
+      <table class="table results-table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="col-result" data-i18n="colResult">Result</th>
+            <th scope="col" class="col-category" data-i18n="colCategory">Category</th>
+            <th scope="col" class="col-arrow"><span class="visually-hidden" data-i18n="colLeadsTo">Leads to</span></th>
+            <th scope="col" class="col-headword" data-i18n="colEntry">Headword</th>
+            <th scope="col" class="col-dictionary" data-i18n="colDict">Dictionary</th>
+            <th scope="col" class="col-actions"><span class="visually-hidden" data-i18n="colActions">Actions</span></th>
+          </tr>
+        </thead>
+        <!-- One tbody per result group, written by the controller -->
+      </table>
+    </div>
+
+    <p class="results-empty" data-home-target="noMatches" hidden data-i18n="noResults">No results found.</p>
+  </section>
+
+  <p class="results-empty" data-home-target="emptyState" data-i18n="emptyState">
+    Type a word and press Search.
+  </p>
+
+</div>
+
+</body>
+</html>

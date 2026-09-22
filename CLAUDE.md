@@ -7,9 +7,10 @@ conventions.
 ## Before any UI work
 
 1. Read `docs/frontend-development-instructions.md` in full and follow it.
-2. Use `pages/search.html`, `css/search.css` and
-   `js/controllers/search_controller.js` as the worked example of the
-   required patterns.
+2. Use `pages/home.html`, `css/home.css` and
+   `js/controllers/home_controller.js` as the worked example of the
+   required patterns. It is the main search page and it exercises all of
+   them.
 3. Before reporting a feature as done, run the review in
    `docs/frontend-review-prompt.md` against your own changes and fix every
    ❌ and ⚠️ item.
@@ -26,6 +27,11 @@ conventions.
 - Text direction uses `data-direction="rtl|ltr"`, never a hardcoded class.
 - Admin/staff-only UI is wrapped in `.admin-only`.
 - Only touch files the feature needs.
+- Turkish copy goes in `js/translations.js` against a `data-i18n` key; the
+  English text stays inline in the HTML. Never add a second page per
+  language.
+- Libraries are the local copies in `vendor/`, not CDN URLs, so the pages
+  open offline.
 
 ## Reference
 

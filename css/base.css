@@ -73,36 +73,177 @@ body {
   outline-offset: 2px;
 }
 
-/* ---------- shared top bar ---------- */
-.lq-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #dfe6ef;
+/* ---------- shared: language switch ---------- */
+
+/* Language switch: a two-option segmented control with a sliding thumb.
+   English is sapphire, Turkish is claret, matching the two script themes. */
+.language-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--lq-line);
 }
-.lq-topbar .navbar-brand {
-  display: inline-flex;
+.language-switch .language-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 6px;
+  background: var(--lq-sapphire);
+  box-shadow: 0 2px 4px rgba(8, 37, 103, .25);
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1), background .25s ease;
+}
+/* The thumb follows whichever option is active, so the markup order sets the offset */
+.language-switch:has(.language-option:last-of-type.active) .language-thumb {
+  transform: translateX(100%);
+  background: var(--lq-claret);
+  box-shadow: 0 2px 4px rgba(157, 28, 81, .25);
+}
+.language-switch .language-option {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .4px;
+  color: #5a687d;
+  transition: color .2s;
+}
+.language-switch .language-option:hover:not(.active) { color: var(--lq-ink); }
+.language-switch .language-option.active { color: #fff; }
+
+/* ---------- shared: side menu ---------- */
+
+/* Bootstrap's offcanvas provides the drawer, the scrim and the focus handling;
+   these rules only give it the LexiQamus look. */
+.side-menu {
+  width: 292px;
+  max-width: 86vw;
+  background: var(--lq-body-bg);
+  border-right: 1px solid var(--lq-line);
+  box-shadow: 18px 0 50px -30px rgba(15, 23, 42, .35);
+}
+
+.side-menu .side-menu-head {
+  gap: 12px;
+  padding: 16px;
+  background: var(--lq-paper);
+  border-bottom: 1px solid var(--lq-line);
+}
+.side-menu .side-menu-logo { display: block; min-width: 0; }
+.side-menu .side-menu-logo img { height: 40px; width: auto; display: block; }
+
+.side-menu .side-menu-auth {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--lq-paper);
+  border-bottom: 1px solid var(--lq-line);
+}
+.side-menu .side-auth-ghost,
+.side-menu .side-auth-primary {
+  flex: 1;
+  height: 38px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.side-menu .side-auth-ghost {
+  background: var(--lq-lat-bg);
+  color: var(--lq-sapphire);
+  border: 1px solid var(--lq-lat-border);
+}
+.side-menu .side-auth-ghost:hover { background: #e0edff; }
+.side-menu .side-auth-primary {
+  background: var(--lq-sapphire);
+  color: #fff;
+  border: 1px solid var(--lq-sapphire);
+}
+.side-menu .side-auth-primary:hover { filter: brightness(1.08); }
+
+.side-menu .side-menu-body { padding: 10px 8px 14px; }
+.side-menu .side-nav { list-style: none; margin: 0; padding: 0; }
+
+.side-menu .side-link {
+  display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 12.5px;
-  font-weight: 800;
-  letter-spacing: 2.4px;
-  text-transform: uppercase;
-  color: var(--lq-sapphire);
-}
-.lq-topbar .navbar-brand img {
-  height: 26px;
-}
-.lq-topbar .nav-link {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  color: #5b6a80;
+  width: 100%;
+  padding: 9px 10px;
+  margin-bottom: 4px;
+  border: 1px solid transparent;
   border-radius: 8px;
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #5a687d;
+  transition: background .12s, color .12s, border-color .12s, box-shadow .12s;
 }
-.lq-topbar .nav-link:hover {
-  background: #eef3fa;
+.side-menu .side-link:hover,
+.side-menu .side-link[aria-expanded="true"] {
+  background: var(--lq-paper);
+  border-color: var(--lq-line);
   color: var(--lq-sapphire);
+  box-shadow: 0 1px 4px rgba(8, 37, 103, .08);
+}
+
+.side-menu .side-link svg {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  color: var(--lq-red);
+}
+
+.side-menu .side-year {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #5a687d;
+  font-variant-numeric: tabular-nums;
+}
+.side-menu .side-chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin-left: 6px;
+  color: #94a3b8;
+  transition: transform .2s;
+}
+.side-menu .side-year + .side-chevron { margin-left: 6px; }
+/* Bootstrap drops .collapsed on a collapse toggle once it is open */
+.side-menu .side-link[aria-expanded="true"] .side-chevron { transform: rotate(180deg); }
+
+.side-menu .side-submenu {
+  list-style: none;
+  margin: 0 0 4px 20px;
+  padding-left: 14px;
+  border-left: 2px solid var(--lq-line);
+}
+.side-menu .side-sublink {
+  display: block;
+  padding: 9px 10px;
+  margin: 2px 0;
+  border-radius: 7px;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #5f6d81;
+  transition: background .15s, color .15s;
+}
+.side-menu .side-sublink:hover { background: var(--lq-paper); color: var(--lq-sapphire); }
+
+@media (max-width: 640px) {
+  .side-menu { width: 84vw; }
 }

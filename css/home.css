@@ -1,0 +1,822 @@
+/* =========================================================
+   Home feature - the search page
+   Everything here is scoped under .home-surface. Shared brand
+   tokens and the offcanvas menu live in css/base.css.
+   ========================================================= */
+
+.home-surface {
+  /* Card width matches the original: full width up to 1300px, with a gutter */
+  --home-card-width: min(100% - 48px, 1300px);
+  --home-radius: 20px;
+  --home-surface-radius: 24px;
+  max-width: var(--lq-max-width);
+  margin-inline: auto;
+  position: relative;
+}
+
+/* ---------- top row: menu, classic link, language switch ---------- */
+
+.home-surface .home-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 38px;
+}
+
+.home-surface .menu-button {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-paper);
+  color: #475569;
+  transition: background .15s, border-color .15s, color .2s;
+}
+.home-surface .menu-button:hover {
+  background: var(--lq-body-bg);
+  border-color: var(--lq-line);
+  color: var(--lq-sapphire);
+}
+
+.home-surface .home-top-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.home-surface .classic-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 8px;
+  background: var(--lq-line);
+  color: #475569;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.home-surface .classic-link:hover {
+  background: #d7dfe9;
+  color: var(--lq-sapphire);
+}
+.home-surface .classic-link svg { width: 11px; height: 11px; opacity: .75; }
+.home-surface .classic-link:hover svg { opacity: 1; }
+
+/* ---------- branding ---------- */
+
+.home-surface .branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.home-surface .logo-row {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.home-surface .logo-link { display: inline-block; width: 220px; max-width: 100%; }
+.home-surface .logo-link img { width: 100%; height: auto; display: block; }
+
+/* Sits just after the wordmark; .logo-row is flex with align-items:flex-end,
+   so no absolute offset is needed. */
+.home-surface .version-badge {
+  align-self: flex-end;
+  margin: 0 0 10px 5px;
+  flex: none;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: .4px;
+  color: #fff;
+  background: var(--lq-claret);
+  padding: 2.5px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.home-surface .version-badge small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: .85;
+  margin-left: 2px;
+  text-transform: uppercase;
+}
+
+.home-surface .tagline {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #5a687d;
+  text-align: center;
+}
+
+/* The landing state shows a larger logo; the results state shrinks it.
+   The state class is set by the controller on the root element. */
+.home-surface.state-landing .logo-link { width: 420px; }
+.home-surface.state-landing .tagline { font-size: 11.5px; font-weight: 600; letter-spacing: 3.2px; }
+.home-surface.state-landing .search-tabs { margin-top: 12vh; }
+
+/* ---------- tabs ---------- */
+
+.home-surface .search-tabs {
+  display: flex;
+  justify-content: center;
+  border: 0;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+}
+.home-surface .search-tabs .nav-link {
+  width: 160px;
+  padding: 12px 0;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: rgba(233, 239, 245, .6);
+  color: var(--lq-muted);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+.home-surface .search-tabs .nav-link:hover:not(.active) { background: var(--lq-line); }
+.home-surface .search-tabs .nav-link.active {
+  background: var(--lq-paper);
+  border-color: var(--lq-line);
+  color: var(--lq-sapphire);
+  font-weight: 700;
+  /* Sits 1px over the card below so the tab and the card read as one shape */
+  margin-bottom: -1px;
+  padding-bottom: 13px;
+}
+
+/* ---------- search card ---------- */
+
+.home-surface .search-card {
+  width: var(--home-card-width);
+  margin-inline: auto;
+  background: var(--lq-paper);
+  border: 1px solid var(--lq-line);
+  border-radius: var(--home-radius);
+  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06);
+  padding: 24px 40px;
+  position: relative;
+  z-index: 5;
+}
+
+.home-surface .search-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.home-surface .search-input-group {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* One bar, two scripts: Latin is typed from the left, Ottoman from the right.
+   Clicking a half decides which, so the bar needs its own wrapper rather than
+   Bootstrap's input-group. */
+.home-surface .script-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  background: var(--lq-paper);
+  border: 1.5px solid var(--lq-line);
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, .02);
+  transition: border-color .2s, box-shadow .2s;
+  cursor: text;
+}
+.home-surface .script-input-wrapper.focus-latin {
+  border-color: #1c449c;
+  box-shadow: 0 0 0 4px rgba(28, 68, 156, .11);
+}
+.home-surface .script-input-wrapper.focus-ottoman {
+  border-color: var(--lq-claret);
+  box-shadow: 0 0 0 4px rgba(157, 28, 81, .15);
+}
+
+.home-surface .source-switch {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 80px;
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--lq-body-bg);
+  border: 1px solid var(--lq-line);
+  border-radius: 8px;
+  z-index: 10;
+}
+.home-surface .source-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  color: var(--lq-muted);
+  transition: background .2s, color .2s;
+}
+.home-surface .source-option[data-source="ottoman"].active { background: var(--lq-claret); color: #fff; }
+.home-surface .source-option[data-source="english"].active { background: var(--lq-sapphire); color: #fff; }
+
+.home-surface .script-input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  /* Left padding clears the 80px source switch */
+  padding: 0 20px 0 100px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--lq-ink);
+  position: relative;
+  z-index: 2;
+}
+.home-surface .script-input[data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Two placeholders, one per script, shown while the bar is empty */
+.home-surface .placeholder-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px 0 100px;
+  pointer-events: none;
+  z-index: 1;
+}
+.home-surface .placeholder-layer span {
+  font-size: 13.5px;
+  color: #94a3b8;
+  white-space: nowrap;
+  max-width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity .2s, transform .2s;
+}
+.home-surface .placeholder-layer span.is-hidden { opacity: 0; transform: translateX(5px); }
+.home-surface .placeholder-ottoman {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 19px;
+  direction: rtl;
+}
+
+.home-surface .search-submit {
+  height: 52px;
+  width: 88px;
+  flex: none;
+  border: 0;
+  border-radius: 10px;
+  background: var(--lq-claret);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  box-shadow: 0 4px 6px rgba(131, 24, 67, .15);
+  transition: background .2s, transform .2s;
+}
+.home-surface .search-submit:hover { background: var(--lq-claret-hover); transform: translateY(-2px); }
+.home-surface .search-submit:active { transform: scale(.98); }
+/* English mode searches Redhouse definitions, so the button takes the Latin theme */
+.home-surface .script-input-wrapper ~ .search-submit[data-source="english"],
+.home-surface .search-submit.source-english { background: var(--lq-sapphire); }
+.home-surface .search-submit.source-english:hover { background: #1e1b4b; }
+
+/* ---------- filters and dictionary pickers ---------- */
+
+.home-surface .filter-trigger,
+.home-surface .dictionary-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dde2ec;
+  border-radius: 9px;
+  padding: 10px 13px;
+  background: var(--lq-paper);
+  font-size: 13px;
+  font-weight: 600;
+  color: #1c2a4e;
+  white-space: nowrap;
+}
+.home-surface .filter-trigger:hover,
+.home-surface .dictionary-trigger:hover { border-color: #c9d1e2; }
+.home-surface .filter-trigger[aria-expanded="true"] { border-color: #8e1537; background: #fdf1f4; }
+.home-surface .dictionary-trigger { width: 280px; height: 52px; justify-content: space-between; }
+.home-surface .dictionary-trigger[aria-expanded="true"] {
+  border-color: var(--lq-sapphire);
+  box-shadow: 0 0 0 4px rgba(8, 37, 103, .1);
+}
+/* Fixed label width keeps the trigger from resizing between English and Turkish */
+.home-surface .filter-label { display: inline-block; min-width: 52px; text-align: left; }
+
+.home-surface .filter-count {
+  background: #8e1537;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 20px;
+  min-width: 17px;
+  text-align: center;
+}
+
+.home-surface .filter-panel { width: 320px; padding: 12px 14px 13px; }
+.home-surface .filter-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #dde2ec;
+}
+.home-surface .filter-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: #1c2a4e;
+}
+.home-surface .filter-link {
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a5a82;
+  padding: 2px 0;
+  border-bottom: 1px solid transparent;
+}
+.home-surface .filter-link:hover { color: #8e1537; border-bottom-color: #8e1537; }
+
+.home-surface .filter-columns { display: flex; gap: 0; }
+.home-surface .filter-column { flex: 1; min-width: 0; }
+.home-surface .filter-column:first-child { padding-right: 12px; border-right: 1px dashed #dde2ec; }
+.home-surface .filter-column:last-child { padding-left: 12px; }
+
+.home-surface .filter-column-head {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+.home-surface .filter-column[data-filter-group="category"] .filter-column-head { color: #1c2a4e; background: #eef1f8; }
+.home-surface .filter-column[data-filter-group="group"] .filter-column-head { color: #8e1537; background: #fdeef1; }
+
+.home-surface .filter-check {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 6px;
+  border-radius: 6px;
+  margin: 0;
+  cursor: pointer;
+}
+.home-surface .filter-check .form-check-input { margin: 0; flex: none; }
+.home-surface .filter-check .form-check-label { font-size: 11.5px; font-weight: 600; color: #4a5a82; cursor: pointer; }
+.home-surface .filter-column[data-filter-group="category"] .filter-check:has(:checked) { background: #eef1f8; }
+.home-surface .filter-column[data-filter-group="group"] .filter-check:has(:checked) { background: #fdeef1; }
+
+.home-surface .dictionary-panel { width: 320px; max-height: 340px; overflow-y: auto; }
+.home-surface .dictionary-panel .form-check { padding: 6px 12px; margin: 0; border-radius: 8px; }
+.home-surface .dictionary-panel .form-check:hover { background: var(--lq-body-bg); }
+.home-surface .dictionary-panel .form-check-label { font-size: 14px; cursor: pointer; }
+
+/* ---------- library button ---------- */
+
+.home-surface .library-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #f6cfdf;
+  border-radius: 999px;
+  background: #fdf2f7;
+  color: var(--lq-claret);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+}
+.home-surface .library-button:hover { background: #fce7f0; border-color: #f0b6ce; }
+
+/* ---------- results surface ---------- */
+
+.home-surface .results-surface {
+  width: var(--home-card-width);
+  margin-inline: auto;
+  margin-top: 32px;
+  background: var(--lq-paper);
+  border: 1px solid var(--lq-line);
+  border-radius: var(--home-surface-radius);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
+  overflow: hidden;
+}
+/* 4px bar across the top, coloured by the script of the active spelling */
+.home-surface .results-accent { height: 4px; background: var(--lq-red); }
+.home-surface .results-accent[data-script="latin"] { background: var(--lq-sapphire); }
+
+.home-surface .results-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px 40px 16px;
+}
+.home-surface .results-header-main { flex: 1 1 320px; min-width: 0; }
+.home-surface .results-header-side { flex: 1 1 340px; min-width: 0; padding-top: 14px; }
+
+.home-surface .results-label,
+.home-surface .spelling-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.home-surface .results-term {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: var(--lq-claret);
+  margin: 6px 0 10px;
+}
+.home-surface .results-term[data-direction="rtl"] { font-family: 'Noto Naskh Arabic', serif; }
+.home-surface .results-term[data-script="latin"] { color: var(--lq-sapphire); }
+
+.home-surface .results-stats {
+  display: flex;
+  gap: 12px;
+  border-left: 3px solid var(--lq-claret);
+  padding-left: 12px;
+}
+.home-surface .results-stats p { margin: 0; font-size: 12px; color: #5a687d; }
+.home-surface .results-stats b { color: var(--lq-ink); font-variant-numeric: tabular-nums; }
+
+.home-surface .spelling-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }
+.home-surface .spelling-button {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.home-surface .spelling-button[data-script="ottoman"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 19px;
+  color: var(--lq-red);
+  background: var(--lq-osm-bg);
+  border-color: var(--lq-osm-border);
+}
+.home-surface .spelling-button[data-script="ottoman"].active { background: var(--lq-claret); color: #fff; border-color: var(--lq-claret); }
+.home-surface .spelling-button[data-script="latin"] {
+  color: var(--lq-lat-primary);
+  background: var(--lq-lat-bg);
+  border-color: var(--lq-lat-border);
+}
+.home-surface .spelling-button[data-script="latin"].active { background: var(--lq-sapphire); color: #fff; border-color: var(--lq-sapphire); }
+
+.home-surface .expand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.home-surface .pronunciation-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--lq-line);
+  border-radius: 999px;
+  background: var(--lq-paper);
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4a5a82;
+}
+.home-surface .pronunciation-button:hover { border-color: var(--lq-sapphire); color: var(--lq-sapphire); }
+.home-surface .pronunciation-button.active { background: var(--lq-sapphire); border-color: var(--lq-sapphire); color: #fff; }
+.home-surface .pronunciation-count {
+  background: var(--lq-line);
+  color: #475569;
+  border-radius: 20px;
+  padding: 1px 8px;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+.home-surface .pronunciation-button.active .pronunciation-count { background: rgba(255, 255, 255, .22); color: #fff; }
+
+/* ---------- results table ---------- */
+
+/* The results are genuinely tabular - result, category, headword, dictionary,
+   page - so this is a real <table> with a header row, rather than the nested
+   grid the reference mock used. Groups are separate <tbody> elements, which is
+   also what lets a group collapse without wrapping rows in an extra element. */
+.home-surface .results-table-scroll { overflow-x: auto; }
+.home-surface .results-table {
+  margin: 0;
+  --bs-table-bg: transparent;
+  /* Below this the columns squeeze the two scripts into unreadable stacks, so
+     the table keeps its width and this container scrolls instead. */
+  min-width: 880px;
+}
+
+.home-surface .results-table > thead th {
+  background: #f8fafc;
+  border-top: 1px solid var(--lq-line);
+  border-bottom: 1px solid var(--lq-line);
+  padding: 10px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #566478;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.home-surface .results-table > thead th.col-result { background: var(--lq-lat-bg); padding-left: 40px; }
+.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); text-align: center; }
+.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 40px; }
+.home-surface .results-table > thead th.col-category { width: 120px; text-align: center; }
+.home-surface .results-table > thead th.col-dictionary { text-align: right; }
+.home-surface .results-table > thead th.col-actions { width: 104px; }
+
+/* group header */
+.home-surface .group-header th {
+  background: var(--lq-paper);
+  border-bottom: 0;
+  padding: 20px 40px 8px;
+}
+.home-surface .group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-left: -10px;
+}
+.home-surface .group-toggle:hover { background: var(--lq-lat-bg); }
+.home-surface .group-chevron {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--lq-body-bg);
+  color: var(--lq-sapphire);
+  transition: transform .3s ease;
+}
+.home-surface .group-toggle[aria-expanded="false"] .group-chevron { transform: rotate(-90deg); }
+.home-surface .group-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--lq-sapphire);
+}
+.home-surface .group-count {
+  background: var(--lq-line);
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.home-surface .group-note {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #5a687d;
+  background: var(--lq-body-bg);
+  border-radius: 999px;
+  padding: 5px 12px;
+  margin-left: 4px;
+}
+.home-surface .group-note b { color: var(--lq-ink); font-weight: 700; }
+/* Hide the note before the table gets narrow enough for it to squeeze the columns */
+@media (max-width: 1200px) { .home-surface .group-note { display: none; } }
+
+.home-surface .result-group.is-collapsed .result-row { display: none; }
+
+/* result rows */
+.home-surface .result-row > td {
+  background: var(--lq-paper);
+  border-bottom: 1px solid var(--lq-body-bg);
+  padding: 14px 8px;
+  vertical-align: middle;
+}
+.home-surface .result-row:hover > td { background: #fcfdff; }
+
+/* A 4px stripe in the category colour marks the row kind at a glance */
+.home-surface .result-row > td:first-child { padding-left: 40px; border-left: 4px solid transparent; }
+.home-surface .result-row[data-category="ENTRY"] > td:first-child { border-left-color: #0d9488; }
+.home-surface .result-row[data-category="SUBENTRY"] > td:first-child { border-left-color: #d97706; }
+.home-surface .result-row[data-category="RELATED"] > td:first-child { border-left-color: #2563eb; }
+
+/* Ottoman and Latin meet at a fixed midline, so the scripts line up down the
+   column. The pair is capped and left-aligned so it does not drift with the
+   width of the column. */
+.home-surface .word-pair {
+  display: flex;
+  align-items: center;
+  gap: 4%;
+  width: 100%;
+  max-width: 400px;
+  margin-right: auto;
+}
+.home-surface .word-pair .word-ottoman { flex: 0 1 48%; display: flex; justify-content: flex-end; }
+.home-surface .word-pair .word-latin { flex: 0 1 48%; display: flex; justify-content: flex-start; }
+
+.home-surface .word-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  max-width: 100%;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  overflow-wrap: break-word;
+  transition: background .2s, color .2s, border-color .2s, transform .2s;
+}
+.home-surface .word-box:hover { transform: translateY(-2px); }
+
+.home-surface .ottoman-box {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 22px;
+  line-height: 1.8;
+  padding-bottom: 12px;
+  color: var(--lq-red);
+  background: var(--lq-osm-bg);
+  border-color: var(--lq-osm-border);
+}
+.home-surface .ottoman-box:hover { background: #fecdd3; border-color: #fda4af; }
+
+.home-surface .latin-box {
+  font-size: 15px;
+  color: var(--lq-ink);
+  background: #f8fafc;
+  border-color: var(--lq-line);
+}
+.home-surface .latin-box:hover { background: var(--lq-lat-border); color: #1e3a8a; border-color: #60a5fa; }
+/* A machine-generated reading is shown a shade lighter than a checked one */
+.home-surface .latin-box.reading-unverified { opacity: .82; }
+.home-surface .latin-box.reading-unverified:hover { opacity: 1; }
+
+/* The searched term stays plain and the affixes around it are marked, so the
+   eye lands on what the dictionary added rather than on what was typed. */
+.home-surface .affix { color: #0284c7; }
+
+.home-surface .category-badge {
+  display: inline-block;
+  min-width: 96px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+.home-surface .result-row[data-category="ENTRY"] .category-badge { color: var(--lq-entry-text); background: rgba(20, 184, 166, .12); border-color: var(--lq-entry-border); }
+.home-surface .result-row[data-category="SUBENTRY"] .category-badge { color: var(--lq-sub-text); background: rgba(251, 191, 36, .12); border-color: var(--lq-sub-border); }
+.home-surface .result-row[data-category="RELATED"] .category-badge { color: var(--lq-related-text); background: rgba(30, 58, 138, .12); border-color: var(--lq-related-border); }
+
+.home-surface .row-arrow { color: #94a3b8; opacity: .35; transition: opacity .3s, transform .3s; }
+.home-surface .result-row:hover .row-arrow { opacity: 1; transform: translateX(4px); color: var(--lq-ink); }
+
+/* The headword column repeats the word pair without the chip styling, so the
+   result column stays the primary reading. */
+.home-surface .headword-cell .word-pair { margin-inline: auto; }
+.home-surface .headword-cell .word-box {
+  background: transparent;
+  border-color: transparent;
+  min-width: 82px;
+}
+.home-surface .headword-cell .latin-box { font-size: 14.5px; color: #475569; }
+.home-surface .headword-cell .word-box:hover { background: rgba(15, 23, 42, .035); transform: none; }
+
+.home-surface .dictionary-cell { text-align: right; white-space: nowrap; }
+.home-surface .dictionary-name { font-size: 13px; font-weight: 700; color: #334155; line-height: 1.3; }
+.home-surface .dictionary-page {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Row actions sit side by side in their own column */
+.home-surface .row-actions { display: flex; gap: 4px; justify-content: center; }
+
+.home-surface .cite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--lq-body-bg);
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #94a3b8;
+  opacity: .6;
+  transition: opacity .2s, background .2s, color .2s, border-color .2s;
+}
+.home-surface .cite-button:hover {
+  opacity: 1;
+  background: var(--lq-lat-border);
+  color: var(--lq-sapphire);
+  border-color: var(--lq-lat-border);
+}
+
+.home-surface .results-empty { padding: 48px 40px; text-align: center; color: var(--lq-muted); }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1023px) {
+  .home-surface .search-row { flex-wrap: wrap; gap: 14px 12px; }
+  .home-surface .search-input-group { flex: 1 0 100%; }
+  .home-surface .dictionary-trigger { width: auto; flex: 1 1 200px; }
+}
+
+@media (max-width: 900px) {
+  /* The Ottoman placeholder would collide with the Latin one on a narrow bar */
+  .home-surface .placeholder-ottoman { display: none; }
+  .home-surface .results-header { padding: 20px 20px 12px; }
+  .home-surface .results-table > thead th.col-result,
+  .home-surface .result-row > td:first-child { padding-left: 20px; }
+  .home-surface .group-header th { padding: 16px 20px 8px; }
+}
+
+@media (max-width: 767px) {
+  .home-surface .search-card { padding: 20px; }
+  .home-surface .results-term { font-size: 34px; }
+  .home-surface .word-pair { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .home-surface .word-pair .word-ottoman,
+  .home-surface .word-pair .word-latin { flex: none; justify-content: flex-start; }
+}
+
+@media (max-width: 560px) {
+  .home-surface .search-input-group { flex-wrap: wrap; }
+  .home-surface .script-input-wrapper,
+  .home-surface .search-submit { flex: 1 0 100%; width: auto; }
+  .home-surface .filter-panel,
+  .home-surface .dictionary-panel { width: min(92vw, 320px); }
+  .home-surface.state-landing .logo-link { width: 100%; }
+  .home-surface .tagline { font-size: 9px; letter-spacing: 1.4px; }
+  .home-surface.state-landing .tagline { font-size: 9.5px; letter-spacing: 1.8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-surface * { transition: none !important; animation: none !important; }
+}

@@ -19,13 +19,19 @@
 
 /* ---------- contents ---------- */
 
+/* A card of its own beside the text, as the reference has it. */
 .guide-surface .guide-toc {
   position: sticky;
   top: 24px;
+  align-self: start;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
-  padding-right: 8px;
+  padding: 22px 20px 18px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-soft);
   font-size: .86rem;
+  scrollbar-width: thin;
 }
 
 .guide-surface .guide-toc-toggle {
@@ -66,23 +72,49 @@
 }
 .guide-surface .guide-toc a:hover { color: var(--lq-sapphire); }
 .guide-surface .guide-toc-list > li > a {
+  margin-top: 10px;
   font-weight: 700;
   color: var(--lq-ink-navy);
-  margin-top: 10px;
 }
 .guide-surface .guide-toc-sub a { font-size: .84rem; }
 
 /* The code is the same one printed on the heading, so a reader can match the
-   two without reading the title twice. */
+   two without reading the title twice. A section wears its letter in a
+   filled badge, the parts under it their number in plain type, so the two
+   levels are told apart before a word is read. */
 .guide-surface .guide-code {
   flex: none;
   min-width: 22px;
   font-size: .68rem;
   font-weight: 800;
   letter-spacing: .04em;
-  color: var(--lq-gold);
+  color: #5d718c;
   font-variant-numeric: tabular-nums;
 }
+
+.guide-surface .guide-toc-list > li > a .guide-code {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: var(--lq-sapphire);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.guide-surface .guide-toc a:hover .guide-code,
+.guide-surface .guide-toc a.active .guide-code { color: var(--lq-claret); }
+.guide-surface .guide-toc-list > li > a:hover .guide-code,
+.guide-surface .guide-toc-list > li > a.active .guide-code {
+  background: var(--lq-claret);
+  color: #fff;
+}
+.guide-surface .guide-toc a.active { color: var(--lq-claret); }
 
 /* ---------- the reading column ---------- */
 

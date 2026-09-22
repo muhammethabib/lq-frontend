@@ -12,28 +12,60 @@
   --page-hero-to: #16388f;
   --page-gold: #f0c48a;
 
-  max-width: var(--lq-max-width);
-  margin-inline: auto;
+  /* A content page is read, not worked in, so it is set on plain paper the
+     full width of the window rather than as a card floating on the site's
+     ground; the reading column inside it is what is held narrow. */
+  min-height: 100vh;
+  background: var(--lq-paper);
 }
 
-.page-surface .page-body {
-  width: min(100% - 32px, 1100px);
-  margin-inline: auto;
+.page-surface .page-body { width: 100%; }
+
+/* The bar the menu button and the language switch sit in. On the main page
+   they float over the page; here they have a bar of their own, which the
+   hero begins directly under. */
+.page-surface .page-top-row {
+  padding: 10px clamp(16px, 4vw, 34px);
+  border-bottom: 1px solid var(--lq-line);
+  background: var(--lq-paper);
 }
 
 /* ---------- hero ---------- */
 
-/* The hero and the panel below it read as one card: the hero is the navy top,
-   the content panel the white body. */
+/* A navy band across the whole window, the same height on every page, with
+   its words held to the reading column. */
 .page-surface .page-hero {
   position: relative;
-  padding: 54px clamp(24px, 6vw, 64px) 46px;
-  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 340px;
+  /* Always the reading column, even where the text under it runs wider, so
+     every page's title begins in the same place. */
+  padding-inline: max(22px, calc((100% - 860px) / 2));
   background: linear-gradient(135deg, var(--page-hero-from), var(--page-hero-via) 55%, var(--page-hero-to));
   color: #fff;
   overflow: hidden;
 }
-/* A hairline of gold along the bottom edge, where the two halves meet */
+
+/* The Q of the wordmark, cut equally at top and bottom, in the same place on
+   every page. It is decoration, so it stays behind the words. */
+.page-surface .page-hero::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  width: 360px;
+  height: 384px;
+  transform: translateY(-50%);
+  background: url("../assets/q-watermark.svg") center/contain no-repeat;
+  opacity: .07;
+  pointer-events: none;
+}
+
+.page-surface .page-hero > * { position: relative; z-index: 1; }
+
+/* A hairline of gold along the bottom edge, where the band meets the page */
 .page-surface .page-hero::after {
   content: "";
   position: absolute;
@@ -41,7 +73,7 @@
   right: 0;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--page-gold), transparent);
+  background: linear-gradient(to right, var(--lq-gold), rgba(217, 119, 6, 0) 62%);
 }
 
 .page-surface .page-eyebrow {
@@ -83,10 +115,9 @@
 /* ---------- content panel ---------- */
 
 .page-surface .page-content {
-  padding: 42px clamp(24px, 6vw, 64px) 56px;
-  border-radius: 0 0 20px 20px;
-  background: var(--lq-paper);
-  box-shadow: var(--lq-shadow);
+  width: min(var(--page-width), 100% - 44px);
+  margin-inline: auto;
+  padding-block: clamp(36px, 5vw, 58px) clamp(56px, 7vw, 88px);
   font-size: 1.02rem;
   line-height: 1.78;
   color: #3b4957;
@@ -123,6 +154,9 @@
 }
 
 .page-surface .page-content p { margin: 0 0 18px; }
+/* A link in running text is claret. A link dressed as a button, and the
+   lists that are a page's own furniture, set their colour in their own file
+   at a weight that beats this one. */
 .page-surface .page-content a { color: var(--lq-claret); text-underline-offset: 3px; }
 .page-surface .page-content a:hover { color: var(--lq-claret-hover); }
 
@@ -233,7 +267,8 @@
 /* ---------- responsive ---------- */
 
 @media (max-width: 767px) {
-  .page-surface .page-hero { padding: 40px 22px 34px; border-radius: 16px 16px 0 0; }
+  .page-surface .page-hero { height: 260px; }
+  .page-surface .page-hero::before { width: 275px; height: 294px; right: -6%; }
   .page-surface .page-content { padding: 32px 22px 42px; border-radius: 0 0 16px 16px; }
   .page-surface .point-list { margin-left: 0; }
   .page-surface .point-list li { padding: 14px 16px 14px 40px; }

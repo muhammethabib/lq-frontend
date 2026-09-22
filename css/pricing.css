@@ -11,45 +11,47 @@
 .pricing-surface .term-switch {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
   width: fit-content;
   max-width: 100%;
-  margin: 0 auto 30px;
+  margin: 0 auto 26px;
   padding: 6px;
   border: 1px solid var(--lq-line);
-  border-radius: 999px;
-  background: var(--lq-body-bg);
+  border-radius: 14px;
+  background: var(--lq-soft);
 }
 
+/* The saving sits under the term rather than beside it, so the four terms
+   read as one row of equal choices. */
 .pricing-surface .term-option {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  padding: 9px 18px;
+  padding: 9px 16px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 10px;
   background: transparent;
-  font-size: .95rem;
-  font-weight: 600;
-  color: var(--lq-ink-soft);
+  font-size: .81rem;
+  font-weight: 700;
+  color: #5d6b80;
   white-space: nowrap;
+  transition: all .15s;
 }
 .pricing-surface .term-option:hover { color: var(--lq-sapphire); }
 .pricing-surface .term-option[aria-pressed="true"] {
-  background: var(--lq-paper);
-  color: var(--lq-sapphire);
-  box-shadow: 0 1px 3px rgba(8, 37, 103, .16);
+  background: var(--lq-sapphire);
+  color: #fff;
 }
 
 /* The saving rides along with the term it belongs to, so the reader does not
    have to compare the four prices themselves. */
 .pricing-surface .term-saving {
-  font-size: .76rem;
+  display: block;
+  margin-top: 2px;
+  font-size: .63rem;
   font-weight: 700;
-  letter-spacing: .02em;
-  color: var(--lq-entry-text);
+  letter-spacing: .03em;
+  color: #0f766e;
 }
-.pricing-surface .term-option[aria-pressed="true"] .term-saving { color: var(--lq-claret); }
+.pricing-surface .term-option[aria-pressed="true"] .term-saving { color: #7dd3c0; }
 
 /* ---------- the three plans ---------- */
 
@@ -75,45 +77,46 @@
   box-shadow: var(--lq-shadow);
 }
 
+/* The head reads left to right like the rows of features under it, as the
+   reference has it, rather than as a centred poster. */
 .pricing-surface .plan-head {
   position: relative;
-  padding: 44px 22px 22px;
+  padding: 22px 22px 20px;
   border-bottom: 1px solid var(--lq-line);
   background: var(--lq-paper-soft);
-  text-align: center;
 }
 .pricing-surface .plan-featured .plan-head { background: var(--lq-lat-bg); }
 
 .pricing-surface .plan-badge {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 12px;
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 3px 9px;
   white-space: nowrap;
   border-radius: 999px;
   background: var(--lq-sapphire);
-  font-size: .68rem;
+  font-size: .63rem;
   font-weight: 800;
-  letter-spacing: .12em;
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: #fff;
 }
 
 .pricing-surface .plan-name {
-  margin: 0 0 10px;
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 600;
+  margin: 0;
+  font-family: inherit;
+  font-size: .81rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1.5;
+  text-transform: uppercase;
   color: var(--lq-sapphire);
 }
 
 .pricing-surface .plan-price {
   display: flex;
   align-items: baseline;
-  justify-content: center;
   gap: 6px;
-  margin: 0;
+  margin: 14px 0 2px;
   line-height: 1.2;
 }
 .pricing-surface .plan-price b {
@@ -136,7 +139,7 @@
   color: var(--lq-entry-text);
 }
 
-.pricing-surface .plan-cta {
+.pricing-surface .page-content .plan-cta {
   width: 100%;
   padding: 10px 16px;
   border: 1px solid var(--lq-sapphire);
@@ -146,15 +149,15 @@
   color: var(--lq-sapphire);
   text-decoration: none;
 }
-.pricing-surface .plan-cta:hover {
+.pricing-surface .page-content .plan-cta:hover {
   background: var(--lq-sapphire);
   color: #fff;
 }
-.pricing-surface .plan-cta-solid {
+.pricing-surface .page-content .plan-cta-solid {
   background: var(--lq-sapphire);
   color: #fff;
 }
-.pricing-surface .plan-cta-solid:hover {
+.pricing-surface .page-content .plan-cta-solid:hover {
   background: #061d50;
   border-color: #061d50;
   color: #fff;

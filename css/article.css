@@ -5,6 +5,10 @@
    list beside it.
    ========================================================= */
 
+/* The contents list beside the text needs more room than a reading column,
+   so this kind of page runs wider. */
+.article-surface { --page-width: 1120px; }
+
 .article-surface .page-content[data-controller="article"] {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
@@ -14,13 +18,20 @@
 
 /* ---------- contents ---------- */
 
+/* A card of its own beside the text, as the reference has it, so the list
+   reads as a way in rather than as a column of the article. */
 .article-surface .article-toc {
   position: sticky;
   top: 24px;
+  align-self: start;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
-  padding-right: 8px;
+  padding: 22px 20px 18px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-soft);
   font-size: .86rem;
+  scrollbar-width: thin;
 }
 
 .article-surface .article-toc-toggle {
@@ -47,14 +58,44 @@
   list-style: none;
   counter-reset: none;
 }
+.article-surface .article-toc-list > li + li { margin-top: 5px; }
+
 .article-surface .article-toc-list a {
+  position: relative;
   display: block;
-  padding: 5px 0;
-  color: var(--lq-ink-soft);
+  padding: 5px 0 3px;
+  color: #33415a;
+  font-size: .88rem;
+  font-weight: 600;
   text-decoration: none;
-  line-height: 1.4;
+  line-height: 1.35;
 }
-.article-surface .article-toc-list a:hover { color: var(--lq-sapphire); }
+
+/* The number is lifted out of the heading into a badge at the left, so the
+   titles line up beside it however long the number grows. */
+.article-surface .article-toc-list a.has-code { padding-left: 30px; }
+
+.article-surface .article-toc-code {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: var(--lq-sapphire);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.article-surface .article-toc-list a:hover,
+.article-surface .article-toc-list a.active { color: var(--lq-claret); }
+.article-surface .article-toc-list a.active .article-toc-code { background: var(--lq-claret); }
 
 /* ---------- the reading column ---------- */
 

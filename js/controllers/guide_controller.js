@@ -29,6 +29,7 @@ class GuideController extends Stimulus.Controller {
 
   disconnect() {
     document.removeEventListener("language:changed", this.onLanguageChange);
+    if (this.onScroll) window.removeEventListener("scroll", this.onScroll);
   }
 
   // The toggle is the contents list on a narrow screen; on a wide one the
@@ -79,6 +80,31 @@ class GuideController extends Stimulus.Controller {
       }
       list.appendChild(item);
     });
+    this.watchReading();
+  }
+
+  // Which part of the guide is being read. The heading that has last passed a
+  // line near the top of the window wins, so the list keeps up with the page
+  // without flickering between two headings on the same screen.
+  watchReading() {
+    this.marks = Array.from(this.listTarget.querySelectorAll("a")).map((link) => ({
+      link,
+      heading: this.element.querySelector(`[id="${CSS.escape(link.hash.slice(1))}"]`)
+    })).filter((mark) => mark.heading);
+    if (!this.onScroll) {
+      this.onScroll = () => this.markReading();
+      window.addEventListener("scroll", this.onScroll, { passive: true });
+    }
+    this.markReading();
+  }
+
+  markReading() {
+    if (!this.marks || !this.marks.length) return;
+    let current = this.marks[0];
+    this.marks.forEach((mark) => {
+      if (mark.heading.getBoundingClientRect().top <= 120) current = mark;
+    });
+    this.marks.forEach((mark) => mark.link.classList.toggle("active", mark === current));
   }
 
   entry(anchor, code, text) {

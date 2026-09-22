@@ -291,7 +291,8 @@
                 <i data-feather="chevron-down"></i>
               </button>
 
-              <div class="dropdown-menu filter-panel">
+              <div class="dropdown-menu filter-panel"
+                   data-action="mouseover->home#describeFilter focusin->home#describeFilter mouseout->home#forgetFilter focusout->home#forgetFilter">
                 <div class="filter-panel-head">
                   <span class="filter-panel-title" data-i18n="filtersTitle">Search Filters</span>
                   <span>
@@ -305,19 +306,22 @@
                 <div class="filter-columns">
                   <div class="filter-column" data-filter-group="category">
                     <span class="filter-column-head" data-i18n="filtersColWord">Word Type</span>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="catEntryDesc"
+                           data-filter-desc-text="Results that appear as standalone dictionary headwords.">
                       <input class="form-check-input" type="checkbox" checked value="ENTRY"
                              data-filter-kind="category" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterEntry">
                       <span class="form-check-label" data-i18n="catEntry">Headword</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="catSubentryDesc"
+                           data-filter-desc-text="Words or expressions listed under another headword but having a distinct meaning of their own.">
                       <input class="form-check-input" type="checkbox" checked value="SUBENTRY"
                              data-filter-kind="category" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterSubentry">
                       <span class="form-check-label" data-i18n="catSubentry">Subheadword</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="catRelatedDesc"
+                           data-filter-desc-text="Important concepts and expressions associated with the entry.">
                       <input class="form-check-input" type="checkbox" checked value="RELATED"
                              data-filter-kind="category" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterRelated">
@@ -327,43 +331,50 @@
 
                   <div class="filter-column" data-filter-group="group">
                     <span class="filter-column-head" data-i18n="filtersColMatch">Results</span>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterLemmaDesc"
+                           data-filter-desc-text="Results without an affix, including the base or singular form of a value.">
                       <input class="form-check-input" type="checkbox" checked value="lemma"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterLemma">
                       <span class="form-check-label" data-i18n="filterLemma">Lemma</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterInflectedDesc"
+                           data-filter-desc-text="Inflected forms of the searched word.">
                       <input class="form-check-input" type="checkbox" checked value="inflected"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterInflected">
                       <span class="form-check-label" data-i18n="filterInflected">Inflected Forms</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterLexicalizedInflectedDesc"
+                           data-filter-desc-text="Inflected forms given a distinct meaning of their own in the dictionary.">
                       <input class="form-check-input" type="checkbox" checked value="lexicalizedInflected"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterLexicalized">
                       <span class="form-check-label" data-i18n="filterLexicalizedInflected">Lexicalized Inflected Forms</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterDerivedDesc"
+                           data-filter-desc-text="Words derived from the searched word.">
                       <input class="form-check-input" type="checkbox" checked value="derived"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterDerived">
                       <span class="form-check-label" data-i18n="filterDerived">Derived Forms</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterPhrasesDesc"
+                           data-filter-desc-text="Phrases containing the search term as a component.">
                       <input class="form-check-input" type="checkbox" checked value="phrases"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterPhrases">
                       <span class="form-check-label" data-i18n="filterPhrases">Phrases</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterCompoundsDesc"
+                           data-filter-desc-text="Compounds containing the search term as a component.">
                       <input class="form-check-input" type="checkbox" checked value="compounds"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterCompounds">
                       <span class="form-check-label" data-i18n="filterCompounds">Compounds</span>
                     </label>
-                    <label class="filter-check form-check">
+                    <label class="filter-check form-check" data-filter-desc="filterPartialDesc"
+                           data-filter-desc-text="Results written with a spelling close to the search term.">
                       <input class="form-check-input" type="checkbox" checked value="partial"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterPartial">
@@ -371,6 +382,11 @@
                     </label>
                   </div>
                 </div>
+
+                <!-- What a category means, shown when one is pointed at or
+                     reached by keyboard. Otherwise it says how to ask. -->
+                <p class="filter-desc" data-home-target="filterDescription"
+                   data-i18n="filtersHover">Hover a category to see its description</p>
               </div>
             </div>
 

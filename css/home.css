@@ -362,6 +362,40 @@
 .home-surface .filter-column[data-filter-group="category"] .filter-check:has(:checked) { background: #eef1f8; }
 .home-surface .filter-column[data-filter-group="group"] .filter-check:has(:checked) { background: #fdeef1; }
 
+/* What the category under the pointer means. The strip keeps its height
+   whether it is explaining one or telling the reader to point at one, so the
+   panel does not change size as the pointer crosses it. */
+.home-surface .filter-desc {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  margin: 11px 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed #dde2ec;
+  color: #8993a8;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.home-surface .filter-desc .filter-desc-body { width: 100%; }
+
+.home-surface .filter-desc b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--lq-ink-navy);
+  font-size: 11.5px;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.home-surface .filter-desc .filter-desc-text {
+  display: block;
+  color: #4a5a82;
+  font-size: 11.5px;
+  font-style: normal;
+  line-height: 1.5;
+}
+
 .home-surface .dictionary-panel { width: 320px; max-height: 340px; overflow-y: auto; }
 /* Laid out as a flex row rather than with Bootstrap's floated input, whose
    negative left margin would push the box outside the panel once the default
@@ -603,6 +637,37 @@
 @media (max-width: 1200px) { .home-surface .group-note { display: none; } }
 
 .home-surface .result-group.is-collapsed .result-row { display: none; }
+
+/* A group longer than a page keeps the rest of its rows on the page but out
+   of the way, so revealing them moves nothing the reader was looking at. */
+.home-surface .result-row.is-held { display: none; }
+
+.home-surface .show-more-row td {
+  padding: 8px 0 4px;
+  border: 0;
+  text-align: center;
+}
+
+.home-surface .result-group.is-collapsed .show-more-row { display: none; }
+
+.home-surface .show-more {
+  margin: 0 5px;
+  padding: 8px 24px;
+  border: 1px solid var(--lq-line);
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #5a687d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.home-surface .show-more:hover {
+  border-color: #cbd5e1;
+  background: var(--lq-line);
+  color: var(--lq-sapphire);
+}
 
 /* result rows */
 .home-surface .result-row > td {

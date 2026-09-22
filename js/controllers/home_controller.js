@@ -12,12 +12,15 @@ const YE_BARE = "\u0649";
 // Keys that move around the field rather than write in it.
 const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp",
   "ArrowDown", "Home", "End", "Tab", "Enter", "Escape"];
+// A group longer than this is not put on screen all at once: the reader is
+// given a page of it and asks for the rest.
+const PAGE = 25;
 
 class HomeController extends Stimulus.Controller {
   static targets = [
     "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "sourceOption", "submit", "scriptHint", "scriptWarning",
-    "filter", "filterCount", "dictionary", "dictionaryLabel", "allDictionaries",
+    "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
     "groupCopy",
     "spellingRow", "pronunciationButton", "pronunciationCount",
@@ -748,16 +751,69 @@ class HomeController extends Stimulus.Controller {
                     data-action="click->home#toggleGroup">
               <span class="group-chevron"><i data-feather="chevron-down"></i></span>
               <span class="group-title">${title}</span>
-              <span class="group-count">${group.count}</span>
+              <span class="group-count">${rows.length}</span>
             </button>
             ${note ? `<span class="group-note">${note}${example ? ` &middot; ${example}` : ""}</span>` : ""}
           </th>
         </tr>
-        ${rows.map((row) => this.rowHtml(row, group.key)).join("")}
+        ${rows.map((row, at) => this.rowHtml(row, group.key, at >= PAGE)).join("")}
+        ${this.showMoreHtml(bodyId, Math.min(PAGE, rows.length), rows.length)}
       </tbody>`;
   }
 
-  rowHtml(row, groupKey) {
+  // ==================== a group longer than a page ====================
+
+  // Under a group still holding rows back: one press for the next page, and,
+  // where that would take several presses, one for the whole group. The last
+  // press says how many are left rather than offering a page bigger than the
+  // remainder.
+  showMoreHtml(bodyId, shown, total) {
+    if (shown >= total) return "";
+    const left = total - shown;
+    const more = `
+      <button type="button" class="btn show-more" data-action="click->home#revealMore"
+              data-group-body="${bodyId}">${this.escape(this.translate("showMore25", "Show 25 more"))}</button>`;
+    const all = `
+      <button type="button" class="btn show-more" data-action="click->home#revealAll"
+              data-group-body="${bodyId}">${this.escape(
+        this.translate("showAll", "Show all {total}").replace("{total}", total))}</button>`;
+    const last = `
+      <button type="button" class="btn show-more" data-action="click->home#revealAll"
+              data-group-body="${bodyId}">${this.escape(
+        this.translate("showLast", "Show last {remaining} of {total}")
+          .replace("{remaining}", left).replace("{total}", total))}</button>`;
+
+    return `
+      <tr class="show-more-row">
+        <td colspan="6">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</td>
+      </tr>`;
+  }
+
+  revealMore(event) {
+    this.reveal(event.currentTarget.dataset.groupBody, PAGE);
+  }
+
+  revealAll(event) {
+    this.reveal(event.currentTarget.dataset.groupBody, Infinity);
+  }
+
+  // The rows are already on the page, held back by a class, so revealing them
+  // costs nothing and the row a reader was looking at does not move.
+  reveal(bodyId, howMany) {
+    const body = this.resultsTableTarget.querySelector(`#${bodyId}`);
+    if (!body) return;
+    const held = Array.from(body.querySelectorAll("tr.result-row.is-held"));
+    held.slice(0, howMany).forEach((row) => row.classList.remove("is-held"));
+
+    const total = body.querySelectorAll("tr.result-row").length;
+    const shown = total - body.querySelectorAll("tr.result-row.is-held").length;
+    const controls = body.querySelector("tr.show-more-row");
+    const next = this.showMoreHtml(bodyId, shown, total);
+    if (next) controls.outerHTML = next; else controls.remove();
+    window.LQ.refreshDynamicContent(body);
+  }
+
+  rowHtml(row, groupKey, held) {
     // In the lemma group the whole word is the searched term, so there is
     // nothing around it to mark.
     const markAffixes = groupKey !== "lemma";
@@ -767,7 +823,7 @@ class HomeController extends Stimulus.Controller {
       : this.translate("readingAuto", "Machine-generated reading");
 
     return `
-      <tr class="result-row" data-category="${row.category}">
+      <tr class="result-row${held ? " is-held" : ""}" data-category="${row.category}">
         <td class="result-zone" data-action="click->home#openEntry" data-zone-focus="result"
             data-zone-ottoman="${this.escape(row.resultOttoman)}"
             data-zone-latin="${this.escape(row.resultLatin)}"
@@ -882,6 +938,36 @@ class HomeController extends Stimulus.Controller {
   // take it apart.
   menuData(ottoman, latin) {
     return ` data-menu-ottoman="${this.escape(ottoman)}" data-menu-latin="${this.escape(latin)}"`;
+  }
+
+  // ==================== what a filter means ====================
+
+  // Pointing at a category, or reaching it by keyboard, explains it in the
+  // strip under the two columns. The name is read off the label rather than
+  // translated again, so it is already in the interface language; the English
+  // of the line itself sits on the label, since the strip is written here.
+  describeFilter(event) {
+    const label = event.target.closest("[data-filter-desc]");
+    if (!label) return;
+    const key = label.dataset.filterDesc;
+    const name = label.querySelector(".form-check-label").textContent.trim();
+    const strip = this.filterDescriptionTarget;
+    // The strip says something else now, so the sweep must not put the
+    // "hover a category" line back on the next change of language.
+    strip.removeAttribute("data-i18n");
+    strip.innerHTML =
+      `<span class="filter-desc-body"><b>${this.escape(name)}</b>` +
+      `<span class="filter-desc-text">${this.escape(this.translate(key, label.dataset.filterDescText))}</span></span>`;
+  }
+
+  forgetFilter(event) {
+    if (event.target.closest("[data-filter-desc]") === null) return;
+    // Moving between two parts of the same label is not leaving it.
+    const to = event.relatedTarget;
+    if (to && to.closest("[data-filter-desc]") === event.target.closest("[data-filter-desc]")) return;
+    const strip = this.filterDescriptionTarget;
+    strip.setAttribute("data-i18n", "filtersHover");
+    strip.textContent = this.translate("filtersHover", "Hover a category to see its description");
   }
 
   // A word can be a root with three things hung off it. The badge offers to

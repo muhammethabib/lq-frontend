@@ -81,8 +81,11 @@ class WordDecoderController extends Stimulus.Controller {
     });
   }
 
+  // A Bootstrap tooltip is not read out, so the same words are also the
+  // control's accessible name.
   setTooltip(element, text) {
     element.setAttribute("data-bs-title", text);
+    element.setAttribute("aria-label", text);
     const tooltip = bootstrap.Tooltip.getInstance(element);
     if (tooltip) tooltip.setContent({ ".tooltip-inner": text });
   }
@@ -106,7 +109,8 @@ class WordDecoderController extends Stimulus.Controller {
       <div class="slot">
         <div class="slot-frame">${this.cellHtml(char)}</div>
         <button type="button" class="btn slot-remove" data-action="click->word-decoder#removeSlot"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveSlot", "Remove this letter"))}">
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveSlot", "Remove this letter"))}"
+                aria-label="${this.escape(this.translate("decoderRemoveSlot", "Remove this letter"))}">
           <i data-feather="trash-2"></i>
         </button>
       </div>`;
@@ -116,11 +120,13 @@ class WordDecoderController extends Stimulus.Controller {
     return `
       <div class="slot-cell">
         <button type="button" class="btn cell-action cell-add" data-action="click->word-decoder#addAlternative"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderAddAlternative", "It could also be this letter"))}">
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderAddAlternative", "It could also be this letter"))}"
+                aria-label="${this.escape(this.translate("decoderAddAlternative", "It could also be this letter"))}">
           <i data-feather="plus"></i>
         </button>
         <button type="button" class="btn cell-action cell-remove" data-action="click->word-decoder#removeAlternative"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveAlternative", "Remove this alternative"))}">
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveAlternative", "Remove this alternative"))}"
+                aria-label="${this.escape(this.translate("decoderRemoveAlternative", "Remove this alternative"))}">
           <i data-feather="x"></i>
         </button>
         <input type="text" class="slot-input" maxlength="1" spellcheck="false" value="${this.escape(char)}"
@@ -135,7 +141,8 @@ class WordDecoderController extends Stimulus.Controller {
     return `
       <div class="gap">
         <button type="button" class="btn gap-insert" data-action="click->word-decoder#insertSlot"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}">+</button>
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}"
+                aria-label="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}">+</button>
         ${withJoin ? this.joinHtml() : ""}
       </div>`;
   }
@@ -145,7 +152,8 @@ class WordDecoderController extends Stimulus.Controller {
       <button type="button" class="btn gap-join" data-join="separate"
               data-action="pointerdown->word-decoder#cycleJoin"
               data-bs-toggle="tooltip" data-bs-placement="bottom"
-              data-bs-title="${this.escape(this.joinLabel("separate"))}">
+              data-bs-title="${this.escape(this.joinLabel("separate"))}"
+              aria-label="${this.escape(this.joinLabel("separate"))}">
         <span class="query" aria-hidden="true">?</span>
         <svg viewBox="0 0 60 40" width="34" height="17" aria-hidden="true">
           <rect class="ring ring-start" x="4" y="11" width="22" height="14" rx="7" ry="7"></rect>

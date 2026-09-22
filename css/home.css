@@ -1409,3 +1409,11 @@
 }
 
 .home-surface .analysis-badge svg { width: 12px; height: 12px; }
+
+/* The example inside a widening's tooltip, under the line that explains it. */
+.tooltip .expansion-example {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.85;
+}

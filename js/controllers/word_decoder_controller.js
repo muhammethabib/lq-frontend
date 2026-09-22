@@ -692,10 +692,38 @@ class WordDecoderController extends Stimulus.Controller {
         <button type="button" class="btn expansion-chip${expansion.key === this.activeExpansion ? " active" : ""}"
                 data-expansion="${this.escape(expansion.key)}"
                 aria-pressed="${expansion.key === this.activeExpansion}"
+                data-bs-toggle="tooltip" data-bs-html="true"
+                data-bs-title="${this.escape(this.expansionNote(expansion.key))}"
                 data-action="click->word-decoder#toggleExpansion">
           ${this.escape(labels[expansion.key] || expansion.key)}
           ${expansion.count ? `<span class="expansion-count">+${this.escape(expansion.count)}</span>` : ""}
         </button>`).join("");
+    // The chips are written here rather than in the page, so their tooltips
+    // and icons have to be started by hand.
+    window.LQ.refreshDynamicContent(this.expansionRowTarget);
+  }
+
+  // What each widening actually does, with an example of the letters it will
+  // treat as equal. A name like "Rika script" says nothing on its own.
+  expansionNote(key) {
+    const notes = {
+      pronunciation: {
+        what: ["expandPronunciationNote", "Expand with phonetically similar letters"],
+        like: ["expandPronunciationLike", "e.g. ث ≈ س, ت ≈ ط"]
+      },
+      rika: {
+        what: ["expandRikaNote", "Expand with letters that look alike in the Rika hand"],
+        like: ["expandRikaLike", "e.g. و ≈ د ≈ ر"]
+      },
+      divani: {
+        what: ["expandDivaniNote", "Expand with letters that look alike in the Divani hand"],
+        like: ["expandDivaniLike", "e.g. د ≈ و ≈ ا"]
+      }
+    };
+    const note = notes[key];
+    if (!note) return "";
+    return `${this.translate(note.what[0], note.what[1])}` +
+      `<span class="expansion-example">${this.translate(note.like[0], note.like[1])}</span>`;
   }
 
   // For a reader who has been through the candidates and recognised none of

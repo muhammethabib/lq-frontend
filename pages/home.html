@@ -625,7 +625,10 @@
           <div class="expand-row">
             <span class="spelling-label" data-i18n="expandLabel">Expand search</span>
             <button type="button" class="btn pronunciation-button" data-home-target="pronunciationButton"
-                    data-action="click->home#togglePronunciation" aria-pressed="false">
+                    data-action="click->home#togglePronunciation" aria-pressed="false"
+                    data-bs-toggle="tooltip" data-bs-html="true"
+                    title="Expand with phonetically similar letters&lt;span class=&quot;expansion-example&quot;&gt;e.g. &#1579; &#8776; &#1587;, &#1578; &#8776; &#1591;&lt;/span&gt;"
+                    data-i18n-title="expandPronunciationTip">
               <i data-feather="volume-2"></i>
               <span data-i18n="soundsLike">Similar Pronunciation</span>
               <span class="pronunciation-count" data-home-target="pronunciationCount">0</span>

@@ -106,6 +106,15 @@ window.LQ_TRANSLATIONS = {
     expandPronunciation: "Benzer okunuş",
     expandRika: "Rika yazısı",
     expandDivani: "Divani yazısı",
+    // The tooltip on the results page carries its example inside it, so the
+    // whole line is one string.
+    expandPronunciationTip: "Arama terimindeki harflere ses olarak benzer harflerle genişlet<span class=\"expansion-example\">Ör. ث ≈ س, ت ≈ ط</span>",
+    expandPronunciationNote: "Arama terimindeki harflere ses olarak benzer harflerle genişlet",
+    expandPronunciationLike: "Ör. ث ≈ س, ت ≈ ط",
+    expandRikaNote: "Arama terimindeki harflere Rika hattında şekil olarak benzer harflerle genişlet",
+    expandRikaLike: "Ör. و ≈ د ≈ ر",
+    expandDivaniNote: "Arama terimindeki harflere Divani hattında şekil olarak benzer harflerle genişlet",
+    expandDivaniLike: "Ör. د ≈ و ≈ ا",
 
     // --- on-screen keyboard ---
     keyboardLabel: "Osmanlıca klavye",

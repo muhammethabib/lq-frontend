@@ -1,0 +1,212 @@
+/* =========================================================
+   On-screen Ottoman keyboard
+   Everything here is scoped under .ottoman-keyboard. Shared brand
+   tokens live in css/base.css.
+   ========================================================= */
+
+.ottoman-keyboard {
+  --key-size: 46px;
+  --key-face: var(--lq-paper-soft);
+  --key-edge: var(--lq-line);
+  --key-hover: var(--lq-osm-bg);
+  --key-hover-edge: #fda4af;
+  --key-pressed: var(--lq-claret);
+  --special-face: var(--lq-lat-bg);
+  --special-edge: #93c5fd;
+  --wildcard-face: #f0fdf4;
+  --wildcard-edge: #86efac;
+  --wildcard-ink: #16a34a;
+
+  position: fixed;
+  z-index: 1080;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 14px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 16px;
+  background: var(--lq-paper);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, .18);
+}
+.ottoman-keyboard.is-open { display: flex; }
+
+/* ---------- top bar ---------- */
+
+.ottoman-keyboard .keyboard-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+.ottoman-keyboard .keyboard-bar-spacer { flex: 1; }
+
+.ottoman-keyboard .keyboard-clear {
+  height: 22px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #ea580c;
+  border-radius: 6px;
+  background: transparent;
+  color: #ea580c;
+  font-size: 11px;
+  font-weight: 700;
+}
+.ottoman-keyboard .keyboard-clear:hover { background: #fff7ed; }
+.ottoman-keyboard .keyboard-clear svg { width: 11px; height: 11px; }
+
+.ottoman-keyboard .keyboard-close,
+.ottoman-keyboard .keyboard-backspace {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 6px;
+  background: var(--lq-paper-soft);
+  color: #94a3b8;
+}
+.ottoman-keyboard .keyboard-close:hover,
+.ottoman-keyboard .keyboard-backspace:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
+.ottoman-keyboard .keyboard-close svg,
+.ottoman-keyboard .keyboard-backspace svg { width: 12px; height: 12px; }
+
+/* The two wildcards sit apart from the letters, because they say "I cannot
+   read this" rather than naming a letter. */
+.ottoman-keyboard .wildcard-key {
+  width: var(--key-size);
+  height: var(--key-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--wildcard-edge);
+  border-radius: 8px;
+  background: var(--wildcard-face);
+  color: var(--wildcard-ink);
+  font-size: 20px;
+  font-weight: 800;
+}
+.ottoman-keyboard .wildcard-key:hover { background: #dcfce7; border-color: #4ade80; }
+.ottoman-keyboard .wildcard-key:active { background: var(--wildcard-ink); color: #fff; transform: scale(.92); }
+
+/* ---------- panels ---------- */
+
+.ottoman-keyboard .keyboard-panel { display: none; flex-direction: column; gap: 5px; }
+.ottoman-keyboard .keyboard-panel.is-active { display: flex; }
+
+/* Rows read right to left, so the first key in the markup is the rightmost */
+.ottoman-keyboard .keyboard-row {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 100%;
+}
+.ottoman-keyboard .keyboard-row:last-child { justify-content: space-between; }
+
+/* ---------- keys ---------- */
+
+.ottoman-keyboard .key {
+  position: relative;
+  width: var(--key-size);
+  height: var(--key-size);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--key-edge);
+  border-radius: 8px;
+  background: var(--key-face);
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--lq-claret);
+  transition: background .12s, border-color .12s, transform .12s;
+}
+.ottoman-keyboard .key:hover { background: var(--key-hover); border-color: var(--key-hover-edge); }
+.ottoman-keyboard .key:active { background: var(--key-pressed); border-color: var(--key-pressed); color: #fff; transform: scale(.92); }
+
+/* A skeleton key: the shape without its dots, with an asterisk where the
+   dots would go. Picking it means "this shape, dots unclear". */
+.ottoman-keyboard .key[data-kind="rasm"] {
+  background: var(--special-face);
+  border-color: var(--special-edge);
+}
+.ottoman-keyboard .key[data-kind="rasm"]:hover { background: var(--lq-lat-border); }
+.ottoman-keyboard .key .dot-mark {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--lq-sapphire);
+}
+.ottoman-keyboard .key[data-dots="above"] .dot-mark { top: 6px; }
+.ottoman-keyboard .key[data-dots="below"] .dot-mark { bottom: 6px; }
+.ottoman-keyboard .key[data-dots="either"] .dot-mark { top: 6px; }
+.ottoman-keyboard .key[data-dots="either"] .dot-mark + .dot-mark { top: auto; bottom: 6px; }
+
+.ottoman-keyboard .key[data-kind="joiner"] {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  direction: ltr;
+  unicode-bidi: bidi-override;
+  background: var(--special-face);
+  border-color: var(--special-edge);
+}
+
+.ottoman-keyboard .panel-switch {
+  height: var(--key-size);
+  padding: 0 12px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--special-edge);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--lq-lat-bg) 0%, var(--lq-lat-border) 100%);
+  color: var(--lq-sapphire);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.ottoman-keyboard .panel-switch:hover { filter: brightness(.97); }
+.ottoman-keyboard .panel-switch svg { width: 14px; height: 14px; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1100px) {
+  .ottoman-keyboard { --key-size: 44px; padding: 12px 14px; }
+  .ottoman-keyboard .key { font-size: 20px; }
+}
+
+@media (max-width: 767px) {
+  /* Too narrow to float: the keyboard takes the bottom of the screen */
+  .ottoman-keyboard {
+    --key-size: 40px;
+    left: 0 !important;
+    right: 0;
+    top: auto !important;
+    bottom: 0;
+    width: auto;
+    max-width: none;
+    border-radius: 16px 16px 0 0;
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+  .ottoman-keyboard .keyboard-row { justify-content: center; }
+  .ottoman-keyboard .keyboard-row:last-child { justify-content: center; }
+  .ottoman-keyboard .key { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard * { transition: none !important; }
+}

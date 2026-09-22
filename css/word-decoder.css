@@ -1,0 +1,708 @@
+/* =========================================================
+   Word Decoder feature
+   Everything here is scoped under .word-decoder-surface. Shared
+   brand tokens live in css/base.css; the on-screen keyboard has
+   its own file.
+   ========================================================= */
+
+.word-decoder-surface {
+  --slot-height: 60px;
+  --slot-width: 48px;
+  --gap-width: 13px;
+  --slot-border: #ef4444;
+  --slot-hover: #fff1f2;
+  --gap-fill: #e2e8f0;
+  --gap-fill-hover: #cbd5e1;
+  --join-grey: #64748b;
+  --join-stroke: 4px;
+  --add-blue: var(--lq-sapphire);
+  --remove-red: #b91c1c;
+}
+
+/* ---------- the strip of letter slots ---------- */
+
+.word-decoder-surface .decoder-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* The strip reads right to left, so the first slot in the markup is the
+   rightmost on screen and the first letter of the word. Each slot and gap is
+   flipped back so its own controls stay where they are drawn. */
+.word-decoder-surface .slot-strip {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 10px;
+  direction: rtl;
+  min-width: 0;
+}
+.word-decoder-surface .slot-strip > * { direction: ltr; }
+
+/* ---------- one letter slot ---------- */
+
+.word-decoder-surface .slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.word-decoder-surface .slot-frame {
+  display: flex;
+  height: var(--slot-height);
+  border: 2px solid var(--slot-border);
+  border-radius: 6px;
+  background: var(--lq-paper);
+  overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+.word-decoder-surface .slot-frame:focus-within {
+  border-color: var(--lq-claret);
+  box-shadow: 0 0 0 4px rgba(157, 28, 81, .15);
+}
+
+/* One cell per candidate letter. A slot with two cells means "this position
+   is either of these two letters". */
+.word-decoder-surface .slot-cell {
+  position: relative;
+  width: var(--slot-width);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.word-decoder-surface .slot-cell:hover:not(:focus-within) { background: var(--slot-hover); }
+.word-decoder-surface .slot-cell:not(:last-child) { border-right: 2px dashed var(--lq-line); }
+
+.word-decoder-surface .slot-input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  text-align: center;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--lq-claret);
+  cursor: inherit;
+}
+
+/* A wildcard or a bare skeleton is drawn over the field, which stays empty so
+   the caret still shows and typing replaces it. */
+.word-decoder-surface .slot-mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--lq-claret);
+}
+.word-decoder-surface .slot-mark[data-wildcard="any"],
+.word-decoder-surface .slot-mark[data-wildcard="many"] {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 22px;
+}
+
+/* The asterisk on a skeleton key sits where the missing dots would be */
+.word-decoder-surface .slot-mark .dot-mark {
+  position: absolute;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--lq-sapphire);
+}
+.word-decoder-surface .slot-mark[data-dots="above"] .dot-mark { top: 8px; }
+.word-decoder-surface .slot-mark[data-dots="below"] .dot-mark { bottom: 8px; }
+.word-decoder-surface .slot-mark[data-dots="either"] .dot-mark { top: 8px; }
+.word-decoder-surface .slot-mark[data-dots="either"] .dot-mark + .dot-mark { top: auto; bottom: 8px; }
+
+/* ---------- per-slot controls ---------- */
+
+.word-decoder-surface .cell-action {
+  position: absolute;
+  top: -1px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 3;
+}
+.word-decoder-surface .slot-cell:hover .cell-action,
+.word-decoder-surface .cell-action:focus-visible { opacity: 1; }
+
+.word-decoder-surface .cell-add { left: -1px; }
+.word-decoder-surface .cell-remove { right: -1px; }
+.word-decoder-surface .cell-action svg {
+  width: 14px;
+  height: 14px;
+  padding: 3px;
+  color: #fff;
+}
+.word-decoder-surface .cell-add svg { background: var(--add-blue); border-radius: 3px; }
+.word-decoder-surface .cell-remove svg { background: var(--remove-red); border-radius: 50%; }
+/* Nothing to remove while the slot holds a single letter */
+.word-decoder-surface .slot-frame:not(:has(.slot-cell + .slot-cell)) .cell-remove { display: none; }
+
+.word-decoder-surface .slot-remove {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 4;
+}
+.word-decoder-surface .slot:hover .slot-remove,
+.word-decoder-surface .slot-remove:focus-visible { opacity: 1; pointer-events: auto; }
+.word-decoder-surface .slot-remove svg {
+  width: 16px;
+  height: 16px;
+  padding: 3px;
+  background: var(--remove-red);
+  border-radius: 4px;
+  color: #fff;
+}
+
+/* ---------- the gap between two slots ---------- */
+
+.word-decoder-surface .gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--gap-width);
+}
+
+.word-decoder-surface .gap-insert {
+  width: var(--gap-width);
+  height: var(--slot-height);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 3px;
+  background: var(--gap-fill);
+  color: #94a3b8;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+  transition: background .2s;
+}
+.word-decoder-surface .gap-insert:hover { background: var(--gap-fill-hover); color: var(--lq-sapphire); }
+
+/* The join marker says whether the two neighbouring letters are written
+   joined, apart, or the reader cannot tell. Two rings and a connecting line. */
+.word-decoder-surface .gap-join {
+  width: var(--gap-width);
+  height: 17px;
+  margin-top: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.word-decoder-surface .gap-join svg { overflow: visible; }
+.word-decoder-surface .gap-join .ring {
+  fill: none;
+  stroke: var(--join-grey);
+  stroke-width: var(--join-stroke);
+  transition: transform .4s cubic-bezier(.4, 0, .2, 1), stroke .4s;
+}
+.word-decoder-surface .gap-join .bar {
+  fill: none;
+  stroke: var(--lq-sapphire);
+  stroke-width: var(--join-stroke);
+  stroke-linecap: round;
+  opacity: 0;
+  transform: scaleX(.1);
+  transform-origin: center;
+  transition: opacity .3s, transform .3s;
+}
+.word-decoder-surface .gap-join .query {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--lq-sapphire);
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: opacity .3s, transform .3s;
+  pointer-events: none;
+}
+
+.word-decoder-surface .gap-join[data-join="connected"] .ring-start { transform: translateX(3px); stroke: var(--lq-sapphire); }
+.word-decoder-surface .gap-join[data-join="connected"] .ring-end { transform: translateX(-3px); stroke: var(--lq-sapphire); }
+.word-decoder-surface .gap-join[data-join="connected"] .bar { opacity: 1; transform: scaleX(.7); }
+
+.word-decoder-surface .gap-join[data-join="uncertain"] .ring-start { transform: translateX(-2px); }
+.word-decoder-surface .gap-join[data-join="uncertain"] .ring-end { transform: translateX(2px); }
+.word-decoder-surface .gap-join[data-join="uncertain"] .query { opacity: 1; transform: translateY(-2px); }
+
+/* ---------- row buttons ---------- */
+
+.word-decoder-surface .decoder-clear {
+  height: 34px;
+  margin-top: 13px;
+  padding: 0 16px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid #ea580c;
+  border-radius: 8px;
+  background: transparent;
+  color: #ea580c;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.word-decoder-surface .decoder-clear:hover { background: #fff7ed; border-color: #c2410c; color: #c2410c; }
+.word-decoder-surface .decoder-clear svg { width: 13px; height: 13px; }
+/* Only offered once there is something to clear */
+.word-decoder-surface .decoder-clear[hidden] { display: none; }
+
+.word-decoder-surface .decoder-submit {
+  height: 52px;
+  width: 88px;
+  margin-top: 2px;
+  flex: none;
+  border: 0;
+  border-radius: 10px;
+  background: var(--lq-claret);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  box-shadow: 0 4px 6px rgba(131, 24, 67, .15);
+  transition: background .2s, transform .2s;
+}
+.word-decoder-surface .decoder-submit:hover { background: var(--lq-claret-hover); transform: translateY(-2px); }
+.word-decoder-surface .decoder-submit:active { transform: scale(.98); }
+
+.word-decoder-surface .decoder-hint {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--lq-muted);
+}
+
+/* =========================================================
+   Decoder results
+   ========================================================= */
+
+.word-decoder-surface .decoder-results {
+  width: min(100% - 48px, 1300px);
+  margin: 32px auto 0;
+  background: var(--lq-paper);
+  border: 1px solid var(--lq-line);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
+  overflow: hidden;
+}
+.word-decoder-surface .results-accent { height: 4px; background: var(--lq-red); }
+
+.word-decoder-surface .decoder-results-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 40px 16px;
+}
+.word-decoder-surface .results-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+/* The pattern is shown slot by slot rather than as a string, so the reader
+   recognises the shape they entered. */
+.word-decoder-surface .pattern-pill {
+  display: inline-flex;
+  align-items: center;
+  direction: rtl;
+  gap: 2px;
+  padding: 3px 15px 6px;
+  border: 1.5px solid var(--lq-osm-border);
+  border-radius: 999px;
+  background: #fff8f9;
+}
+.word-decoder-surface .pattern-slot {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--lq-claret);
+  line-height: 1.3;
+}
+.word-decoder-surface .pattern-slot[data-kind="any"],
+.word-decoder-surface .pattern-slot[data-kind="many"] {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-size: 26px;
+  color: var(--lq-claret);
+}
+/* Alternatives for one position are stacked behind a slash */
+.word-decoder-surface .pattern-slot[data-kind="alternatives"] { font-size: 26px; }
+
+.word-decoder-surface .decoder-stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin-top: 8px;
+}
+.word-decoder-surface .decoder-stats {
+  display: flex;
+  gap: 12px;
+  border-left: 3px solid var(--lq-red);
+  padding-left: 12px;
+}
+.word-decoder-surface .decoder-stats p { margin: 0; font-size: 11px; text-transform: uppercase; color: #64748b; }
+.word-decoder-surface .decoder-stats b { font-size: 13px; color: var(--lq-ink); font-variant-numeric: tabular-nums; }
+
+/* ---------- expansion chips ---------- */
+
+.word-decoder-surface .expansion-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 5px 8px 5px 20px;
+  border: 1px solid var(--lq-line);
+  border-radius: 99px;
+  background: var(--lq-paper-soft);
+}
+.word-decoder-surface .expansion-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.word-decoder-surface .expansion-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 20px;
+  background: var(--lq-paper);
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+.word-decoder-surface .expansion-chip:hover:not(.active) { background: var(--lq-lat-border); color: var(--lq-ink); }
+.word-decoder-surface .expansion-chip.active {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+}
+.word-decoder-surface .expansion-count {
+  min-width: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--lq-line);
+  color: #475569;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.word-decoder-surface .expansion-chip.active .expansion-count { background: rgba(255, 255, 255, .22); color: #fff; }
+
+/* ---------- candidate table ---------- */
+
+/* Same table shape as the search page, with one extra level: a candidate
+   reading can be backed by several records, and those sit behind a summary
+   row rather than repeating the reading down the page. */
+.word-decoder-surface .results-table-scroll { overflow-x: auto; }
+.word-decoder-surface .results-table { margin: 0; --bs-table-bg: transparent; min-width: 880px; }
+
+.word-decoder-surface .results-table > thead th {
+  background: var(--lq-paper-soft);
+  border-top: 1px solid var(--lq-line);
+  border-bottom: 1px solid var(--lq-line);
+  padding: 10px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #566478;
+  white-space: nowrap;
+}
+.word-decoder-surface .results-table > thead th.col-result { background: var(--lq-lat-bg); padding-left: 40px; }
+.word-decoder-surface .results-table > thead th.col-category { width: 120px; text-align: center; }
+.word-decoder-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); text-align: center; }
+.word-decoder-surface .results-table > thead th.col-dictionary { text-align: right; }
+
+.word-decoder-surface .group-header th {
+  background: var(--lq-paper);
+  border-bottom: 0;
+  padding: 20px 40px 8px;
+}
+.word-decoder-surface .group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-left: -10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+.word-decoder-surface .group-toggle:hover { background: var(--lq-lat-bg); }
+.word-decoder-surface .group-chevron {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--lq-body-bg);
+  color: var(--lq-sapphire);
+  transition: transform .3s;
+}
+.word-decoder-surface .group-toggle[aria-expanded="false"] .group-chevron { transform: rotate(-90deg); }
+.word-decoder-surface .group-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--lq-sapphire);
+}
+.word-decoder-surface .group-count {
+  background: var(--lq-line);
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.word-decoder-surface .result-group.is-collapsed .candidate-header,
+.word-decoder-surface .result-group.is-collapsed .result-row { display: none; }
+
+/* A candidate summary: the reading, and how much evidence stands behind it */
+.word-decoder-surface .candidate-header > th {
+  background: #fdf7fa;
+  border-bottom: 1px solid #f6eaf0;
+  border-left: 4px solid var(--lq-claret);
+  padding: 0;
+}
+.word-decoder-surface .candidate-toggle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 40px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+.word-decoder-surface .candidate-toggle:hover { background: #faeff5; }
+.word-decoder-surface .candidate-header.is-open > th { background: #f7e8f0; }
+
+.word-decoder-surface .candidate-chevron {
+  width: 21px;
+  height: 27px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #edcfdd;
+  border-radius: 7px;
+  background: #f7e3ec;
+  color: var(--lq-claret);
+  transition: transform .25s, background .2s, color .2s;
+}
+.word-decoder-surface .candidate-header.is-open .candidate-chevron {
+  transform: rotate(180deg);
+  background: var(--lq-claret);
+  border-color: var(--lq-claret);
+  color: #fff;
+}
+
+.word-decoder-surface .candidate-meta {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: #475569;
+  white-space: nowrap;
+}
+.word-decoder-surface .candidate-meta b { color: var(--lq-ink); font-variant-numeric: tabular-nums; }
+
+/* A record belonging to an open candidate is indented and set slightly
+   smaller, so the reading above stays the heading. */
+.word-decoder-surface .result-row.is-nested[hidden] { display: none; }
+.word-decoder-surface .result-row.is-nested > td { background: var(--lq-paper-soft); }
+.word-decoder-surface .result-row.is-nested > td:first-child { padding-left: 70px; }
+.word-decoder-surface .result-row.is-nested .ottoman-box { font-size: 20px; }
+.word-decoder-surface .result-row.is-nested .latin-box { font-size: 13px; }
+
+.word-decoder-surface .result-row > td {
+  background: var(--lq-paper);
+  border-bottom: 1px solid var(--lq-body-bg);
+  padding: 14px 8px;
+  vertical-align: middle;
+}
+.word-decoder-surface .result-row > td:first-child { padding-left: 40px; border-left: 4px solid transparent; }
+.word-decoder-surface .result-row[data-category="ENTRY"] > td:first-child { border-left-color: #0d9488; }
+.word-decoder-surface .result-row[data-category="SUBENTRY"] > td:first-child { border-left-color: #d97706; }
+.word-decoder-surface .result-row[data-category="RELATED"] > td:first-child { border-left-color: #2563eb; }
+
+.word-decoder-surface .word-pair { display: flex; align-items: center; gap: 4%; width: 100%; max-width: 400px; margin-right: auto; }
+.word-decoder-surface .word-pair .word-ottoman { flex: 0 1 48%; display: flex; justify-content: flex-end; }
+.word-decoder-surface .word-pair .word-latin { flex: 0 1 48%; display: flex; justify-content: flex-start; }
+
+.word-decoder-surface .word-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  max-width: 100%;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+.word-decoder-surface .ottoman-box {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 22px;
+  line-height: 1.8;
+  padding-bottom: 12px;
+  color: var(--lq-red);
+  background: var(--lq-osm-bg);
+  border-color: var(--lq-osm-border);
+}
+.word-decoder-surface .latin-box {
+  font-size: 15px;
+  color: var(--lq-ink);
+  background: var(--lq-paper-soft);
+  border-color: var(--lq-line);
+}
+
+.word-decoder-surface .category-badge {
+  display: inline-block;
+  min-width: 96px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+.word-decoder-surface .result-row[data-category="ENTRY"] .category-badge { color: var(--lq-entry-text); background: rgba(20, 184, 166, .12); border-color: var(--lq-entry-border); }
+.word-decoder-surface .result-row[data-category="SUBENTRY"] .category-badge { color: var(--lq-sub-text); background: rgba(251, 191, 36, .12); border-color: var(--lq-sub-border); }
+.word-decoder-surface .result-row[data-category="RELATED"] .category-badge { color: var(--lq-related-text); background: rgba(30, 58, 138, .12); border-color: var(--lq-related-border); }
+
+.word-decoder-surface .headword-cell .word-pair { margin-inline: auto; }
+.word-decoder-surface .headword-cell .word-box { background: transparent; border-color: transparent; min-width: 82px; }
+.word-decoder-surface .headword-cell .latin-box { font-size: 14.5px; color: #475569; }
+
+.word-decoder-surface .dictionary-cell { text-align: right; max-width: 22ch; }
+.word-decoder-surface .dictionary-name { font-size: 13px; font-weight: 700; color: var(--lq-ink); line-height: 1.3; overflow-wrap: break-word; }
+.word-decoder-surface .dictionary-page {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.word-decoder-surface .row-arrow { color: #94a3b8; opacity: .35; }
+
+/* A section with nothing in it says so instead of disappearing */
+.word-decoder-surface .group-empty td {
+  padding: 18px 40px;
+  border-bottom: 0;
+  background: var(--lq-paper);
+}
+.word-decoder-surface .group-empty span {
+  display: block;
+  padding: 18px;
+  border: 1px dashed var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-paper-soft);
+  color: #94a3b8;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .word-decoder-surface .decoder-results-header { padding: 20px 20px 12px; }
+  .word-decoder-surface .group-header th { padding: 16px 20px 8px; }
+  .word-decoder-surface .candidate-toggle { padding: 12px 20px; }
+  .word-decoder-surface .results-table > thead th.col-result,
+  .word-decoder-surface .result-row > td:first-child { padding-left: 20px; }
+  .word-decoder-surface .result-row.is-nested > td:first-child { padding-left: 44px; }
+}
+
+@media (max-width: 767px) {
+  .word-decoder-surface {
+    --slot-height: 52px;
+    --slot-width: 42px;
+  }
+  .word-decoder-surface .slot-input { font-size: 21px; }
+  .word-decoder-surface .decoder-row { flex-wrap: wrap; justify-content: center; }
+  /* The strip takes its own row so it does not fight the buttons for width */
+  .word-decoder-surface .slot-strip { flex: 1 0 100%; order: -1; }
+  .word-decoder-surface .pattern-slot { font-size: 28px; }
+  .word-decoder-surface .word-pair { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .word-decoder-surface .word-pair .word-ottoman,
+  .word-decoder-surface .word-pair .word-latin { flex: none; justify-content: flex-start; }
+  .word-decoder-surface .candidate-toggle { flex-wrap: wrap; gap: 10px; }
+  .word-decoder-surface .candidate-meta { margin-left: 0; flex: 1 0 100%; }
+}
+
+@media (max-width: 560px) {
+  .word-decoder-surface { --slot-width: 38px; }
+  .word-decoder-surface .decoder-results { width: 100%; border-radius: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-decoder-surface * { transition: none !important; animation: none !important; }
+}

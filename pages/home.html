@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/home.css">
+  <link rel="stylesheet" href="../css/word-decoder.css">
+  <link rel="stylesheet" href="../css/ottoman-keyboard.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -22,9 +24,13 @@
   <!-- Data files load before the controllers that read them -->
   <script src="../js/translations.js" defer></script>
   <script src="../js/sample_data.js" defer></script>
+  <script src="../js/decoder_sample_data.js" defer></script>
+  <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/app.js" defer></script>
   <script src="../js/controllers/language_controller.js" defer></script>
   <script src="../js/controllers/home_controller.js" defer></script>
+  <script src="../js/controllers/word_decoder_controller.js" defer></script>
+  <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
 </head>
 <body>
 
@@ -227,10 +233,88 @@
     <!-- Word Decoder: the letter-box engine is its own feature and is not
          rebuilt yet, so this pane states that rather than faking it. -->
     <div class="tab-pane fade" id="decoderPane" role="tabpanel" aria-labelledby="decoderTab" tabindex="0">
-      <div class="search-card text-center">
-        <p class="mb-1 fw-semibold" data-i18n="decoderSoon">The Word Decoder is being rebuilt as its own feature.</p>
-        <p class="mb-0 small text-secondary" data-i18n="decoderSoonNote">
-          It lets you search a word whose letters you cannot fully read, using a wildcard for each unknown letter.
+
+      <!-- The decoder is its own feature: describe a word you cannot fully
+           read, and see which dictionary entries fit the description. -->
+      <div class="word-decoder-surface" data-controller="word-decoder"
+           data-word-decoder-endpoint-value="/word_decoder/results">
+
+        <div class="search-card">
+          <div class="decoder-row">
+            <button type="button" class="btn decoder-clear" data-word-decoder-target="clear" hidden
+                    data-action="click->word-decoder#clearStrip">
+              <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
+            </button>
+
+            <!-- One slot per letter position, read right to left. Filled by
+                 the controller so a slot can be added or split as you work. -->
+            <div class="slot-strip" data-word-decoder-target="strip"
+                 role="group" aria-label="Letters" data-i18n-aria="decoderLetters"></div>
+
+            <button type="button" class="btn decoder-submit"
+                    data-action="click->word-decoder#submit" data-i18n="btnSearch">Search</button>
+          </div>
+
+          <p class="decoder-hint" data-i18n="decoderHint">
+            Type the letters you can read, and leave a wildcard for the ones you cannot.
+            The ring between two letters records whether they are written joined.
+          </p>
+        </div>
+
+        <!-- Result-group names, kept in the markup so the English text sits
+             with the page and the language sweep translates it. -->
+        <div hidden data-word-decoder-target="groupCopy">
+          <span data-group="lemma" data-i18n="groupLemma">Lemma</span>
+          <span data-group="inflected" data-i18n="groupInflected">Inflected Forms</span>
+          <span data-group="lexicalizedInflected" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
+          <span data-group="derived" data-i18n="groupDerived">Derived Forms</span>
+          <span data-group="phrases" data-i18n="groupPhrases">Phrases</span>
+          <span data-group="compounds" data-i18n="groupCompounds">Compounds</span>
+          <span data-group="partial" data-i18n="groupPartial">Similar Spellings</span>
+        </div>
+
+        <section class="decoder-results" data-word-decoder-target="results" hidden
+                 aria-labelledby="decoderResultsHeading">
+          <div class="results-accent"></div>
+
+          <div class="decoder-results-header">
+            <span class="results-label" id="decoderResultsHeading" data-i18n="searchResultsLabel">Search Results</span>
+            <div class="pattern-pill" data-word-decoder-target="pattern"></div>
+
+            <div class="decoder-stats-row">
+              <div>
+                <span class="results-label" data-i18n="basedOnClues">Based on clues</span>
+                <div class="decoder-stats mt-1">
+                  <div>
+                    <p><b data-word-decoder-target="recordCount">0</b> <span data-i18n="recordsFound">Records Found.</span></p>
+                    <p><b data-word-decoder-target="dictionaryCount">0</b> <span data-i18n="dictsScanned">Dictionaries (17 Volumes) Scanned.</span></p>
+                  </div>
+                </div>
+              </div>
+              <!-- Offers to widen the match; the count is how many rows each would add -->
+              <div class="expansion-row" data-word-decoder-target="expansionRow"></div>
+            </div>
+          </div>
+
+          <div class="results-table-scroll">
+            <table class="table results-table align-middle" data-word-decoder-target="resultsTable">
+              <thead>
+                <tr>
+                  <th scope="col" class="col-result" data-i18n="colCandidate">Candidate reading</th>
+                  <th scope="col" class="col-category" data-i18n="colCategory">Category</th>
+                  <th scope="col" class="col-arrow"><span class="visually-hidden" data-i18n="colLeadsTo">Leads to</span></th>
+                  <th scope="col" class="col-headword" data-i18n="colEntry">Headword</th>
+                  <th scope="col" class="col-dictionary" data-i18n="colDict">Dictionary</th>
+                  <th scope="col" class="col-actions"><span class="visually-hidden" data-i18n="colActions">Actions</span></th>
+                </tr>
+              </thead>
+              <!-- One tbody per result group, written by the controller -->
+            </table>
+          </div>
+        </section>
+
+        <p class="decoder-hint" data-word-decoder-target="emptyState" data-i18n="decoderEmptyState">
+          Describe the word above and press Search.
         </p>
       </div>
     </div>
@@ -539,9 +623,68 @@
           </div>
         </form>
       </div>
+
+    <!-- ============================== results ============================== -->
+    <section class="results-surface" data-home-target="resultsSurface" hidden
+             aria-labelledby="resultsHeading">
+      <div class="results-accent" data-home-target="resultsAccent" data-script="ottoman"></div>
+
+      <div class="results-header">
+        <div class="results-header-main">
+          <span class="results-label" id="resultsHeading" data-i18n="searchResultsLabel">Search Results</span>
+          <p class="results-term" data-home-target="resultsTerm" data-direction="rtl" data-script="ottoman"></p>
+          <div class="results-stats">
+            <div>
+              <p><b data-home-target="recordCount">0</b> <span data-i18n="recordsFound">Records Found.</span></p>
+              <p><b data-home-target="dictionaryCount">0</b> <span data-i18n="dictsScanned">Dictionaries (17 Volumes) Scanned.</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-header-side">
+          <span class="spelling-label" data-i18n="spellingLabel">Search by spelling</span>
+          <!-- Alternative spellings of the same term; picking one re-highlights
+               the rows against it. -->
+          <div class="spelling-row" data-home-target="spellingRow"></div>
+
+          <div class="expand-row">
+            <span class="spelling-label" data-i18n="expandLabel">Expand search</span>
+            <button type="button" class="btn pronunciation-button" data-home-target="pronunciationButton"
+                    data-action="click->home#togglePronunciation" aria-pressed="false">
+              <i data-feather="volume-2"></i>
+              <span data-i18n="soundsLike">Similar Pronunciation</span>
+              <span class="pronunciation-count" data-home-target="pronunciationCount">0</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-table-scroll">
+        <table class="table results-table align-middle" data-home-target="resultsTable">
+          <thead>
+            <tr>
+              <th scope="col" class="col-result" data-i18n="colResult">Result</th>
+              <th scope="col" class="col-category" data-i18n="colCategory">Category</th>
+              <th scope="col" class="col-arrow"><span class="visually-hidden" data-i18n="colLeadsTo">Leads to</span></th>
+              <th scope="col" class="col-headword" data-i18n="colEntry">Headword</th>
+              <th scope="col" class="col-dictionary" data-i18n="colDict">Dictionary</th>
+              <th scope="col" class="col-actions"><span class="visually-hidden" data-i18n="colActions">Actions</span></th>
+            </tr>
+          </thead>
+          <!-- One tbody per result group, written by the controller -->
+        </table>
+      </div>
+
+      <p class="results-empty" data-home-target="noMatches" hidden data-i18n="noResults">No results found.</p>
+    </section>
+
+      <p class="results-empty" data-home-target="emptyState" data-i18n="emptyState">
+        Type a word and press Search.
+      </p>
     </div>
   </div>
 
+  <!-- A page-level action, offered under either tab -->
   <div class="text-center mt-4">
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
   </div>
@@ -587,63 +730,44 @@
     </div>
   </div>
 
-  <!-- ============================== results ============================== -->
-  <section class="results-surface" data-home-target="resultsSurface" hidden
-           aria-labelledby="resultsHeading">
-    <div class="results-accent" data-home-target="resultsAccent" data-script="ottoman"></div>
 
-    <div class="results-header">
-      <div class="results-header-main">
-        <span class="results-label" id="resultsHeading" data-i18n="searchResultsLabel">Search Results</span>
-        <p class="results-term" data-home-target="resultsTerm" data-direction="rtl" data-script="ottoman"></p>
-        <div class="results-stats">
-          <div>
-            <p><b data-home-target="recordCount">0</b> <span data-i18n="recordsFound">Records Found.</span></p>
-            <p><b data-home-target="dictionaryCount">0</b> <span data-i18n="dictsScanned">Dictionaries (17 Volumes) Scanned.</span></p>
-          </div>
-        </div>
-      </div>
+  <!-- On-screen Ottoman keyboard. It types into whichever field asked for it,
+       so it lives beside the features rather than inside one. -->
+  <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
+       role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
+    <div class="keyboard-bar">
+      <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear" hidden
+              data-action="pointerdown->ottoman-keyboard#clearAll">
+        <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
+      </button>
+      <span class="keyboard-bar-spacer"></span>
 
-      <div class="results-header-side">
-        <span class="spelling-label" data-i18n="spellingLabel">Search by spelling</span>
-        <!-- Alternative spellings of the same term; picking one re-highlights
-             the rows against it. -->
-        <div class="spelling-row" data-home-target="spellingRow"></div>
+      <button type="button" class="btn wildcard-key" data-wildcard="any"
+              data-action="pointerdown->ottoman-keyboard#pressWildcard"
+              data-bs-toggle="tooltip" data-i18n-title="wildcardAny" title="A letter I cannot read">٭</button>
+      <button type="button" class="btn wildcard-key" data-wildcard="many"
+              data-action="pointerdown->ottoman-keyboard#pressWildcard"
+              data-bs-toggle="tooltip" data-i18n-title="wildcardMany" title="An unknown number of letters">&infin;</button>
 
-        <div class="expand-row">
-          <span class="spelling-label" data-i18n="expandLabel">Expand search</span>
-          <button type="button" class="btn pronunciation-button" data-home-target="pronunciationButton"
-                  data-action="click->home#togglePronunciation" aria-pressed="false">
-            <i data-feather="volume-2"></i>
-            <span data-i18n="soundsLike">Similar Pronunciation</span>
-            <span class="pronunciation-count" data-home-target="pronunciationCount">0</span>
-          </button>
-        </div>
-      </div>
+      <span class="keyboard-bar-spacer"></span>
+      <button type="button" class="btn keyboard-backspace"
+              data-action="pointerdown->ottoman-keyboard#backspace"
+              data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete letter"
+              aria-label="Delete letter" data-i18n-aria="keyboardBackspace">
+        <i data-feather="delete"></i>
+      </button>
+      <button type="button" class="btn keyboard-close"
+              data-action="pointerdown->ottoman-keyboard#close"
+              data-bs-toggle="tooltip" data-i18n-title="keyboardClose" title="Close"
+              aria-label="Close" data-i18n-aria="keyboardClose">
+        <i data-feather="x"></i>
+      </button>
     </div>
 
-    <div class="results-table-scroll">
-      <table class="table results-table align-middle" data-home-target="resultsTable">
-        <thead>
-          <tr>
-            <th scope="col" class="col-result" data-i18n="colResult">Result</th>
-            <th scope="col" class="col-category" data-i18n="colCategory">Category</th>
-            <th scope="col" class="col-arrow"><span class="visually-hidden" data-i18n="colLeadsTo">Leads to</span></th>
-            <th scope="col" class="col-headword" data-i18n="colEntry">Headword</th>
-            <th scope="col" class="col-dictionary" data-i18n="colDict">Dictionary</th>
-            <th scope="col" class="col-actions"><span class="visually-hidden" data-i18n="colActions">Actions</span></th>
-          </tr>
-        </thead>
-        <!-- One tbody per result group, written by the controller -->
-      </table>
-    </div>
-
-    <p class="results-empty" data-home-target="noMatches" hidden data-i18n="noResults">No results found.</p>
-  </section>
-
-  <p class="results-empty" data-home-target="emptyState" data-i18n="emptyState">
-    Type a word and press Search.
-  </p>
+    <!-- Both panels are written by the controller from js/keyboard_layout.js -->
+    <div class="keyboard-panel is-active" data-ottoman-keyboard-target="basicPanel"></div>
+    <div class="keyboard-panel" data-ottoman-keyboard-target="advancedPanel"></div>
+  </div>
 
 </div>
 

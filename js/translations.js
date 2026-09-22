@@ -1170,6 +1170,31 @@ window.LQ_TRANSLATIONS = {
     storyT102: "23 Ocak 2020",
     storyT103: "Kaynakça",
     storyNotes: "Notlar",
-    storyT104: "A.g.e.<a href=\"#fnref2\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a>"
+    storyT104: "A.g.e.<a href=\"#fnref2\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a>",
+
+    // --- Development navigator ---
+    devNavigator: "Sayfalar",
+    devMainPage: "Ana sayfa",
+    devPages: "Sayfalar",
+    devWindows: "Pencereler",
+    devLanding: "Ana sayfa",
+    devResults: "Arama sonuçları",
+    devNoResults: "Sonuç yok",
+    devDecoder: "Kelime Çözücü",
+    devDecoderResults: "Çözücü sonuçları",
+    devSuggestions: "Öneri geçmişi",
+    devCitation: "Künye",
+    devDictionaryPage: "Sözlük sayfası",
+    devSignUp: "Kaydol",
+
+    // --- Development navigator, labels ---
+    devInstitutional: "Kurumsal",
+    devWhatIs: "LexiQamus Nedir?",
+    devLexicon: "Lexicon projesi",
+
+    // --- Development navigator, versions ---
+    devV3WhatsNew: "3.0 Yenilikleri",
+    devV2WhatsNew: "2.0 Yenilikleri",
+    devDataModel: "Veri modeli"
   }
 };

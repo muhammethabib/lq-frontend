@@ -29,6 +29,7 @@ index.html                            forwards to the first page
 pages/<feature>.html                  one HTML page per feature
 css/base.css                          brand tokens, fonts, shared chrome (menu, language switch)
 css/account-window.css                the sign in / sign up window, on every page
+css/dev-nav.css                       the development navigator (comes out at integration)
 css/page.css                          the reading layout every content page shares, under .page-surface
 css/<feature>.css                     one CSS file per feature, scoped under .<feature>-surface
                                       (a modal is scoped under its own .<name>-modal)
@@ -44,6 +45,7 @@ js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
 js/sample_data.js                     stand-in for the search endpoint
 js/decoder_sample_data.js             stand-in for the decoder endpoint
 js/dictionary_page_sample.js          stand-in for the dictionary page endpoint
+js/dev_pages.js                       what the development navigator lists
 assets/                               logo and static images
 vendor/                               local copies of Bootstrap, jQuery, Stimulus, Feather
 docs/                                 the dev team's instructions and review prompt
@@ -74,6 +76,17 @@ docs/                                 the dev team's instructions and review pro
 Every menu entry leads to a page, and every action on a result row does
 something: the two click zones open the scan the record came from, Cite
 opens the reference window, and the side menu opens the account window.
+
+## Moving around the mock
+
+The panel in the bottom left corner opens any page or state directly: the
+main page's landing, results, no-results and decoder states, every content
+page, and each of the three windows. It is a reviewing aid rather than part
+of the interface, so it comes out at integration: delete `css/dev-nav.css`,
+`js/dev_pages.js`, `js/controllers/dev_nav_controller.js`, the `.dev-nav`
+element in `js/page_chrome.js`, their four lines in each page's head, and
+`openRequestedState` in the two controllers on the main page. Nothing else
+refers to any of it.
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list

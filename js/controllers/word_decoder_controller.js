@@ -53,6 +53,30 @@ class WordDecoderController extends Stimulus.Controller {
       this.renderResults();
     };
     document.addEventListener("language:changed", this.onLanguageChange);
+
+    this.openRequestedState();
+  }
+
+  // The development navigator opens a state of this tab directly. It fills
+  // the strip with the guide's worked example, ح ا ٭ ر, because a decoder
+  // with nothing in it has nothing to show. A reviewing aid, and it comes out
+  // with the navigator at integration.
+  openRequestedState() {
+    const state = new URLSearchParams(window.location.search).get("state");
+    if (state !== "decoder" && state !== "decoder-results") return;
+
+    const tab = document.getElementById("decoderTab");
+    if (tab) bootstrap.Tab.getOrCreateInstance(tab).show();
+    if (state !== "decoder-results") return;
+
+    const cells = Array.from(this.stripTarget.querySelectorAll(".slot-cell"));
+    [{ char: "ح" }, { char: "ا" }, { wildcard: "any" }, { char: "ر" }]
+      .forEach((content, index) => {
+        if (cells[index]) this.writeCell(cells[index], content);
+      });
+    this.refreshClear();
+    const search = this.element.querySelector(".decoder-submit");
+    if (search) search.click();
   }
 
   disconnect() {

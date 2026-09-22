@@ -40,6 +40,43 @@ class HomeController extends Stimulus.Controller {
     // new tab, so the reader keeps one page.
     this.onSearchRequest = (event) => this.runSearch(event.detail);
     document.addEventListener("search:run", this.onSearchRequest);
+
+    this.openRequestedState();
+  }
+
+  // The development navigator opens a state of this page directly, so the
+  // reviewer does not have to search to see it. Reads ?state= once, on load;
+  // it is a reviewing aid and comes out with the navigator at integration.
+  openRequestedState() {
+    const state = new URLSearchParams(window.location.search).get("state");
+    if (!state) return;
+
+    if (state === "results" || state === "citation" || state === "dictionary-page") {
+      this.inputTarget.value = "nazar";
+      this.submitTarget.click();
+      if (state === "citation") this.openFirst(".cite-button:not(.admin-only)");
+      if (state === "dictionary-page") this.openFirst(".result-zone");
+      return;
+    }
+    if (state === "no-results") {
+      this.receive({ term: "qqq", totals: { records: 0, dictionaries: 0 }, spellings: [], groups: [] });
+      return;
+    }
+    if (state === "sign-up") {
+      const button = document.querySelector('[data-mode="signup"]');
+      if (button) button.click();
+    }
+    // The decoder's own states are opened by its controller, which owns the
+    // strip they need filled.
+  }
+
+  openFirst(selector) {
+    // The row has to be on the page before the window it opens can be asked
+    // for, and the table is written in the same turn as the search.
+    window.requestAnimationFrame(() => {
+      const button = this.element.querySelector(selector);
+      if (button) button.click();
+    });
   }
 
   disconnect() {

@@ -1130,6 +1130,20 @@ window.LQ_TRANSLATIONS = {
     citePageShort: "s.",
 
     // --- Citation window, continued ---
-    close: "Kapat"
+    close: "Kapat",
+
+    // --- Account window ---
+    authEmail: "E-posta",
+    authPassword: "Şifre",
+    authPasswordAgain: "Şifre (tekrar)",
+    authPasswordHint: "En az 8 karakter olmalı, alfanümerik olmalı ve en az bir büyük harf içermelidir.",
+    authFirstName: "Ad",
+    authLastName: "Soyad",
+    authForgot: "Şifrenizi mi unuttunuz?",
+    authSignIn: "Giriş yap",
+    authCreate: "Kaydol",
+    authNewsletter: "LexiQamus ile ilgili gelişmelerden e-posta yoluyla haberdar olmak istiyorum.",
+    authTerms: "<a href=\"#\">Üyelik sözleşmesini</a> okudum ve kabul ediyorum.",
+    authVerified: "Doğrulandı"
   }
 };

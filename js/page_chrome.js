@@ -33,8 +33,10 @@ window.LQ_PAGE_CHROME = `
     </div>
 
     <div class="side-menu-auth">
-      <button type="button" class="btn btn-sm side-auth-ghost" data-i18n="menuSignIn">Sign in</button>
-      <button type="button" class="btn btn-sm side-auth-primary" data-i18n="menuSignUp">Sign up</button>
+      <button type="button" class="btn btn-sm side-auth-ghost" data-mode="signin"
+              data-action="click->page-chrome#openAuth" data-i18n="menuSignIn">Sign in</button>
+      <button type="button" class="btn btn-sm side-auth-primary" data-mode="signup"
+              data-action="click->page-chrome#openAuth" data-i18n="menuSignUp">Sign up</button>
     </div>
 
     <div class="offcanvas-body side-menu-body">
@@ -174,4 +176,99 @@ window.LQ_PAGE_CHROME = `
       </div>
     </div>
   </div>
+
+  <!-- The account window. Empty until one of the buttons above is pressed;
+       its markup is in the template below. -->
+  <div class="modal fade auth-modal" id="authModal" tabindex="-1" aria-hidden="true"></div>
+
+  <template id="authTemplate">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <ul class="nav nav-tabs auth-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="signInTab" data-bs-toggle="tab" data-bs-target="#signInPane"
+                      type="button" role="tab" aria-controls="signInPane" aria-selected="false"
+                      data-i18n="menuSignIn">Sign in</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="signUpTab" data-bs-toggle="tab" data-bs-target="#signUpPane"
+                      type="button" role="tab" aria-controls="signUpPane" aria-selected="false"
+                      data-i18n="menuSignUp">Sign up</button>
+            </li>
+          </ul>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close" data-i18n-aria="close"></button>
+        </div>
+
+        <div class="modal-body tab-content">
+          <!-- Sign in -->
+          <div class="tab-pane fade" id="signInPane" role="tabpanel" aria-labelledby="signInTab">
+            <form class="auth-form" novalidate>
+              <div class="auth-field">
+                <label for="signInEmail" data-i18n="authEmail">Email</label>
+                <input type="email" id="signInEmail" class="form-control" autocomplete="email" required>
+              </div>
+              <div class="auth-field">
+                <label for="signInPassword" data-i18n="authPassword">Password</label>
+                <input type="password" id="signInPassword" class="form-control"
+                       autocomplete="current-password" required>
+              </div>
+              <a class="auth-forgot" href="#" data-i18n="authForgot">Forgotten your password?</a>
+              <button type="submit" class="btn auth-submit" data-i18n="authSignIn">Sign in</button>
+            </form>
+          </div>
+
+          <!-- Sign up -->
+          <div class="tab-pane fade" id="signUpPane" role="tabpanel" aria-labelledby="signUpTab">
+            <form class="auth-form" novalidate>
+              <div class="auth-row">
+                <div class="auth-field">
+                  <label for="signUpFirst" data-i18n="authFirstName">First name</label>
+                  <input type="text" id="signUpFirst" class="form-control" autocomplete="given-name" required>
+                </div>
+                <div class="auth-field">
+                  <label for="signUpLast" data-i18n="authLastName">Last name</label>
+                  <input type="text" id="signUpLast" class="form-control" autocomplete="family-name" required>
+                </div>
+              </div>
+              <div class="auth-field">
+                <label for="signUpEmail" data-i18n="authEmail">Email</label>
+                <input type="email" id="signUpEmail" class="form-control" autocomplete="email" required>
+              </div>
+              <div class="auth-field">
+                <label for="signUpPassword" data-i18n="authPassword">Password</label>
+                <input type="password" id="signUpPassword" class="form-control"
+                       autocomplete="new-password" aria-describedby="signUpPasswordHint" required>
+                <p class="auth-hint" id="signUpPasswordHint" data-i18n="authPasswordHint">At least 8 characters, letters and numbers, with one capital letter.</p>
+              </div>
+              <div class="auth-field">
+                <label for="signUpPasswordAgain" data-i18n="authPasswordAgain">Password (again)</label>
+                <input type="password" id="signUpPasswordAgain" class="form-control"
+                       autocomplete="new-password" required>
+              </div>
+
+              <div class="form-check auth-check">
+                <input class="form-check-input" type="checkbox" id="signUpNews" checked>
+                <label class="form-check-label" for="signUpNews" data-i18n="authNewsletter">I would like to receive news about LexiQamus by email.</label>
+              </div>
+              <div class="form-check auth-check">
+                <input class="form-check-input" type="checkbox" id="signUpTerms" required>
+                <label class="form-check-label" for="signUpTerms" data-i18n="authTerms" data-i18n-html="1">I have read and accept the <a href="#">membership agreement</a>.</label>
+              </div>
+
+              <!-- Stands in for the challenge the backend will run -->
+              <p class="auth-verified">
+                <i data-feather="check-circle" aria-hidden="true"></i>
+                <span data-i18n="authVerified">Verified</span>
+                <span class="auth-vendor">Cloudflare</span>
+              </p>
+
+              <button type="submit" class="btn auth-submit" data-i18n="authCreate">Create account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 `;

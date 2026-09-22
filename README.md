@@ -63,9 +63,11 @@ docs/                                 the dev team's instructions and review pro
 | Lexicon Digitization Project | `pages/lexicon-digitization.html` | Built |
 | Version 2.0: What's New | `pages/lq2-whats-new.html` | Built |
 | Citation window | `pages/home.html`, the `citationTemplate` template | Built |
+| Account window (sign in / sign up) | `js/page_chrome.js`, the `authTemplate` template | Built |
 
-Every menu entry now leads to a page. The sign-up screen and the dictionary
-page window are the two pieces still to build.
+Every menu entry now leads to a page. The dictionary page window, where a
+result opens on the scan of the dictionary it came from, is the one piece
+still to build.
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list

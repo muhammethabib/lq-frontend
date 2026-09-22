@@ -838,7 +838,8 @@ class HomeController extends Stimulus.Controller {
               ${this.misspellingHtml(row)}
             </span>
             <span class="word-latin">
-              <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
+              <span class="word-box latin-box${readingClass}" data-reading="${row.readingVerified ? "verified" : "auto"}"
+                    aria-label="${this.escape(readingLabel)}"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
             </span>
           </div>
         </td>

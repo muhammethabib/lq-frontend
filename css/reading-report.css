@@ -1,0 +1,139 @@
+/* =========================================================
+   What is wrong with a reading
+   Opened from the card beside a reading: the word itself as
+   the title, which of three things the reader wants to say,
+   and room to say it.
+   ========================================================= */
+
+.reading-report-dialog { max-width: 380px; }
+
+.reading-report-surface {
+  padding: 24px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--lq-paper);
+  box-shadow: 0 20px 40px -5px rgba(15, 23, 42, 0.2);
+  text-align: center;
+}
+
+.reading-report-surface .reading-report-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 14px;
+}
+
+.reading-report-surface .reading-report-ottoman {
+  font-family: "Noto Naskh Arabic", serif;
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--lq-claret);
+}
+
+.reading-report-surface .reading-report-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--lq-line);
+}
+
+.reading-report-surface .reading-report-latin {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lq-ink);
+}
+
+.reading-report-surface .reading-verdicts {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 2px 0 14px;
+}
+
+.reading-report-surface .reading-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid #e6ebf2;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: var(--lq-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.reading-report-surface .reading-verdict svg { width: 13px; height: 13px; }
+.reading-report-surface .reading-verdict.is-on { box-shadow: inset 0 0 0 1px currentColor; }
+
+.reading-report-surface .reading-verdict-ok:hover,
+.reading-report-surface .reading-verdict-ok.is-on {
+  border-color: #99f6e4;
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+.reading-report-surface .reading-verdict-no:hover,
+.reading-report-surface .reading-verdict-no.is-on {
+  border-color: #f6cfdf;
+  background: #fdf2f7;
+  color: var(--lq-claret);
+}
+
+.reading-report-surface .reading-verdict-note:hover,
+.reading-report-surface .reading-verdict-note.is-on {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.reading-report-surface textarea {
+  resize: none;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.reading-report-surface .reading-report-send {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--lq-sapphire);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reading-report-surface .reading-report-send:hover { background: #1e3a6e; }
+
+.reading-report-surface .reading-report-cancel {
+  margin-top: 12px;
+  border: 0;
+  background: none;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reading-report-surface .reading-report-cancel:hover { color: var(--lq-muted); }
+
+.reading-report-surface .reading-report-thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reading-report-surface .reading-report-thanks svg {
+  width: 44px;
+  height: 44px;
+  color: #22c55e;
+}
+
+.reading-report-surface .reading-report-thanks p {
+  margin: 12px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--lq-ink);
+}

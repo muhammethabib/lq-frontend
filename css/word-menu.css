@@ -35,7 +35,7 @@
   content: "";
   position: absolute;
   top: 100%;
-  left: 50%;
+  left: var(--word-menu-tail, 50%);
   border: 5px solid transparent;
   border-top-color: #1e293b;
   transform: translateX(-50%);
@@ -44,6 +44,7 @@
 .word-menu.is-below::after {
   top: auto;
   bottom: 100%;
+  left: var(--word-menu-tail, 50%);
   border-top-color: transparent;
   border-bottom-color: #1e293b;
 }

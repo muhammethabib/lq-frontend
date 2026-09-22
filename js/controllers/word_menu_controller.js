@@ -39,6 +39,12 @@ class WordMenuController extends Stimulus.Controller {
     // The menu is anchored to a word, so it travels with it rather than
     // being left behind when the page moves under the pointer.
     window.addEventListener("scroll", this.onScroll, true);
+    // The card beside a reading opens into the same space; the menu steps
+    // aside rather than covering it.
+    this.onCard = (event) => this.stepAside(event.detail.rect);
+    this.onCardGone = () => { this.pushed = false; if (this.box) this.place(this.box); };
+    document.addEventListener("reading-card:placed", this.onCard);
+    document.addEventListener("reading-card:closed", this.onCardGone);
   }
 
   disconnect() {
@@ -46,11 +52,31 @@ class WordMenuController extends Stimulus.Controller {
     this.element.removeEventListener("mouseout", this.onOut);
     window.removeEventListener("scroll", this.onScroll, true);
     document.removeEventListener("language:changed", this.onLanguageChange);
+    document.removeEventListener("reading-card:placed", this.onCard);
+    document.removeEventListener("reading-card:closed", this.onCardGone);
     clearTimeout(this.timer);
   }
 
   translate() {
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(this.menu);
+  }
+
+  // Moved clear of the card beside the reading, to its left, keeping the
+  // tail pointing at the middle of the word it belongs to.
+  stepAside(card) {
+    if (!this.menu.classList.contains("is-open")) return;
+    const at = this.menu.getBoundingClientRect();
+    const clear = at.right <= card.left - 6 || at.left >= card.right ||
+      at.bottom <= card.top || at.top >= card.bottom;
+    if (clear) return;
+    const left = Math.max(8, card.left - at.width - 10);
+    this.menu.style.left = `${Math.round(left)}px`;
+    this.pushed = true;
+    if (this.box) {
+      const word = this.box.getBoundingClientRect();
+      const tail = Math.max(12, Math.min(at.width - 12, word.left + word.width / 2 - left));
+      this.menu.style.setProperty("--word-menu-tail", `${Math.round(tail)}px`);
+    }
   }
 
   // Keeps the menu over its word while the page scrolls; a word carried out
@@ -85,6 +111,8 @@ class WordMenuController extends Stimulus.Controller {
   show(box) {
     clearTimeout(this.timer);
     this.box = box;
+    this.pushed = false;
+    this.menu.style.removeProperty("--word-menu-tail");
     this.menu.classList.add("is-open");
     this.place(box);
   }
@@ -105,8 +133,10 @@ class WordMenuController extends Stimulus.Controller {
         ? Math.min(at.bottom + 10, window.innerHeight - height - 8)
         : at.top - height - 8;
       this.menu.classList.toggle("is-below", below);
-      this.menu.style.left = `${Math.round(left)}px`;
       this.menu.style.top = `${Math.round(top)}px`;
+      if (this.pushed) return;
+      this.menu.style.left = `${Math.round(left)}px`;
+      this.menu.style.removeProperty("--word-menu-tail");
     });
   }
 

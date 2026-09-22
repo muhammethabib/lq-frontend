@@ -1,0 +1,112 @@
+/* =========================================================
+   Where a reading came from
+   A card beside a Latin reading, open while the reading is
+   under the pointer: what produced it, and the two answers
+   a reader can give about it.
+   ========================================================= */
+
+.reading-card {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  z-index: 1075;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 11px 8px;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: var(--lq-paper);
+  box-shadow: 0 10px 24px -14px rgba(15, 23, 42, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-18px) scale(0.92);
+  transition: opacity 0.22s ease-out, transform 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.reading-card.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+/* The label is meant to stay quiet beside the two buttons, but it does that
+   through size and position rather than through being hard to read. Its
+   colour carries the state: approved is teal, machine-made is plain grey. */
+.reading-card .reading-source {
+  color: var(--lq-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.reading-card .reading-source.is-approved { color: #0f766e; }
+
+.reading-card .reading-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reading-card .reading-act {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 1px solid #e6ebf2;
+  border-radius: 7px;
+  background: #f8fafc;
+  color: var(--lq-muted);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.reading-card .reading-act svg {
+  width: 12px;
+  height: 12px;
+}
+
+.reading-card .reading-act-agree:hover {
+  border-color: #99f6e4;
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+.reading-card .reading-act-agree.is-on {
+  border-color: #0f766e;
+  background: #0f766e;
+  color: #fff;
+}
+
+.reading-card .reading-act-agree.is-on svg {
+  animation: reading-agreed 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+
+@keyframes reading-agreed {
+  0% { transform: scale(0.4); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.reading-card .reading-act-fix:hover {
+  border-color: #f6cfdf;
+  background: #fdf2f7;
+  color: var(--lq-claret);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-card { transition: none; }
+  .reading-card .reading-act-agree.is-on svg { animation: none; }
+}
+
+/* A touch screen has no hover to open it by. */
+@media (pointer: coarse) {
+  .reading-card { display: none; }
+}

@@ -17,12 +17,18 @@
 // their text, for copy that contains tags.
 
 
+// Where the reader's choice is remembered between pages. At integration this
+// becomes the account's locale, or a cookie the server reads; until then the
+// site is static, so the browser holds it.
+const LANGUAGE_KEY = "lq-language";
+
 class LanguageController extends Stimulus.Controller {
   static targets = ["option"]
   static values = { current: { type: String, default: "en" } }
 
   connect() {
     this.originals = {};
+    this.currentValue = this.remembered() || this.currentValue;
     this.apply(this.currentValue);
 
     // Markup that arrives after this controller has run - the chrome, the
@@ -42,7 +48,27 @@ class LanguageController extends Stimulus.Controller {
 
   select(event) {
     this.currentValue = event.currentTarget.dataset.language;
+    this.remember(this.currentValue);
     this.apply(this.currentValue);
+  }
+
+  // Storage can be unavailable or refused, and the site has to work either
+  // way, so a failure just means the page opens in English.
+  remembered() {
+    try {
+      const stored = window.localStorage.getItem(LANGUAGE_KEY);
+      return stored === "tr" || stored === "en" ? stored : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  remember(language) {
+    try {
+      window.localStorage.setItem(LANGUAGE_KEY, language);
+    } catch (error) {
+      // Nothing to do: the choice simply lasts for this page only
+    }
   }
 
   apply(language) {

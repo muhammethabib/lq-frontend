@@ -92,7 +92,9 @@ letters are written. Both files documenting the response shape are listed
 above.
 
 Every interface string has a `data-i18n` key and its Turkish equivalent in
-`js/translations.js`. Text that a controller writes itself is translated
+`js/translations.js`. The reader's choice of language is remembered in the
+browser so it survives moving between pages; at integration that becomes the
+account's locale or a cookie the server reads. Text that a controller writes itself is translated
 through `window.LQ.translate`, and re-rendered when the language changes.
 
 `pages/home.html` is the worked example of every convention below: the root

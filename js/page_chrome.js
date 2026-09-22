@@ -9,6 +9,14 @@
 // At integration this becomes a Rails layout and a partial; nothing about the
 // markup has to change, it just moves.
 //
+// It is a template literal rather than a separate .html file on purpose: a
+// file would have to be fetched on every page before the chrome could be
+// drawn, which is a request and a flash of an empty menu on each of the
+// thirteen pages. A string costs neither. The account window's markup rides
+// along for the same reason, in a <template> the Rails side can lift out
+// exactly as it lifts the citation and dictionary-page templates out of
+// pages/home.html.
+//
 // A page opts in with a single element:
 //   <div data-controller="page-chrome language"></div>
 

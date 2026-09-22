@@ -233,6 +233,12 @@ class DictionaryPageController extends Stimulus.Controller {
     this.modal.hide();
   }
 
+  // Staff only: opens the editing screen for the word's stored value. The
+  // reader's route is the flag beside it, which files a report instead.
+  editWord() {
+    // Placeholder for the staff editing screen, as on a result row.
+  }
+
   // ==================== reporting an error ====================
 
   report(event) {

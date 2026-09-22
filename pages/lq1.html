@@ -12,9 +12,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/account-window.css">
   <link rel="stylesheet" href="../css/page.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/jquery.min.js" defer></script>
   <script src="../vendor/bootstrap.bundle.min.js" defer></script>
   <script src="../vendor/feather.min.js" defer></script>
   <script src="../vendor/stimulus.umd.js" defer></script>
@@ -29,7 +31,7 @@
 <div class="container-fluid p-4 page-surface" data-controller="language">
 
   <!-- Top bar and side menu, shared with every other page -->
-  <div data-controller="page-chrome" data-page-chrome-page-value="lq1"></div>
+  <div class="page-chrome" data-controller="page-chrome" data-page-chrome-page-value="lq1"></div>
 
   <div class="page-body">
     <header class="page-hero">
@@ -49,7 +51,7 @@
       <p data-i18n="lq1DecoderBody">The researcher enters the letters they can read into boxes, according to their position in the word, and leaves a marker for the ones they cannot. The search algorithm takes the readable letters and the symbols entered for the unreadable characters, and lists the possible words that fit the criteria.</p>
 
       <figure class="page-figure">
-        <img src="../assets/sayfalar/lq1-arayuz.webp" loading="lazy"
+        <img src="../assets/pages/lq1-interface.webp" width="482" height="504" loading="lazy"
              alt="The Word Decoder in the first versions: boxes and the on-screen keyboard"
              data-i18n-alt="lq1FigureAlt">
       </figure>

@@ -12,10 +12,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/account-window.css">
   <link rel="stylesheet" href="../css/page.css">
   <link rel="stylesheet" href="../css/user-guide.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/jquery.min.js" defer></script>
   <script src="../vendor/bootstrap.bundle.min.js" defer></script>
   <script src="../vendor/feather.min.js" defer></script>
   <script src="../vendor/stimulus.umd.js" defer></script>
@@ -31,7 +33,7 @@
 <div class="container-fluid p-4 page-surface guide-surface" data-controller="language">
 
   <!-- Top bar and side menu, shared with every other page -->
-  <div data-controller="page-chrome" data-page-chrome-page-value="user-guide"></div>
+  <div class="page-chrome" data-controller="page-chrome" data-page-chrome-page-value="user-guide"></div>
 
   <div class="page-body">
     <header class="page-hero">
@@ -46,7 +48,7 @@
       <!-- The contents list is built from the headings below, so a new section
            needs no second edit. -->
       <nav class="guide-toc" data-guide-target="toc" aria-labelledby="guideTocTitle">
-        <button type="button" class="btn guide-toc-toggle" data-action="click-&gt;guide#toggle"
+        <button type="button" class="btn guide-toc-toggle" data-action="click->guide#toggle"
                 aria-expanded="false" aria-controls="guideTocList">
           <span id="guideTocTitle" data-i18n="guideOnThisPage">On this page</span>
           <i data-feather="chevron-down" aria-hidden="true"></i>
@@ -58,14 +60,14 @@
       <section class="guide-section" id="home">
         <h2 class="guide-h2" data-i18n="guideHome">Home</h2>
           <p data-i18n="homeIntro" data-i18n-html="1">LexiQamus offers two distinct ways of searching. The <a href="#search-tab">Search tab</a> is for looking up the meaning of a word you can read in the dictionaries; the <a href="#word-decoder">Word Decoder</a> is for finding a word you cannot read, starting out from the clues you do have. You can move between the two tabs freely.</p>
-          <figure class="guide-shot guide-wide" style="--nw:1879;--ar:6.8828">
-            <img src="../assets/guide/en/a-genel.webp" data-i18n-src="shotAGenelSrc" alt="The search area on the home page: the Word Decoder and Search tabs, the search bar, the Search button and the dictionary list" data-i18n-alt="shotAGenelAlt" width="1879" height="273" loading="lazy">
+          <figure class="guide-shot guide-wide" style="--natural-width:1879;--aspect:6.8828">
+            <img src="../assets/guide/en/home-search-area.webp" data-i18n-src="shotHomeSearchAreaSrc" alt="The search area on the home page: the Word Decoder and Search tabs, the search bar, the Search button and the dictionary list" data-i18n-alt="shotHomeSearchAreaAlt" width="1879" height="273" loading="lazy">
           </figure>
         <div class="guide-block" id="dictionaries">
           <h3 class="guide-h3" data-i18n="guideDictionaries">Choosing dictionaries</h3>
           <p data-i18n="dictionariesBody" data-i18n-html="1">The dictionary list sits to the right of the <b>Search</b> button. You can run your search across every dictionary, or only within the ones you choose: open the list, clear <b>Select All</b>, and tick the works you want one by one.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:2336;--ar:1.7969">
-            <img src="../assets/guide/en/a4-sozluk-secimi.webp" data-i18n-src="shotA4SozlukSecimiSrc" alt="On the left the list with every dictionary selected, on the right a list with only six dictionaries selected" data-i18n-alt="shotA4SozlukSecimiAlt" width="2336" height="1300" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:2336;--aspect:1.7969">
+            <img src="../assets/guide/en/dictionary-picker.webp" data-i18n-src="shotDictionaryPickerSrc" alt="On the left the list with every dictionary selected, on the right a list with only six dictionaries selected" data-i18n-alt="shotDictionaryPickerAlt" width="2336" height="1300" loading="lazy">
           </figure>
         </div>
       </section>
@@ -75,38 +77,38 @@
         <div class="guide-block" id="search-bar">
           <h3 class="guide-h3" data-i18n="guideSearchBar">The search bar</h3>
           <p data-i18n="searchBarBody" data-i18n-html="1">The search bar is a single field in which you can type the word in either alphabet: the left half is for <b>Latin script</b>, the right half for <b>Ottoman script</b>. If you know how the word is read, typing it on the Latin side is enough.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1872;--ar:6.0779">
-            <img src="../assets/guide/en/b1-iki-taraf.webp" data-i18n-src="shotB1IkiTarafSrc" alt="The two halves of the search bar: on the left the field for Latin letters, on the right the field for Ottoman letters" data-i18n-alt="shotB1IkiTarafAlt" width="1872" height="308" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1872;--aspect:6.0779">
+            <img src="../assets/guide/en/search-bar-halves.webp" data-i18n-src="shotSearchBarHalvesSrc" alt="The two halves of the search bar: on the left the field for Latin letters, on the right the field for Ottoman letters" data-i18n-alt="shotSearchBarHalvesAlt" width="1872" height="308" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="ott-eng">
           <h3 class="guide-h3" data-i18n="guideOttEng">OTT and ENG: where the search runs</h3>
           <p data-i18n="ottEngBody" data-i18n-html="1">The <b>OTT</b> and <b>ENG</b> buttons at the start of the bar determine where what you type will be searched. With <b>OTT</b> selected, the search runs among the Ottoman words in every dictionary in the database.</p>
-          <figure class="guide-shot guide-narrow" style="--s:.5;--nw:1352;--ar:3.7556">
-            <img src="../assets/guide/en/a3-osm-ing.webp" data-i18n-src="shotA3OsmIngSrc" alt="The search bar with ENG selected and the “Search English words in Redhouse” hint" data-i18n-alt="shotA3OsmIngAlt" width="1352" height="360" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:.5;--natural-width:1352;--aspect:3.7556">
+            <img src="../assets/guide/en/ott-eng-switch.webp" data-i18n-src="shotOttEngSwitchSrc" alt="The search bar with ENG selected and the “Search English words in Redhouse” hint" data-i18n-alt="shotOttEngSwitchAlt" width="1352" height="360" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="english-search">
           <h3 class="guide-h3" data-i18n="guideEnglishSearch">ENG: searching the English definitions</h3>
           <p data-i18n="englishSearchBody" data-i18n-html="1">The <b>ENG</b> option runs a full-text search in James Redhouse’s dictionary <em>A Turkish and English Lexicon</em>. Because we have digitized this work as full text, the English equivalents of its entries are searchable too: every entry whose definition contains the English word you type is listed. The word you searched for is highlighted in color within the definitions.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1632;--ar:1.7954">
-            <img src="../assets/guide/en/a3-ing-arama.webp" data-i18n-src="shotA3IngAramaSrc" alt="A search for the word season with ENG selected, and the results highlighted within the English definitions" data-i18n-alt="shotA3IngAramaAlt" width="1632" height="909" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1632;--aspect:1.7954">
+            <img src="../assets/guide/en/english-definition-search.webp" data-i18n-src="shotEnglishDefinitionSearchSrc" alt="A search for the word season with ENG selected, and the results highlighted within the English definitions" data-i18n-alt="shotEnglishDefinitionSearchAlt" width="1632" height="909" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="ottoman-keyboard">
           <h3 class="guide-h3" data-i18n="guideOttomanKeyboard">Typing in Ottoman script</h3>
           <p data-i18n="ottomanKeyboardBody" data-i18n-html="1">When you click the Ottoman side, an on-screen keyboard opens. You can write by clicking the letters one by one.</p>
           <p data-i18n="ottomanKeyboardKeys" data-i18n-html="1">You do not have to use the keyboard, though. Every key shows the physical keyboard key that corresponds to that letter: the <b>A</b> key gives <span data-direction="rtl">ا</span>, the <b>B</b> key gives <span data-direction="rtl">ب</span>, and <b>SHF+S</b> gives <span data-direction="rtl">ص</span>. So you can type the word quickly on your own keyboard and only look at the screen for the letters you are unsure of.</p>
-          <figure class="guide-shot" style="--nw:1322;--ar:3.4072">
-            <img src="../assets/guide/en/a3-1.webp" data-i18n-src="shotA31Src" alt="The search bar with the Ottoman side selected and the on-screen keyboard open beneath it" data-i18n-alt="shotA31Alt" width="1322" height="388" loading="lazy">
+          <figure class="guide-shot" style="--natural-width:1322;--aspect:3.4072">
+            <img src="../assets/guide/en/ottoman-keyboard.webp" data-i18n-src="shotOttomanKeyboardSrc" alt="The search bar with the Ottoman side selected and the on-screen keyboard open beneath it" data-i18n-alt="shotOttomanKeyboardAlt" width="1322" height="388" loading="lazy">
           </figure>
         </div>
       </section>
       <section class="guide-section" id="results">
         <h2 class="guide-h2" data-i18n="guideResults">Search Results</h2>
           <p data-i18n="resultsIntro" data-i18n-html="1">Both ways of searching lead you to the same results list. At the head of the list you see how many records were found and how many dictionaries and volumes were scanned. The list is divided into four columns, and each row shows a single record in one dictionary. The word you searched for is listed separately under the headings <b>Lemma</b>, <b>Inflected Forms</b>, <b>Derived Forms</b>, <b>Phrases and Compounds</b> and <b>Similar Spellings</b>, running from the plainest form to the broadest.</p>
-          <figure class="guide-shot guide-tall" style="--nw:1689;--ar:0.7008">
-            <img src="../assets/guide/en/b-ara-sonuclari.webp" data-i18n-src="shotBAraSonuclariSrc" alt="A search for arı: the search bar, the results header and the Lemma, Inflected Forms, Derived Forms, Phrases and Compounds and Similar Spellings groups" data-i18n-alt="shotBAraSonuclariAlt" width="1689" height="2410" loading="lazy">
+          <figure class="guide-shot guide-tall" style="--natural-width:1689;--aspect:0.7008">
+            <img src="../assets/guide/en/results-overview.webp" data-i18n-src="shotResultsOverviewSrc" alt="A search for arı: the search bar, the results header and the Lemma, Inflected Forms, Derived Forms, Phrases and Compounds and Similar Spellings groups" data-i18n-alt="shotResultsOverviewAlt" width="1689" height="2410" loading="lazy">
           </figure>
         <div class="guide-block" id="categories">
           <h3 class="guide-h3" data-i18n="guideCategories">Word categories</h3>
@@ -114,8 +116,8 @@
           <p data-i18n="categoryEntry" data-i18n-html="1"><b class="cat-entry">Headword</b>: the title of an entry that has been opened in the dictionary in its own right.</p>
           <p data-i18n="categorySub" data-i18n-html="1"><b class="cat-sub">Subheadword</b>: a sub-entry that sits under a headword and is given a definition of its own.</p>
           <p data-i18n="categoryRelated" data-i18n-html="1"><b class="cat-related">Related</b>: words that occur within the entry and are connected to the headword semantically or etymologically.</p>
-          <figure class="guide-shot" style="--s:.25;--nw:2960;--ar:3.5071">
-            <img src="../assets/guide/en/b3-kategoriler.webp" data-i18n-src="shotB3KategorilerSrc" alt="The three categories: headword, subheadword and related-word rows" data-i18n-alt="shotB3KategorilerAlt" width="2960" height="844" loading="lazy">
+          <figure class="guide-shot" style="--scale:.25;--natural-width:2960;--aspect:3.5071">
+            <img src="../assets/guide/en/word-categories.webp" data-i18n-src="shotWordCategoriesSrc" alt="The three categories: headword, subheadword and related-word rows" data-i18n-alt="shotWordCategoriesAlt" width="2960" height="844" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="two-zones">
@@ -128,11 +130,11 @@
           <p data-i18n="twoZonesBody" data-i18n-html="1">Every row is divided into two separate zones, and when you bring the cursor over the row the zone you are in is shown in color. Clicking these areas takes you to different places within the same entry.</p>
           <p data-i18n="twoZonesLeft" data-i18n-html="1">The left zone, that is, the result word itself: <b>Go to this result</b>. The <a href="#dictionary-page">original dictionary page</a> opens and takes you straight to the place where the word occurs. From there you can also scroll up to the beginning of the entry.</p>
           <p data-i18n="twoZonesRight" data-i18n-html="1">The right zone, that is, the headword and the dictionary information: <b>Go to the headword</b>. The same page opens, but this time you land directly at the beginning of the entry.</p>
-          <figure class="guide-shot guide-pair" style="--nw:1700;--ar:9.6045">
-            <img src="../assets/guide/en/c2-1.webp" data-i18n-src="shotC21Src" alt="" width="1700" height="177" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--natural-width:1700;--aspect:9.6045">
+            <img src="../assets/guide/en/row-left-zone.webp" data-i18n-src="shotRowLeftZoneSrc" alt="" width="1700" height="177" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-pair" style="--nw:1700;--ar:9.6045">
-            <img src="../assets/guide/en/c2-2.webp" data-i18n-src="shotC22Src" alt="" width="1700" height="177" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--natural-width:1700;--aspect:9.6045">
+            <img src="../assets/guide/en/row-right-zone.webp" data-i18n-src="shotRowRightZoneSrc" alt="" width="1700" height="177" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">b</span>
@@ -140,19 +142,19 @@
             <span class="guide-sub-note" data-i18n="subClickWordNote">a search in a new tab</span>
           </h4>
           <p data-i18n="clickWordBody" data-i18n-html="1">A result row holds four result values: the (1) Ottoman spelling and (2) Latin reading of the result, and the (3) Ottoman spelling and (4) Latin reading of the headword. When you bring the cursor exactly over one of these words, the <b>Search this word</b> hint appears. Click it and that word is searched across every dictionary, with the results opening in a new tab; the results page you are on stays exactly as it was. In this way you can follow up a word that catches your eye in a result or a headword without losing your search.</p>
-          <figure class="guide-shot" style="--s:0.375;--nw:2366;--ar:6.2926">
-            <img src="../assets/guide/en/b-kelime-ara.webp" data-i18n-src="shotBKelimeAraSrc" alt="The Search this word hint appearing when the cursor is brought over a word in a result row" data-i18n-alt="shotBKelimeAraAlt" width="2366" height="376" loading="lazy">
+          <figure class="guide-shot" style="--scale:0.375;--natural-width:2366;--aspect:6.2926">
+            <img src="../assets/guide/en/search-this-word.webp" data-i18n-src="shotSearchThisWordSrc" alt="The Search this word hint appearing when the cursor is brought over a word in a result row" data-i18n-alt="shotSearchThisWordAlt" width="2366" height="376" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="dictionary-reference">
           <h3 class="guide-h3" data-i18n="guideReference">Dictionary and reference</h3>
           <p data-i18n="referenceBody" data-i18n-html="1">The button at the far right of the row opens the bibliographic information for that record. The title of the work, its author, year, volume and page are all gathered here.</p>
           <p data-i18n="referenceStyles" data-i18n-html="1">In the reference window the citation is offered ready-made in three styles: APA, Chicago and Harvard. Choose the style you need and copy it with a single button.</p>
-          <figure class="guide-shot guide-pair" style="--s:.5;--nw:1442;--ar:4.8067">
-            <img src="../assets/guide/en/b-kunye-hucre.webp" data-i18n-src="shotBKunyeHucreSrc" alt="The Dictionary column: Kamus-ı Türki, 1899, page 31; the Cite hint appearing over the copy button" data-i18n-alt="shotBKunyeHucreAlt" width="1442" height="300" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--scale:.5;--natural-width:1442;--aspect:4.8067">
+            <img src="../assets/guide/en/dictionary-column.webp" data-i18n-src="shotDictionaryColumnSrc" alt="The Dictionary column: Kamus-ı Türki, 1899, page 31; the Cite hint appearing over the copy button" data-i18n-alt="shotDictionaryColumnAlt" width="1442" height="300" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-pair" style="--s:.5;--nw:1242;--ar:1.0991">
-            <img src="../assets/guide/en/b-kunye-pencere.webp" data-i18n-src="shotBKunyePencereSrc" alt="The Bibliographic Information window: Kamus-ı Türki, Şemseddin Sami, 1899, volume 1, page 31" data-i18n-alt="shotBKunyePencereAlt" width="1242" height="1130" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--scale:.5;--natural-width:1242;--aspect:1.0991">
+            <img src="../assets/guide/en/citation-window.webp" data-i18n-src="shotCitationWindowSrc" alt="The Bibliographic Information window: Kamus-ı Türki, Şemseddin Sami, 1899, volume 1, page 31" data-i18n-alt="shotCitationWindowAlt" width="1242" height="1130" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="latin-readings">
@@ -164,8 +166,8 @@
           </h4>
           <p data-i18n="twoStatesBody" data-i18n-html="1">In the result rows every Ottoman word is accompanied by a Latin reading. Some of these readings were entered by our team and approved after being checked by another team member (peer review). The rest were generated automatically from the Ottoman spelling and may therefore not always be accurate.</p>
           <p data-i18n="twoStatesTell" data-i18n-html="1">You can tell the two apart at first glance: automatically generated readings are shown in a pale tone, editor-approved readings in a dark one. The <em>nazar</em> in the first two rows below is automatically generated; the one in the third row is editor-approved.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:2260;--ar:2.9275">
-            <img src="../assets/guide/en/b-okunus-renk.webp" data-i18n-src="shotBOkunusRenkSrc" alt="Three result rows: in the first two the automatically generated pale readings in a single box, in the third the dark, editor-approved reading" data-i18n-alt="shotBOkunusRenkAlt" width="2260" height="772" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:2260;--aspect:2.9275">
+            <img src="../assets/guide/en/reading-tones.webp" data-i18n-src="shotReadingTonesSrc" alt="Three result rows: in the first two the automatically generated pale readings in a single box, in the third the dark, editor-approved reading" data-i18n-alt="shotReadingTonesAlt" width="2260" height="772" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">b</span>
@@ -173,15 +175,15 @@
             <span class="guide-sub-note" data-i18n="subCorrectNote">approving a reading</span>
           </h4>
           <p data-i18n="correctBody" data-i18n-html="1">When you bring the cursor onto a reading, a small box opens beside it. The label at the head of the box tells you the state of the reading: <b>Auto-generated</b> or <b>Editor-approved</b>. The two buttons beneath it are there for you to give us feedback about the reading.</p>
-          <figure class="guide-shot guide-narrow guide-pair" style="--s:0.5;--nw:924;--ar:4.7629">
-            <img src="../assets/guide/en/b-okunus-kutu-1.webp" data-i18n-src="shotBOkunusKutu1Src" alt="The box that opens over an automatically generated reading: the Auto-generated label with the Correct and Edit buttons" data-i18n-alt="shotBOkunusKutu1Alt" width="924" height="194" loading="lazy">
+          <figure class="guide-shot guide-narrow guide-pair" style="--scale:0.5;--natural-width:924;--aspect:4.7629">
+            <img src="../assets/guide/en/reading-box-auto.webp" data-i18n-src="shotReadingBoxAutoSrc" alt="The box that opens over an automatically generated reading: the Auto-generated label with the Correct and Edit buttons" data-i18n-alt="shotReadingBoxAutoAlt" width="924" height="194" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-narrow guide-pair" style="--s:0.5;--nw:924;--ar:4.8125">
-            <img src="../assets/guide/en/b-okunus-kutu-2.webp" data-i18n-src="shotBOkunusKutu2Src" alt="The box that opens over an editor-approved reading: the Editor-approved label with the Correct and Edit buttons" data-i18n-alt="shotBOkunusKutu2Alt" width="924" height="192" loading="lazy">
+          <figure class="guide-shot guide-narrow guide-pair" style="--scale:0.5;--natural-width:924;--aspect:4.8125">
+            <img src="../assets/guide/en/reading-box-approved.webp" data-i18n-src="shotReadingBoxApprovedSrc" alt="The box that opens over an editor-approved reading: the Editor-approved label with the Correct and Edit buttons" data-i18n-alt="shotReadingBoxApprovedAlt" width="924" height="192" loading="lazy">
           </figure>
           <p data-i18n="correctButton" data-i18n-html="1">With the <b>Correct</b> button you report in a single click that the reading is accurate; the button turns green. On automatically generated readings this mark helps us see which readings are right. Our editors check the readings that are marked; a reading that passes the check becomes <b>Editor-approved</b> and starts to be shown in the dark tone.</p>
-          <figure class="guide-shot guide-narrow" style="--s:0.5;--nw:924;--ar:4.5743">
-            <img src="../assets/guide/en/b-okunus-dogru.webp" data-i18n-src="shotBOkunusDogruSrc" alt="The Correct button after it has been pressed" data-i18n-alt="shotBOkunusDogruAlt" width="924" height="202" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:0.5;--natural-width:924;--aspect:4.5743">
+            <img src="../assets/guide/en/reading-correct.webp" data-i18n-src="shotReadingCorrectSrc" alt="The Correct button after it has been pressed" data-i18n-alt="shotReadingCorrectAlt" width="924" height="202" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">c</span>
@@ -189,12 +191,12 @@
             <span class="guide-sub-note" data-i18n="subEditNote">reporting a correction</span>
           </h4>
           <p data-i18n="editBody" data-i18n-html="1">The <b>Edit</b> button opens a report window. At the head of the window stand the Ottoman spelling of the word and its reading, with three options below them. The <b>Incorrect</b> option comes selected when the window opens and asks you to explain why the reading is wrong; if you know the right one, you can write that too. If you want to state that the reading is correct and add a note, you choose <b>Correct</b>; in that case writing a note is optional. And if there is something you would like to say about the reading without calling it right or wrong, you use <b>Comment</b>.</p>
-          <figure class="guide-shot guide-narrow" style="--s:0.5;--nw:680;--ar:1.0759">
-            <img src="../assets/guide/en/b-okunus-bildirim.webp" data-i18n-src="shotBOkunusBildirimSrc" alt="The report window opened with Edit: the Correct, Incorrect and Comment options and the explanation field" data-i18n-alt="shotBOkunusBildirimAlt" width="680" height="632" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:0.5;--natural-width:680;--aspect:1.0759">
+            <img src="../assets/guide/en/reading-report.webp" data-i18n-src="shotReadingReportSrc" alt="The report window opened with Edit: the Correct, Incorrect and Comment options and the explanation field" data-i18n-alt="shotReadingReportAlt" width="680" height="632" loading="lazy">
           </figure>
           <p data-i18n="editSubmit" data-i18n-html="1">When you write your explanation and press <b>Submit</b>, your report reaches us and a thank-you message appears in the window. Our editors review the reports that come in; the reading is corrected if need be and, after the check, becomes <b>Editor-approved</b>. If you change your mind, simply press <b>Cancel</b>.</p>
-          <figure class="guide-shot guide-narrow" style="--s:0.5;--nw:680;--ar:1.5888">
-            <img src="../assets/guide/en/b-okunus-tesekkur.webp" data-i18n-src="shotBOkunusTesekkurSrc" alt="The thank-you window shown after submitting" data-i18n-alt="shotBOkunusTesekkurAlt" width="680" height="428" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:0.5;--natural-width:680;--aspect:1.5888">
+            <img src="../assets/guide/en/reading-thanks.webp" data-i18n-src="shotReadingThanksSrc" alt="The thank-you window shown after submitting" data-i18n-alt="shotReadingThanksAlt" width="680" height="428" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="variant-spellings">
@@ -208,8 +210,8 @@
           </h4>
           <p data-i18n="bySpellingData" data-i18n-html="1">These buttons are not a guess; they come from the records we entered into the system as data while digitizing the dictionaries.</p>
           <p data-i18n="bySpellingExample" data-i18n-html="1">In the example below, <b>merdiven</b> has been searched. You can see that the word has three separate spellings in the dictionaries: <span data-direction="rtl">مردوان</span>, <span data-direction="rtl">مرديون</span> and <span data-direction="rtl">نردبان</span>. The results in the list come from these spellings, and the left of each row shows which spelling it came from. When you click one of the buttons, the search is rerun directly with that spelling and opens in a new tab.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1682;--ar:1.2810">
-            <img src="../assets/guide/en/c1-merdiven.webp" data-i18n-src="shotC1MerdivenSrc" alt="A search for merdiven: the Search by Spelling buttons and result rows coming from three separate spellings" data-i18n-alt="shotC1MerdivenAlt" width="1682" height="1313" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1682;--aspect:1.2810">
+            <img src="../assets/guide/en/spelling-variants.webp" data-i18n-src="shotSpellingVariantsSrc" alt="A search for merdiven: the Search by Spelling buttons and result rows coming from three separate spellings" data-i18n-alt="shotSpellingVariantsAlt" width="1682" height="1313" loading="lazy">
           </figure>
           <h4 class="guide-sub" id="similar-pronunciation">
             <span class="guide-sub-letter" aria-hidden="true">b</span>
@@ -218,12 +220,12 @@
           </h4>
           <p data-i18n="similarSoundBody" data-i18n-html="1">The button searches by putting phonetically similar letters in place of the ones in your search; the number beside it shows how many results the expansion has brought in.</p>
           <p data-i18n="similarSoundBefore" data-i18n-html="1">In the example below <span data-direction="rtl">پاسترمه</span> has been searched. The list shows the results for the spelling you searched for; two records were found with this spelling in the dictionaries.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1607;--ar:1.8241">
-            <img src="../assets/guide/en/c2-pastirma-1.webp" data-i18n-src="shotC2Pastirma1Src" alt="A search for پاسترمه: the two results found with the spelling searched for" data-i18n-alt="shotC2Pastirma1Alt" width="1607" height="881" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1607;--aspect:1.8241">
+            <img src="../assets/guide/en/similar-sound-before.webp" data-i18n-src="shotSimilarSoundBeforeSrc" alt="A search for پاسترمه: the two results found with the spelling searched for" data-i18n-alt="shotSimilarSoundBeforeAlt" width="1607" height="881" loading="lazy">
           </figure>
           <p data-i18n="similarSoundAfter" data-i18n-html="1">When you press the <b>Similar Pronunciation</b> button, the search is widened by putting <span data-direction="rtl">ب</span> in place of <span data-direction="rtl">پ</span> and <span data-direction="rtl">ط</span> in place of <span data-direction="rtl">ت</span>. Three more records come up: <span data-direction="rtl">باسترمه</span>, <span data-direction="rtl">باسطرمه</span> and <span data-direction="rtl">پاسطرمه</span>.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1646;--ar:1.5965">
-            <img src="../assets/guide/en/c2-pastirma-2.webp" data-i18n-src="shotC2Pastirma2Src" alt="The three separate spellings that come up with Similar Pronunciation selected: باسترمه, باسطرمه, پاسطرمه" data-i18n-alt="shotC2Pastirma2Alt" width="1646" height="1031" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1646;--aspect:1.5965">
+            <img src="../assets/guide/en/similar-sound-after.webp" data-i18n-src="shotSimilarSoundAfterSrc" alt="The three separate spellings that come up with Similar Pronunciation selected: باسترمه, باسطرمه, پاسطرمه" data-i18n-alt="shotSimilarSoundAfterAlt" width="1646" height="1031" loading="lazy">
           </figure>
           <p data-i18n="similarSoundReach" data-i18n-html="1">These are other spellings of the word you are looking for in the dictionaries. At a single touch you thus reach records you could not have known to search for — most of the time could not even have guessed at — and the meanings they carry.</p>
         </div>
@@ -231,11 +233,11 @@
           <h3 class="guide-h3" data-i18n="guideScan">Scan for Similar Matches</h3>
           <p data-i18n="scanBody" data-i18n-html="1">If you could not find what you were looking for in the list, press this button at the bottom of the page.</p>
           <p data-i18n="scanResult" data-i18n-html="1">LexiQamus scans for words that stand letter by letter close to the spelling you entered and brings them before you as a numbered list.</p>
-          <figure class="guide-shot guide-narrow" style="--s:.58;--nw:534;--ar:3.1786">
-            <img src="../assets/guide/en/c7-1.webp" data-i18n-src="shotC71Src" alt="" width="534" height="168" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:.58;--natural-width:534;--aspect:3.1786">
+            <img src="../assets/guide/en/scan-similar-button.webp" data-i18n-src="shotScanSimilarButtonSrc" alt="" width="534" height="168" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-narrow guide-tall" style="--s:.44;--nw:880;--ar:0.4143">
-            <img src="../assets/guide/en/b-bunu-mu.webp" data-i18n-src="shotBBunuMuSrc" alt="The Did you mean? list: 14 spellings close to the search for arı, with their readings" data-i18n-alt="shotBBunuMuAlt" width="880" height="2124" loading="lazy">
+          <figure class="guide-shot guide-narrow guide-tall" style="--scale:.44;--natural-width:880;--aspect:0.4143">
+            <img src="../assets/guide/en/did-you-mean.webp" data-i18n-src="shotDidYouMeanSrc" alt="The Did you mean? list: 14 spellings close to the search for arı, with their readings" data-i18n-alt="shotDidYouMeanAlt" width="880" height="2124" loading="lazy">
           </figure>
         </div>
       </section>
@@ -243,26 +245,26 @@
         <h2 class="guide-h2" data-i18n="guideDictionaryPage">The Original Dictionary Page</h2>
           <p data-i18n="dictionaryPageIntro" data-i18n-html="1">When you click a <a href="#two-zones">result or headword zone</a>, the original page of the dictionary opens in a window. What you see is not merely a scanned page: the digitized words are shown on the page in <b>colored boxes according to their categories</b>, and the page is <b>interactive</b> throughout.</p>
           <p data-i18n="dictionaryPageIntro2" data-i18n-html="1">When you bring the cursor onto a box you see the Ottoman spelling and the Latin reading of the word, and when you click it you start <b>a new search for that word</b>. You can view the entry as a <b>slice, a column or a page</b>, move through the dictionary with the arrows, and report an error from the very same place when you notice one.</p>
-          <figure class="guide-shot guide-wide" style="--nw:2404;--ar:1.7807">
-            <img src="../assets/guide/en/c-sozluk-genel.webp" data-i18n-src="shotCSozlukGenelSrc" alt="The dictionary page window: colored boxes on the original page, arrows on either side, the Slice, Column and Page buttons at the bottom" data-i18n-alt="shotCSozlukGenelAlt" width="2404" height="1350" loading="lazy">
+          <figure class="guide-shot guide-wide" style="--natural-width:2404;--aspect:1.7807">
+            <img src="../assets/guide/en/dictionary-page-overview.webp" data-i18n-src="shotDictionaryPageOverviewSrc" alt="The dictionary page window: colored boxes on the original page, arrows on either side, the Slice, Column and Page buttons at the bottom" data-i18n-alt="shotDictionaryPageOverviewAlt" width="2404" height="1350" loading="lazy">
           </figure>
         <div class="guide-block" id="slice-column-page">
           <h3 class="guide-h3" data-i18n="guideSlice">Slice, Column, Page</h3>
           <p data-i18n="sliceBody" data-i18n-html="1">When the window first opens, the <b>Slice</b> view is active, as in the overview above. A slice is the part of a single dictionary entry that falls within one column. Often, though, you come across this: an entry’s definition begins in one column and ends in the next. In such cases the entry consists of two slices. With headwords that have longer definitions (e.g. “baş”, “bir”, “göz”), an entry may spread over several columns and so consist of more than one slice.</p>
           <p data-i18n="sliceViews" data-i18n-html="1">When you click <b>Column</b>, the whole column opens. When you click <b>Page</b>, you see the entire page. The digitized words stay marked in all three views.</p>
-          <figure class="guide-shot guide-pair" style="--s:.5;--nw:1486;--ar:1.4980">
-            <img src="../assets/guide/en/d1-2.webp" data-i18n-src="shotD12Src" alt="Column view: the whole column; a cyan bracket shows the lines of Slice 5" data-i18n-alt="shotD12Alt" width="1486" height="992" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--scale:.5;--natural-width:1486;--aspect:1.4980">
+            <img src="../assets/guide/en/column-view.webp" data-i18n-src="shotColumnViewSrc" alt="Column view: the whole column; a cyan bracket shows the lines of Slice 5" data-i18n-alt="shotColumnViewAlt" width="1486" height="992" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-pair" style="--s:.5;--nw:1488;--ar:1.5000">
-            <img src="../assets/guide/en/d1-3.webp" data-i18n-src="shotD13Src" alt="Page view: the whole page; cyan brackets show Column 1 and Slice 5 within it" data-i18n-alt="shotD13Alt" width="1488" height="992" loading="lazy">
+          <figure class="guide-shot guide-pair" style="--scale:.5;--natural-width:1488;--aspect:1.5000">
+            <img src="../assets/guide/en/page-view.webp" data-i18n-src="shotPageViewSrc" alt="Page view: the whole page; cyan brackets show Column 1 and Slice 5 within it" data-i18n-alt="shotPageViewAlt" width="1488" height="992" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="colored-boxes">
           <h3 class="guide-h3" data-i18n="guideBoxes">Colored and gray boxes</h3>
           <p data-i18n="boxesBody" data-i18n-html="1">The words in the entry that have been digitized are enclosed in boxes on the original page. The color of a box changes according to the word category; the same <a href="#categories">distinction between categories</a> as in the results list holds here too.</p>
           <p data-i18n="boxesGray" data-i18n-html="1">The words that appear gray have been digitized as well. When you bring the cursor onto them they take on their color and their digital values become visible.</p>
-          <figure class="guide-shot" style="--s:0.375;--nw:1894;--ar:1.3886">
-            <img src="../assets/guide/en/d2-1.webp" data-i18n-src="shotD21Src" alt="" width="1894" height="1364" loading="lazy">
+          <figure class="guide-shot" style="--scale:0.375;--natural-width:1894;--aspect:1.3886">
+            <img src="../assets/guide/en/coloured-and-grey-boxes.webp" data-i18n-src="shotColouredAndGreyBoxesSrc" alt="" width="1894" height="1364" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="digital-value">
@@ -273,8 +275,8 @@
             <span class="guide-sub-note" data-i18n="subSingleWordNote">spelling and reading</span>
           </h4>
           <p data-i18n="singleWordBody" data-i18n-html="1">When you bring the cursor onto a box, the Ottoman spelling and the Latin reading of the word appear one below the other.</p>
-          <figure class="guide-shot guide-narrow" style="--s:0.375;--nw:444;--ar:0.6491">
-            <img src="../assets/guide/en/d3-1.webp" data-i18n-src="shotD31Src" alt="" width="444" height="684" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:0.375;--natural-width:444;--aspect:0.6491">
+            <img src="../assets/guide/en/word-tooltip.webp" data-i18n-src="shotWordTooltipSrc" alt="" width="444" height="684" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">b</span>
@@ -282,42 +284,42 @@
             <span class="guide-sub-note" data-i18n="subPhraseNote">two layers</span>
           </h4>
           <p data-i18n="phraseBody" data-i18n-html="1">If the word is part of a phrase, you see two layers at once: above, the digital value of the word the cursor is on; below, the digital value of the phrase as a whole.</p>
-          <figure class="guide-shot guide-narrow" style="--s:0.375;--nw:714;--ar:1.0085">
-            <img src="../assets/guide/en/d3-2.webp" data-i18n-src="shotD32Src" alt="" width="714" height="708" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:0.375;--natural-width:714;--aspect:1.0085">
+            <img src="../assets/guide/en/phrase-tooltip.webp" data-i18n-src="shotPhraseTooltipSrc" alt="" width="714" height="708" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="click-a-word">
           <h3 class="guide-h3" data-i18n="guideClickWord">Clicking a word</h3>
           <p data-i18n="clickWordPage" data-i18n-html="1">When you click a word on the original page, or one of the digital values that appear, a new search for that word begins and opens in a new tab. You can thus take side roads without leaving the entry you are reading.</p>
           <p data-i18n="clickWordFive" data-i18n-html="1">Each of the five places marked in the image below starts such a search: the word on the dictionary page, and the Ottoman and Latin lines of the boxes that appear above and below it.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1094;--ar:1.5452">
-            <img src="../assets/guide/en/d4-1.webp" data-i18n-src="shotD41Src" alt="The word in the scan and the Ottoman and Latin lines of the boxes appearing above and below it; arrows from all five converge on the Search in a new tab card" data-i18n-alt="shotD41Alt" width="1094" height="708" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1094;--aspect:1.5452">
+            <img src="../assets/guide/en/clickable-spots.webp" data-i18n-src="shotClickableSpotsSrc" alt="The word in the scan and the Ottoman and Latin lines of the boxes appearing above and below it; arrows from all five converge on the Search in a new tab card" data-i18n-alt="shotClickableSpotsAlt" width="1094" height="708" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="report-error">
           <h3 class="guide-h3" data-i18n="guideReportError">Reporting an error</h3>
           <p data-i18n="reportErrorBody" data-i18n-html="1">If you think there is a mistake in the digitization, bring the cursor onto the word. A light blue warning sign appears beside the digital value of the word. When you bring the cursor onto that sign it turns red and the words <b>Report Error</b> appear; press it and the report window opens.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1380;--ar:1.7738">
-            <img src="../assets/guide/en/c5-adimlar.webp" data-i18n-src="shotC5AdimlarSrc" alt="Two steps: a light blue warning sign appears when the cursor is brought onto the word; when the cursor is brought onto the sign it turns red and Report Error appears" data-i18n-alt="shotC5AdimlarAlt" width="1380" height="778" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1380;--aspect:1.7738">
+            <img src="../assets/guide/en/report-error-steps.webp" data-i18n-src="shotReportErrorStepsSrc" alt="Two steps: a light blue warning sign appears when the cursor is brought onto the word; when the cursor is brought onto the sign it turns red and Report Error appears" data-i18n-alt="shotReportErrorStepsAlt" width="1380" height="778" loading="lazy">
           </figure>
           <p data-i18n="reportErrorWindow" data-i18n-html="1">The word comes ready-filled in the window that opens. You write the error, or the correction you propose, in the field beneath it and submit it.</p>
-          <figure class="guide-shot" style="--nw:751;--ar:1.8452">
-            <img src="../assets/guide/en/d5-2.webp" data-i18n-src="shotD52Src" alt="" width="751" height="407" loading="lazy">
+          <figure class="guide-shot" style="--natural-width:751;--aspect:1.8452">
+            <img src="../assets/guide/en/error-report-window.webp" data-i18n-src="shotErrorReportWindowSrc" alt="" width="751" height="407" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="dictionary-navigation">
           <h3 class="guide-h3" data-i18n="guideNavigation">Moving through the dictionary</h3>
           <p data-i18n="navigationBody" data-i18n-html="1">The arrows on either side of the window let you move with a single click. The arrows work in all three views — <b>slice</b>, <b>column</b> and <b>page</b> — and advance according to the current one: in <b>slice</b> view you move to the previous or next headword, in <b>column</b> view to the previous or next column, and in <b>page</b> view to the previous or next page.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:2192;--ar:2.9305">
-            <img src="../assets/guide/en/c6-oklar.webp" data-i18n-src="shotC6OklarSrc" alt="The dictionary page window; the previous and next entry arrows on either side shown close up with a magnifier" data-i18n-alt="shotC6OklarAlt" width="2192" height="748" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:2192;--aspect:2.9305">
+            <img src="../assets/guide/en/navigation-arrows.webp" data-i18n-src="shotNavigationArrowsSrc" alt="The dictionary page window; the previous and next entry arrows on either side shown close up with a magnifier" data-i18n-alt="shotNavigationArrowsAlt" width="2192" height="748" loading="lazy">
           </figure>
         </div>
       </section>
       <section class="guide-section" id="word-decoder">
         <h2 class="guide-h2" data-i18n="guideWordDecoder">The Word Decoder</h2>
           <p data-i18n="wordDecoderIntro" data-i18n-html="1">This is the tool to use when you come across a word you cannot read in a manuscript. You enter the letters you can read and leave a marker for those you cannot; LexiQamus lists the words that match these criteria.</p>
-          <figure class="guide-shot guide-wide" style="--nw:2404;--ar:1.7807">
-            <img src="../assets/guide/en/d-cozucu-genel.webp" data-i18n-src="shotDCozucuGenelSrc" alt="The Word Decoder: letter boxes at the top, the basic and the advanced keyboard side by side below" data-i18n-alt="shotDCozucuGenelAlt" width="2404" height="1350" loading="lazy">
+          <figure class="guide-shot guide-wide" style="--natural-width:2404;--aspect:1.7807">
+            <img src="../assets/guide/en/decoder-overview.webp" data-i18n-src="shotDecoderOverviewSrc" alt="The Word Decoder: letter boxes at the top, the basic and the advanced keyboard side by side below" data-i18n-alt="shotDecoderOverviewAlt" width="2404" height="1350" loading="lazy">
           </figure>
         <div class="guide-block" id="decoder-keyboard">
           <h3 class="guide-h3" data-i18n="guideDecoderKeyboard">The decoder keyboard</h3>
@@ -337,12 +339,12 @@
           </h4>
           <p data-i18n="lettersBody" data-i18n-html="1">When you click a box, the letter keyboard opens. From it you can enter both the ordinary letters and the special characters that stand for letters of similar shape.</p>
           <p data-i18n="lettersStarred" data-i18n-html="1">The starred blue keys on the keyboard are these special characters. Each of them searches at once all the letters that share the same skeleton and differ only in their dots; you can use them for a letter whose dots you cannot make out. (Like the whole logic of searching with boxes, the starred characters are an innovation developed by LexiQamus; for the details see <a href="lq1.html">LexiQamus 1.0</a>.)</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1596;--ar:1.1701">
-            <img src="../assets/guide/en/e2-yildizli.webp" data-i18n-src="shotE2YildizliSrc" alt="A table of the blue keys and the letters they search" data-i18n-alt="shotE2YildizliAlt" width="1596" height="1364" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1596;--aspect:1.1701">
+            <img src="../assets/guide/en/starred-keys-table.webp" data-i18n-src="shotStarredKeysTableSrc" alt="A table of the blue keys and the letters they search" data-i18n-alt="shotStarredKeysTableAlt" width="1596" height="1364" loading="lazy">
           </figure>
           <p data-i18n="lettersOwnKeyboard" data-i18n-html="1">You do not have to click the keys. As you are reminded when you bring the cursor onto a box, you can write the letters on your own keyboard too.</p>
-          <figure class="guide-shot guide-narrow" style="--s:.5;--nw:1116;--ar:2.9368">
-            <img src="../assets/guide/en/e2-kendi-klavye.webp" data-i18n-src="shotE2KendiKlavyeSrc" alt="The You can type with your own keyboard hint appearing over a box" data-i18n-alt="shotE2KendiKlavyeAlt" width="1116" height="380" loading="lazy">
+          <figure class="guide-shot guide-narrow" style="--scale:.5;--natural-width:1116;--aspect:2.9368">
+            <img src="../assets/guide/en/type-with-your-keyboard.webp" data-i18n-src="shotTypeWithYourKeyboardSrc" alt="The You can type with your own keyboard hint appearing over a box" data-i18n-alt="shotTypeWithYourKeyboardAlt" width="1116" height="380" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">c</span>
@@ -367,8 +369,8 @@
             <li data-i18n="chainState3">Uncertain</li>
           </ol>
           <p data-i18n="chainsUncertain" data-i18n-html="1">Where you cannot make out whether they are joined, if you choose <b>Uncertain</b> both possibilities are searched.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1416;--ar:2.6617">
-            <img src="../assets/guide/en/e1-zincir.webp" data-i18n-src="shotE1ZincirSrc" alt="The three states of the chain: letters separate, letters connected, uncertain" data-i18n-alt="shotE1ZincirAlt" width="1416" height="532" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1416;--aspect:2.6617">
+            <img src="../assets/guide/en/chain-states.webp" data-i18n-src="shotChainStatesSrc" alt="The three states of the chain: letters separate, letters connected, uncertain" data-i18n-alt="shotChainStatesAlt" width="1416" height="532" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">b</span>
@@ -376,17 +378,17 @@
             <span class="guide-sub-note" data-i18n="subBoxButtonsNote">adding, deleting, alternatives</span>
           </h4>
           <p data-i18n="boxButtonsBody" data-i18n-html="1">When you bring the cursor onto a box, two small buttons appear at its corners and a trash can beneath it. The gray bars between the boxes are for adding a new box:</p>
-          <figure class="guide-shot guide-quarter" style="--s:.36;--nw:1050;--ar:1.9481">
-            <img src="../assets/guide/en/e1-btn-1.webp" data-i18n-src="shotE1Btn1Src" alt="The plus between the boxes: adds a new box in between" data-i18n-alt="shotE1Btn1Alt" width="1050" height="539" loading="lazy">
+          <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
+            <img src="../assets/guide/en/box-button-add.webp" data-i18n-src="shotBoxButtonAddSrc" alt="The plus between the boxes: adds a new box in between" data-i18n-alt="shotBoxButtonAddAlt" width="1050" height="539" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-quarter" style="--s:.36;--nw:1050;--ar:1.9481">
-            <img src="../assets/guide/en/e1-btn-2.webp" data-i18n-src="shotE1Btn2Src" alt="The plus inside the box: adds an alternative letter to the same box" data-i18n-alt="shotE1Btn2Alt" width="1050" height="539" loading="lazy">
+          <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
+            <img src="../assets/guide/en/box-button-alternative.webp" data-i18n-src="shotBoxButtonAlternativeSrc" alt="The plus inside the box: adds an alternative letter to the same box" data-i18n-alt="shotBoxButtonAlternativeAlt" width="1050" height="539" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-quarter" style="--s:.36;--nw:1050;--ar:1.9553">
-            <img src="../assets/guide/en/e1-btn-3.webp" data-i18n-src="shotE1Btn3Src" alt="The cross: deletes only one of the letters in the box" data-i18n-alt="shotE1Btn3Alt" width="1050" height="537" loading="lazy">
+          <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
+            <img src="../assets/guide/en/box-button-delete-letter.webp" data-i18n-src="shotBoxButtonDeleteLetterSrc" alt="The cross: deletes only one of the letters in the box" data-i18n-alt="shotBoxButtonDeleteLetterAlt" width="1050" height="537" loading="lazy">
           </figure>
-          <figure class="guide-shot guide-quarter" style="--s:.36;--nw:1050;--ar:1.9553">
-            <img src="../assets/guide/en/e1-btn-4.webp" data-i18n-src="shotE1Btn4Src" alt="The trash can: removes the box together with all the letters in it" data-i18n-alt="shotE1Btn4Alt" width="1050" height="537" loading="lazy">
+          <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
+            <img src="../assets/guide/en/box-button-delete-box.webp" data-i18n-src="shotBoxButtonDeleteBoxSrc" alt="The trash can: removes the box together with all the letters in it" data-i18n-alt="shotBoxButtonDeleteBoxAlt" width="1050" height="537" loading="lazy">
           </figure>
           <h4 class="guide-sub">
             <span class="guide-sub-letter" aria-hidden="true">c</span>
@@ -395,8 +397,8 @@
           </h4>
           <p data-i18n="manyLettersBody" data-i18n-html="1">You can also enter more than one letter into a box. With letters that are easily confused with one another, such as <span data-direction="rtl">و</span>, <span data-direction="rtl">د</span> and <span data-direction="rtl">ر</span>, you put all the possibilities into the same box and so have them all searched at once. You add an alternative letter with the <span class="guide-chip guide-chip-box" aria-hidden="true">+</span> button inside the box.</p>
           <p data-i18n="manyLettersExample" data-i18n-html="1">In the example below, single-letter boxes, boxes with two and three alternatives, a <span class="guide-key" aria-hidden="true">٭</span> for a letter that cannot be read and a starred letter appear together; the chains beneath the boxes, too, are in the connected, uncertain and separate states.</p>
-          <figure class="guide-shot" style="--s:.5;--nw:1343;--ar:6.3349">
-            <img src="../assets/guide/en/e2-cok-harf.webp" data-i18n-src="shotE2CokHarfSrc" alt="An example decoder row: single-letter boxes, boxes with two and three alternatives, a star marker, a starred letter and chains in different states" data-i18n-alt="shotE2CokHarfAlt" width="1343" height="212" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1343;--aspect:6.3349">
+            <img src="../assets/guide/en/decoder-filled-row.webp" data-i18n-src="shotDecoderFilledRowSrc" alt="An example decoder row: single-letter boxes, boxes with two and three alternatives, a star marker, a starred letter and chains in different states" data-i18n-alt="shotDecoderFilledRowAlt" width="1343" height="212" loading="lazy">
           </figure>
           <p data-i18n="manyLettersEmpty" data-i18n-html="1">You can also add an empty box beside the alternative letters. An empty box means “there may be no letter here”: the search then also takes into account results with no letter at that part of the word.</p>
         </div>
@@ -405,18 +407,18 @@
           <p data-i18n="exampleBody" data-i18n-html="1">Say you have come across the word below in a document. Ink has been spilled over it and one letter cannot be read; but you can make out the other letters.</p>
           <p data-i18n="exampleEnter" data-i18n-html="1">You enter the letters you can read into the boxes according to their places, and put a <span class="guide-key" aria-hidden="true">٭</span> in place of the letter you cannot read:</p>
           <p class="guide-seq-line">
-            <bdi class="guide-seq" dir="rtl" data-direction="rtl" aria-hidden="true"><span class="guide-seq-cell">ح</span><span class="guide-seq-cell">ا</span><span class="guide-seq-cell is-mark">٭</span><span class="guide-seq-cell">ر</span></bdi>
+            <bdi class="guide-seq" data-direction="rtl" aria-hidden="true"><span class="guide-seq-cell">ح</span><span class="guide-seq-cell">ا</span><span class="guide-seq-cell is-mark">٭</span><span class="guide-seq-cell">ر</span></bdi>
           </p>
-          <figure class="guide-shot" style="--s:.5;--nw:1250;--ar:1.8012">
-            <img src="../assets/guide/en/b3-1.webp" data-i18n-src="shotB31Src" alt="" width="1250" height="694" loading="lazy">
+          <figure class="guide-shot" style="--scale:.5;--natural-width:1250;--aspect:1.8012">
+            <img src="../assets/guide/en/decoder-worked-example.webp" data-i18n-src="shotDecoderWorkedExampleSrc" alt="" width="1250" height="694" loading="lazy">
           </figure>
         </div>
         <div class="guide-block" id="decoder-results">
           <h3 class="guide-h3" data-i18n="guideDecoderResults">Results</h3>
           <p data-i18n="decoderResultsBody" data-i18n-html="1">When you press the <b>Search</b> button, the records that match the clues you have entered are listed — in some cases from among millions of possibilities. The results are gathered under headings running from the plainest form to the broadest.</p>
           <p data-i18n="decoderResultsRows" data-i18n-html="1">The result rows work in just the same way as the search results in the Search tab. You can find their categories, click zones and bibliographic information in the <a href="#results">Search Results</a> section.</p>
-          <figure class="guide-shot" style="--nw:1680;--ar:1.1483">
-            <img src="../assets/guide/en/c1-1.webp" data-i18n-src="shotC11Src" alt="" width="1680" height="1463" loading="lazy">
+          <figure class="guide-shot" style="--natural-width:1680;--aspect:1.1483">
+            <img src="../assets/guide/en/decoder-results.webp" data-i18n-src="shotDecoderResultsSrc" alt="" width="1680" height="1463" loading="lazy">
           </figure>
         </div>
       </section>

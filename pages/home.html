@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/account-window.css">
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/word-decoder.css">
   <link rel="stylesheet" href="../css/ottoman-keyboard.css">
@@ -53,7 +54,7 @@
        the files they will live in, and the controller opens the one matching
        the interface language. -->
   <!-- Top bar and side menu, shared with every other page -->
-  <div data-controller="page-chrome" data-page-chrome-page-value="home"></div>
+  <div class="page-chrome" data-controller="page-chrome" data-page-chrome-page-value="home"></div>
 
   <!-- ============================== branding ============================= -->
   <div class="branding">
@@ -746,6 +747,14 @@
                           data-action="click->dictionary-page#report"
                           aria-label="Report an error" data-i18n-aria="scanReport">
                     <i data-feather="alert-triangle" aria-hidden="true"></i>
+                  </button>
+                  <!-- Staff only: correcting the stored value, as opposed to a
+                       reader reporting that it looks wrong. Restrict this when
+                       permissions land. -->
+                  <button type="button" class="btn scan-card-edit admin-only"
+                          data-action="click->dictionary-page#editWord"
+                          aria-label="Edit this word" data-i18n-aria="scanEdit">
+                    <i data-feather="edit-2" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>

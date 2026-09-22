@@ -317,12 +317,12 @@
 
 /* ---------- screenshots ---------- */
 
-/* Each figure carries the natural width (--nw), aspect ratio (--ar) and the
-   scale it was drawn at (--s), so a screenshot is never shown larger than it
+/* Each figure carries the natural width (--natural-width), aspect ratio (--aspect) and the
+   scale it was drawn at (--scale), so a screenshot is never shown larger than it
    was captured and the frame reserves its height before the image loads. */
 .guide-surface .guide-shot {
-  --s: .75;
-  width: min(100%, calc(var(--nw) * var(--s) * 1px));
+  --scale: .75;
+  width: min(100%, calc(var(--natural-width) * var(--scale) * 1px));
   margin: 18px 0;
   padding: 10px;
   border: 1px solid var(--lq-line);
@@ -334,7 +334,7 @@
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: var(--ar);
+  aspect-ratio: var(--aspect);
   border-radius: 6px;
 }
 .guide-surface .guide-narrow { width: min(100%, 520px); }

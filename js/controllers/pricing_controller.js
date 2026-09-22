@@ -2,22 +2,19 @@
 // The term switch on the pricing page.
 //
 // A price is the total for the whole term, not a monthly figure, so picking a
-// longer term changes both the number and the period beside it. The savings
-// are given by the price list rather than worked out here, because they are
-// rounded the way the sales page rounds them.
-
-// [total in TL, saving against the one-month price in percent]
-const LQ_PRICES = {
-  standard: { 1: [1500, 0], 3: [3000, 33], 6: [5250, 42], 12: [8400, 53] },
-  premium: { 1: [2250, 0], 3: [4350, 36], 6: [7500, 44], 12: [12750, 53] }
-};
+// longer term changes both the number and the period beside it. The prices
+// come from the endpoint; the shape of the response is in
+// js/pricing_sample.js.
 
 class PricingController extends Stimulus.Controller {
   static targets = ["term"]
+  static values = { endpoint: String }
 
   connect() {
     this.term = "1";
-    this.render();
+    this.prices = {};
+    this.currency = "TL";
+    this.load();
     // The plans are re-rendered in the new language, since the period and the
     // saving are sentences rather than plain numbers.
     this.onLanguageChange = () => this.render();
@@ -26,6 +23,27 @@ class PricingController extends Stimulus.Controller {
 
   disconnect() {
     document.removeEventListener("language:changed", this.onLanguageChange);
+  }
+
+  load() {
+    // Matches the Rails route this page expects:
+    //   GET /pricing/plans
+    $.ajax({
+      url: this.endpointValue,
+      type: "GET",
+      // No backend yet: returning false cancels the request and the page is
+      // fed sample data instead. Delete beforeSend once the route exists;
+      // success already handles the real response shape.
+      beforeSend: () => { this.receive(window.LQ_PRICING_SAMPLE); return false; },
+      success: (response) => this.receive(response),
+      error: () => this.receive(window.LQ_PRICING_SAMPLE)
+    });
+  }
+
+  receive(response) {
+    this.prices = (response && response.plans) || {};
+    this.currency = (response && response.currency) || "TL";
+    this.render();
   }
 
   selectTerm(event) {
@@ -45,8 +63,9 @@ class PricingController extends Stimulus.Controller {
       element.textContent = this.periodText();
     });
 
-    Object.keys(LQ_PRICES).forEach((plan) => {
-      const [total, saving] = LQ_PRICES[plan][this.term];
+    Object.keys(this.prices).forEach((plan) => {
+      const { total, saving } = this.prices[plan][this.term] || {};
+      if (total == null) return;
       const price = this.element.querySelector(`[data-price-plan="${plan}"]`);
       const note = this.element.querySelector(`[data-price-saving="${plan}"]`);
       if (price) price.textContent = this.money(total);
@@ -59,11 +78,11 @@ class PricingController extends Stimulus.Controller {
   }
 
   // A price is grouped the way the reader's language groups thousands, so
-  // 8.400 TL in Turkish is 8,400 TL in English. The currency is the same in
-  // both, and at integration it comes from the plan record.
+  // 8.400 TL in Turkish is 8,400 TL in English. The currency comes with the
+  // prices rather than being written in here.
   money(total) {
     const language = document.documentElement.lang === "tr" ? "tr-TR" : "en-GB";
-    return `${total.toLocaleString(language)} ${window.LQ.translate("currency", "TL")}`;
+    return `${total.toLocaleString(language)} ${this.currency}`;
   }
 
   // "/ month", "/ 3 months", "/ year" - the three shapes the period takes.

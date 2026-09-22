@@ -2,6 +2,10 @@
    Citation window
    The Bibliographic Information modal, opened from a Cite
    button in the results list or the Word Decoder.
+
+   Scoped under .citation-modal rather than a -surface class: the
+   window is a modal, not a page, and Bootstrap owns the element
+   the class sits on.
    ========================================================= */
 
 .citation-modal .modal-content {

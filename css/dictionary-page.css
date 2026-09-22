@@ -2,6 +2,10 @@
    Original dictionary page window
    The scan of the dictionary an entry came from, with the
    digitized words boxed on it.
+
+   Scoped under .dictionary-page-modal rather than a -surface class: the
+   window is a modal, not a page, and Bootstrap owns the element
+   the class sits on.
    ========================================================= */
 
 .dictionary-page-modal .modal-content {
@@ -193,6 +197,24 @@
   color: #fff;
 }
 .dictionary-page-modal .scan-card-flag svg { width: 14px; height: 14px; }
+
+/* The staff control beside it, marked admin-only and dashed like the one on
+   a result row, so the two read as the same kind of thing. */
+.dictionary-page-modal .scan-card-edit {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px dashed rgba(255, 255, 255, .35);
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, .7);
+}
+.dictionary-page-modal .scan-card-edit:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.dictionary-page-modal .scan-card-edit svg { width: 13px; height: 13px; }
 
 /* ---------- reporting an error ---------- */
 

@@ -28,12 +28,16 @@ No Tailwind, no React/Vue, no SCSS.
 index.html                            forwards to the first page
 pages/<feature>.html                  one HTML page per feature
 css/base.css                          brand tokens, fonts, shared chrome (menu, language switch)
+css/account-window.css                the sign in / sign up window, on every page
+css/page.css                          the reading layout every content page shares, under .page-surface
 css/<feature>.css                     one CSS file per feature, scoped under .<feature>-surface
+                                      (a modal is scoped under its own .<name>-modal)
 css/ottoman-keyboard.css              the on-screen keyboard, shared by any field
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
 js/page_chrome.js                     the top bar and side menu, written once
 js/dictionaries.js                    the works in the database, with what a citation needs
+js/pricing_sample.js                  stand-in for the pricing endpoint
 js/translations.js                    Turkish strings, keyed by data-i18n
 js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
                                       Latin-to-Ottoman map for physical typing
@@ -82,6 +86,7 @@ stays marked "soon" and is not clickable.
 | `GET /search_output/results` | Search tab | `q`, `script`, `source`, `categories[]`, `groups[]`, `dictionaries[]` |
 | `GET /word_decoder/results` | Word Decoder tab | `pattern` (JSON), `q` (readable form), `expand` |
 | `GET /dictionary_page/entry` | Dictionary page window | `dictionary`, `page`, `word` |
+| `GET /pricing/plans` | Pricing page | none |
 
 The decoder's `pattern` is an object with `slots` and `joins`. A slot is one
 letter position and names its kind: a `letter`, a set of `alternatives`, a

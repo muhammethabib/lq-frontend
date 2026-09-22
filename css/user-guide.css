@@ -1,0 +1,378 @@
+/* =========================================================
+   User Guide
+   Scoped under .page-surface. The guide is long, so the page
+   is a two-column read: a contents list that stays in view
+   and the sections beside it.
+   ========================================================= */
+
+.page-surface .page-content[data-controller="guide"] {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  column-gap: 44px;
+  align-items: start;
+}
+/* The opening line runs across both columns; below it the contents list
+   holds the left column and the guide itself the right one. */
+.page-surface .page-content[data-controller="guide"] > .guide-lead {
+  grid-column: 1 / -1;
+}
+
+/* ---------- contents ---------- */
+
+.page-surface .guide-toc {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding-right: 8px;
+  font-size: .86rem;
+}
+
+.page-surface .guide-toc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 0 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--lq-line);
+  background: none;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lq-claret);
+}
+/* Wide enough for the sidebar, so the list is simply open */
+.page-surface .guide-toc-toggle svg { display: none; }
+
+.page-surface .guide-toc-list,
+.page-surface .guide-toc-sub {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .guide-toc-sub { margin: 4px 0 10px 0; }
+
+.page-surface .guide-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--lq-ink-soft);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.page-surface .guide-toc a:hover { color: var(--lq-sapphire); }
+.page-surface .guide-toc-list > li > a {
+  font-weight: 700;
+  color: var(--lq-ink-navy);
+  margin-top: 10px;
+}
+.page-surface .guide-toc-sub a { font-size: .84rem; }
+
+/* The code is the same one printed on the heading, so a reader can match the
+   two without reading the title twice. */
+.page-surface .guide-code {
+  flex: none;
+  min-width: 22px;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--lq-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- the reading column ---------- */
+
+.page-surface .guide-lead {
+  max-width: 62ch;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: var(--lq-ink-soft);
+}
+
+.page-surface .guide-section { scroll-margin-top: 20px; }
+
+.page-surface .guide-h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 46px 0 6px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+/* The letter is written in by the controller, not by the markup */
+.page-surface .guide-h2::before {
+  content: attr(data-code);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--lq-sapphire);
+  font-family: 'Inter', sans-serif;
+  font-size: .88rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.page-surface .guide-block {
+  margin-top: 30px;
+  scroll-margin-top: 20px;
+}
+.page-surface .guide-h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  margin: 0 0 10px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.32rem;
+  font-weight: 600;
+  color: var(--lq-ink-navy);
+}
+.page-surface .guide-h3::before {
+  content: attr(data-code);
+  flex: none;
+  font-family: 'Inter', sans-serif;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--lq-gold);
+}
+
+.page-surface .guide-block p { max-width: 68ch; }
+
+/* ---------- a lettered sub-topic ---------- */
+
+.page-surface .guide-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 26px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--lq-line);
+  scroll-margin-top: 20px;
+}
+.page-surface .guide-sub-letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border: 1px solid var(--lq-sapphire);
+  border-radius: 6px;
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--lq-sapphire);
+}
+.page-surface .guide-sub b {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.16rem;
+  font-weight: 600;
+  color: var(--lq-ink-navy);
+}
+.page-surface .guide-sub-note {
+  font-size: .82rem;
+  font-style: italic;
+  color: var(--lq-muted);
+}
+
+/* ---------- cross-reference ---------- */
+
+/* A link into another block carries that block's code, written in by the
+   controller, so the reader knows where it goes. */
+.page-surface .guide-xref::after {
+  content: attr(data-code);
+  display: inline-block;
+  margin-left: 5px;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(217, 119, 6, .12);
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: var(--lq-gold);
+  vertical-align: 2px;
+}
+.page-surface .guide-xref[data-code=""]::after { content: none; }
+
+/* ---------- the category colours, used inline ---------- */
+
+.page-surface .cat-entry { color: var(--lq-entry-text); }
+.page-surface .cat-sub { color: var(--lq-sub-text); }
+.page-surface .cat-related { color: var(--lq-related-text); }
+
+/* ---------- inline keys and buttons ---------- */
+
+/* A key of the decoder keyboard, shown at its own size inside a sentence */
+.page-surface .guide-key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
+  border: 1px solid #86efac;
+  border-radius: 7px;
+  background: #f0fdf4;
+  font-size: .95rem;
+  line-height: 1;
+  color: #15803d;
+  vertical-align: -6px;
+}
+
+.page-surface .guide-chip {
+  display: inline-grid;
+  place-items: center;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: -6px;
+}
+/* The bar that sits between two boxes */
+.page-surface .guide-chip-bar {
+  width: 12px;
+  height: 24px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  font-size: .7rem;
+  color: #64748b;
+}
+/* The button inside a box, for an alternative letter */
+.page-surface .guide-chip-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--lq-sapphire);
+  font-size: .8rem;
+  color: #fff;
+}
+
+/* ---------- the three chain states ---------- */
+
+.page-surface .guide-states {
+  display: grid;
+  gap: 8px;
+  max-width: 44ch;
+  margin: 14px 0 18px;
+  padding: 0;
+  list-style: none;
+  counter-reset: state;
+}
+.page-surface .guide-states li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  counter-increment: state;
+  font-weight: 500;
+}
+.page-surface .guide-states li::before {
+  content: counter(state);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--lq-osm-bg);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--lq-claret);
+}
+
+/* ---------- the worked example's letter strip ---------- */
+
+.page-surface .guide-seq-line {
+  margin: 18px 0 22px;
+  text-align: center;
+}
+.page-surface .guide-seq {
+  display: inline-flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: var(--lq-osm-bg);
+}
+.page-surface .guide-seq-cell {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 52px;
+  border-radius: 9px;
+  background: var(--lq-paper);
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.7rem;
+  color: var(--lq-claret);
+}
+/* The unreadable letter, standing in for a glyph rather than being one */
+.page-surface .guide-seq-cell.is-mark {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--lq-sapphire);
+}
+
+/* ---------- screenshots ---------- */
+
+/* Each figure carries the natural width (--nw), aspect ratio (--ar) and the
+   scale it was drawn at (--s), so a screenshot is never shown larger than it
+   was captured and the frame reserves its height before the image loads. */
+.page-surface .guide-shot {
+  --s: .75;
+  width: min(100%, calc(var(--nw) * var(--s) * 1px));
+  margin: 18px 0;
+  padding: 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 13px;
+  background: var(--lq-paper);
+  box-shadow: 0 12px 32px rgba(23, 33, 43, .07);
+}
+.page-surface .guide-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ar);
+  border-radius: 6px;
+}
+.page-surface .guide-narrow { width: min(100%, 520px); }
+.page-surface .guide-quarter { width: min(100%, 380px); }
+.page-surface .guide-wide { width: 100%; }
+/* A tall screenshot is capped by height instead, so it does not take over */
+.page-surface .guide-tall img {
+  max-height: 640px;
+  width: auto;
+  max-width: 100%;
+}
+/* Two figures that belong together are pulled into one unit */
+.page-surface .guide-shot + .guide-pair { margin-top: -6px; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 991px) {
+  .page-surface .page-content[data-controller="guide"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-surface .guide-toc {
+    position: static;
+    max-height: none;
+    margin-bottom: 8px;
+    padding: 14px 18px;
+    border: 1px solid var(--lq-line);
+    border-radius: 13px;
+    background: var(--lq-body-bg);
+  }
+  .page-surface .guide-toc-toggle {
+    padding: 0;
+    border-bottom: 0;
+  }
+  .page-surface .guide-toc-toggle svg { display: block; width: 15px; height: 15px; }
+  .page-surface .guide-toc-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .page-surface .guide-toc-list { display: none; }
+  .page-surface .guide-toc.is-open .guide-toc-list { display: block; }
+
+  .page-surface .guide-h2 { font-size: 1.6rem; }
+}

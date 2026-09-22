@@ -14,7 +14,7 @@
 
 // The pages that have been rebuilt. A menu entry naming one of these becomes
 // a live link; the rest stay marked "soon".
-window.LQ_BUILT_PAGES = ["about", "institutional", "what-is-lexiqamus", "team", "pricing", "lq1"];
+window.LQ_BUILT_PAGES = ["about", "institutional", "what-is-lexiqamus", "team", "pricing", "lq1", "suggestions-history", "user-guide", "lq3-whats-new"];
 
 window.LQ_PAGE_CHROME = `
   <nav class="offcanvas offcanvas-start side-menu" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">

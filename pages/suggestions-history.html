@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>History of Suggestions and Corrections &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/suggestions-history.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="suggestions-history"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="historyEyebrow">Community</p>
+      <h1 data-i18n="historyTitle">History of Suggestions and Corrections</h1>
+      <p class="page-lede" data-i18n="historyLede">What we added at our users’ suggestion, and what we corrected on their reports.</p>
+    </header>
+
+    <main class="page-content">
+      <p data-i18n="historyIntro">Some of the people who use LexiQamus send us suggestions and report the errors they spot. This page records, year by year, what we added on whose suggestion and what we corrected on whose report. Our thanks to all of them.</p>
+
+      <!-- One section per year, newest first, so the page reads as a record. -->
+      <section class="history-year">
+        <h2 class="history-heading">2026</h2>
+        <p class="history-subhead" data-i18n="historyCorrections">Corrections</p>
+        <div class="history-fix">
+          <p class="history-count"><span class="history-number">5</span>
+            <span data-i18n="y2026Summary">corrections: letter errors in three headwords and readings.</span></p>
+          <p class="history-names" data-i18n="y2026Names" data-i18n-html="1">Reported by: <b>Furkan Arslan</b> (2), <b>Assoc. Prof. Muhammed &#304;kb&acirc;l G&uuml;ler</b> (2), <b>Emin &#350;ahin Mektepli</b>.</p>
+        </div>
+      </section>
+
+      <section class="history-year">
+        <h2 class="history-heading">2025</h2>
+        <p class="history-subhead" data-i18n="historyCorrections">Corrections</p>
+        <div class="history-fix">
+          <p class="history-count"><span class="history-number">11</span>
+            <span data-i18n="y2025Summary">corrections: letter errors in readings, one headword, and words within English definitions.</span></p>
+          <p class="history-names" data-i18n="y2025Names" data-i18n-html="1">Reported by: <b>Daniel Ohanian</b> (6), <b>Theo Knights</b> (2), <b>Owen Green</b>, <b>Prof. T&uuml;lay Artan</b>, <b>Furkan Arslan</b>.</p>
+        </div>
+      </section>
+
+      <section class="history-year">
+        <h2 class="history-heading">2023</h2>
+        <p class="history-subhead" data-i18n="historySuggestions">Suggestions</p>
+        <div class="history-item">
+          <p class="history-date" data-i18n="y2023AtcilDate">April 26</p>
+          <p class="history-text" data-i18n="y2023Atcil" data-i18n-html="1">At the suggestion of <span class="history-who">Assoc. Prof. Abdurrahman At&ccedil;ıl</span> we simplified the on-screen keyboard by removing some buttons, and added small &ldquo;i&rdquo; icons to show which keys carry an explanation.</p>
+        </div>
+        <p class="history-subhead" data-i18n="historyCorrections">Corrections</p>
+        <div class="history-fix">
+          <p class="history-count"><span class="history-number">16</span>
+            <span data-i18n="y2023Summary">corrections: letter errors in headwords, readings, and words within English definitions.</span></p>
+          <p class="history-names" data-i18n="y2023Names" data-i18n-html="1">Reported by: <b>Furkan Arslan</b> (5), <b>Owen Green</b> (3), <b>Esra Demirkoparan</b> (2), <b>Theo Knights</b>, <b>Deniz Y&uuml;ce</b>, <b>Furkan K&ouml;ro&#287;lu</b>, <b>Dr. Nir Shafir</b>, <b>John Zacharias Crist</b>, <b>H&uuml;sn&uuml; Do&#287;an Vardarl&#305;</b>.</p>
+        </div>
+      </section>
+
+      <section class="history-year">
+        <h2 class="history-heading">2022</h2>
+        <p class="history-subhead" data-i18n="historySuggestions">Suggestions</p>
+        <div class="history-item">
+          <p class="history-date" data-i18n="y2022EsraDate">May 3</p>
+          <p class="history-text" data-i18n="y2022Esra" data-i18n-html="1">At the suggestion of <span class="history-who">Esra Demirkoparan</span> we placed a <b>+</b> button before the first box, so a blank box can now be added before the first letter.</p>
+        </div>
+        <div class="history-item">
+          <p class="history-date" data-i18n="y2022CristDate">April 15</p>
+          <p class="history-text" data-i18n="y2022Crist" data-i18n-html="1">At the suggestion of <span class="history-who">John Zacharias Crist</span>, when a blank box is entered next to alternative letters, the search now also allows for the absence of a letter in that position.</p>
+        </div>
+        <div class="history-item">
+          <p class="history-date" data-i18n="y2022EldemDate">January 8</p>
+          <p class="history-text" data-i18n="y2022Eldem" data-i18n-html="1">On the recommendation of <span class="history-who">Prof. Edhem Eldem</span> (Bo&#287;azi&ccedil;i University) and <span class="history-who">Dr. Nir Shafir</span> (UC San Diego), we added new characters to the on-screen keyboard for letters that are similar in shape.</p>
+        </div>
+        <p class="history-subhead" data-i18n="historyCorrections">Corrections</p>
+        <div class="history-fix">
+          <p class="history-count"><span class="history-number">28</span>
+            <span data-i18n="y2022Summary">corrections: letter errors in headwords, readings, Ottoman words, and words within English definitions.</span></p>
+          <p class="history-names" data-i18n="y2022Names" data-i18n-html="1">Reported by: <b>Furkan Arslan</b> (18), <b>Assoc. Prof. Muhammed &#304;kb&acirc;l G&uuml;ler</b> (3), <b>Ahmet Kayl&#305;</b> (3), <b>John Zacharias Crist</b>, <b>Gamze Be&#351;enk</b>, <b>Kerim Akar</b>, <b>Esra Demirkoparan</b>.</p>
+        </div>
+      </section>
+
+      <section class="history-year">
+        <h2 class="history-heading">2016&ndash;2021</h2>
+        <p class="history-subhead" data-i18n="historyCorrections">Corrections</p>
+        <div class="history-fix">
+          <p data-i18n="historyEarly" data-i18n-html="1">Of the corrections made to the words in our database between launch and January 2022, <b>seventy</b> were based on user reports. The reporters and their counts:</p>
+          <ul class="tally-list">
+          <li><span class="tally-name">Kerim Akar</span><span class="tally-count">17</span></li>
+          <li><span class="tally-name">Reyhan &#350;ahin</span><span class="tally-count">7</span></li>
+          <li><span class="tally-name">Esra Demirkoparan</span><span class="tally-count">6</span></li>
+          <li><span class="tally-name">Ay&#351;eg&uuml;l E&#287;mir</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">B&uuml;nyamin Tetik</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">John Zacharias Crist</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">Murat Y&uuml;cel</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">Nir Shafir</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">O&#287;uz Alpo&#287;lu</span><span class="tally-count">3</span></li>
+          <li><span class="tally-name">Bet&uuml;l Elmacı</span><span class="tally-count">2</span></li>
+          <li><span class="tally-name">H&uuml;seyin G&ouml;cen</span><span class="tally-count">2</span></li>
+          <li><span class="tally-name">&#304;brahim Bilge</span><span class="tally-count">2</span></li>
+          <li><span class="tally-name">&#304;rem Aras</span><span class="tally-count">2</span></li>
+          <li><span class="tally-name">Yemliha Duman</span><span class="tally-count">2</span></li>
+          <li><span class="tally-name">Abdullah Esen</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Abdullah U&ccedil;ar</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Abdurrahman A&ccedil;ıkg&ouml;z</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Alev Sınar</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Arif Yasin Kavdır</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Aslıhan Karata&#351;</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Ay&#351;e Yılmaz</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">&Ccedil;a&#287;rı Erdo&#287;an</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Damla Ta&#351;delen</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Elif Kuran</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Gizem Yıldız</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">G&uuml;nseli G&uuml;rel</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Halil &#304;brahim &#350;im&#351;ek</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Hanifi Kaya</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">H&uuml;meyra Mermer Turner</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">I&#351;ıl Karababa</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Melike Da&#351;</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Merve Eryılmaz</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Mevl&uuml;t &#304;lhan</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Murat G&uuml;rses</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Musa &#350;eng&uuml;n</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Remzi Soyt&uuml;rk</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Serenay Sayar</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Serkan Av&#351;ar</span><span class="tally-count">1</span></li>
+          <li><span class="tally-name">Z&uuml;leyha Aydın</span><span class="tally-count">1</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="callout">
+        <p data-i18n="historyReport" data-i18n-html="1">If you spot an error, report it with the Edit button on the result row; for suggestions and comments, write to us at <a href="mailto:info@lexiqamus.com">info@lexiqamus.com</a>.</p>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

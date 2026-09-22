@@ -10,10 +10,11 @@
 // the span holding just that text, never on a parent that also holds icons,
 // badges or other children.
 //
-// Attribute keys are handled too: data-i18n-title, data-i18n-aria and
-// data-i18n-alt set title, aria-label and alt. Elements carrying
-// data-i18n-html have their markup replaced instead of their text, for copy
-// that contains tags.
+// Attribute keys are handled too: data-i18n-title, data-i18n-aria,
+// data-i18n-alt and data-i18n-src set title, aria-label, alt and src. The
+// last is for a screenshot of the interface, which differs by language.
+// Elements carrying data-i18n-html have their markup replaced instead of
+// their text, for copy that contains tags.
 
 
 class LanguageController extends Stimulus.Controller {
@@ -47,6 +48,7 @@ class LanguageController extends Stimulus.Controller {
     this.translateAttribute(dictionary, "i18nTitle", "title");
     this.translateAttribute(dictionary, "i18nAria", "aria-label");
     this.translateAttribute(dictionary, "i18nAlt", "alt");
+    this.translateAttribute(dictionary, "i18nSrc", "src");
 
     this.optionTargets.forEach((option) => {
       const isActive = option.dataset.language === language;

@@ -1,0 +1,163 @@
+/* =========================================================
+   LexiQamus 3.0: What's New
+   Scoped under .page-surface. The page is a set of short
+   feature notes grouped by the screen they belong to.
+   ========================================================= */
+
+/* ---------- what the collection holds ---------- */
+
+/* The figures come first because every feature below rests on them. The two
+   headline figures sit apart from the three category counts, which share a
+   row and are colour-coded like the result rows they describe. */
+.page-surface .v3-figures {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0 8px;
+}
+
+.page-surface .v3-headline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.page-surface .v3-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.page-surface .v3-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 22px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-body-bg);
+}
+.page-surface .v3-number {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--lq-sapphire);
+  font-variant-numeric: tabular-nums;
+}
+.page-surface .v3-label {
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--lq-ink-soft);
+}
+
+/* The three categories carry the same colours the results list uses */
+.page-surface .v3-entry {
+  border-color: var(--lq-entry-border);
+  background: var(--lq-entry-bg);
+}
+.page-surface .v3-entry .v3-number { color: var(--lq-entry-text); }
+.page-surface .v3-sub {
+  border-color: var(--lq-sub-border);
+  background: var(--lq-sub-bg);
+}
+.page-surface .v3-sub .v3-number { color: var(--lq-sub-text); }
+.page-surface .v3-related {
+  border-color: var(--lq-related-border);
+  background: var(--lq-related-bg);
+}
+.page-surface .v3-related .v3-number { color: var(--lq-related-text); }
+
+/* ---------- one screen's worth of features ---------- */
+
+.page-surface .v3-block { margin-top: 12px; }
+
+.page-surface .v3-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0 16px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+/* The second word is set in italic, the way the section titles read in the
+   reference: "Results list", "Dictionary page". */
+.page-surface .v3-section em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--lq-claret);
+}
+.page-surface .v3-section::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--lq-line);
+}
+
+.page-surface .v3-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 14px;
+}
+
+.page-surface .v3-feature {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 22px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-paper);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+}
+.page-surface .v3-feature h3 {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 10px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--lq-ink-navy);
+}
+.page-surface .v3-feature p {
+  flex: 1;
+  margin: 0;
+  font-size: .93rem;
+  line-height: 1.6;
+}
+
+.page-surface .v3-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--lq-lat-bg);
+  color: var(--lq-sapphire);
+}
+.page-surface .v3-icon svg { width: 16px; height: 16px; }
+
+/* ---------- the link into the user guide ---------- */
+
+.page-surface .v3-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--lq-claret);
+  text-decoration: none;
+}
+.page-surface .v3-more:hover { color: var(--lq-claret-hover); }
+.page-surface .v3-more svg {
+  width: 13px;
+  height: 13px;
+  transition: transform .15s;
+}
+.page-surface .v3-more:hover svg { transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-surface .v3-more svg { transition: none; }
+}

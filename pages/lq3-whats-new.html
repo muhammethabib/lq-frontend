@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Version 3.0: What’s New &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/lq3-whats-new.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="lq3-whats-new"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="v3Eyebrow">LexiQamus 3.0 &middot; 2026</p>
+      <h1 data-i18n="v3Title">What’s New</h1>
+      <p class="page-lede" data-i18n="v3Lede">From the search screen to the results list, from the dictionary page to the Word Decoder: what the new version brings.</p>
+    </header>
+
+    <main class="page-content">
+      <p data-i18n="v3Intro" data-i18n-html="1">With LexiQamus 3.0 every screen of the tool has been redesigned. Below are the highlights of the new version; each is explained in detail in the <a href="user-guide.html">User Guide</a>.</p>
+
+      <!-- What the collection holds, since every feature below rests on it -->
+      <div class="v3-figures">
+        <div class="v3-headline">
+          <div class="v3-figure">
+            <span class="v3-number" data-i18n="v3Volumes">9 dictionaries, 17 volumes</span>
+            <span class="v3-label" data-i18n="v3VolumesNote" data-i18n-html="1">A rapidly growing collection, digitized by our team in <b>BuildLQ</b>, a program built for the purpose.</span>
+          </div>
+          <div class="v3-figure">
+            <span class="v3-number">491,000+</span>
+            <span class="v3-label" data-i18n="v3RecordsNote">Words, phrases and entry records.</span>
+          </div>
+        </div>
+        <div class="v3-split">
+          <div class="v3-figure v3-entry">
+            <span class="v3-number">209,000+</span>
+            <span class="v3-label" data-i18n="v3Headwords">Headwords</span>
+          </div>
+          <div class="v3-figure v3-sub">
+            <span class="v3-number">152,000+</span>
+            <span class="v3-label" data-i18n="v3Subentries">Subentries</span>
+          </div>
+          <div class="v3-figure v3-related">
+            <span class="v3-number">130,000+</span>
+            <span class="v3-label" data-i18n="v3Related">Related words</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="v3-block">
+        <h2 class="v3-section"><span data-i18n="v3SearchTitle">Search</span></h2>
+        <div class="v3-features">
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="search"></i></span>
+              <span data-i18n="v3TwoWaysName">Two ways to search</span>
+            </h3>
+            <p data-i18n="v3TwoWaysBody" data-i18n-html="1">The <b>Search</b> tab looks up a word you can read; the <b>Word Decoder</b> identifies a word you cannot read, starting from the clues you have.</p>
+            <a class="v3-more" href="user-guide.html#home">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="columns"></i></span>
+              <span data-i18n="v3TwoScriptsName">A search box in two scripts</span>
+            </h3>
+            <p data-i18n="v3TwoScriptsBody" data-i18n-html="1">Type the word in Latin letters in one half of the box, or in Ottoman letters in the other.</p>
+            <a class="v3-more" href="user-guide.html#search-bar">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="globe"></i></span>
+              <span data-i18n="v3EnglishSearchName">Search within English definitions</span>
+            </h3>
+            <p data-i18n="v3EnglishSearchBody" data-i18n-html="1">With <b>ENG</b> selected, the search runs inside the English definitions of the dictionaries; every entry whose definition contains the English word is listed.</p>
+            <a class="v3-more" href="user-guide.html#ott-eng">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="type"></i></span>
+              <span data-i18n="v3KeyboardName">Ottoman on-screen keyboard</span>
+            </h3>
+            <p data-i18n="v3KeyboardBody" data-i18n-html="1">Click the letters to type, or use your own keyboard with the equivalents printed on the keys.</p>
+            <a class="v3-more" href="user-guide.html#ottoman-keyboard">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="book"></i></span>
+              <span data-i18n="v3DictionariesName">Choice of dictionaries</span>
+            </h3>
+            <p data-i18n="v3DictionariesBody" data-i18n-html="1">Search across all dictionaries, or limit the search to the works you pick from the list.</p>
+            <a class="v3-more" href="user-guide.html#dictionaries">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="v3-block">
+        <h2 class="v3-section"><span data-i18n="v3ResultsTitle">Results</span> <em data-i18n="v3ResultsEmphasis">list</em></h2>
+        <div class="v3-features">
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="layers"></i></span>
+              <span data-i18n="v3SourcesName">Results with their sources</span>
+            </h3>
+            <p data-i18n="v3SourcesBody" data-i18n-html="1">The list opens with how many records were found and how many dictionaries and volumes were scanned; each row shows the dictionary and page number the record comes from.</p>
+            <a class="v3-more" href="user-guide.html#results">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="edit-3"></i></span>
+              <span data-i18n="v3SpellingName">Search by spelling</span>
+            </h3>
+            <p data-i18n="v3SpellingBody" data-i18n-html="1">The likely spellings and readings of what you typed appear as buttons. These are not guesses; they are data entered while digitizing the dictionaries.</p>
+            <a class="v3-more" href="user-guide.html#search-by-spelling">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="tag"></i></span>
+              <span data-i18n="v3CategoriesName">Word categories</span>
+            </h3>
+            <p data-i18n="v3CategoriesBody" data-i18n-html="1">Every result is labeled <b>Headword</b>, <b>Subentry</b> or <b>Related</b>; the colored bar on the left of the row marks the same distinction.</p>
+            <a class="v3-more" href="user-guide.html#categories">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="check-circle"></i></span>
+              <span data-i18n="v3ReadingsName">Editor-approved readings</span>
+            </h3>
+            <p data-i18n="v3ReadingsBody" data-i18n-html="1">You can see which Latin readings were approved by editors and which were generated automatically; mark a reading as <b>Correct</b> or report a correction.</p>
+            <a class="v3-more" href="user-guide.html#latin-readings">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="mouse-pointer"></i></span>
+              <span data-i18n="v3ZonesName">Two click zones</span>
+            </h3>
+            <p data-i18n="v3ZonesBody" data-i18n-html="1">The left side of a row takes you to where the word occurs, the right side to the start of the entry; clicking a word in the row searches it in a new tab.</p>
+            <a class="v3-more" href="user-guide.html#two-zones">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="copy"></i></span>
+              <span data-i18n="v3CitationsName">Ready-made citations</span>
+            </h3>
+            <p data-i18n="v3CitationsBody" data-i18n-html="1">The citation for every record is copied with one click in <b>APA</b>, <b>Chicago</b> and <b>Harvard</b> styles.</p>
+            <a class="v3-more" href="user-guide.html#dictionary-reference">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="zap"></i></span>
+              <span data-i18n="v3ScanName">Scan Similar Matches</span>
+            </h3>
+            <p data-i18n="v3ScanBody" data-i18n-html="1">If you cannot find what you searched for, words close to your spelling letter by letter appear as a numbered list.</p>
+            <a class="v3-more" href="user-guide.html#scan-similar">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="v3-block">
+        <h2 class="v3-section"><span data-i18n="v3PageTitle">Dictionary</span> <em data-i18n="v3PageEmphasis">page</em></h2>
+        <div class="v3-features">
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="image"></i></span>
+              <span data-i18n="v3ImageName">The dictionary as an image</span>
+            </h3>
+            <p data-i18n="v3ImageBody" data-i18n-html="1">The entry opens on the original scan of the dictionary. Digitized words sit in colored boxes; hover to see the Ottoman spelling and the reading, click to start a new search.</p>
+            <a class="v3-more" href="user-guide.html#colored-boxes">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="maximize"></i></span>
+              <span data-i18n="v3SliceName">Slice, column and page</span>
+            </h3>
+            <p data-i18n="v3SliceBody" data-i18n-html="1">View the entry on its own, with its whole column, or with the whole page; use the arrows to move through the dictionary entry by entry, column by column or page by page.</p>
+            <a class="v3-more" href="user-guide.html#slice-column-page">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="alert-triangle"></i></span>
+              <span data-i18n="v3ReportName">Error reporting</span>
+            </h3>
+            <p data-i18n="v3ReportBody" data-i18n-html="1">Every digitized word has a warning sign next to it; when you spot an error, report it from there.</p>
+            <a class="v3-more" href="user-guide.html#report-error">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="v3-block">
+        <h2 class="v3-section"><span data-i18n="v3DecoderTitle">Word</span> <em data-i18n="v3DecoderEmphasis">Decoder</em></h2>
+        <div class="v3-features">
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="grid"></i></span>
+              <span data-i18n="v3KeyboardsName">Basic and advanced keyboard</span>
+            </h3>
+            <p data-i18n="v3KeyboardsBody" data-i18n-html="1">The basic keyboard is enough for every search; the advanced keyboard offers every written form of the letters and the zero-width character on separate keys.</p>
+            <a class="v3-more" href="user-guide.html#word-decoder">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="edit-2"></i></span>
+              <span data-i18n="v3TypingName">Typing with your own keyboard</span>
+            </h3>
+            <p data-i18n="v3TypingBody" data-i18n-html="1">You do not have to click the keys; you can also type the letters straight into the boxes with your own keyboard.</p>
+            <a class="v3-more" href="user-guide.html#decoder-keyboard">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+          <article class="v3-feature">
+            <h3>
+              <span class="v3-icon" aria-hidden="true"><i data-feather="git-merge"></i></span>
+              <span data-i18n="v3DecoderResultsName">Decoder results</span>
+            </h3>
+            <p data-i18n="v3DecoderResultsBody" data-i18n-html="1">The Decoder’s results come in the new layout too. Thanks to the digital dictionary ecosystem we built in <b>BuildLQ</b>, records are grouped under headings that run from the root to phrases, from the simplest form to the broadest; the rows behave just like those in the <b>Search</b> tab.</p>
+            <a class="v3-more" href="user-guide.html#decoder-results">
+              <span data-i18n="v3InGuide">In the guide</span>
+              <i data-feather="arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

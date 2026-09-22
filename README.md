@@ -55,7 +55,10 @@ docs/                                 the dev team's instructions and review pro
 | Institutional Subscribers | `pages/institutional.html` | Built |
 | Pricing | `pages/pricing.html` | Built |
 | LexiQamus 1.0 | `pages/lq1.html` | Built |
-| User guide, data model, lexicon digitization, version notes, suggestion history | — | Not started; the menu entry for each names the file it will live in |
+| User Guide | `pages/user-guide.html` | Built |
+| Version 3.0: What's New | `pages/lq3-whats-new.html` | Built |
+| History of Suggestions and Corrections | `pages/suggestions-history.html` | Built |
+| Data model, lexicon digitization, version 2.0 notes | — | Not started; the menu entry for each names the file it will live in |
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list

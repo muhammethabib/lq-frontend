@@ -41,6 +41,7 @@
   padding-bottom: 6px;
 }
 .ottoman-keyboard .keyboard-bar-spacer { flex: 1; }
+.ottoman-keyboard .wildcard-row { display: inline-flex; gap: 8px; }
 
 .ottoman-keyboard .keyboard-clear {
   height: 22px;
@@ -99,15 +100,17 @@
 .ottoman-keyboard .keyboard-panel { display: none; flex-direction: column; gap: 5px; }
 .ottoman-keyboard .keyboard-panel.is-active { display: flex; }
 
-/* Rows read right to left, so the first key in the markup is the rightmost */
+/* Rows read right to left, so the first key in the markup is the rightmost.
+   The order follows the direction attribute on the keyboard rather than being
+   fixed here. */
 .ottoman-keyboard .keyboard-row {
   display: flex;
-  flex-direction: row-reverse;
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
   width: 100%;
 }
+.ottoman-keyboard[data-direction="rtl"] .keyboard-row { flex-direction: row-reverse; }
 .ottoman-keyboard .keyboard-row:last-child { justify-content: space-between; }
 
 /* ---------- keys ---------- */
@@ -154,11 +157,13 @@
 .ottoman-keyboard .key[data-dots="either"] .dot-mark { top: 6px; }
 .ottoman-keyboard .key[data-dots="either"] .dot-mark + .dot-mark { top: auto; bottom: 6px; }
 
+/* The zero-width space key shows a bracket pair, which is read left to right
+   whatever the surrounding direction. */
 .ottoman-keyboard .key[data-kind="joiner"] {
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   font-size: 15px;
   direction: ltr;
-  unicode-bidi: bidi-override;
+  unicode-bidi: isolate;
   background: var(--special-face);
   border-color: var(--special-edge);
 }
@@ -189,8 +194,9 @@
   .ottoman-keyboard .key { font-size: 20px; }
 }
 
+/* Too narrow to float: the keyboard takes the bottom of the screen. The
+   controller checks the same width before positioning it. */
 @media (max-width: 767px) {
-  /* Too narrow to float: the keyboard takes the bottom of the screen */
   .ottoman-keyboard {
     --key-size: 40px;
     left: 0 !important;

@@ -16,7 +16,7 @@
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
     "strip", "clear", "results", "resultsTable", "pattern",
-    "recordCount", "dictionaryCount", "expansionRow", "emptyState", "groupCopy"
+    "recordCount", "dictionaryCount", "expansionRow", "emptyState", "error", "groupCopy"
   ]
 
   static values = {
@@ -26,6 +26,8 @@ class WordDecoderController extends Stimulus.Controller {
 
   connect() {
     this.results = null;
+    this.lastPattern = null;
+    this.activeExpansion = null;
     this.buildStrip();
 
     // Keys arrive from the on-screen keyboard as events, so the keyboard does
@@ -36,21 +38,53 @@ class WordDecoderController extends Stimulus.Controller {
     // A click outside both the strip and the keyboard puts it away
     this.onOutside = (event) => {
       if (event.target.closest(".ottoman-keyboard")) return;
-      if (event.target.closest(".slot-cell")) return;
+      // The whole strip counts, not just a cell: the join marker, the insert
+      // button and the trash button all sit outside the cells.
+      if (event.target.closest(".slot-strip")) return;
       this.dismissKeyboard();
     };
     document.addEventListener("pointerdown", this.onOutside);
 
-    this.element.addEventListener("language:changed", () => {
+    // language:changed is dispatched on the page root, which is an ancestor of
+    // this element, so it is listened for on document where it bubbles to.
+    this.onLanguageChange = () => {
+      this.relabelStrip();
       this.renderPattern();
       this.renderResults();
-      window.LQ.refreshDynamicContent(this.element);
-    });
+    };
+    document.addEventListener("language:changed", this.onLanguageChange);
   }
 
   disconnect() {
     document.removeEventListener("ottoman-keyboard:key", this.onKey);
     document.removeEventListener("pointerdown", this.onOutside);
+    document.removeEventListener("language:changed", this.onLanguageChange);
+    window.LQ.disposeTooltips(this.element);
+  }
+
+  // The strip's tooltips are written once, so their text is replaced in place
+  // rather than rebuilding the strip and losing what the reader has entered.
+  relabelStrip() {
+    const labels = [
+      [".slot-remove", "decoderRemoveSlot", "Remove this letter"],
+      [".cell-add", "decoderAddAlternative", "It could also be this letter"],
+      [".cell-remove", "decoderRemoveAlternative", "Remove this alternative"],
+      [".gap-insert", "decoderInsertSlot", "Insert a letter here"]
+    ];
+    labels.forEach(([selector, key, fallback]) => {
+      this.stripTarget.querySelectorAll(selector).forEach((element) => {
+        this.setTooltip(element, this.translate(key, fallback));
+      });
+    });
+    this.stripTarget.querySelectorAll(".gap-join").forEach((join) => {
+      this.setTooltip(join, this.joinLabel(join.dataset.join));
+    });
+  }
+
+  setTooltip(element, text) {
+    element.setAttribute("data-bs-title", text);
+    const tooltip = bootstrap.Tooltip.getInstance(element);
+    if (tooltip) tooltip.setContent({ ".tooltip-inner": text });
   }
 
   // ==================== building the strip ====================
@@ -108,9 +142,10 @@ class WordDecoderController extends Stimulus.Controller {
 
   joinHtml() {
     return `
-      <button type="button" class="gap-join" data-join="separate"
+      <button type="button" class="btn gap-join" data-join="separate"
               data-action="pointerdown->word-decoder#cycleJoin"
-              data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("joinSeparate", "Letters written apart"))}">
+              data-bs-toggle="tooltip" data-bs-placement="bottom"
+              data-bs-title="${this.escape(this.joinLabel("separate"))}">
         <span class="query" aria-hidden="true">?</span>
         <svg viewBox="0 0 60 40" width="34" height="17" aria-hidden="true">
           <rect class="ring ring-start" x="4" y="11" width="22" height="14" rx="7" ry="7"></rect>
@@ -127,7 +162,7 @@ class WordDecoderController extends Stimulus.Controller {
     gaps.forEach((gap, index) => {
       const isEdge = index === 0 || index === gaps.length - 1;
       const join = gap.querySelector(".gap-join");
-      if (isEdge && join) join.remove();
+      if (isEdge && join) { window.LQ.disposeTooltips(join); join.remove(); }
       if (!isEdge && !join) gap.insertAdjacentHTML("beforeend", this.joinHtml());
     });
     window.LQ.refreshDynamicContent(this.stripTarget);
@@ -147,8 +182,8 @@ class WordDecoderController extends Stimulus.Controller {
   removeSlot(event) {
     const slot = event.currentTarget.closest(".slot");
     const gap = slot.nextElementSibling;
-    this.disposeTooltips(slot);
-    if (gap) this.disposeTooltips(gap);
+    window.LQ.disposeTooltips(slot);
+    if (gap) window.LQ.disposeTooltips(gap);
     slot.remove();
     if (gap) gap.remove();
     this.refreshGaps();
@@ -166,14 +201,14 @@ class WordDecoderController extends Stimulus.Controller {
   removeAlternative(event) {
     const cell = event.currentTarget.closest(".slot-cell");
     const frame = cell.closest(".slot-frame");
-    this.disposeTooltips(cell);
+    window.LQ.disposeTooltips(cell);
     cell.remove();
     // A slot with no cells left is no longer a letter position
     if (!frame.querySelector(".slot-cell")) {
       const slot = frame.closest(".slot");
       const gap = slot.nextElementSibling;
-      this.disposeTooltips(slot);
-      if (gap) this.disposeTooltips(gap);
+      window.LQ.disposeTooltips(slot);
+      if (gap) window.LQ.disposeTooltips(gap);
       slot.remove();
       if (gap) gap.remove();
       this.refreshGaps();
@@ -183,25 +218,28 @@ class WordDecoderController extends Stimulus.Controller {
 
   // separate -> connected -> uncertain -> separate
   cycleJoin(event) {
-    // Keeps focus in the letter field, so the keyboard stays open
+    // Keeps focus in the letter field rather than moving it to this button
     event.preventDefault();
     const button = event.currentTarget;
     const order = ["separate", "connected", "uncertain"];
     const next = order[(order.indexOf(button.dataset.join) + 1) % order.length];
     button.dataset.join = next;
 
+    this.setTooltip(button, this.joinLabel(next));
+  }
+
+  joinLabel(state) {
     const labels = {
-      separate: this.translate("joinSeparate", "Letters written apart"),
-      connected: this.translate("joinConnected", "Letters written joined"),
-      uncertain: this.translate("joinUncertain", "Cannot tell")
+      separate: ["joinSeparate", "Letters written apart"],
+      connected: ["joinConnected", "Letters written joined"],
+      uncertain: ["joinUncertain", "Cannot tell"]
     };
-    const tooltip = bootstrap.Tooltip.getInstance(button);
-    if (tooltip) tooltip.setContent({ ".tooltip-inner": labels[next] });
-    button.setAttribute("data-bs-title", labels[next]);
+    const [key, fallback] = labels[state] || labels.separate;
+    return this.translate(key, fallback);
   }
 
   clearStrip() {
-    this.disposeTooltips(this.stripTarget);
+    window.LQ.disposeTooltips(this.stripTarget);
     this.buildStrip();
     this.dismissKeyboard();
   }
@@ -233,34 +271,48 @@ class WordDecoderController extends Stimulus.Controller {
     }
 
     if (event.key === "Enter") { event.preventDefault(); this.submit(event); return; }
-    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.ctrlKey || event.metaKey) return;
 
-    const letter = this.letterFor(event.key, event.shiftKey);
+    const letter = this.letterFor(event.key, event.shiftKey, event.altKey);
     if (!letter) return;
     event.preventDefault();
     this.writeCell(input.closest(".slot-cell"), { char: letter });
     this.advance(input);
   }
 
-  // Which Ottoman letter a physical key produces. Shift reaches the second
-  // letter on a key that carries more than one.
-  letterFor(key, withShift) {
+  // Which Ottoman letter a physical key produces. A key can carry up to three
+  // letters: Shift reaches the second, Alt the third.
+  letterFor(key, withShift, withAlt) {
     const map = window.LQ_OTTOMAN_KEYMAP || { single: {}, layered: {} };
     const lower = key.length === 1 ? key.toLowerCase() : key;
-    if (map.layered[lower]) {
-      const layers = map.layered[lower];
-      return (withShift && layers[1]) ? layers[1] : layers[0];
+    const layers = map.layered[lower];
+    if (layers) {
+      if (withAlt) return layers[2] || null;
+      if (withShift) return layers[1] || null;
+      return layers[0];
     }
-    if (!withShift && map.single[lower]) return map.single[lower];
-    return null;
+    // Alt on a macOS keyboard produces its own character, so the key is read
+    // from the physical position instead of what it typed.
+    if (withAlt || withShift) return null;
+    return map.single[lower] || null;
   }
 
   handleInput(event) {
-    // A letter pasted or typed straight into the field still counts
+    // A letter pasted or typed straight into the field replaces whatever mark
+    // was there, so the record of that mark has to go with it.
     const cell = event.currentTarget.closest(".slot-cell");
-    const mark = cell.querySelector(".slot-mark");
-    if (mark && event.currentTarget.value) mark.remove();
+    if (event.currentTarget.value) this.forgetMark(cell);
     this.refreshClear();
+  }
+
+  // Everything that made a cell a wildcard or a skeleton, cleared together
+  forgetMark(cell) {
+    const mark = cell.querySelector(".slot-mark");
+    if (mark) mark.remove();
+    delete cell.dataset.wildcard;
+    delete cell.dataset.rasm;
+    delete cell.dataset.dots;
+    delete cell.dataset.matches;
   }
 
   // ==================== the on-screen keyboard ====================
@@ -268,15 +320,20 @@ class WordDecoderController extends Stimulus.Controller {
   openKeyboard(event) {
     this.activeCell = event.currentTarget.closest(".slot-cell");
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:request", {
-      detail: { anchor: this.stripTarget, canClear: this.isDirty() }
+      detail: { anchor: this.stripTarget, canClear: this.isDirty(), owner: this.ownerName }
     }));
   }
 
   dismissKeyboard() {
+    this.activeCell = null;
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:dismiss"));
   }
 
+  get ownerName() { return "word-decoder"; }
+
   applyKey(detail) {
+    // The keyboard is shared, so only keys addressed here are acted on
+    if (detail.owner !== this.ownerName) return;
     if (detail.kind === "clear") { this.clearStrip(); return; }
     if (!this.activeCell || !this.activeCell.isConnected) return;
     const input = this.activeCell.querySelector(".slot-input");
@@ -314,8 +371,7 @@ class WordDecoderController extends Stimulus.Controller {
 
     if (content.char) {
       input.value = content.char;
-      delete cell.dataset.wildcard;
-      delete cell.dataset.rasm;
+      this.forgetMark(cell);
       return;
     }
 
@@ -341,14 +397,8 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   clearCell(cell) {
-    const input = cell.querySelector(".slot-input");
-    const mark = cell.querySelector(".slot-mark");
-    if (mark) mark.remove();
-    input.value = "";
-    delete cell.dataset.wildcard;
-    delete cell.dataset.rasm;
-    delete cell.dataset.dots;
-    delete cell.dataset.matches;
+    cell.querySelector(".slot-input").value = "";
+    this.forgetMark(cell);
   }
 
   cellIsFilled(cell) {
@@ -401,7 +451,10 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   refreshClear() {
-    this.clearTarget.hidden = !this.isDirty();
+    const dirty = this.isDirty();
+    this.clearTarget.hidden = !dirty;
+    // The keyboard carries its own Clear, so it is told when the strip changes
+    document.dispatchEvent(new CustomEvent("ottoman-keyboard:state", { detail: { canClear: dirty } }));
   }
 
   // ==================== the pattern ====================
@@ -459,25 +512,38 @@ class WordDecoderController extends Stimulus.Controller {
     if (described.length === 0) return;
 
     this.dismissKeyboard();
+    this.lastPattern = pattern;
+    this.runSearch(null);
+  }
 
-    // Matches the Rails route this page expects:
-    //   GET /word_decoder/results?pattern=<json>&q=<readable form>
+  // Matches the Rails route this page expects:
+  //   GET /word_decoder/results?pattern=<json>&q=<readable form>&expand=<key>
+  runSearch(expansion) {
+    const pattern = this.lastPattern;
+    if (!pattern) return;
+
     $.ajax({
       url: this.endpointValue,
       type: "GET",
-      data: { pattern: JSON.stringify(pattern), q: this.patternText(pattern) },
+      data: {
+        pattern: JSON.stringify(pattern),
+        q: this.patternText(pattern),
+        expand: expansion || ""
+      },
       // No backend yet: returning false from beforeSend cancels the request and
       // the page is fed sample data instead. Delete beforeSend once the route
       // exists; success already handles the real response shape.
-      beforeSend: () => { this.receive(window.LQ_DECODER_RESULTS); return false; },
-      success: (response) => this.receive(response),
+      beforeSend: () => { this.receive(window.LQ_DECODER_RESULTS, expansion); return false; },
+      success: (response) => this.receive(response, expansion),
       error: () => this.showError()
     });
   }
 
-  receive(results) {
+  receive(results, expansion) {
     this.results = results;
+    this.activeExpansion = expansion || null;
     this.emptyStateTarget.hidden = true;
+    this.errorTarget.hidden = true;
     this.resultsTarget.hidden = false;
 
     const totals = results.totals || {};
@@ -489,10 +555,11 @@ class WordDecoderController extends Stimulus.Controller {
     this.renderResults();
   }
 
+  // A failure gets its own element, so it is not overwritten the next time the
+  // language sweep rewrites the empty-state copy.
   showError() {
-    this.emptyStateTarget.hidden = false;
-    this.emptyStateTarget.textContent =
-      this.translate("searchFailed", "The search could not be completed. Please try again.");
+    this.errorTarget.hidden = false;
+    this.emptyStateTarget.hidden = true;
     this.resultsTarget.hidden = true;
   }
 
@@ -525,10 +592,12 @@ class WordDecoderController extends Stimulus.Controller {
     this.expansionRowTarget.innerHTML =
       `<span class="expansion-label" data-i18n="expandLabel">${this.escape(this.translate("expandLabel", "Expand search"))}</span>` +
       expansions.map((expansion) => `
-        <button type="button" class="btn expansion-chip" data-expansion="${this.escape(expansion.key)}"
-                aria-pressed="false" data-action="click->word-decoder#toggleExpansion">
+        <button type="button" class="btn expansion-chip${expansion.key === this.activeExpansion ? " active" : ""}"
+                data-expansion="${this.escape(expansion.key)}"
+                aria-pressed="${expansion.key === this.activeExpansion}"
+                data-action="click->word-decoder#toggleExpansion">
           ${this.escape(labels[expansion.key] || expansion.key)}
-          ${expansion.count ? `<span class="expansion-count">+${expansion.count}</span>` : ""}
+          ${expansion.count ? `<span class="expansion-count">+${this.escape(expansion.count)}</span>` : ""}
         </button>`).join("");
   }
 
@@ -544,7 +613,7 @@ class WordDecoderController extends Stimulus.Controller {
       chip.classList.add("active");
       chip.setAttribute("aria-pressed", "true");
     }
-    // With the real endpoint this re-runs the search with the wider match set
+    this.runSearch(wasActive ? null : chip.dataset.expansion);
   }
 
   renderResults() {
@@ -558,9 +627,12 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   groupHtml(group) {
-    const copy = this.groupCopyTarget.querySelector(`[data-group="${group.key}"]`);
+    // Looked up by comparing the attribute, so a group key never has to be
+    // safe to put inside a selector.
+    const copy = Array.from(this.groupCopyTarget.children)
+      .find((element) => element.dataset.group === group.key);
     const title = copy ? copy.textContent.trim() : group.key;
-    const bodyId = `decoder-group-${group.key}`;
+    const bodyId = `decoder-group-${this.escape(group.key)}`;
     const candidates = this.groupByCandidate(group.rows);
 
     const body = candidates.length === 0
@@ -629,7 +701,7 @@ class WordDecoderController extends Stimulus.Controller {
 
   rowHtml(candidate, row, nested, candidateId) {
     return `
-      <tr class="result-row${nested ? " is-nested" : ""}" data-category="${row.category}"
+      <tr class="result-row${nested ? " is-nested" : ""}" data-category="${this.escape(row.category)}"
           ${candidateId ? `data-belongs-to="${candidateId}"` : ""} ${nested ? "hidden" : ""}>
         <td>
           <div class="word-pair">
@@ -646,11 +718,40 @@ class WordDecoderController extends Stimulus.Controller {
           </div>
         </td>
         <td class="dictionary-cell">
-          <div class="dictionary-name">${this.escape(this.dictionaryLabelFor(row.dictionary))}</div>
-          <div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>
+          <div class="dictionary-name">${this.escape(window.LQ.dictionaryLabel(row.dictionary))}</div>
+          ${row.page ? `<div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>` : ""}
         </td>
-        <td></td>
+        <td>
+          <div class="row-actions">
+            <button type="button" class="btn cite-button" data-action="click->word-decoder#cite"
+                    data-cite-latin="${this.escape(candidate.latin)}"
+                    data-cite-ottoman="${this.escape(candidate.ottoman)}"
+                    data-cite-dictionary="${this.escape(row.dictionary)}"
+                    data-cite-page="${this.escape(row.page)}"
+                    aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(candidate.latin)}">
+              <i data-feather="clipboard"></i>
+            </button>
+            <!-- Staff only: editing a stored reading, as opposed to a reader
+                 suggesting a correction. Restrict this when permissions land. -->
+            <button type="button" class="btn cite-button admin-only" data-action="click->word-decoder#editEntry"
+                    aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
+              <i data-feather="edit-2"></i>
+            </button>
+          </div>
+        </td>
       </tr>`;
+  }
+
+  cite(event) {
+    const { citeLatin, citeOttoman, citeDictionary, citePage } = event.currentTarget.dataset;
+    // The citation modal is its own feature; until it exists the reference is
+    // put on the clipboard so the action is not a dead end.
+    const reference = `${citeOttoman} (${citeLatin}). ${window.LQ.dictionaryLabel(citeDictionary)}, p. ${citePage}.`;
+    if (navigator.clipboard) navigator.clipboard.writeText(reference).catch(() => {});
+  }
+
+  editEntry() {
+    // Placeholder for the staff editing screen.
   }
 
   toggleCandidate(event) {
@@ -675,37 +776,15 @@ class WordDecoderController extends Stimulus.Controller {
 
   // ==================== helpers ====================
 
-  dictionaryLabelFor(name) {
-    const year = (window.LQ_DICTIONARY_YEARS || {})[name];
-    return year ? `${name}, ${year}` : name;
-  }
-
   categoryLabel(category) {
     const labels = { ENTRY: "catEntry", SUBENTRY: "catSubentry", RELATED: "catRelated" };
     const fallbacks = { ENTRY: "Headword", SUBENTRY: "Subheadword", RELATED: "Related" };
     return this.translate(labels[category], fallbacks[category] || category);
   }
 
-  // A tooltip keeps a reference to its element, so it is disposed before the
-  // element is removed rather than left floating.
-  disposeTooltips(root) {
-    root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
-      const tooltip = bootstrap.Tooltip.getInstance(element);
-      if (tooltip) tooltip.dispose();
-    });
-  }
+  translate(key, fallback) { return window.LQ.translate(key, fallback); }
 
-  translate(key, fallback) {
-    const language = document.documentElement.lang === "tr" ? "tr" : "en";
-    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
-    return key in dictionary ? dictionary[key] : fallback;
-  }
-
-  escape(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, (character) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[character]));
-  }
+  escape(value) { return window.LQ.escape(value); }
 }
 
 application.register("word-decoder", WordDecoderController);

@@ -16,6 +16,39 @@ window.LQ = {
     root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
       bootstrap.Tooltip.getOrCreateInstance(element);
     });
+  },
+
+  // A tooltip holds a reference to its element, so it is disposed before the
+  // element leaves the page rather than left behind. The root is swept too,
+  // because querySelectorAll never matches the element it is called on.
+  disposeTooltips(root) {
+    if (!root) return;
+    const dispose = (element) => {
+      const tooltip = bootstrap.Tooltip.getInstance(element);
+      if (tooltip) tooltip.dispose();
+    };
+    if (root.matches && root.matches('[data-bs-toggle="tooltip"]')) dispose(root);
+    if (root.querySelectorAll) root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(dispose);
+  },
+
+  // The Turkish string for a key, or the English fallback.
+  translate(key, fallback) {
+    const language = document.documentElement.lang === "tr" ? "tr" : "en";
+    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
+    return key in dictionary ? dictionary[key] : fallback;
+  },
+
+  // Anything going into generated markup passes through here first.
+  escape(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[character]));
+  },
+
+  // A dictionary is shown with its publication year where one is known.
+  dictionaryLabel(name) {
+    const year = (window.LQ_DICTIONARY_YEARS || {})[name];
+    return year ? `${name}, ${year}` : name;
   }
 };
 

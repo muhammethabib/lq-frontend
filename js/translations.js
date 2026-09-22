@@ -41,8 +41,6 @@ window.LQ_TRANSLATIONS = {
     // --- tabs ---
     tabDecoder: "Kelime Çözücü",
     tabSearch: "Ara",
-    decoderSoon: "Kelime Çözücü kendi başına bir bölüm olarak yeniden yazılıyor.",
-    decoderSoonNote: "Harflerini tam okuyamadığınız bir kelimeyi, okunamayan her harf yerine bir joker koyarak aramanızı sağlar.",
 
     // --- search bar ---
     btnSearch: "Ara",

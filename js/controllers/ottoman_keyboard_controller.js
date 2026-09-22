@@ -13,8 +13,12 @@
 // Every key uses pointerdown rather than click, so pressing one never takes
 // focus away from the field being typed into.
 
+// Below this width the stylesheet docks the keyboard to the bottom of the
+// screen; the same query lives in css/ottoman-keyboard.css.
+const KEYBOARD_DOCK_QUERY = "(max-width: 767px)";
+
 class OttomanKeyboardController extends Stimulus.Controller {
-  static targets = ["basicPanel", "advancedPanel", "clear"]
+  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "clear"]
   static values = { open: { type: Boolean, default: false } }
 
   connect() {
@@ -22,7 +26,10 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.showPanel("basic");
 
     // The field being typed into asks for the keyboard and says where it is
-    this.onRequest = (event) => this.openNear(event.detail.anchor, event.detail.canClear);
+    this.onRequest = (event) => {
+      this.owner = event.detail.owner || null;
+      this.openNear(event.detail.anchor, event.detail.canClear);
+    };
     this.onDismiss = () => this.close();
     document.addEventListener("ottoman-keyboard:request", this.onRequest);
     document.addEventListener("ottoman-keyboard:dismiss", this.onDismiss);
@@ -31,24 +38,51 @@ class OttomanKeyboardController extends Stimulus.Controller {
     window.addEventListener("resize", this.onReposition);
     window.addEventListener("scroll", this.onReposition, true);
 
-    // Re-label the panel switches after a language change
-    this.element.addEventListener("language:changed", () => window.LQ.refreshDynamicContent(this.element));
+    // The keys carry their labels and tooltips, so a language change rebuilds
+    // them. The event is dispatched on the page root, an ancestor of this
+    // element, so it is listened for on document where it bubbles to.
+    this.onLanguageChange = () => {
+      window.LQ.disposeTooltips(this.element);
+      this.renderPanels();
+      this.showPanel(this.advancedPanelTarget.classList.contains("is-active") ? "advanced" : "basic");
+    };
+    document.addEventListener("language:changed", this.onLanguageChange);
+
+    // The strip tells the keyboard when there is something to clear
+    this.onState = (event) => { this.clearTarget.hidden = !event.detail.canClear; };
+    document.addEventListener("ottoman-keyboard:state", this.onState);
   }
 
   disconnect() {
     document.removeEventListener("ottoman-keyboard:request", this.onRequest);
     document.removeEventListener("ottoman-keyboard:dismiss", this.onDismiss);
+    document.removeEventListener("language:changed", this.onLanguageChange);
+    document.removeEventListener("ottoman-keyboard:state", this.onState);
     window.removeEventListener("resize", this.onReposition);
     window.removeEventListener("scroll", this.onReposition, true);
+    window.LQ.disposeTooltips(this.element);
   }
 
   // ==================== building the keys ====================
 
   renderPanels() {
-    const layout = window.LQ_KEYBOARD_LAYOUT || { basic: [], advanced: [] };
+    const layout = window.LQ_KEYBOARD_LAYOUT || { basic: [], advanced: [], wildcards: {} };
+    this.renderWildcards(layout.wildcards || {});
     this.basicPanelTarget.innerHTML = this.panelHtml(layout.basic, "advanced");
     this.advancedPanelTarget.innerHTML = this.panelHtml(layout.advanced, "basic");
     window.LQ.refreshDynamicContent(this.element);
+  }
+
+  // The face of a wildcard key is the same symbol it writes into the slot
+  renderWildcards(wildcards) {
+    this.wildcardRowTarget.innerHTML = Object.keys(wildcards).map((name) => {
+      const wildcard = wildcards[name];
+      const label = this.translate(wildcard.labelKey, name);
+      return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
+        data-action="pointerdown->ottoman-keyboard#pressWildcard"
+        data-bs-toggle="tooltip" data-bs-title="${this.escape(label)}"
+        aria-label="${this.escape(label)}">${this.escape(wildcard.symbol)}</button>`;
+    }).join("");
   }
 
   panelHtml(rows, switchTo) {
@@ -129,8 +163,12 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.announce({ kind: "clear" });
   }
 
+  // The press is addressed to whoever asked for the keyboard, so a second
+  // field listening later does not also act on it.
   announce(detail) {
-    document.dispatchEvent(new CustomEvent("ottoman-keyboard:key", { detail }));
+    document.dispatchEvent(new CustomEvent("ottoman-keyboard:key", {
+      detail: { ...detail, owner: this.owner }
+    }));
   }
 
   // ==================== showing and placing ====================
@@ -143,7 +181,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.place();
     // Only on opening: doing it from place() would make the page scroll
     // itself every time the scroll listener fired.
-    if (window.matchMedia("(max-width: 767px)").matches) this.scrollAnchorClear();
+    if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) this.scrollAnchorClear();
   }
 
   close(event) {
@@ -151,6 +189,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.openValue = false;
     this.element.classList.remove("is-open");
     this.anchor = null;
+    this.owner = null;
   }
 
   // Sits under whatever asked for it, kept inside the viewport. Below 768px
@@ -158,7 +197,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // position is cleared to let that win.
   place() {
     if (!this.anchor || !this.anchor.isConnected) return;
-    if (window.matchMedia("(max-width: 767px)").matches) {
+    if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) {
       this.element.style.left = "";
       this.element.style.top = "";
       return;
@@ -186,17 +225,9 @@ class OttomanKeyboardController extends Stimulus.Controller {
 
   // ==================== helpers ====================
 
-  translate(key, fallback) {
-    const language = document.documentElement.lang === "tr" ? "tr" : "en";
-    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
-    return key in dictionary ? dictionary[key] : fallback;
-  }
+  translate(key, fallback) { return window.LQ.translate(key, fallback); }
 
-  escape(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, (character) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[character]));
-  }
+  escape(value) { return window.LQ.escape(value); }
 }
 
 application.register("ottoman-keyboard", OttomanKeyboardController);

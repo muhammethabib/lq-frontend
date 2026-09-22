@@ -29,10 +29,14 @@ index.html                            forwards to the first page
 pages/<feature>.html                  one HTML page per feature
 css/base.css                          brand tokens, fonts, shared chrome (menu, language switch)
 css/<feature>.css                     one CSS file per feature, scoped under .<feature>-surface
+css/ottoman-keyboard.css              the on-screen keyboard, shared by any field
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
 js/translations.js                    Turkish strings, keyed by data-i18n
+js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
+                                      Latin-to-Ottoman map for physical typing
 js/sample_data.js                     stand-in for the search endpoint
+js/decoder_sample_data.js             stand-in for the decoder endpoint
 assets/                               logo and static images
 vendor/                               local copies of Bootstrap, jQuery, Stimulus, Feather
 docs/                                 the dev team's instructions and review prompt
@@ -43,8 +47,27 @@ docs/                                 the dev team's instructions and review pro
 | Page | File | State |
 | --- | --- | --- |
 | Main page (search) | `pages/home.html` | Built |
-| Word Decoder | — | Not started; the tab says so |
+| Word Decoder | `pages/home.html`, decoder tab | Built |
 | About, Team, Pricing, User guide, and the other menu pages | — | Not started; the menu links name the files they will live in |
+
+## Endpoints the backend will need
+
+| Route | Used by | Parameters |
+| --- | --- | --- |
+| `GET /search_output/results` | Search tab | `q`, `script`, `source`, `categories[]`, `groups[]`, `dictionaries[]` |
+| `GET /word_decoder/results` | Word Decoder tab | `pattern` (JSON), `q` (readable form), `expand` |
+
+The decoder's `pattern` is an object with `slots` and `joins`. A slot is one
+letter position and names its kind: a `letter`, a set of `alternatives`, a
+`rasm` (the skeleton shape with the dots unclear, plus the letters it stands
+for), or the wildcards `any` and `many`. `joins` carries one entry per gap
+between two slots, `separate`, `connected` or `uncertain`, recording how the
+letters are written. Both files documenting the response shape are listed
+above.
+
+Every interface string has a `data-i18n` key and its Turkish equivalent in
+`js/translations.js`. Text that a controller writes itself is translated
+through `window.LQ.translate`, and re-rendered when the language changes.
 
 `pages/home.html` is the worked example of every convention below: the root
 container, the Stimulus controller, Bootstrap dropdowns and offcanvas, the

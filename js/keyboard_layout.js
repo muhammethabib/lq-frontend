@@ -163,3 +163,30 @@ window.LQ_KEYBOARD_LAYOUT = {
     ]
   ]
 };
+
+// Which Latin key produces which Ottoman letter, so a reader can type the
+// letters they recognise on their own keyboard.
+//
+// A few keys carry more than one letter: Shift reaches the second and Alt the
+// third, matching the layers below.
+window.LQ_OTTOMAN_KEYMAP = {
+  single: {
+    q: "ق", w: "و", e: "ع", r: "ر", u: "و", o: "و",
+    p: "پ", f: "ف", j: "ژ", l: "ل", c: "چ", v: "و",
+    b: "ب", m: "م", x: "خ",
+    // ye is written the same way for both keys
+    y: "ی", i: "ی"
+  },
+  // key: [plain, shift, alt]
+  layered: {
+    t: ["ت", "ط", "ث"],
+    g: ["ج", "غ"],
+    a: ["ا", "ء"],
+    s: ["س", "ش", "ص"],
+    d: ["د", "ض"],
+    h: ["ه", "ح", "ة"],
+    k: ["ك", "گ"],
+    n: ["ن", "ڭ"],
+    z: ["ز", "ظ", "ذ"]
+  }
+};

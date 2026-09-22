@@ -230,16 +230,14 @@
   <!-- ============================= search card =========================== -->
   <div class="tab-content">
 
-    <!-- Word Decoder: the letter-box engine is its own feature and is not
-         rebuilt yet, so this pane states that rather than faking it. -->
     <div class="tab-pane fade" id="decoderPane" role="tabpanel" aria-labelledby="decoderTab" tabindex="0">
 
       <!-- The decoder is its own feature: describe a word you cannot fully
            read, and see which dictionary entries fit the description. -->
-      <div class="word-decoder-surface" data-controller="word-decoder"
+      <div class="container-fluid p-0 word-decoder-surface" data-controller="word-decoder"
            data-word-decoder-endpoint-value="/word_decoder/results">
 
-        <div class="search-card">
+        <div class="decoder-card">
           <div class="decoder-row">
             <button type="button" class="btn decoder-clear" data-word-decoder-target="clear" hidden
                     data-action="click->word-decoder#clearStrip">
@@ -248,7 +246,7 @@
 
             <!-- One slot per letter position, read right to left. Filled by
                  the controller so a slot can be added or split as you work. -->
-            <div class="slot-strip" data-word-decoder-target="strip"
+            <div class="slot-strip" data-word-decoder-target="strip" data-direction="rtl"
                  role="group" aria-label="Letters" data-i18n-aria="decoderLetters"></div>
 
             <button type="button" class="btn decoder-submit"
@@ -279,7 +277,7 @@
 
           <div class="decoder-results-header">
             <span class="results-label" id="decoderResultsHeading" data-i18n="searchResultsLabel">Search Results</span>
-            <div class="pattern-pill" data-word-decoder-target="pattern"></div>
+            <div class="pattern-pill" data-word-decoder-target="pattern" data-direction="rtl"></div>
 
             <div class="decoder-stats-row">
               <div>
@@ -315,6 +313,9 @@
 
         <p class="decoder-hint" data-word-decoder-target="emptyState" data-i18n="decoderEmptyState">
           Describe the word above and press Search.
+        </p>
+        <p class="decoder-hint" data-word-decoder-target="error" hidden data-i18n="searchFailed">
+          The search could not be completed. Please try again.
         </p>
       </div>
     </div>
@@ -733,7 +734,7 @@
 
   <!-- On-screen Ottoman keyboard. It types into whichever field asked for it,
        so it lives beside the features rather than inside one. -->
-  <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
+  <div class="ottoman-keyboard" data-controller="ottoman-keyboard" data-direction="rtl"
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
     <div class="keyboard-bar">
       <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear" hidden
@@ -742,12 +743,9 @@
       </button>
       <span class="keyboard-bar-spacer"></span>
 
-      <button type="button" class="btn wildcard-key" data-wildcard="any"
-              data-action="pointerdown->ottoman-keyboard#pressWildcard"
-              data-bs-toggle="tooltip" data-i18n-title="wildcardAny" title="A letter I cannot read">٭</button>
-      <button type="button" class="btn wildcard-key" data-wildcard="many"
-              data-action="pointerdown->ottoman-keyboard#pressWildcard"
-              data-bs-toggle="tooltip" data-i18n-title="wildcardMany" title="An unknown number of letters">&infin;</button>
+      <!-- Written by the controller, so a key always shows the same symbol it
+           writes into the slot -->
+      <span class="wildcard-row" data-ottoman-keyboard-target="wildcardRow"></span>
 
       <span class="keyboard-bar-spacer"></span>
       <button type="button" class="btn keyboard-backspace"

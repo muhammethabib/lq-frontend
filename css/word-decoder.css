@@ -6,17 +6,31 @@
    ========================================================= */
 
 .word-decoder-surface {
-  --slot-height: 60px;
-  --slot-width: 48px;
-  --gap-width: 13px;
-  --slot-border: #ef4444;
-  --slot-hover: #fff1f2;
-  --gap-fill: #e2e8f0;
-  --gap-fill-hover: #cbd5e1;
-  --join-grey: #64748b;
-  --join-stroke: 4px;
-  --add-blue: var(--lq-sapphire);
-  --remove-red: #b91c1c;
+  --decoder-slot-height: 60px;
+  --decoder-slot-width: 48px;
+  --decoder-gap-width: 13px;
+  --decoder-slot-border: #ef4444;
+  --decoder-slot-hover: #fff1f2;
+  --decoder-gap-fill: #e2e8f0;
+  --decoder-gap-fill-hover: #cbd5e1;
+  --decoder-join-grey: #64748b;
+  --decoder-join-stroke: 4px;
+  --decoder-add-blue: var(--lq-sapphire);
+  --decoder-remove-red: #b91c1c;
+}
+
+/* The card the strip sits on. The search feature has its own; sharing one
+   would tie the two together. */
+.word-decoder-surface .decoder-card {
+  width: min(100% - 48px, 1300px);
+  margin-inline: auto;
+  padding: 24px 40px;
+  border: 1px solid var(--lq-line);
+  border-radius: 20px;
+  background: var(--lq-paper);
+  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06);
+  position: relative;
+  z-index: 5;
 }
 
 /* ---------- the strip of letter slots ---------- */
@@ -30,8 +44,9 @@
 }
 
 /* The strip reads right to left, so the first slot in the markup is the
-   rightmost on screen and the first letter of the word. Each slot and gap is
-   flipped back so its own controls stay where they are drawn. */
+   rightmost on screen and the first letter of the word. The direction comes
+   from the attribute in the markup, and each slot and gap is flipped back so
+   its own controls stay where they are drawn. */
 .word-decoder-surface .slot-strip {
   display: flex;
   align-items: flex-start;
@@ -39,10 +54,9 @@
   flex-wrap: wrap;
   gap: 6px;
   row-gap: 10px;
-  direction: rtl;
   min-width: 0;
 }
-.word-decoder-surface .slot-strip > * { direction: ltr; }
+.word-decoder-surface .slot-strip[data-direction="rtl"] > * { direction: ltr; }
 
 /* ---------- one letter slot ---------- */
 
@@ -55,8 +69,8 @@
 
 .word-decoder-surface .slot-frame {
   display: flex;
-  height: var(--slot-height);
-  border: 2px solid var(--slot-border);
+  height: var(--decoder-slot-height);
+  border: 2px solid var(--decoder-slot-border);
   border-radius: 6px;
   background: var(--lq-paper);
   overflow: hidden;
@@ -71,14 +85,14 @@
    is either of these two letters". */
 .word-decoder-surface .slot-cell {
   position: relative;
-  width: var(--slot-width);
+  width: var(--decoder-slot-width);
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
-.word-decoder-surface .slot-cell:hover:not(:focus-within) { background: var(--slot-hover); }
+.word-decoder-surface .slot-cell:hover:not(:focus-within) { background: var(--decoder-slot-hover); }
 .word-decoder-surface .slot-cell:not(:last-child) { border-right: 2px dashed var(--lq-line); }
 
 .word-decoder-surface .slot-input {
@@ -156,8 +170,8 @@
   padding: 3px;
   color: #fff;
 }
-.word-decoder-surface .cell-add svg { background: var(--add-blue); border-radius: 3px; }
-.word-decoder-surface .cell-remove svg { background: var(--remove-red); border-radius: 50%; }
+.word-decoder-surface .cell-add svg { background: var(--decoder-add-blue); border-radius: 3px; }
+.word-decoder-surface .cell-remove svg { background: var(--decoder-remove-red); border-radius: 50%; }
 /* Nothing to remove while the slot holds a single letter */
 .word-decoder-surface .slot-frame:not(:has(.slot-cell + .slot-cell)) .cell-remove { display: none; }
 
@@ -184,7 +198,7 @@
   width: 16px;
   height: 16px;
   padding: 3px;
-  background: var(--remove-red);
+  background: var(--decoder-remove-red);
   border-radius: 4px;
   color: #fff;
 }
@@ -195,31 +209,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: var(--gap-width);
+  width: var(--decoder-gap-width);
 }
 
 .word-decoder-surface .gap-insert {
-  width: var(--gap-width);
-  height: var(--slot-height);
+  width: var(--decoder-gap-width);
+  height: var(--decoder-slot-height);
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 0;
   border-radius: 3px;
-  background: var(--gap-fill);
+  background: var(--decoder-gap-fill);
   color: #94a3b8;
   font-size: 16px;
   font-weight: 900;
   line-height: 1;
   transition: background .2s;
 }
-.word-decoder-surface .gap-insert:hover { background: var(--gap-fill-hover); color: var(--lq-sapphire); }
+.word-decoder-surface .gap-insert:hover { background: var(--decoder-gap-fill-hover); color: var(--lq-sapphire); }
 
 /* The join marker says whether the two neighbouring letters are written
    joined, apart, or the reader cannot tell. Two rings and a connecting line. */
 .word-decoder-surface .gap-join {
-  width: var(--gap-width);
+  width: var(--decoder-gap-width);
   height: 17px;
   margin-top: 3px;
   padding: 0;
@@ -233,14 +247,14 @@
 .word-decoder-surface .gap-join svg { overflow: visible; }
 .word-decoder-surface .gap-join .ring {
   fill: none;
-  stroke: var(--join-grey);
-  stroke-width: var(--join-stroke);
+  stroke: var(--decoder-join-grey);
+  stroke-width: var(--decoder-join-stroke);
   transition: transform .4s cubic-bezier(.4, 0, .2, 1), stroke .4s;
 }
 .word-decoder-surface .gap-join .bar {
   fill: none;
   stroke: var(--lq-sapphire);
-  stroke-width: var(--join-stroke);
+  stroke-width: var(--decoder-join-stroke);
   stroke-linecap: round;
   opacity: 0;
   transform: scaleX(.1);
@@ -287,9 +301,6 @@
 }
 .word-decoder-surface .decoder-clear:hover { background: #fff7ed; border-color: #c2410c; color: #c2410c; }
 .word-decoder-surface .decoder-clear svg { width: 13px; height: 13px; }
-/* Only offered once there is something to clear */
-.word-decoder-surface .decoder-clear[hidden] { display: none; }
-
 .word-decoder-surface .decoder-submit {
   height: 52px;
   width: 88px;
@@ -350,7 +361,6 @@
 .word-decoder-surface .pattern-pill {
   display: inline-flex;
   align-items: center;
-  direction: rtl;
   gap: 2px;
   padding: 3px 15px 6px;
   border: 1.5px solid var(--lq-osm-border);
@@ -567,7 +577,6 @@
 
 /* A record belonging to an open candidate is indented and set slightly
    smaller, so the reading above stays the heading. */
-.word-decoder-surface .result-row.is-nested[hidden] { display: none; }
 .word-decoder-surface .result-row.is-nested > td { background: var(--lq-paper-soft); }
 .word-decoder-surface .result-row.is-nested > td:first-child { padding-left: 70px; }
 .word-decoder-surface .result-row.is-nested .ottoman-box { font-size: 20px; }
@@ -652,6 +661,26 @@
 
 .word-decoder-surface .row-arrow { color: #94a3b8; opacity: .35; }
 
+.word-decoder-surface .row-actions { display: flex; gap: 4px; justify-content: center; }
+.word-decoder-surface .cite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--lq-body-bg);
+  border-radius: 8px;
+  background: var(--lq-paper-soft);
+  color: #94a3b8;
+  opacity: .6;
+  transition: opacity .2s, background .2s, color .2s, border-color .2s;
+}
+.word-decoder-surface .cite-button:hover {
+  opacity: 1;
+  background: var(--lq-lat-border);
+  color: var(--lq-sapphire);
+  border-color: var(--lq-lat-border);
+}
+
 /* A section with nothing in it says so instead of disappearing */
 .word-decoder-surface .group-empty td {
   padding: 18px 40px;
@@ -682,9 +711,10 @@
 }
 
 @media (max-width: 767px) {
+  .word-decoder-surface .decoder-card { padding: 20px; }
   .word-decoder-surface {
-    --slot-height: 52px;
-    --slot-width: 42px;
+    --decoder-slot-height: 52px;
+    --decoder-slot-width: 42px;
   }
   .word-decoder-surface .slot-input { font-size: 21px; }
   .word-decoder-surface .decoder-row { flex-wrap: wrap; justify-content: center; }
@@ -699,7 +729,8 @@
 }
 
 @media (max-width: 560px) {
-  .word-decoder-surface { --slot-width: 38px; }
+  .word-decoder-surface { --decoder-slot-width: 38px; }
+  .word-decoder-surface .decoder-card { width: 100%; }
   .word-decoder-surface .decoder-results { width: 100%; border-radius: 16px; }
 }
 

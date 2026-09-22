@@ -66,6 +66,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 .search-surface .result-category[data-category="entry"] {
   color: var(--lq-entry-text);
@@ -90,8 +91,10 @@
   border-radius: 3px;
 }
 
-/* Long definitions wrap instead of stretching the table */
+/* Long definitions wrap instead of stretching the table, but never squeeze
+   below a readable width; on narrow screens the table scrolls instead */
 .search-surface .result-definition {
+  min-width: 24ch;
   max-width: 48ch;
   word-break: break-word;
 }

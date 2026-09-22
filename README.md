@@ -17,6 +17,9 @@ each feature is rebuilt here following `docs/`.
 - **jQuery** for AJAX-style data calls (CDN)
 - **Feather** icons (CDN)
 
+Local copies of all four live in `vendor/` so pages open offline; see
+`vendor/README.md` for versions.
+
 No Tailwind, no React/Vue, no SCSS.
 
 ## Folder structure
@@ -28,6 +31,7 @@ css/<feature>.css                     one CSS file per feature, scoped under .<f
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
 assets/                               logo and static images
+vendor/                               local copies of Bootstrap, jQuery, Stimulus, Feather
 docs/                                 the dev team's instructions and review prompt
 ```
 

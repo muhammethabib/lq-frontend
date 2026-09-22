@@ -47,14 +47,17 @@ class SearchController extends Stimulus.Controller {
   }
 
   renderResults(results) {
-    this.resultsBodyTarget.innerHTML = results.map((result) => this.resultRowHtml(result)).join("");
+    // Kept on the controller so the detail modal can look a result up by index
+    // instead of squeezing HTML into data attributes.
+    this.currentResults = results;
+    this.resultsBodyTarget.innerHTML = results.map((result, index) => this.resultRowHtml(result, index)).join("");
     const hasResults = results.length > 0;
     this.resultsTableTarget.classList.toggle("d-none", !hasResults);
     this.emptyStateTarget.classList.toggle("d-none", hasResults);
     window.LQ.refreshDynamicContent(this.resultsBodyTarget);
   }
 
-  resultRowHtml(result) {
+  resultRowHtml(result, index) {
     return `
       <tr>
         <td><span class="result-category" data-category="${result.category}">${result.categoryLabel}</span></td>
@@ -64,8 +67,8 @@ class SearchController extends Stimulus.Controller {
         <td class="text-end">
           <button type="button" class="btn btn-sm btn-outline-secondary"
                   data-action="click->search#openDetail"
-                  data-headword="${result.headword}"
-                  data-definition="${result.definition}">
+                  data-result-index="${index}"
+                  aria-label="Open details">
             <i data-feather="external-link"></i>
           </button>
         </td>
@@ -75,7 +78,9 @@ class SearchController extends Stimulus.Controller {
   // ---- detail modal ---------------------------------------------------
 
   openDetail(event) {
-    const { headword, definition } = event.currentTarget.dataset;
+    const result = this.currentResults[Number(event.currentTarget.dataset.resultIndex)];
+    if (!result) return;
+    const { headword, definition } = result;
     const modalElement = this.detailModalTarget;
     modalElement.innerHTML = document.getElementById("searchDetailTemplate").innerHTML;
     modalElement.querySelector(".detail-headword").textContent = headword;

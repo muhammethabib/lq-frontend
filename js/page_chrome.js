@@ -27,7 +27,8 @@ window.LQ_BUILT_PAGES = ["about", "institutional", "what-is-lexiqamus", "team", 
 window.LQ_PAGE_CHROME = `
   <nav class="offcanvas offcanvas-start side-menu" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
     <div class="offcanvas-header side-menu-head">
-      <a class="side-menu-logo" href="home.html">
+      <a class="side-menu-logo" href="home.html" data-chrome-home
+         data-action="click->page-chrome#goHome">
         <img src="../assets/lexiqamus-logo.png" alt="LexiQamus">
       </a>
       <h2 class="visually-hidden" id="sideMenuLabel" data-i18n="menuHeading">Menu</h2>
@@ -167,6 +168,13 @@ window.LQ_PAGE_CHROME = `
             aria-controls="sideMenu" aria-label="Menu" data-i18n-aria="menuHeading">
       <i data-feather="menu"></i>
     </button>
+
+    <!-- The way back to the main page. The main page carries its own
+         wordmark, so the controller takes this out there. -->
+    <a class="top-row-logo" href="home.html" data-chrome-home
+       aria-label="LexiQamus home" data-i18n-aria="ariaHome">
+      <img src="../assets/lexiqamus-logo.png" alt="LexiQamus">
+    </a>
 
     <div class="top-row-right">
       <a class="classic-link" href="https://www.lexiqamus.com/" target="_blank" rel="noopener"

@@ -19,10 +19,11 @@ class GuideController extends Stimulus.Controller {
     this.numberHeadings();
     this.buildList();
     this.markCrossReferences();
+    this.markPins();
     window.LQ.refreshDynamicContent(this.element);
     // The contents list is written from the headings, so it is rebuilt in the
     // new language rather than translated string by string.
-    this.onLanguageChange = () => { this.buildList(); this.markCrossReferences(); };
+    this.onLanguageChange = () => { this.buildList(); this.markCrossReferences(); this.markPins(); };
     document.addEventListener("language:changed", this.onLanguageChange);
   }
 
@@ -91,10 +92,29 @@ class GuideController extends Stimulus.Controller {
   // A link to a block in this page shows that block's code, so the reader
   // knows where they are being sent before they follow it.
   markCrossReferences() {
-    this.element.querySelectorAll('.guide-section a[href^="#"]').forEach((link) => {
+    this.element.querySelectorAll('.guide-section a[href^="#"]:not(.guide-pin)').forEach((link) => {
       const target = this.element.querySelector(`[id="${CSS.escape(link.hash.slice(1))}"]`);
       link.classList.add("guide-xref");
       link.dataset.code = (target && target.dataset.code) || "";
+    });
+  }
+
+  // A marker drawn on a screenshot wears the code of the passage it leads to,
+  // so the picture and the contents list speak the same language. The codes
+  // are worked out from the order of the sections, so they are written here
+  // rather than into the page.
+  markPins() {
+    this.element.querySelectorAll('.guide-pin[href^="#"]').forEach((pin) => {
+      const target = this.element.querySelector(`[id="${CSS.escape(pin.hash.slice(1))}"]`);
+      const code = target && target.dataset.code;
+      const heading = target && target.querySelector(".guide-h2, .guide-h3");
+      const name = heading ? heading.textContent.trim() : "";
+      // A marker reaching in from the side of a tall screenshot is a dot:
+      // there is no room for a code beside the picture, so it carries its
+      // name for a screen reader instead.
+      const labelled = !pin.closest(".guide-map-bands");
+      pin.textContent = labelled && code ? code : "";
+      pin.setAttribute("aria-label", [code, name].filter(Boolean).join(" · "));
     });
   }
 }

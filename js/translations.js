@@ -510,6 +510,10 @@ window.LQ_TRANSLATIONS = {
     keyboardTeachRest: "veya aşağıdaki tuşlara tıklayın",
     decoderOwnKeyboard: "Kendi klavyenizle yazabilirsiniz",
 
+    // --- Moving around a page ---
+    wayBack: "Geri",
+    backToTop: "Başa dön",
+
     // --- LexiQamus 2.0 what's new ---
     v2Eyebrow: "Arşiv duyurusu · 2020",
     v2Title: "2.0 Yenilikleri",

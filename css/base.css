@@ -356,3 +356,17 @@ body.has-panel-room::after {
   display: block;
   height: var(--lq-panel-room, 0px);
 }
+
+/* The way back to the main page, beside the menu button. The main page
+   carries its own wordmark, so its chrome leaves this out. */
+.top-row-logo {
+  display: inline-flex;
+  align-items: center;
+  margin-right: auto;
+  padding: 4px 8px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.top-row-logo:hover { background: rgba(8, 37, 103, 0.06); }
+.top-row-logo img { display: block; height: 28px; width: auto; }

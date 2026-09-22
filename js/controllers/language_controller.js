@@ -29,7 +29,9 @@ class LanguageController extends Stimulus.Controller {
 
   connect() {
     this.originals = {};
-    this.currentValue = this.remembered() || this.currentValue;
+    // ?lang= wins over what the browser remembers: it is how a link carries
+    // the reader's language to the next page when storage is not available.
+    this.currentValue = this.asked() || this.remembered() || this.currentValue;
     this.apply(this.currentValue);
 
     // Markup that arrives after this controller has run - the chrome, the
@@ -49,6 +51,12 @@ class LanguageController extends Stimulus.Controller {
     if (window.LQ.applyTranslations === this.sweepHelper) {
       delete window.LQ.applyTranslations;
     }
+  }
+
+  // The language a link asked for, if it named one this site knows.
+  asked() {
+    const named = new URLSearchParams(window.location.search).get("lang");
+    return named === "tr" || named === "en" ? named : null;
   }
 
   select(event) {

@@ -26,11 +26,12 @@
   <script src="../js/app.js" defer></script>
   <script src="../js/controllers/page_chrome_controller.js" defer></script>
   <script src="../js/controllers/language_controller.js" defer></script>
+  <script src="../js/controllers/page_navigation_controller.js" defer></script>
   <script src="../js/controllers/guide_controller.js" defer></script>
 </head>
 <body>
 
-<div class="container-fluid p-4 page-surface guide-surface" data-controller="language">
+<div class="container-fluid p-4 page-surface guide-surface" data-controller="language page-navigation">
 
   <!-- Top bar and side menu, shared with every other page -->
   <div class="page-chrome" data-controller="page-chrome" data-page-chrome-page-value="user-guide"></div>
@@ -60,8 +61,16 @@
       <section class="guide-section" id="home">
         <h2 class="guide-h2" data-i18n="guideHome">Home</h2>
           <p data-i18n="homeIntro" data-i18n-html="1">LexiQamus offers two distinct ways of searching. The <a href="#search-tab">Search tab</a> is for looking up the meaning of a word you can read in the dictionaries; the <a href="#word-decoder">Word Decoder</a> is for finding a word you cannot read, starting out from the clues you do have. You can move between the two tabs freely.</p>
-          <figure class="guide-shot guide-wide" style="--natural-width:1879;--aspect:6.8828">
-            <img src="../assets/guide/en/home-search-area.webp" data-i18n-src="shotHomeSearchAreaSrc" alt="The search area on the home page: the Word Decoder and Search tabs, the search bar, the Search button and the dictionary list" data-i18n-alt="shotHomeSearchAreaAlt" width="1879" height="273" loading="lazy">
+          <figure class="guide-shot guide-shot-map guide-wide" style="--natural-width:1879;--aspect:6.8828">
+            <div class="guide-map">
+              <img src="../assets/guide/en/home-search-area.webp" data-i18n-src="shotHomeSearchAreaSrc" alt="The search area on the home page: the Word Decoder and Search tabs, the search bar, the Search button and the dictionary list" data-i18n-alt="shotHomeSearchAreaAlt" width="1879" height="273" loading="lazy">
+              <a class="guide-pin guide-pin-top guide-pin-square" href="#word-decoder" style="--x:44.39%;--ty:0.0769"></a>
+              <a class="guide-pin guide-pin-top guide-pin-square" href="#search-tab" style="--x:55.56%;--ty:0.0769"></a>
+              <a class="guide-pin guide-pin-bottom" href="#ott-eng" style="--x:6.55%;--ty:0.7289"></a>
+              <a class="guide-pin guide-pin-bottom" href="#search-bar" style="--x:16.66%;--ty:0.7289"></a>
+              <a class="guide-pin guide-pin-bottom" href="#ottoman-keyboard" style="--x:55.51%;--ty:0.7363"></a>
+              <a class="guide-pin guide-pin-bottom" href="#dictionaries" style="--x:83.18%;--ty:0.7326"></a>
+            </div>
           </figure>
         <div class="guide-block" id="dictionaries">
           <h3 class="guide-h3" data-i18n="guideDictionaries">Choosing dictionaries</h3>
@@ -107,8 +116,16 @@
       <section class="guide-section" id="results">
         <h2 class="guide-h2" data-i18n="guideResults">Search Results</h2>
           <p data-i18n="resultsIntro" data-i18n-html="1">Both ways of searching lead you to the same results list. At the head of the list you see how many records were found and how many dictionaries and volumes were scanned. The list is divided into four columns, and each row shows a single record in one dictionary. The word you searched for is listed separately under the headings <b>Lemma</b>, <b>Inflected Forms</b>, <b>Derived Forms</b>, <b>Phrases and Compounds</b> and <b>Similar Spellings</b>, running from the plainest form to the broadest.</p>
-          <figure class="guide-shot guide-tall" style="--natural-width:1689;--aspect:0.7008">
-            <img src="../assets/guide/en/results-overview.webp" data-i18n-src="shotResultsOverviewSrc" alt="A search for arı: the search bar, the results header and the Lemma, Inflected Forms, Derived Forms, Phrases and Compounds and Similar Spellings groups" data-i18n-alt="shotResultsOverviewAlt" width="1689" height="2410" loading="lazy">
+          <figure class="guide-shot guide-shot-map guide-tall" style="--natural-width:1689;--aspect:0.7008">
+            <div class="guide-map guide-map-bands">
+              <img src="../assets/guide/en/results-overview.webp" data-i18n-src="shotResultsOverviewSrc" alt="A search for arı: the search bar, the results header and the Lemma, Inflected Forms, Derived Forms, Phrases and Compounds and Similar Spellings groups" data-i18n-alt="shotResultsOverviewAlt" width="1689" height="2410" loading="lazy">
+              <a class="guide-pin guide-pin-right" href="#variant-spellings" style="--px:0.7851;--ty:0.1510"></a>
+              <a class="guide-pin guide-pin-right" href="#variant-spellings" style="--px:0.9728;--ty:0.1884"></a>
+              <a class="guide-pin guide-pin-left" href="#latin-readings" style="--px:0.1835;--ty:0.2979"></a>
+              <a class="guide-pin guide-pin-left" href="#two-zones" style="--px:0.0278;--ty:0.3432"></a>
+              <a class="guide-pin guide-pin-top" href="#categories" style="--px:0.3825;--ty:0.2154" aria-label="categories"></a>
+              <a class="guide-pin guide-pin-right" href="#dictionary-reference" style="--px:0.9372;--ty:0.2979"></a>
+            </div>
           </figure>
         <div class="guide-block" id="categories">
           <h3 class="guide-h3" data-i18n="guideCategories">Word categories</h3>
@@ -318,8 +335,12 @@
       <section class="guide-section" id="word-decoder">
         <h2 class="guide-h2" data-i18n="guideWordDecoder">The Word Decoder</h2>
           <p data-i18n="wordDecoderIntro" data-i18n-html="1">This is the tool to use when you come across a word you cannot read in a manuscript. You enter the letters you can read and leave a marker for those you cannot; LexiQamus lists the words that match these criteria.</p>
-          <figure class="guide-shot guide-wide" style="--natural-width:2404;--aspect:1.7807">
-            <img src="../assets/guide/en/decoder-overview.webp" data-i18n-src="shotDecoderOverviewSrc" alt="The Word Decoder: letter boxes at the top, the basic and the advanced keyboard side by side below" data-i18n-alt="shotDecoderOverviewAlt" width="2404" height="1350" loading="lazy">
+          <figure class="guide-shot guide-shot-map guide-wide" style="--natural-width:2404;--aspect:1.7807">
+            <div class="guide-map guide-map-bands">
+              <img src="../assets/guide/en/decoder-overview.webp" data-i18n-src="shotDecoderOverviewSrc" alt="The Word Decoder: letter boxes at the top, the basic and the advanced keyboard side by side below" data-i18n-alt="shotDecoderOverviewAlt" width="2404" height="1350" loading="lazy">
+              <a class="guide-pin guide-pin-left" href="#boxes" style="--px:0.2030;--ty:0.0919"></a>
+              <a class="guide-pin guide-pin-left" href="#decoder-keyboard" style="--px:0.0191;--ty:0.5926"></a>
+            </div>
           </figure>
         <div class="guide-block" id="decoder-keyboard">
           <h3 class="guide-h3" data-i18n="guideDecoderKeyboard">The decoder keyboard</h3>

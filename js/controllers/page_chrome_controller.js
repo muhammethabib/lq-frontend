@@ -19,10 +19,68 @@ class PageChromeController extends Stimulus.Controller {
   connect() {
     this.element.innerHTML = window.LQ_PAGE_CHROME || "";
     this.markBuiltPages();
+    this.settleHomeLink();
+    this.watchMenu();
+    this.carryLanguageHome();
+    // The reader can change language after the chrome is drawn, and the way
+    // back has to keep up with them.
+    this.onLanguageChange = () => this.carryLanguageHome();
+    document.addEventListener("language:changed", this.onLanguageChange);
     window.LQ.refreshDynamicContent(this.element);
     // The language controller ran before this markup existed, so it is told
     // to sweep again now that the chrome is on the page.
     document.dispatchEvent(new CustomEvent("page-chrome:ready"));
+  }
+
+  disconnect() {
+    document.removeEventListener("language:changed", this.onLanguageChange);
+    const menu = this.element.querySelector("#sideMenu");
+    if (menu && this.onMenuHidden) menu.removeEventListener("hidden.bs.offcanvas", this.onMenuHidden);
+  }
+
+  // The way back to the main page carries the language with it, so a reader
+  // in Turkish does not land on the English main page. The browser usually
+  // remembers the choice; this works even when it cannot.
+  carryLanguageHome() {
+    const language = document.documentElement.lang === "tr" ? "tr" : "en";
+    this.element.querySelectorAll("[data-chrome-home]").forEach((link) => {
+      link.setAttribute("href", `home.html?lang=${language}`);
+    });
+  }
+
+  onHome() { return this.pageValue === "home"; }
+
+  // The main page carries its own wordmark, so the one in the top bar is
+  // there for the pages that do not.
+  settleHomeLink() {
+    if (!this.onHome()) return;
+    const logo = this.element.querySelector(".top-row-logo");
+    if (logo) logo.remove();
+  }
+
+  // The menu opens where it was left otherwise: a version opened once would
+  // still be open the next time, as though the reader had asked for it.
+  watchMenu() {
+    const menu = this.element.querySelector("#sideMenu");
+    if (!menu) return;
+    this.onMenuHidden = () => {
+      menu.querySelectorAll(".side-submenu.show").forEach((submenu) => {
+        bootstrap.Collapse.getOrCreateInstance(submenu, { toggle: false }).hide();
+      });
+      menu.querySelectorAll(".side-link-parent").forEach((parent) => {
+        parent.setAttribute("aria-expanded", "false");
+        parent.classList.add("collapsed");
+      });
+    };
+    menu.addEventListener("hidden.bs.offcanvas", this.onMenuHidden);
+  }
+
+  // The logo leads home. On the main page there is nowhere to go, so it only
+  // shuts the menu.
+  goHome(event) {
+    const menu = this.element.querySelector("#sideMenu");
+    if (menu) bootstrap.Offcanvas.getOrCreateInstance(menu).hide();
+    if (this.onHome()) event.preventDefault();
   }
 
   // A menu entry names the page it leads to. Entries start without an href
@@ -68,6 +126,10 @@ class PageChromeController extends Stimulus.Controller {
       const name = link.dataset.page;
       if (!built.includes(name)) return;
       link.setAttribute("href", `${name}.html`);
+      // A page opened from the main page gets a tab of its own; one opened
+      // from inside that tab takes its place, so the reader ends up with one
+      // tab for reading rather than one per heading.
+      if (this.onHome()) link.setAttribute("target", "_blank");
       link.classList.remove("is-unavailable");
       link.removeAttribute("aria-disabled");
       const badge = link.querySelector(".side-soon");

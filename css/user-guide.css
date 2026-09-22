@@ -376,3 +376,137 @@
 
   .guide-surface .guide-h2 { font-size: 1.6rem; }
 }
+
+/* ---------- the markers on a screenshot ----------
+   A screenshot of the whole screen is a map: each part of it that the guide
+   explains carries a marker, and pressing one takes the reader to the
+   passage about it. A marker sits outside the picture and reaches into it
+   with a line, so it never covers what it is pointing at.
+
+   Each marker is placed from the picture's own proportions: --x or --px
+   across, --ty down, both taken from the screenshot as it was captured.
+   The picture's box is the unit of measurement, which is what the container
+   query below makes possible. */
+
+.guide-surface .guide-map {
+  position: relative;
+  container-type: inline-size;
+  padding: 34px 0;
+  border-radius: 8px;
+  background: var(--lq-paper);
+}
+
+.guide-surface .guide-map img { border-radius: 6px; }
+
+.guide-surface .guide-pin {
+  --pin: #f2a007;
+  position: absolute;
+  z-index: 2;
+  left: var(--x);
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 24px;
+  padding: 0 7px;
+  transform: translateX(-50%);
+  border-radius: 12px;
+  background: var(--pin);
+  color: #2b1d00;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 0 0 2px #fff, 0 3px 10px -3px rgba(8, 37, 103, 0.5);
+}
+
+.guide-surface .guide-pin-square { border-radius: 7px; min-width: 26px; }
+.guide-surface .guide-pin:hover,
+.guide-surface .guide-pin:focus-visible { --pin: #e09000; }
+
+/* The line down to the thing being named, and the dot that lands on it. */
+.guide-surface .guide-pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--pin);
+  opacity: 0.85;
+}
+
+.guide-surface .guide-pin::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--pin);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.guide-surface .guide-pin-top { top: 0; }
+.guide-surface .guide-pin-top::after { top: 100%; height: calc(10px + var(--ty) * 100cqw / var(--aspect)); }
+.guide-surface .guide-pin-top::before { top: calc(100% + 6px + var(--ty) * 100cqw / var(--aspect)); }
+.guide-surface .guide-pin-bottom { bottom: 0; }
+.guide-surface .guide-pin-bottom::after { bottom: 100%; height: calc(10px + (1 - var(--ty)) * 100cqw / var(--aspect)); }
+.guide-surface .guide-pin-bottom::before { bottom: calc(100% + 6px + (1 - var(--ty)) * 100cqw / var(--aspect)); }
+
+/* A tall screenshot is given bands down its sides, so a marker can reach in
+   from whichever edge is nearest what it names. */
+.guide-surface .guide-map-bands {
+  --band: 58px;
+  --picture: 100cqw;
+  --picture-height: calc(var(--picture) / var(--aspect));
+  padding: 34px var(--band);
+}
+
+.guide-surface .guide-map-bands .guide-pin { min-width: 14px; height: 14px; padding: 0; }
+.guide-surface .guide-map-bands .guide-pin-top,
+.guide-surface .guide-map-bands .guide-pin-bottom { left: calc(var(--band) + var(--px) * var(--picture)); }
+.guide-surface .guide-map-bands .guide-pin-top::after { height: calc(10px + var(--ty) * var(--picture-height)); }
+.guide-surface .guide-map-bands .guide-pin-top::before { top: calc(100% + 6px + var(--ty) * var(--picture-height)); }
+.guide-surface .guide-map-bands .guide-pin-left,
+.guide-surface .guide-map-bands .guide-pin-right {
+  top: calc(34px + var(--ty) * var(--picture-height));
+  transform: translateY(-50%);
+}
+.guide-surface .guide-map-bands .guide-pin-left { left: 4px; }
+.guide-surface .guide-map-bands .guide-pin-right { right: 4px; left: auto; }
+.guide-surface .guide-map-bands .guide-pin-left::after,
+.guide-surface .guide-map-bands .guide-pin-right::after {
+  top: 50%;
+  height: 2px;
+  margin: -1px 0 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+.guide-surface .guide-map-bands .guide-pin-left::after {
+  left: 100%;
+  width: calc(var(--band) - 4px + var(--px) * var(--picture) - 100%);
+}
+.guide-surface .guide-map-bands .guide-pin-right::after {
+  left: auto;
+  right: 100%;
+  width: calc(var(--band) - 4px + (1 - var(--px)) * var(--picture) - 100%);
+}
+.guide-surface .guide-map-bands .guide-pin-left::before,
+.guide-surface .guide-map-bands .guide-pin-right::before { top: 50%; margin: -4px 0 0; }
+
+/* A tall screenshot is normally capped by height so it does not take over the
+   page. A map is the exception: its markers are measured from the picture, so
+   the picture has to fill the frame for them to land where they are aimed. */
+.guide-surface .guide-shot-map.guide-tall .guide-map img {
+  max-height: none;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 589.98px) {
+  .guide-surface .guide-map { padding: 28px 0; }
+  .guide-surface .guide-pin { min-width: 26px; height: 20px; padding: 0 5px; font-size: 10.5px; border-radius: 10px; }
+  .guide-surface .guide-pin-square { min-width: 21px; border-radius: 6px; }
+  .guide-surface .guide-pin::before { width: 6px; height: 6px; margin-left: -3px; }
+  .guide-surface .guide-map-bands { --band: 0px; padding: 0; }
+  .guide-surface .guide-map-bands .guide-pin { display: none; }
+}

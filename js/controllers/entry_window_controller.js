@@ -36,6 +36,10 @@ class EntryWindowController extends Stimulus.Controller {
     // resize puts them somewhere they no longer belong.
     this.onAway = () => this.hideCards();
     window.addEventListener("resize", this.onAway);
+    // The list behind this window points out again the row it was opened
+    // from, so it is told when the window has gone.
+    this.onHidden = () => document.dispatchEvent(new CustomEvent("entry:closed"));
+    this.element.addEventListener("hidden.bs.modal", this.onHidden);
   }
 
   disconnect() {
@@ -43,6 +47,7 @@ class EntryWindowController extends Stimulus.Controller {
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("view-state:change", this.onViewState);
     window.removeEventListener("resize", this.onAway);
+    this.element.removeEventListener("hidden.bs.modal", this.onHidden);
     if (this.watcher) this.watcher.disconnect();
     if (this.modal) this.modal.dispose();
   }

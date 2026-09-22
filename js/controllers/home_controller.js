@@ -20,6 +20,10 @@ const PAGE = 25;
 // answer to a press, are left out of that: a reader over a word is being told
 // about the word, not about the row.
 const ZONE_SKIP = ".word-box, .analysis-badge, .typo-mark, .category-badge, .btn, a";
+// How long the row the entry window was opened from stays marked once the
+// window is closed, and how long the mark takes to fade after that.
+const VISITED_MS = 3200;
+const VISITED_FADE_MS = 600;
 
 class HomeController extends Stimulus.Controller {
   static targets = [
@@ -76,6 +80,11 @@ class HomeController extends Stimulus.Controller {
     this.onViewState = (event) => this.showViewState(event.detail.state);
     document.addEventListener("view-state:change", this.onViewState);
 
+    // Coming back from the entry window, the row it was opened from is
+    // pointed out again.
+    this.onEntryClosed = () => this.markEntrySource();
+    document.addEventListener("entry:closed", this.onEntryClosed);
+
     // A word opened in a new tab arrives as ?q=; the page looks it up rather
     // than showing an empty bar. Deferred by a turn so that the switcher,
     // which announces its own screen the same way, has had its say first.
@@ -87,6 +96,7 @@ class HomeController extends Stimulus.Controller {
     clearTimeout(this.openingSearch);
     document.removeEventListener("search:run", this.onSearchRequest);
     document.removeEventListener("view-state:change", this.onViewState);
+    document.removeEventListener("entry:closed", this.onEntryClosed);
     document.removeEventListener("search-keyboard:key", this.onKeyboardKey);
     document.removeEventListener("search-keyboard:closed", this.onKeyboardClosed);
     document.removeEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
@@ -784,6 +794,40 @@ class HomeController extends Stimulus.Controller {
       </tbody>`;
   }
 
+  // ==================== back from the entry window ====================
+
+  // The row the window was opened from is marked for a few seconds and then
+  // fades back into the list. A row that has scrolled out of sight is brought
+  // back to the middle first, so the mark is somewhere the reader can see.
+  markEntrySource() {
+    const row = this.entrySource;
+    if (!row || !row.isConnected) return;
+
+    this.resultsTableTarget.querySelectorAll("tr.is-visited").forEach((other) => {
+      other.classList.remove("is-visited", "is-fading", "is-returned");
+      clearTimeout(other.fadeTimer);
+      clearTimeout(other.clearTimer);
+    });
+
+    row.classList.add("is-visited");
+    row.fadeTimer = setTimeout(() => row.classList.add("is-fading"), VISITED_MS);
+    row.clearTimer = setTimeout(() => row.classList.remove("is-visited", "is-fading"),
+      VISITED_MS + VISITED_FADE_MS);
+
+    const at = row.getBoundingClientRect();
+    if (at.top < 90 || at.bottom > window.innerHeight - 20) {
+      row.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    // One beat of the mark as the reader lands, restarted from the beginning
+    // if they open and close the same row twice.
+    row.classList.remove("is-returned");
+    void row.offsetWidth;
+    row.classList.add("is-returned");
+    clearTimeout(row.returnTimer);
+    row.returnTimer = setTimeout(() => row.classList.remove("is-returned"), 1500);
+  }
+
   // ==================== what a click zone does ====================
 
   showZoneTip(event) {
@@ -1078,6 +1122,9 @@ class HomeController extends Stimulus.Controller {
   // result zone asks about the phrase, the headword zone about the entry.
   openEntry(event) {
     const zone = event.currentTarget.dataset;
+    // Remembered so that the row can be pointed out again when the window
+    // closes: a reader should not have to hunt for where they were.
+    this.entrySource = event.currentTarget.closest("tr.result-row");
     document.dispatchEvent(new CustomEvent("entry:open", {
       detail: {
         focus: zone.zoneFocus,

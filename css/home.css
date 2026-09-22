@@ -1468,3 +1468,35 @@
 @media (pointer: coarse) {
   .home-surface .zone-tip { display: none; }
 }
+
+/* The row the entry window was opened from, pointed out again once the
+   window has gone: a soft ground and a thin frame, drawn as an outline so
+   nothing in the row moves, with one beat as the reader lands. */
+.home-surface .result-row.is-visited > td {
+  background: #f5f9ff;
+  transition: background-color .5s ease;
+}
+
+.home-surface .result-row.is-visited {
+  outline: 1.5px solid #93b4f5;
+  outline-offset: -1px;
+  transition: outline-color .5s ease;
+}
+
+.home-surface .result-row.is-visited.is-fading { outline-color: rgba(147, 180, 245, 0); }
+.home-surface .result-row.is-visited.is-fading > td { background: transparent; }
+
+@keyframes result-row-returned {
+  0% { box-shadow: 0 0 0 0 rgba(8, 37, 103, 0.28); }
+  100% { box-shadow: 0 0 0 12px rgba(8, 37, 103, 0); }
+}
+
+.home-surface .result-row.is-returned {
+  position: relative;
+  z-index: 3;
+  animation: result-row-returned 1.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-surface .result-row.is-returned { animation: none; }
+}

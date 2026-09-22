@@ -49,22 +49,28 @@
   color: var(--lq-ink-soft);
 }
 
-/* The three categories carry the same colours the results list uses */
-.v3-surface .v3-entry {
-  border-color: var(--lq-entry-border);
-  background: var(--lq-entry-bg);
+/* The three categories carry the same colours the results list uses, on the
+   left edge as the reference has it rather than as a wash over the whole
+   card, so the three read as one row with three marks rather than three
+   differently coloured panels. */
+.v3-surface .v3-split .v3-figure {
+  gap: 2px;
+  padding-left: 20px;
+  border-left: 4px solid var(--lq-line);
+  background: var(--lq-paper);
 }
-.v3-surface .v3-entry .v3-number { color: var(--lq-entry-text); }
-.v3-surface .v3-sub {
-  border-color: var(--lq-sub-border);
-  background: var(--lq-sub-bg);
+.v3-surface .v3-split .v3-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #5d6b80;
 }
-.v3-surface .v3-sub .v3-number { color: var(--lq-sub-text); }
-.v3-surface .v3-related {
-  border-color: var(--lq-related-border);
-  background: var(--lq-related-bg);
-}
-.v3-surface .v3-related .v3-number { color: var(--lq-related-text); }
+.v3-surface .v3-split .v3-number { color: var(--lq-ink-navy); }
+
+.v3-surface .v3-split .v3-entry { border-left-color: var(--lq-entry-text); }
+.v3-surface .v3-split .v3-sub { border-left-color: var(--lq-sub-text); }
+.v3-surface .v3-split .v3-related { border-left-color: var(--lq-related-text); }
 
 /* ---------- one screen's worth of features ---------- */
 

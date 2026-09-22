@@ -1,0 +1,38 @@
+/* =========================================================
+   The language mark
+   A small dot in the language's own colour, used wherever a
+   language names itself: the tabs and panel headings of the
+   entry window and of the Redhouse window.
+
+   The reference mock puts a flag image here, fetched from an
+   image host. These pages carry their own images, so the
+   language is shown by its code over its colour instead; a
+   backend that has an icon can replace this.
+   ========================================================= */
+
+.language-flag {
+  flex-shrink: 0;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  opacity: 0.45;
+  transition: opacity 0.2s;
+}
+
+.language-flag[data-flag="tr"] { background: #e30a17; }
+.language-flag[data-flag="ar"] { background: #14532d; }
+.language-flag[data-flag="fa"] { background: #15803d; }
+.language-flag[data-flag="en"] { background: #1e3a8a; }
+.language-flag[data-flag="de"] { background: #111827; }
+.language-flag[data-flag="fr"] { background: #1d4ed8; }
+.language-flag[data-flag="it"] { background: #047857; }
+.language-flag[data-flag="es"] { background: #b91c1c; }
+.language-flag[data-flag="ru"] { background: #1e40af; }
+.language-flag[data-flag="el"] { background: #0284c7; }
+.language-flag[data-flag="hy"] { background: #d97706; }
+
+/* A mark is dimmed until its language is the one being read; each window
+   says when that is. */

@@ -163,34 +163,11 @@
   background: #e4e4e7;
 }
 
-/* A flag image per language would mean an outside image host, so each
-   language is named by its code over its own colour instead. */
-.entry-surface .entry-flag {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #cbd5e1;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-  opacity: 0.45;
-  transition: opacity 0.2s;
-}
-
-.entry-surface .entry-tab.active .entry-flag,
-.entry-surface .entry-tab:hover .entry-flag,
-.entry-surface .entry-section-head .entry-flag { opacity: 1; }
-
-.entry-surface .entry-flag[data-flag="tr"] { background: #e30a17; }
-.entry-surface .entry-flag[data-flag="ar"] { background: #14532d; }
-.entry-surface .entry-flag[data-flag="fa"] { background: #15803d; }
-.entry-surface .entry-flag[data-flag="en"] { background: #1e3a8a; }
-.entry-surface .entry-flag[data-flag="de"] { background: #111827; }
-.entry-surface .entry-flag[data-flag="fr"] { background: #1d4ed8; }
-.entry-surface .entry-flag[data-flag="it"] { background: #047857; }
-.entry-surface .entry-flag[data-flag="es"] { background: #b91c1c; }
-.entry-surface .entry-flag[data-flag="ru"] { background: #1e40af; }
-.entry-surface .entry-flag[data-flag="el"] { background: #0284c7; }
-.entry-surface .entry-flag[data-flag="hy"] { background: #d97706; }
+/* The language mark comes from css/language-flag.css; here it only says
+   which of them is the one being read. */
+.entry-surface .entry-tab.active .language-flag,
+.entry-surface .entry-tab:hover .language-flag,
+.entry-surface .entry-section-head .language-flag { opacity: 1; }
 
 /* ---------------------------------------------------- the controls */
 

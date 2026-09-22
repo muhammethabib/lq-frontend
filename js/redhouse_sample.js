@@ -1,0 +1,1035 @@
+// js/redhouse_sample.js
+// Stand-in for the Redhouse entry endpoint.
+//
+//   GET /redhouse_entry/show?word=…
+//
+// One entry of James Redhouse's lexicon: the page it was printed on, the
+// English the lexicon itself gives, and the same entry in ten further
+// languages. Each language gives the word's origin, its reading, its
+// grammar, its numbered senses, and the set expressions built on it.
+//
+// "marks" are the Ottoman words visible on the scan, in the image's own
+// pixels; "concepts" are the words the languages share, so that pressing one
+// can show what each language calls it. The backend will send the alignment
+// for the rest of the words with the record.
+
+window.LQ_REDHOUSE_SAMPLE = {
+  "dictionary": "Redhouse",
+  "badge": "REDHOUSE",
+  "headword": {
+    "ottoman": "نعل",
+    "latin": "na‘l / nâl",
+    "search": "na‘l"
+  },
+  "entry": 3,
+  "column": 1,
+  "page": 2090,
+  "views": [
+    {
+      "id": "entry",
+      "label": {
+        "en": "Entry 3",
+        "tr": "Madde 3"
+      },
+      "image": "../assets/scans/redhouse-2090-nal-entry.png",
+      "alt": {
+        "en": "The Redhouse column holding the entry نعل",
+        "tr": "نعل maddesini taşıyan Redhouse sütunu"
+      }
+    },
+    {
+      "id": "column",
+      "label": {
+        "en": "Column 1",
+        "tr": "Sütun 1"
+      },
+      "image": "../assets/scans/redhouse-2090-nal-entry.png",
+      "alt": {
+        "en": "The first column of Redhouse page 2090",
+        "tr": "Redhouse 2090. sayfanın birinci sütunu"
+      }
+    },
+    {
+      "id": "page",
+      "label": {
+        "en": "Page 2090",
+        "tr": "Sayfa 2090"
+      },
+      "image": "../assets/scans/redhouse-2090-page.jpg",
+      "alt": {
+        "en": "Redhouse page 2090 as printed",
+        "tr": "Redhouse 2090. sayfanın basılı hâli"
+      }
+    }
+  ],
+  "highlight": {
+    "x": 72,
+    "y": 76,
+    "w": 66,
+    "h": 34
+  },
+  "marks": [
+    {
+      "x": 86,
+      "y": 5,
+      "w": 52,
+      "h": 32,
+      "k": "entry"
+    },
+    {
+      "x": 82,
+      "y": 39,
+      "w": 72,
+      "h": 35,
+      "k": "entry"
+    },
+    {
+      "x": 501,
+      "y": 22,
+      "w": 61,
+      "h": 34,
+      "k": "expression"
+    },
+    {
+      "x": 319,
+      "y": 76,
+      "w": 50,
+      "h": 32,
+      "k": "expression"
+    },
+    {
+      "x": 0,
+      "y": 104,
+      "w": 79,
+      "h": 34,
+      "k": "expression"
+    },
+    {
+      "x": 111,
+      "y": 105,
+      "w": 84,
+      "h": 34,
+      "k": "expression"
+    },
+    {
+      "x": 475,
+      "y": 261,
+      "w": 78,
+      "h": 42,
+      "k": "expression"
+    },
+    {
+      "x": 452,
+      "y": 314,
+      "w": 80,
+      "h": 43,
+      "k": "expression"
+    },
+    {
+      "x": 398,
+      "y": 355,
+      "w": 86,
+      "h": 42,
+      "k": "expression"
+    },
+    {
+      "x": 401,
+      "y": 414,
+      "w": 166,
+      "h": 44,
+      "k": "expression"
+    },
+    {
+      "x": 96,
+      "y": 484,
+      "w": 192,
+      "h": 47,
+      "k": "expression"
+    },
+    {
+      "x": 313,
+      "y": 565,
+      "w": 183,
+      "h": 48,
+      "k": "expression"
+    },
+    {
+      "x": 386,
+      "y": 672,
+      "w": 188,
+      "h": 47,
+      "k": "expression"
+    },
+    {
+      "x": 76,
+      "y": 733,
+      "w": 78,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 77,
+      "y": 805,
+      "w": 78,
+      "h": 41,
+      "k": "entry"
+    },
+    {
+      "x": 72,
+      "y": 889,
+      "w": 96,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 73,
+      "y": 956,
+      "w": 124,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 74,
+      "y": 1001,
+      "w": 110,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 65,
+      "y": 1059,
+      "w": 124,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 64,
+      "y": 1219,
+      "w": 78,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 67,
+      "y": 1300,
+      "w": 104,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 65,
+      "y": 1401,
+      "w": 145,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 71,
+      "y": 1478,
+      "w": 114,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 64,
+      "y": 1562,
+      "w": 125,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 64,
+      "y": 1638,
+      "w": 126,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 225,
+      "y": 1680,
+      "w": 73,
+      "h": 43,
+      "k": "expression"
+    },
+    {
+      "x": 65,
+      "y": 1744,
+      "w": 91,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 68,
+      "y": 1850,
+      "w": 130,
+      "h": 43,
+      "k": "entry"
+    },
+    {
+      "x": 68,
+      "y": 1902,
+      "w": 82,
+      "h": 42,
+      "k": "entry"
+    },
+    {
+      "x": 69,
+      "y": 1981,
+      "w": 98,
+      "h": 43,
+      "k": "entry"
+    }
+  ],
+  "notice": {
+    "en": "All translations except the original English entry were generated by artificial intelligence and may contain errors. Please consult the original English entry.",
+    "tr": "Özgün İngilizce madde dışındaki bütün çeviriler yapay zeka tarafından üretilmiştir; hata içerebilir. Lütfen özgün İngilizce maddeye başvurun."
+  },
+  "source": "James W. Redhouse, A Turkish and English Lexicon (Constantinople: A. H. Boyajian, 1890), entry “نعل”.",
+  "citations": {
+    "chicago": "James W. Redhouse, A Turkish and English Lexicon (Constantinople: A. H. Boyajian, 1890), s.v. “نعل.”",
+    "harvard": "Redhouse, J.W. (1890) A Turkish and English Lexicon. Constantinople: A.H. Boyajian, s.v. “نعل”.",
+    "apa": "Redhouse, J. W. (1890). A Turkish and English lexicon. A. H. Boyajian. Entry “نعل”."
+  },
+  "expressions": [
+    {
+      "ottoman": "نعل تراش",
+      "latin": "na‘l tıraş"
+    },
+    {
+      "ottoman": "نعل چاقمق",
+      "latin": "na‘l çakmak"
+    },
+    {
+      "ottoman": "نعل كسمك",
+      "latin": "na‘l kesmek"
+    },
+    {
+      "ottoman": "نعللری آتمق",
+      "latin": "nalları atmak"
+    },
+    {
+      "ottoman": "نعله میخه اورمق",
+      "latin": "na‘la mıha vurmak"
+    },
+    {
+      "ottoman": "نعلی آتشه قومق",
+      "latin": "na‘lı ateşe koymak"
+    },
+    {
+      "ottoman": "درت نعل كیتمك",
+      "latin": "dört nal gitmek"
+    }
+  ],
+  "concepts": [
+    {
+      "key": "shoe",
+      "values": {
+        "en": "shoe",
+        "tr": "Ayakkabı",
+        "ar": "حذاء",
+        "fa": "کفش",
+        "de": "Schuh",
+        "fr": "chaussure",
+        "it": "scarpa",
+        "es": "zapato",
+        "ru": "Туфля",
+        "el": "Παπούτσι",
+        "hy": "Կոշիկ"
+      }
+    },
+    {
+      "key": "sandal",
+      "values": {
+        "en": "sandal",
+        "tr": "sandal",
+        "ar": "صندل",
+        "fa": "صندل",
+        "de": "Sandale",
+        "fr": "sandale",
+        "it": "sandalo",
+        "es": "sandalia",
+        "ru": "сандалия",
+        "el": "σανδάλι",
+        "hy": "սանդալ"
+      }
+    },
+    {
+      "key": "sheath",
+      "values": {
+        "en": "sheath",
+        "tr": "kının",
+        "ar": "غمد",
+        "fa": "غلاف",
+        "de": "Scheide",
+        "fr": "fourreau",
+        "it": "fodero",
+        "es": "vaina",
+        "ru": "ножен",
+        "el": "θήκης",
+        "hy": "Պատյանի"
+      }
+    },
+    {
+      "key": "horseshoe",
+      "values": {
+        "en": "horseshoe",
+        "tr": "At nalı",
+        "ar": "حدوة حصان",
+        "fa": "نعل اسب",
+        "de": "Hufeisen",
+        "fr": "fer à cheval",
+        "it": "ferro di cavallo",
+        "es": "herradura",
+        "ru": "Подкова",
+        "el": "Πέταλο",
+        "hy": "Պայտ"
+      }
+    },
+    {
+      "key": "plough",
+      "values": {
+        "en": "plough",
+        "tr": "Sabanın",
+        "ar": "محراث",
+        "fa": "گاوآهن",
+        "de": "Pfluges",
+        "fr": "charrue",
+        "it": "aratro",
+        "es": "arado",
+        "ru": "плуга",
+        "el": "αρότρου",
+        "hy": "Գութանի"
+      }
+    },
+    {
+      "key": "skin",
+      "values": {
+        "en": "skin",
+        "tr": "Deri",
+        "ar": "الجلد",
+        "fa": "پوست",
+        "de": "Haut",
+        "fr": "peau",
+        "it": "pelle",
+        "es": "piel",
+        "ru": "коже",
+        "el": "δέρμα",
+        "hy": "Մաշկի"
+      }
+    },
+    {
+      "key": "maker",
+      "values": {
+        "en": "maker",
+        "tr": "yapan",
+        "ar": "صانع",
+        "fa": "سازنده",
+        "de": "Hersteller",
+        "fr": "fabricant",
+        "it": "fabbricante",
+        "es": "fabricante",
+        "ru": "Изготовитель",
+        "el": "Κατασκευαστής",
+        "hy": "պատրաստող"
+      }
+    },
+    {
+      "key": "horse",
+      "values": {
+        "en": "horse",
+        "tr": "Ata",
+        "ar": "الحصان",
+        "fa": "اسب",
+        "de": "Pferd",
+        "fr": "cheval",
+        "it": "cavallo",
+        "es": "caballo",
+        "ru": "лошади",
+        "el": "άλογο",
+        "hy": "Ձիուն"
+      }
+    },
+    {
+      "key": "nail",
+      "values": {
+        "en": "nail",
+        "tr": "mıhına",
+        "ar": "المسمار",
+        "fa": "میخ",
+        "de": "Nagel",
+        "fr": "clou",
+        "it": "chiodo",
+        "es": "clavo",
+        "ru": "гвоздю",
+        "el": "καρφί",
+        "hy": "մեխին"
+      }
+    },
+    {
+      "key": "fire",
+      "values": {
+        "en": "fire",
+        "tr": "ateşe",
+        "ar": "النار",
+        "fa": "آتش",
+        "de": "Feuer",
+        "fr": "feu",
+        "it": "fuoco",
+        "es": "fuego",
+        "ru": "огонь",
+        "el": "φωτιά",
+        "hy": "կրակի"
+      }
+    },
+    {
+      "key": "incantation",
+      "values": {
+        "en": "incantation",
+        "tr": "efsun",
+        "ar": "تعويذة",
+        "fa": "افسون",
+        "de": "Zauber",
+        "fr": "incantation",
+        "it": "incantesimo",
+        "es": "encantamiento",
+        "ru": "заклинания",
+        "el": "ξόρκι",
+        "hy": "հմայքով"
+      }
+    },
+    {
+      "key": "rites",
+      "values": {
+        "en": "rites",
+        "tr": "ayinle",
+        "ar": "طقوس",
+        "fa": "آیین",
+        "de": "Riten",
+        "fr": "rites",
+        "it": "riti",
+        "es": "ritos",
+        "ru": "обрядов",
+        "el": "τελετές",
+        "hy": "ծեսերով"
+      }
+    },
+    {
+      "key": "speed",
+      "values": {
+        "en": "speed",
+        "tr": "süratle",
+        "ar": "سرعة",
+        "fa": "سرعت",
+        "de": "Geschwindigkeit",
+        "fr": "vitesse",
+        "it": "velocità",
+        "es": "velocidad",
+        "ru": "скорости",
+        "el": "ταχύτητα",
+        "hy": "արագությամբ"
+      }
+    },
+    {
+      "key": "make",
+      "values": {
+        "en": "make",
+        "tr": "yapmak",
+        "ar": "صناعة",
+        "fa": "ساختن",
+        "de": "herstellen",
+        "fr": "Fabriquer",
+        "it": "Fabbricare",
+        "es": "Fabricar",
+        "ru": "Изготавливать",
+        "el": "κατασκευάζει",
+        "hy": "պատրաստել"
+      }
+    }
+  ],
+  "languages": [
+    {
+      "id": "en",
+      "code": "EN",
+      "flag": "en",
+      "name": "English (Original)",
+      "rtl": false,
+      "originLabel": "Language of Origin",
+      "origin": "Arabic",
+      "readingLabel": "Transliteration",
+      "reading": "na‘l, vulgar نال (nâl)",
+      "grammar": "noun (dual نعلان / na‘lān; oblique نعلین / na‘leyn; plural نعال / ni‘āl)",
+      "senses": [
+        "A shoe, slipper, sandal.",
+        "A patten.",
+        "A ferrel of metal to a sheath.",
+        "A horseshoe.",
+        "The iron point of a plough.",
+        "A figure tattooed on the skin."
+      ],
+      "expressions": [
+        [
+          "A maker of wooden pattens."
+        ],
+        [
+          "To nail on shoes to a horse."
+        ],
+        [
+          "To make horseshoes.",
+          "To make a tattooed figure on the skin."
+        ],
+        [
+          "(To throw up his shoes) To lie down and die."
+        ],
+        [
+          "To strike, now the shoe, now the nail; that is, to act inconsiderately."
+        ],
+        [
+          "To put the horseshoe into the fire; that is, to make an absent one return by a special incantation and rites."
+        ],
+        [
+          "To go at full speed."
+        ]
+      ]
+    },
+    {
+      "id": "tr",
+      "code": "TR",
+      "flag": "tr",
+      "name": "Türkçe",
+      "rtl": false,
+      "originLabel": "Köken Dili",
+      "origin": "Arapça",
+      "readingLabel": "Latin Harfli",
+      "reading": "na‘l, halk ağzında نال (nâl)",
+      "grammar": "isim (ikil نعلان / na‘lān; mecrur نعلین / na‘leyn; çoğul نعال / ni‘āl)",
+      "senses": [
+        "Ayakkabı, terlik veya sandal.",
+        "Takunya.",
+        "Bir kının metal bileziği.",
+        "At nalı.",
+        "Sabanın demir ucu.",
+        "Deri üzerine dövmeyle işlenmiş şekil."
+      ],
+      "expressions": [
+        [
+          "Tahta takunya yapan kimse."
+        ],
+        [
+          "Ata nal çakmak."
+        ],
+        [
+          "Nal yapmak.",
+          "Deri üzerine dövme şekli yapmak."
+        ],
+        [
+          "(Nallarını atmak) Yere uzanıp ölmek."
+        ],
+        [
+          "Bir nalına bir mıhına vurmak; yani tutarsız ve düşüncesiz davranmak."
+        ],
+        [
+          "Nalı ateşe koymak; yani özel bir efsun ve ayinle uzaktaki birini geri getirmek."
+        ],
+        [
+          "Dörtnala, tam süratle gitmek."
+        ]
+      ]
+    },
+    {
+      "id": "ar",
+      "code": "AR",
+      "flag": "ar",
+      "name": "Arabic",
+      "rtl": true,
+      "originLabel": "لغة الأصل",
+      "origin": "العربية",
+      "readingLabel": "النقل بالحروف اللاتينية",
+      "reading": "na‘l، وفي العامية نال (nâl)",
+      "grammar": "اسم (المثنى نعلان / na‘lān؛ في حالة الجر نعلین / na‘leyn؛ الجمع نعال / ni‘āl)",
+      "senses": [
+        "حذاء أو خف أو صندل.",
+        "قبق أو نعل خشبي مرتفع.",
+        "حلقة معدنية لغمد.",
+        "حدوة حصان.",
+        "الطرف الحديدي للمحراث.",
+        "رسم موشوم على الجلد."
+      ],
+      "expressions": [
+        [
+          "صانع القباقيب الخشبية."
+        ],
+        [
+          "تثبيت النعل في حافر الحصان."
+        ],
+        [
+          "صناعة حدوات الخيل.",
+          "رسم وشم على الجلد."
+        ],
+        [
+          "(أن يرمي نعليه) أن يستلقي ويموت."
+        ],
+        [
+          "أن يضرب تارة على النعل وتارة على المسمار؛ أي أن يتصرف بلا روية."
+        ],
+        [
+          "وضع الحدوة في النار؛ أي إعادة شخص غائب بتعويذة وطقوس خاصة."
+        ],
+        [
+          "السير بأقصى سرعة."
+        ]
+      ]
+    },
+    {
+      "id": "fa",
+      "code": "FA",
+      "flag": "fa",
+      "name": "Persian",
+      "rtl": true,
+      "originLabel": "زبان مبدأ",
+      "origin": "عربی",
+      "readingLabel": "لاتین‌نویسی",
+      "reading": "na‘l، در زبان عامیانه نال (nâl)",
+      "grammar": "اسم (مثنی نعلان / na‘lān؛ حالت اضافی نعلین / na‘leyn؛ جمع نعال / ni‘āl)",
+      "senses": [
+        "کفش، دمپایی یا صندل.",
+        "کفش چوبی یا قبق.",
+        "حلقهٔ فلزی غلاف.",
+        "نعل اسب.",
+        "نوک آهنی گاوآهن.",
+        "نقشی که بر پوست خال‌کوبی شده باشد."
+      ],
+      "expressions": [
+        [
+          "سازندهٔ قبق‌های چوبی."
+        ],
+        [
+          "به پای اسب نعل کوبیدن."
+        ],
+        [
+          "نعل اسب ساختن.",
+          "بر پوست نقش خال‌کوبی کردن."
+        ],
+        [
+          "(نعل‌هایش را انداختن) دراز کشیدن و مردن."
+        ],
+        [
+          "گاه بر نعل و گاه بر میخ زدن؛ یعنی نسنجیده رفتار کردن."
+        ],
+        [
+          "نعل را در آتش گذاشتن؛ یعنی با افسون و آیین ویژه شخص غایب را بازگرداندن."
+        ],
+        [
+          "با نهایت سرعت رفتن."
+        ]
+      ]
+    },
+    {
+      "id": "de",
+      "code": "DE",
+      "flag": "de",
+      "name": "German",
+      "rtl": false,
+      "originLabel": "Herkunftssprache",
+      "origin": "Arabisch",
+      "readingLabel": "Transliteration",
+      "reading": "na‘l, volkstümlich نال (nâl)",
+      "grammar": "Substantiv (Dual نعلان / na‘lān; obliquus نعلین / na‘leyn; Plural نعال / ni‘āl)",
+      "senses": [
+        "Ein Schuh, Pantoffel oder eine Sandale.",
+        "Ein hölzerner Überschuh.",
+        "Ein Metallbeschlag an einer Scheide.",
+        "Ein Hufeisen.",
+        "Die eiserne Spitze eines Pfluges.",
+        "Eine auf die Haut tätowierte Figur."
+      ],
+      "expressions": [
+        [
+          "Ein Hersteller hölzerner Überschuhe."
+        ],
+        [
+          "Einem Pferd Hufeisen aufnageln."
+        ],
+        [
+          "Hufeisen herstellen.",
+          "Eine Figur auf die Haut tätowieren."
+        ],
+        [
+          "(Seine Hufeisen abwerfen) Sich hinlegen und sterben."
+        ],
+        [
+          "Bald auf das Eisen, bald auf den Nagel schlagen; das heißt unbedacht handeln."
+        ],
+        [
+          "Das Hufeisen ins Feuer legen; das heißt einen Abwesenden durch einen besonderen Zauber und Riten zurückholen."
+        ],
+        [
+          "Mit voller Geschwindigkeit gehen."
+        ]
+      ]
+    },
+    {
+      "id": "fr",
+      "code": "FR",
+      "flag": "fr",
+      "name": "French",
+      "rtl": false,
+      "originLabel": "Langue d’origine",
+      "origin": "Arabe",
+      "readingLabel": "Translittération",
+      "reading": "na‘l, forme populaire نال (nâl)",
+      "grammar": "nom (duel نعلان / na‘lān ; oblique نعلین / na‘leyn ; pluriel نعال / ni‘āl)",
+      "senses": [
+        "Une chaussure, une pantoufle ou une sandale.",
+        "Un patin ou sabot de bois.",
+        "Une virole métallique de fourreau.",
+        "Un fer à cheval.",
+        "La pointe en fer d’une charrue.",
+        "Une figure tatouée sur la peau."
+      ],
+      "expressions": [
+        [
+          "Un fabricant de patins en bois."
+        ],
+        [
+          "Clouer des fers aux sabots d’un cheval."
+        ],
+        [
+          "Fabriquer des fers à cheval.",
+          "Tatouer une figure sur la peau."
+        ],
+        [
+          "(Jeter ses fers) Se coucher et mourir."
+        ],
+        [
+          "Frapper tantôt le fer, tantôt le clou ; c’est-à-dire agir inconsidérément."
+        ],
+        [
+          "Mettre le fer au feu ; c’est-à-dire faire revenir un absent au moyen d’une incantation et de rites particuliers."
+        ],
+        [
+          "Aller à toute vitesse."
+        ]
+      ]
+    },
+    {
+      "id": "it",
+      "code": "IT",
+      "flag": "it",
+      "name": "Italian",
+      "rtl": false,
+      "originLabel": "Lingua d’origine",
+      "origin": "Arabo",
+      "readingLabel": "Traslitterazione",
+      "reading": "na‘l, forma popolare نال (nâl)",
+      "grammar": "sostantivo (duale نعلان / na‘lān; obliquo نعلین / na‘leyn; plurale نعال / ni‘āl)",
+      "senses": [
+        "Una scarpa, pantofola o sandalo.",
+        "Uno zoccolo di legno.",
+        "Una ghiera metallica di un fodero.",
+        "Un ferro di cavallo.",
+        "La punta di ferro di un aratro.",
+        "Una figura tatuata sulla pelle."
+      ],
+      "expressions": [
+        [
+          "Un fabbricante di zoccoli di legno."
+        ],
+        [
+          "Inchiodare i ferri agli zoccoli di un cavallo."
+        ],
+        [
+          "Fabbricare ferri di cavallo.",
+          "Tatuare una figura sulla pelle."
+        ],
+        [
+          "(Gettare i propri ferri) Sdraiarsi e morire."
+        ],
+        [
+          "Battere ora il ferro, ora il chiodo; cioè agire sconsideratamente."
+        ],
+        [
+          "Mettere il ferro nel fuoco; cioè far tornare un assente mediante uno speciale incantesimo e determinati riti."
+        ],
+        [
+          "Andare a tutta velocità."
+        ]
+      ]
+    },
+    {
+      "id": "es",
+      "code": "ES",
+      "flag": "es",
+      "name": "Spanish",
+      "rtl": false,
+      "originLabel": "Lengua de origen",
+      "origin": "Árabe",
+      "readingLabel": "Transliteración",
+      "reading": "na‘l, forma popular نال (nâl)",
+      "grammar": "sustantivo (dual نعلان / na‘lān; oblicuo نعلین / na‘leyn; plural نعال / ni‘āl)",
+      "senses": [
+        "Un zapato, una zapatilla o una sandalia.",
+        "Un zueco de madera.",
+        "Una contera metálica de una vaina.",
+        "Una herradura.",
+        "La punta de hierro de un arado.",
+        "Una figura tatuada en la piel."
+      ],
+      "expressions": [
+        [
+          "Un fabricante de zuecos de madera."
+        ],
+        [
+          "Clavar herraduras a un caballo."
+        ],
+        [
+          "Fabricar herraduras.",
+          "Tatuar una figura en la piel."
+        ],
+        [
+          "(Arrojar sus herraduras) Echarse y morir."
+        ],
+        [
+          "Golpear unas veces la herradura y otras el clavo; es decir, actuar sin consideración."
+        ],
+        [
+          "Poner la herradura en el fuego; es decir, hacer volver a un ausente mediante un encantamiento y unos ritos especiales."
+        ],
+        [
+          "Ir a toda velocidad."
+        ]
+      ]
+    },
+    {
+      "id": "ru",
+      "code": "RU",
+      "flag": "ru",
+      "name": "Russian",
+      "rtl": false,
+      "originLabel": "Язык происхождения",
+      "origin": "Арабский",
+      "readingLabel": "Транслитерация",
+      "reading": "na‘l, просторечное نال (nâl)",
+      "grammar": "существительное (двойственное نعلان / na‘lān; косвенная форма نعلین / na‘leyn; множественное نعال / ni‘āl)",
+      "senses": [
+        "Туфля, башмак или сандалия.",
+        "Деревянный башмак.",
+        "Металлическая оковка ножен.",
+        "Подкова.",
+        "Железный наконечник плуга.",
+        "Фигура, вытатуированная на коже."
+      ],
+      "expressions": [
+        [
+          "Изготовитель деревянных башмаков."
+        ],
+        [
+          "Прибить подковы к копытам лошади."
+        ],
+        [
+          "Изготавливать подковы.",
+          "Нанести татуированный рисунок на кожу."
+        ],
+        [
+          "(Сбросить свои подковы) Лечь и умереть."
+        ],
+        [
+          "Ударять то по подкове, то по гвоздю; то есть действовать необдуманно."
+        ],
+        [
+          "Положить подкову в огонь; то есть вернуть отсутствующего посредством особого заклинания и обрядов."
+        ],
+        [
+          "Идти на полной скорости."
+        ]
+      ]
+    },
+    {
+      "id": "el",
+      "code": "EL",
+      "flag": "el",
+      "name": "Greek",
+      "rtl": false,
+      "originLabel": "Γλώσσα προέλευσης",
+      "origin": "Αραβικά",
+      "readingLabel": "Μεταγραφή",
+      "reading": "na‘l, λαϊκό نال (nâl)",
+      "grammar": "ουσιαστικό (δυϊκός نعلان / na‘lān· πλάγια نعلین / na‘leyn· πληθυντικός نعال / ni‘āl)",
+      "senses": [
+        "Παπούτσι, παντόφλα ή σανδάλι.",
+        "Ξύλινο τσόκαρο.",
+        "Μεταλλικός δακτύλιος θήκης.",
+        "Πέταλο αλόγου.",
+        "Η σιδερένια αιχμή ενός αρότρου.",
+        "Σχήμα χαραγμένο με τατουάζ στο δέρμα."
+      ],
+      "expressions": [
+        [
+          "Κατασκευαστής ξύλινων τσόκαρων."
+        ],
+        [
+          "Να καρφώνει πέταλα σε άλογο."
+        ],
+        [
+          "Να κατασκευάζει πέταλα.",
+          "Να χαράζει ένα σχέδιο με τατουάζ στο δέρμα."
+        ],
+        [
+          "(Να πετάξει τα πέταλά του) Να ξαπλώσει και να πεθάνει."
+        ],
+        [
+          "Να χτυπά πότε το πέταλο και πότε το καρφί· δηλαδή να ενεργεί απερίσκεπτα."
+        ],
+        [
+          "Να βάζει το πέταλο στη φωτιά· δηλαδή να κάνει έναν απόντα να επιστρέψει με ειδικό ξόρκι και τελετές."
+        ],
+        [
+          "Να πηγαίνει με πλήρη ταχύτητα."
+        ]
+      ]
+    },
+    {
+      "id": "hy",
+      "code": "HY",
+      "flag": "hy",
+      "name": "Armenian",
+      "rtl": false,
+      "originLabel": "Ծագման լեզու",
+      "origin": "Արաբերեն",
+      "readingLabel": "Տառադարձություն",
+      "reading": "na‘l, ժողովրդական نال (nâl)",
+      "grammar": "գոյական (երկակի نعلان / na‘lān, թեք ձև نعلین / na‘leyn, հոգնակի نعال / ni‘āl)",
+      "senses": [
+        "Կոշիկ, հողաթափ կամ սանդալ։",
+        "Փայտե մաշիկ։",
+        "Պատյանի մետաղյա օղակ։",
+        "Պայտ։",
+        "Գութանի երկաթե ծայրը։",
+        "Մաշկի վրա դաջված պատկեր։"
+      ],
+      "expressions": [
+        [
+          "Փայտե մաշիկ պատրաստող։"
+        ],
+        [
+          "Ձիուն պայտ խփել։"
+        ],
+        [
+          "Պայտեր պատրաստել։",
+          "Մաշկի վրա դաջված պատկեր անել։"
+        ],
+        [
+          "(Իր պայտերը նետել) Պառկել և մեռնել։"
+        ],
+        [
+          "Մերթ պայտին, մերթ մեխին խփել, այսինքն՝ անխոհեմ գործել։"
+        ],
+        [
+          "Պայտը կրակի մեջ դնել, այսինքն՝ հատուկ հմայքով և ծեսերով վերադարձնել բացակա մարդուն։"
+        ],
+        [
+          "Ամբողջ արագությամբ գնալ։"
+        ]
+      ]
+    }
+  ]
+};

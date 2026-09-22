@@ -127,7 +127,7 @@ class EntryWindowController extends Stimulus.Controller {
       <button type="button" class="btn entry-tab${index === 0 ? " active" : ""}"
               data-entry-tab="${safe(tab.section)}" title="${safe((tab.title || {})[language] || "")}"
               data-action="click->entry-window#selectTab">
-        <span class="entry-flag" data-flag="${safe(tab.flag || "")}" aria-hidden="true"></span>
+        <span class="language-flag" data-flag="${safe(tab.flag || "")}" aria-hidden="true"></span>
         ${safe(tab.code)}
       </button>`).join('<span class="entry-tab-divider" aria-hidden="true"></span>');
 
@@ -155,7 +155,7 @@ class EntryWindowController extends Stimulus.Controller {
           <button type="button" class="btn entry-section-toggle"
                   aria-expanded="${!section.collapsed}"
                   data-action="click->entry-window#toggleSection">
-            <span class="entry-flag" data-flag="${safe(section.flag || "")}" aria-hidden="true"></span>
+            <span class="language-flag" data-flag="${safe(section.flag || "")}" aria-hidden="true"></span>
             <span class="entry-section-title">${safe((section.title || {})[language] || "")}</span>
             ${count}
             <i data-feather="chevron-down" class="entry-chevron" aria-hidden="true"></i>

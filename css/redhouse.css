@@ -1,0 +1,715 @@
+/* =========================================================
+   The Redhouse entry window
+   The one dictionary held whole: the column it was printed
+   in, and the entry in eleven languages. Scoped under
+   .redhouse-surface. The language dots it shares with the
+   entry window come from css/entry-window.css.
+   ========================================================= */
+
+.redhouse-surface {
+  --redhouse-entry: rgba(5, 150, 105, 0.9);
+  --redhouse-entry-bg: rgba(16, 185, 129, 0.05);
+  --redhouse-entry-lit: rgba(5, 150, 105, 0.25);
+  --redhouse-expression: rgba(245, 158, 11, 0.9);
+  --redhouse-expression-bg: rgba(251, 191, 36, 0.05);
+  --redhouse-expression-lit: rgba(251, 191, 36, 0.2);
+
+  position: relative;
+  height: 92vh;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 22px;
+  background: var(--lq-paper);
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+}
+
+.redhouse-dialog {
+  width: min(1180px, 96vw);
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.redhouse-modal .modal-dialog { max-width: 1180px; }
+
+.redhouse-surface .redhouse-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 30;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background-color: var(--lq-paper);
+  opacity: 1;
+}
+
+.redhouse-surface .redhouse-close:hover {
+  background-color: var(--lq-red);
+  border-color: var(--lq-red);
+  filter: invert(1) grayscale(1);
+}
+
+/* ---------------------------------------------------- the header */
+
+.redhouse-surface .redhouse-header {
+  position: relative;
+  z-index: 20;
+  border-bottom: 1px solid var(--lq-line);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.redhouse-surface .redhouse-header-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px 62px 8px 24px;
+}
+
+.redhouse-surface .redhouse-badge {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #27272a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.redhouse-surface .redhouse-crumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--lq-muted);
+}
+
+.redhouse-surface .redhouse-crumb strong {
+  margin: 0 4px;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 22px;
+  color: var(--lq-red);
+}
+
+.redhouse-surface .redhouse-crumb b { color: var(--lq-sapphire); }
+.redhouse-surface .redhouse-crumb svg { width: 16px; height: 16px; color: #cbd5e1; }
+
+.redhouse-surface .redhouse-tabs {
+  display: flex;
+  align-items: stretch;
+  min-height: 42px;
+  padding: 0 18px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.redhouse-surface .redhouse-tab {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #71717a;
+  white-space: nowrap;
+}
+
+.redhouse-surface .redhouse-tab:hover { color: #18181b; }
+.redhouse-surface .redhouse-tab.active { color: var(--lq-sapphire); }
+
+.redhouse-surface .redhouse-tab.active::after {
+  content: "";
+  position: absolute;
+  inset: auto 8px 0 8px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--lq-sapphire);
+}
+
+.redhouse-surface .redhouse-tab svg { width: 14px; height: 14px; }
+
+/* The language mark comes from css/language-flag.css; here it only says
+   which of them is the one being read. */
+.redhouse-surface .redhouse-tab.active .language-flag,
+.redhouse-surface .redhouse-tab:hover .language-flag,
+.redhouse-surface .redhouse-section-head .language-flag,
+.redhouse-surface .redhouse-equivalent .language-flag { opacity: 1; }
+
+.redhouse-surface .redhouse-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 20px;
+  border-top: 1px solid #eef2f7;
+}
+
+/* ---------------------------------------------------- the sections */
+
+.redhouse-surface .redhouse-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background: #fafaf9;
+}
+
+.redhouse-surface .redhouse-section { border-bottom: 1px solid var(--lq-line); }
+.redhouse-surface .redhouse-section-head { margin: 0; }
+
+.redhouse-surface .redhouse-section-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 30px;
+  border: 0;
+  border-radius: 0;
+  background: #fafaf9;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-section-toggle:hover { background: #f1f5f9; }
+.redhouse-surface .redhouse-section-icon { width: 18px; height: 18px; color: var(--lq-sapphire); }
+
+.redhouse-surface .redhouse-chevron {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: #94a3b8;
+  transition: transform 0.2s;
+}
+
+.redhouse-surface .redhouse-section.is-collapsed .redhouse-chevron { transform: rotate(-90deg); }
+.redhouse-surface .redhouse-section.is-collapsed .redhouse-section-body { display: none; }
+.redhouse-surface .redhouse-section-body { padding: 0 30px 30px; }
+
+.redhouse-surface .redhouse-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 16px 24px 8px;
+  padding: 10px 13px;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  background: #fffbeb;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #854d0e;
+}
+
+.redhouse-surface .redhouse-notice svg { flex: none; width: 15px; height: 15px; margin-top: 1px; }
+
+/* ---------------------------------------------------- an entry */
+
+.redhouse-surface .redhouse-card {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 26px 30px 22px;
+  border: 1px solid var(--lq-line);
+  border-radius: 15px;
+  background: var(--lq-paper);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  font-size: 14px;
+  line-height: 1.68;
+}
+
+.redhouse-surface .redhouse-card[data-direction="rtl"] { font-size: 15px; }
+
+.redhouse-surface .redhouse-card.is-editing { outline: 2px solid #bfdbfe; outline-offset: -8px; }
+.redhouse-surface .redhouse-card.is-editing .redhouse-editable {
+  border-radius: 3px;
+  background: #eff6ff;
+  outline: none;
+}
+
+/* Pressing the headword, an expression, or one of the grammatical forms
+   searches it, so each of them reads as a control. */
+.redhouse-surface .redhouse-search {
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  text-align: inherit;
+}
+
+.redhouse-surface .redhouse-search:hover { background: #eef2f7; box-shadow: 0 0 0 4px #eef2f7; }
+
+.redhouse-surface .redhouse-headword {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.redhouse-surface .redhouse-headword-ottoman {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--lq-red);
+}
+
+.redhouse-surface .redhouse-headword-latin {
+  font-size: 16px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-meta {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 5px 12px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-paper-soft);
+  font-size: 12px;
+}
+
+.redhouse-surface .redhouse-meta dt { color: var(--lq-muted); font-weight: 700; }
+.redhouse-surface .redhouse-meta dd { margin: 0; font-weight: 600; }
+
+.redhouse-surface .redhouse-grammar {
+  margin: 0 0 17px;
+  color: #475569;
+  font-style: italic;
+}
+
+.redhouse-surface .redhouse-senses {
+  margin: 0 0 22px;
+  padding-inline-start: 24px;
+}
+
+.redhouse-surface .redhouse-senses > li { padding: 3px 0; }
+
+.redhouse-surface .redhouse-expressions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.redhouse-surface .redhouse-expression {
+  padding-top: 12px;
+  border-top: 1px solid #eef2f7;
+}
+
+.redhouse-surface .redhouse-expression-key {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 3px;
+  padding: 2px 4px;
+}
+
+.redhouse-surface .redhouse-expression-ottoman {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #334155;
+  unicode-bidi: isolate;
+}
+
+.redhouse-surface .redhouse-expression-latin {
+  padding: 2px 7px;
+  border: 1px solid var(--lq-line);
+  border-radius: 999px;
+  background: #f1f5f9;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--lq-muted);
+  unicode-bidi: isolate;
+}
+
+.redhouse-surface .redhouse-meaning { margin: 0; color: #334155; }
+
+.redhouse-surface .redhouse-subsenses {
+  margin: 4px 0 0;
+  padding-inline-start: 22px;
+}
+
+/* ---------------------------------------------------- suggesting a fix */
+
+.redhouse-surface .redhouse-edit-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+.redhouse-surface .redhouse-edit {
+  padding: 6px 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 7px;
+  background: var(--lq-paper);
+  font-size: 10px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-edit:hover { border-color: #94a3b8; background: var(--lq-paper-soft); }
+
+.redhouse-surface .redhouse-edit-save {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+}
+
+.redhouse-surface .redhouse-edit-save:hover { background: #1e3a6e; color: #fff; }
+
+.redhouse-surface .redhouse-source {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--lq-line);
+  font-size: 11px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-cite {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 0;
+}
+
+.redhouse-surface .redhouse-cite-label {
+  margin-right: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.redhouse-surface .redhouse-cite-style {
+  padding: 5px 9px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: var(--lq-paper);
+  font-size: 9px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-cite-style:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: var(--lq-sapphire);
+}
+
+/* ---------------------------------------------------- the scan */
+
+.redhouse-surface .redhouse-scan-section { background: #f3f3f1; }
+.redhouse-surface .redhouse-scan-section .redhouse-section-toggle { background: #f3f3f1; }
+.redhouse-surface .redhouse-scan-section .redhouse-section-body { padding: 0 24px 26px; }
+
+.redhouse-surface .redhouse-image-card {
+  max-width: 880px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--lq-line);
+  border-radius: 15px;
+  background: var(--lq-paper);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.redhouse-surface .redhouse-image-shell {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) 54px;
+  align-items: center;
+  background: #f1f5f9;
+}
+
+.redhouse-surface .redhouse-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  color: #475569;
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.15);
+}
+
+.redhouse-surface .redhouse-step:hover { background: #fff; color: var(--lq-sapphire); }
+
+.redhouse-surface .redhouse-image-window {
+  height: 52vh;
+  min-height: 320px;
+  max-height: 560px;
+  overflow: auto;
+  background: #ddd;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.redhouse-surface .redhouse-image-stage {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+  text-align: center;
+}
+
+.redhouse-surface .redhouse-image-stage img {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* The entry itself, and the Ottoman words around it. Both are placed from
+   the scan's own pixels, so they follow the image as it is zoomed. */
+.redhouse-surface .redhouse-highlight {
+  position: absolute;
+  z-index: 50;
+  pointer-events: none;
+  border: 2px solid var(--entry-related, #2563eb);
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.25);
+  opacity: 0.9;
+  animation: redhouse-breathe 3s infinite ease-in-out;
+}
+
+@keyframes redhouse-breathe {
+  0%, 100% { box-shadow: 0 0 5px rgba(37, 99, 235, 0.2); border-color: rgba(37, 99, 235, 0.6); }
+  50% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); border-color: #2563eb; }
+}
+
+.redhouse-surface .redhouse-mark {
+  position: absolute;
+  z-index: 10;
+  border: 2px solid;
+  border-radius: 6px;
+  opacity: 0.72;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.redhouse-surface .redhouse-mark-entry {
+  border-color: var(--redhouse-entry);
+  background: var(--redhouse-entry-bg);
+}
+
+.redhouse-surface .redhouse-mark-expression {
+  border-color: var(--redhouse-expression);
+  background: var(--redhouse-expression-bg);
+}
+
+.redhouse-surface .redhouse-mark:hover { opacity: 1; }
+.redhouse-surface .redhouse-mark-entry:hover { background: var(--redhouse-entry-lit); }
+.redhouse-surface .redhouse-mark-expression:hover { background: var(--redhouse-expression-lit); }
+
+.redhouse-surface .redhouse-image-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 7px 12px;
+  border-top: 1px solid var(--lq-line);
+  background: var(--lq-paper);
+}
+
+.redhouse-surface .redhouse-modes {
+  grid-column: 2;
+  display: flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: #f1f5f9;
+}
+
+.redhouse-surface .redhouse-mode {
+  min-width: 108px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--lq-muted);
+}
+
+.redhouse-surface .redhouse-mode:hover { color: var(--lq-ink); }
+
+.redhouse-surface .redhouse-mode.active {
+  background: var(--lq-paper);
+  color: var(--lq-sapphire);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
+}
+
+.redhouse-surface .redhouse-zoom {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--lq-line);
+  border-radius: 9px;
+  background: var(--lq-paper-soft);
+}
+
+.redhouse-surface .redhouse-zoom-step {
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--lq-paper);
+  font-size: 17px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.redhouse-surface .redhouse-zoom-step:hover { background: #eff6ff; color: var(--lq-sapphire); }
+
+.redhouse-surface .redhouse-zoom-value {
+  min-width: 48px;
+  height: 31px;
+  padding: 0;
+  border: 0;
+  border-inline: 1px solid var(--lq-line);
+  border-radius: 0;
+  background: var(--lq-paper);
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--lq-muted);
+}
+
+/* ---------------------------------------------------- shared words */
+
+.redhouse-surface .redhouse-link {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.redhouse-surface .redhouse-link:hover,
+.redhouse-surface .redhouse-link.is-open { background: #eef2ff; box-shadow: 0 0 0 3px #eef2ff; }
+
+.redhouse-surface .redhouse-link.is-found { animation: redhouse-found 3s ease-out; }
+
+@keyframes redhouse-found {
+  0%, 70% { background: #fde68a; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22); }
+  100% { background: transparent; box-shadow: none; }
+}
+
+.redhouse-surface .redhouse-equivalents {
+  position: fixed;
+  z-index: 60;
+  width: min(390px, calc(100vw - 24px));
+  max-height: min(540px, calc(100vh - 24px));
+  overflow: auto;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: var(--lq-paper);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.22);
+}
+
+.redhouse-surface .redhouse-equivalents-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 5px 10px;
+  border-bottom: 1px solid var(--lq-line);
+}
+
+.redhouse-surface .redhouse-equivalents-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.redhouse-surface .redhouse-equivalent {
+  display: grid;
+  grid-template-columns: 16px 82px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  color: #334155;
+}
+
+.redhouse-surface .redhouse-equivalent:hover { background: #f1f5f9; }
+.redhouse-surface .redhouse-equivalent.is-current { background: #eff6ff; }
+
+.redhouse-surface .redhouse-equivalent-language {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--lq-muted);
+}
+
+.redhouse-surface .redhouse-equivalent-value {
+  font-size: 11px;
+  line-height: 1.38;
+  overflow-wrap: anywhere;
+}
+
+.redhouse-surface .redhouse-equivalent-value[data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------- what just happened */
+
+.redhouse-surface .redhouse-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 70;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 9px 13px;
+  border-radius: 8px;
+  background: #172033;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------- narrow screens */
+
+@media (max-width: 767.98px) {
+  .redhouse-surface { height: 100vh; border-radius: 0; }
+  .redhouse-dialog { width: 100vw; margin: 0; }
+  .redhouse-surface .redhouse-header-top { padding: 8px 56px 8px 14px; }
+  .redhouse-surface .redhouse-tabs { padding: 0 8px; }
+  .redhouse-surface .redhouse-tab { padding: 8px; }
+  .redhouse-surface .redhouse-notice { margin: 12px; }
+  .redhouse-surface .redhouse-section-toggle { padding: 14px 16px; }
+  .redhouse-surface .redhouse-section-body { padding: 0 12px 20px; }
+  .redhouse-surface .redhouse-scan-section .redhouse-section-body { padding: 0 8px 20px; }
+  .redhouse-surface .redhouse-card { padding: 20px 18px; }
+  .redhouse-surface .redhouse-meta { grid-template-columns: minmax(0, 1fr); }
+  .redhouse-surface .redhouse-image-shell { grid-template-columns: 40px minmax(0, 1fr) 40px; }
+  .redhouse-surface .redhouse-step { width: 34px; height: 34px; }
+  .redhouse-surface .redhouse-image-bar { grid-template-columns: minmax(0, 1fr); padding: 7px; }
+  .redhouse-surface .redhouse-modes,
+  .redhouse-surface .redhouse-zoom { grid-column: 1; justify-self: center; }
+  .redhouse-surface .redhouse-mode { min-width: 0; padding: 8px 10px; }
+  .redhouse-surface .redhouse-headword-ottoman { font-size: 30px; }
+}

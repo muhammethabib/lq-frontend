@@ -485,6 +485,21 @@ window.LQ_TRANSLATIONS = {
     typoOriginal: "Aslı",
     typoPrinted: "Basılı hâli",
 
+    // --- Redhouse entry window ---
+    redhouseEntry: "Madde",
+    redhouseTranslations: "Çeviriler",
+    redhouseImage: "Orijinal görsel",
+    redhouseImageTab: "GRS",
+    redhousePrevious: "Önceki görsel",
+    redhouseNext: "Sonraki görsel",
+    redhouseZoomIn: "Yakınlaştır",
+    redhouseZoomOut: "Uzaklaştır",
+    redhouseZoomReset: "Yakınlaştırmayı sıfırla",
+    redhouseEquivalents: "Karşılık gelen ifadeler",
+    redhouseCopied: "Kopyalandı",
+    redhouseSaved: "Değişiklik kaydedildi",
+    redhouseNoNeighbour: "Komşu görsel örnek veride yok.",
+
     // --- LexiQamus 2.0 what's new ---
     v2Eyebrow: "Arşiv duyurusu · 2020",
     v2Title: "2.0 Yenilikleri",

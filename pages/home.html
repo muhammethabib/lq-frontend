@@ -20,7 +20,9 @@
   <link rel="stylesheet" href="../css/ottoman-keyboard.css">
   <link rel="stylesheet" href="../css/citation.css">
   <link rel="stylesheet" href="../css/dictionary-page.css">
+  <link rel="stylesheet" href="../css/language-flag.css">
   <link rel="stylesheet" href="../css/entry-window.css">
+  <link rel="stylesheet" href="../css/redhouse.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -34,6 +36,7 @@
   <script src="../js/decoder_sample_data.js" defer></script>
   <script src="../js/dictionary_page_sample.js" defer></script>
   <script src="../js/entry_sample.js" defer></script>
+  <script src="../js/redhouse_sample.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/view_states.js" defer></script>
   <script src="../js/page_chrome.js" defer></script>
@@ -48,6 +51,7 @@
   <script src="../js/controllers/citation_controller.js" defer></script>
   <script src="../js/controllers/dictionary_page_controller.js" defer></script>
   <script src="../js/controllers/entry_window_controller.js" defer></script>
+  <script src="../js/controllers/redhouse_controller.js" defer></script>
 </head>
 <body>
 
@@ -1027,6 +1031,62 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- The Redhouse entry window: the one dictionary held whole. -->
+  <div class="modal fade redhouse-modal" id="redhouseModal" tabindex="-1" aria-hidden="true"
+       data-controller="redhouse"
+       data-redhouse-template-value="redhouseTemplate"
+       data-redhouse-endpoint-value="/redhouse_entry/show"></div>
+
+  <template id="redhouseTemplate">
+    <div class="modal-dialog modal-dialog-centered redhouse-dialog">
+      <div class="modal-content redhouse-surface">
+        <button type="button" class="btn-close redhouse-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close"></button>
+
+        <header class="redhouse-header">
+          <div class="redhouse-header-top">
+            <span class="redhouse-badge" data-redhouse-badge></span>
+            <p class="redhouse-crumb">
+              <span data-i18n="redhouseEntry">Entry</span>
+              <strong data-direction="rtl" data-redhouse-headword></strong>
+              <i data-feather="chevron-right" aria-hidden="true"></i>
+              <b data-i18n="redhouseTranslations">Translations</b>
+            </p>
+          </div>
+          <nav class="redhouse-tabs" data-redhouse-tabs
+               aria-label="Languages" data-i18n-aria="entryLanguages"></nav>
+          <div class="redhouse-controls">
+            <button type="button" class="btn entry-control" data-action="click->redhouse#expandAll"
+                    data-i18n="entryExpandAll">Expand all</button>
+            <span class="entry-control-divider" aria-hidden="true"></span>
+            <button type="button" class="btn entry-control" data-action="click->redhouse#collapseAll"
+                    data-i18n="entryCollapseAll">Collapse all</button>
+          </div>
+        </header>
+
+        <main class="redhouse-body" data-redhouse-body
+              data-action="click->redhouse#bodyClick">
+          <div data-redhouse-sections></div>
+        </main>
+
+        <!-- What each language calls the same thing -->
+        <div class="redhouse-equivalents" data-redhouse-equivalents hidden role="dialog"
+             aria-label="Corresponding expressions" data-i18n-aria="redhouseEquivalents"
+             data-action="click->redhouse#bodyClick">
+          <div class="redhouse-equivalents-head">
+            <span class="redhouse-equivalents-title" data-i18n="redhouseEquivalents">Corresponding expressions</span>
+            <button type="button" class="btn-close" data-action="click->redhouse#closeEquivalents"
+                    aria-label="Close" data-i18n-aria="close"></button>
+          </div>
+          <div data-redhouse-equivalents-rows></div>
+        </div>
+
+        <p class="redhouse-toast" data-redhouse-toast hidden role="status"></p>
       </div>
     </div>
   </template>

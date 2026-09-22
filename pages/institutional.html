@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Institutional Subscribers &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="institutional"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="institutionalEyebrow">Subscriptions</p>
+      <h1 data-i18n="institutionalTitle">Institutional Subscribers</h1>
+      <p class="page-lede" data-i18n="institutionalLede">Universities and libraries that reach LexiQamus through a national license or an institutional subscription.</p>
+    </header>
+
+    <main class="page-content">
+      <p data-i18n="institutionalIntro">An institutional subscription gives every member of a university or library access to LexiQamus. Universities in Turkey and Northern Cyprus are covered by a national license; institutions elsewhere subscribe individually.</p>
+
+      <div class="card-grid">
+        <article class="page-card">
+          <h3 data-i18n="institutionalHomeTitle">Turkey and Northern Cyprus</h3>
+          <p class="card-note" data-i18n="institutionalHomeNote">T&Uuml;B&#304;TAK ULAKB&#304;M EKUAL</p>
+          <p data-i18n="institutionalHomeBody" data-i18n-html="1">Since early 2026 LexiQamus has been open to <b>every university</b> in Turkey and Northern Cyprus under the national <b>T&Uuml;B&#304;TAK ULAKB&#304;M EKUAL</b> license.</p>
+          <p data-i18n="institutionalHomeAccess" data-i18n-html="1">On the campus network no account is needed; off campus, a one-time registration with a <b>.edu.tr</b> address is enough. No VPN or proxy required.</p>
+        </article>
+
+        <article class="page-card">
+          <h3 data-i18n="institutionalWorldTitle">World</h3>
+          <p class="card-note" data-i18n="institutionalWorldNote">Some of the institutions using LexiQamus</p>
+          <ul class="plain-list">
+            <li data-i18n="institutionOxford">University of Oxford</li>
+            <li data-i18n="institutionYale">Yale University</li>
+            <li data-i18n="institutionPrinceton">Princeton University</li>
+            <li data-i18n="institutionChicago">University of Chicago</li>
+            <li data-i18n="institutionMichigan">University of Michigan</li>
+            <li data-i18n="institutionPennsylvania">University of Pennsylvania</li>
+            <li data-i18n="institutionToronto">University of Toronto</li>
+            <li data-i18n="institutionLeiden">Leiden University</li>
+            <li data-i18n="institutionCollege">Coll&egrave;ge de France</li>
+            <li data-i18n="institutionGermany">All universities and research institutions in Germany</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="callout">
+        <p data-i18n="institutionalContact" data-i18n-html="1">To learn about subscription terms for your institution, write to us at <a href="mailto:info@lexiqamus.com">info@lexiqamus.com</a>.</p>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

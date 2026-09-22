@@ -10,11 +10,11 @@
 // the span holding just that text, never on a parent that also holds icons,
 // badges or other children.
 //
-// Attribute keys are handled too: data-i18n-title and data-i18n-aria set
-// title and aria-label. Elements carrying data-i18n-html have their markup
-// replaced instead of their text, for copy that contains tags.
-//
-// It also points every menu link at the page for the chosen language.
+// Attribute keys are handled too: data-i18n-title, data-i18n-aria and
+// data-i18n-alt set title, aria-label and alt. Elements carrying
+// data-i18n-html have their markup replaced instead of their text, for copy
+// that contains tags.
+
 
 class LanguageController extends Stimulus.Controller {
   static targets = ["option"]
@@ -23,6 +23,15 @@ class LanguageController extends Stimulus.Controller {
   connect() {
     this.originals = {};
     this.apply(this.currentValue);
+
+    // The shared chrome is injected after this controller connects, so its
+    // markup is swept once it arrives.
+    this.onChromeReady = () => this.apply(this.currentValue);
+    document.addEventListener("page-chrome:ready", this.onChromeReady);
+  }
+
+  disconnect() {
+    document.removeEventListener("page-chrome:ready", this.onChromeReady);
   }
 
   select(event) {
@@ -37,7 +46,7 @@ class LanguageController extends Stimulus.Controller {
     this.translateText(dictionary);
     this.translateAttribute(dictionary, "i18nTitle", "title");
     this.translateAttribute(dictionary, "i18nAria", "aria-label");
-    this.switchPageLinks(language);
+    this.translateAttribute(dictionary, "i18nAlt", "alt");
 
     this.optionTargets.forEach((option) => {
       const isActive = option.dataset.language === language;
@@ -49,24 +58,6 @@ class LanguageController extends Stimulus.Controller {
     this.element.dispatchEvent(new CustomEvent("language:changed", {
       detail: { language }, bubbles: true
     }));
-  }
-
-  // Menu entries exist once and carry both language variants, so switching the
-  // language rewrites the href rather than duplicating the menu. They stay
-  // ordinary links: hover shows the destination and middle-click works.
-  //
-  // An entry marked .is-unavailable names a page that has not been rebuilt
-  // yet, so it is left without an href and cannot be followed. Removing that
-  // class is all it takes to turn the entry back into a working link.
-  switchPageLinks(language) {
-    document.querySelectorAll("[data-page-en]").forEach((link) => {
-      if (link.classList.contains("is-unavailable")) {
-        link.removeAttribute("href");
-        return;
-      }
-      const target = language === "tr" ? link.dataset.pageTr : link.dataset.pageEn;
-      if (target) link.setAttribute("href", target);
-    });
   }
 
   translateText(dictionary) {

@@ -1,0 +1,269 @@
+/* =========================================================
+   Content pages
+   The shared reading layout: a hero band and the panel of text
+   under it. Everything is scoped under .page-surface, and a page
+   that needs more adds its own file.
+   ========================================================= */
+
+.page-surface {
+  --page-width: 860px;
+  --page-hero-from: #04143c;
+  --page-hero-via: var(--lq-sapphire);
+  --page-hero-to: #16388f;
+  --page-gold: #f0c48a;
+
+  max-width: var(--lq-max-width);
+  margin-inline: auto;
+}
+
+.page-surface .page-body {
+  width: min(100% - 32px, 1100px);
+  margin-inline: auto;
+}
+
+/* ---------- hero ---------- */
+
+/* The hero and the panel below it read as one card: the hero is the navy top,
+   the content panel the white body. */
+.page-surface .page-hero {
+  position: relative;
+  padding: 54px clamp(24px, 6vw, 64px) 46px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(135deg, var(--page-hero-from), var(--page-hero-via) 55%, var(--page-hero-to));
+  color: #fff;
+  overflow: hidden;
+}
+/* A hairline of gold along the bottom edge, where the two halves meet */
+.page-surface .page-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--page-gold), transparent);
+}
+
+.page-surface .page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--page-gold);
+}
+.page-surface .page-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 2px;
+  background: var(--page-gold);
+}
+
+.page-surface .page-hero h1 {
+  margin: 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.1rem);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.page-surface .page-lede {
+  max-width: 62ch;
+  margin: 16px 0 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .84);
+}
+
+/* ---------- content panel ---------- */
+
+.page-surface .page-content {
+  padding: 42px clamp(24px, 6vw, 64px) 56px;
+  border-radius: 0 0 20px 20px;
+  background: var(--lq-paper);
+  box-shadow: var(--lq-shadow);
+  font-size: 1.02rem;
+  line-height: 1.78;
+  color: #3b4957;
+}
+
+/* These rules use the child combinator on purpose: they style the running
+   text of a page, and a heading inside a card, a person or a dictionary entry
+   is that component's own, styled by that component's file. */
+
+/* Running text stays near 65 characters wide, whatever the panel does */
+.page-surface .page-content > p,
+.page-surface .page-content > ul,
+.page-surface .page-content > ol {
+  max-width: 68ch;
+}
+
+.page-surface .page-content > h2 {
+  max-width: 62ch;
+  margin: 40px 0 14px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+  text-wrap: balance;
+}
+.page-surface .page-content > h2:first-child { margin-top: 0; }
+
+.page-surface .page-content > h3 {
+  max-width: 62ch;
+  margin: 28px 0 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lq-ink);
+}
+
+.page-surface .page-content p { margin: 0 0 18px; }
+.page-surface .page-content a { color: var(--lq-claret); text-underline-offset: 3px; }
+.page-surface .page-content a:hover { color: var(--lq-claret-hover); }
+
+/* ---------- a list of points ---------- */
+
+/* Each point is its own panel rather than a bullet, because these are
+   statements to weigh one at a time, not a run-on list. */
+.page-surface .point-list {
+  display: grid;
+  gap: 12px;
+  max-width: 74ch;
+  margin: 22px 0 26px 28px;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .point-list li {
+  position: relative;
+  padding: 15px 18px 15px 46px;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: var(--lq-body-bg);
+}
+.page-surface .point-list li::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 25px;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--lq-claret), var(--lq-gold));
+}
+
+/* A plainer list, for names and short items */
+.page-surface .plain-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .plain-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: .97rem;
+}
+.page-surface .plain-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--lq-claret);
+}
+
+/* ---------- callout ---------- */
+
+/* Set apart by a bar rather than a box, so it reads as an aside to the text
+   rather than a separate thing. */
+.page-surface .callout {
+  max-width: 72ch;
+  margin: 32px 0;
+  padding: 22px 26px;
+  border-left: 4px solid var(--lq-sapphire);
+  border-radius: 0 14px 14px 0;
+  background: var(--lq-lat-bg);
+}
+.page-surface .callout p:last-child { margin-bottom: 0; }
+
+/* ---------- cards ---------- */
+
+.page-surface .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 30px 0 0;
+}
+.page-surface .page-card {
+  padding: 22px 24px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-body-bg);
+}
+.page-surface .page-card h3 {
+  margin: 0 0 4px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+.page-surface .card-note {
+  margin: 0 0 14px;
+  font-size: .88rem;
+  color: var(--lq-ink-soft);
+}
+.page-surface .page-card p:last-child { margin-bottom: 0; }
+
+/* ---------- Ottoman text in running copy ---------- */
+
+.page-surface [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.15em;
+  color: var(--lq-sapphire);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 767px) {
+  .page-surface .page-hero { padding: 40px 22px 34px; border-radius: 16px 16px 0 0; }
+  .page-surface .page-content { padding: 32px 22px 42px; border-radius: 0 0 16px 16px; }
+  .page-surface .point-list { margin-left: 0; }
+  .page-surface .point-list li { padding: 14px 16px 14px 40px; }
+  .page-surface .point-list li::before { left: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-surface * { transition: none !important; animation: none !important; }
+}
+
+/* ---------- a figure in the running text ---------- */
+
+/* Screenshots of old interfaces are the point of the archive pages, so they
+   sit full width inside the panel rather than beside the text. */
+.page-surface .page-figure {
+  margin: 28px 0;
+  padding: 14px;
+  border: 1px solid var(--lq-line);
+  border-radius: 14px;
+  background: var(--lq-body-bg);
+}
+.page-surface .page-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.page-surface .page-figure figcaption {
+  margin-top: 12px;
+  font-size: .88rem;
+  line-height: 1.5;
+  color: var(--lq-ink-soft);
+}

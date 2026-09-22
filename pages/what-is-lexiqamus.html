@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Is LexiQamus? &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/what-is-lexiqamus.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="what-is-lexiqamus"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="whatIsEyebrow">About the project</p>
+      <h1 data-i18n="whatIsTitle">What Is LexiQamus?</h1>
+      <p class="page-lede" data-i18n="whatIsLede">A linguistic analysis tool designed to help researchers decipher and explore Ottoman Turkish words.</p>
+    </header>
+
+    <main class="page-content">
+      <h2 data-i18n="whatIsLead">What could that word be?</h2>
+
+      <p data-i18n="whatIsProblem">Those who work with Ottoman Turkish manuscripts frequently encounter letters that are difficult to decipher. The handwriting may be unclear, or the document may be torn, burnt, folded, or stained with ink. Many different factors can make a word illegible.</p>
+      <p data-i18n="whatIsBuilt">LexiQamus was developed to solve this problem.</p>
+      <p data-i18n="whatIsConventional">Conventional dictionaries are helpful when only the final letters of a word are illegible, since the beginning of the word remains intact. However, they are of little use when letters at the beginning or in the middle of a word are missing or unclear.</p>
+      <p data-i18n="whatIsAlgorithm">This is precisely where LexiQamus comes into play. Based on the legible letters and the symbols entered for illegible characters, LexiQamus&rsquo;s specialized search algorithm provides a list of possible words that match the specified criteria. A word that might take days to identify by searching through extensive dictionaries can thus be found almost instantly.</p>
+
+      <div class="callout">
+        <p data-i18n="whatIsCategories">Search results are organized into different categories according to how they relate to the search criteria. Exact matches are presented first, while other sections display inflected forms, derived forms, phrases and compounds, partial matches, and phonetically similar results. This structure allows researchers to explore alternative possibilities when the exact word or phrase they are seeking cannot immediately be identified.</p>
+      </div>
+
+      <p data-i18n="whatIsContext">Additional information associated with each result makes it possible to access its definitions, related entries, and the other dictionary entries in which it appears. In this way, researchers can examine not only the word itself but also its broader lexicographical context.</p>
+      <p data-i18n="whatIsFoundation" data-i18n-html="1">The foundations of the project were laid by manually transcribing all 160,485 words and phrases found in James W. Redhouse&rsquo;s <em>A Turkish and English Lexicon</em> into a searchable database.</p>
+      <p data-i18n="whatIsSummary">In short, when you search for a word using LexiQamus, your query is compared against an extensive and continuously expanding lexicographical database.</p>
+
+      <h2 data-i18n="whatIsDictionariesHeading">Dictionaries in Our Database</h2>
+      <p data-i18n="whatIsDictionariesIntro">The following dictionaries have been digitized and incorporated into the LexiQamus database. The scope of digitization varies according to the structure and purpose of each work.</p>
+
+      <div class="card-grid" aria-label="Scope of digitization" data-i18n-aria="whatIsScopeLabel">
+        <article class="page-card">
+          <h3 data-i18n="scopeSelectedTitle">Selected Lexicographical Elements</h3>
+          <p data-i18n="scopeSelectedBody" data-i18n-html="1">In <em>Kamus-ı T&uuml;rki</em>, <em>L&ucirc;gat-ı Naci</em>, <em>Leh&ccedil;e-i Osmani</em>, and <em>L&ucirc;gat-ı Ebuzziya Tevfik</em>, we selected, transcribed, and analyzed the headwords, subentries, concepts and words closely related to the headwords, and words appearing in &ldquo;see&rdquo; references.</p>
+        </article>
+        <article class="page-card">
+          <h3 data-i18n="scopeAllTitle">All Ottoman Turkish Words and Phrases</h3>
+          <p data-i18n="scopeAllBody" data-i18n-html="1"><em>Kamus-ı Fransevi &ndash; T&uuml;rk&ccedil;eden Fransızcaya L&ucirc;gat</em>, <em>T&uuml;rk&ccedil;eden Almancaya L&ucirc;gat Kitabı</em>, and <em>A Turkish and English Lexicon</em> are dictionaries from Ottoman Turkish into French, German, and English. In these works, we selected, transcribed, and analyzed both the headwords and every Ottoman Turkish word and phrase appearing within the entries. Entry of the Ottoman Turkish words in <em>Kamus-ı Fransevi</em> is still in progress.</p>
+        </article>
+        <article class="page-card">
+          <h3 data-i18n="scopeHeadwordsTitle">Headwords</h3>
+          <p data-i18n="scopeHeadwordsBody" data-i18n-html="1">In <em>Kamusu&rsquo;l-A&rsquo;lam</em> and <em>Ahteri-i Kebir</em>, only the headwords were selected, transcribed, and analyzed.</p>
+        </article>
+      </div>
+
+      <!-- Numbered by CSS, so the order in the markup is the order on the page -->
+      <div class="dictionary-list">
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictKamusTurkiName" data-i18n-html="1"><em>Kamus-ı T&uuml;rki</em></h3>
+          <p class="dictionary-meta" data-i18n="dictKamusTurkiMeta">&#350;emseddin Sami Efendi &middot; 1901 &middot; 2 volumes</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictLugatNaciName" data-i18n-html="1"><em>L&ucirc;gat-ı Naci</em></h3>
+          <p class="dictionary-meta" data-i18n="dictLugatNaciMeta">Muallim Naci Efendi &middot; 1894 &middot; 1 volume</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictLehceOsmaniName" data-i18n-html="1"><em>Leh&ccedil;e-i Osmani</em></h3>
+          <p class="dictionary-meta" data-i18n="dictLehceOsmaniMeta">Ahmet Vefik Pa&#351;a &middot; 1888 &middot; 2 volumes</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictLugatEbuzziyaName" data-i18n-html="1"><em>L&ucirc;gat-ı Ebuzziya Tevfik</em></h3>
+          <p class="dictionary-meta" data-i18n="dictLugatEbuzziyaMeta">Ebuzziya Tevfik Bey &middot; 1888 &middot; 2 volumes</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictKamusFranseviName" data-i18n-html="1"><em>Kamus-ı Fransevi &ndash; T&uuml;rk&ccedil;eden Fransızcaya L&ucirc;gat</em></h3>
+          <p class="dictionary-meta" data-i18n="dictKamusFranseviMeta">&#350;emseddin Sami &middot; Mihran Matbaası &middot; Istanbul &middot; 1883 &middot; 1 volume</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictRedhouseName" data-i18n-html="1"><em>A Turkish and English Lexicon</em></h3>
+          <p class="dictionary-meta" data-i18n="dictRedhouseMeta">James W. Redhouse &middot; Printed by A. H. Boyacıyan for the American Mission &middot; Istanbul &middot; 1890 / AH 1302 &middot; 1 volume</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictKamusuAlamName" data-i18n-html="1"><em>Kamusu&rsquo;l-A&rsquo;lam</em></h3>
+          <p class="dictionary-meta" data-i18n="dictKamusuAlamMeta">&#350;emseddin Sami Efendi &middot; Mihran Matbaası &middot; Istanbul &middot; 1888&ndash;1889 / AH 1306 &middot; 6 volumes</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictAhteriName" data-i18n-html="1"><em>Ahteri-i Kebir</em></h3>
+          <p class="dictionary-meta" data-i18n="dictAhteriMeta">Muslihiddin Mustafa bin &#350;emseddin Karahisari &ndash; Ahteri &middot; Imperial Press &middot; Istanbul &middot; 1545 &middot; 2 volumes</p>
+        </article>
+        <article class="dictionary-entry">
+          <h3 data-i18n="dictAlmancaName" data-i18n-html="1"><em>T&uuml;rk&ccedil;eden Almancaya L&ucirc;gat Kitabı</em></h3>
+          <p class="dictionary-meta" data-i18n="dictAlmancaMeta">Galancızade Hakkı Tevfik &middot; Imperial Press &middot; Constantinople &middot; 1907 &middot; 1 volume</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <p data-i18n="whatIsReadings" data-i18n-html="1"><strong>Readings in Latin script.</strong> Every Ottoman Turkish word in the results list is shown with a reading in Latin script. Only the readings drawn from <em>L&ucirc;gat-ı Naci</em> were prepared individually by our team; the readings for the other dictionaries are generated automatically and may contain errors. You can report a faulty reading directly from the results list.</p>
+      </div>
+
+      <div class="callout callout-growth">
+        <p data-i18n="whatIsGrowth" data-i18n-html="1"><strong>Our database continues to grow.</strong> We are rapidly digitizing additional historical dictionaries and making their contents searchable through LexiQamus. Newly digitized dictionaries will be added to the platform as this work progresses.</p>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

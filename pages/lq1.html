@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LexiQamus 1.0: The First Version &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="lq1"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="lq1Eyebrow">Archive &middot; 2016</p>
+      <h1 data-i18n="lq1Title">LexiQamus 1.0: The First Version</h1>
+      <p class="page-lede" data-i18n="lq1Lede">The first digital tool built to decipher unreadable words in Ottoman texts went live on June 7, 2016.</p>
+    </header>
+
+    <main class="page-content">
+      <h2 data-i18n="lq1WhyHeading">Why it was built</h2>
+
+      <p data-i18n="lq1Why" data-i18n-html="1">Traditional dictionaries are of little use when the letters at the beginning or in the middle of a word cannot be read: without the headword there is nothing to look up. LexiQamus was built to solve that problem; see <a href="what-is-lexiqamus.html">What is LexiQamus?</a> for details.</p>
+      <p data-i18n="lq1First" data-i18n-html="1">It was a first in its field: until then, no digital tool existed for deciphering unreadable words. The first version consisted of a single tool, the <strong>Word Decoder</strong>.</p>
+      <p data-i18n="lq1Reception">For a researcher who could read only a few letters of a word, LexiQamus showed almost instantly a word that might have taken days to find by leafing through comprehensive dictionaries. It soon earned the confidence of many respected institutions in Turkey and around the world.</p>
+
+      <h2 data-i18n="lq1DecoderHeading">Word Decoder</h2>
+      <p data-i18n="lq1DecoderBody">The researcher enters the letters they can read into boxes, according to their position in the word, and leaves a marker for the ones they cannot. The search algorithm takes the readable letters and the symbols entered for the unreadable characters, and lists the possible words that fit the criteria.</p>
+
+      <figure class="page-figure">
+        <img src="../assets/sayfalar/lq1-arayuz.webp" loading="lazy"
+             alt="The Word Decoder in the first versions: boxes and the on-screen keyboard"
+             data-i18n-alt="lq1FigureAlt">
+      </figure>
+
+      <ul class="point-list">
+        <li data-i18n="lq1Point1">Letters were entered into the boxes with the on-screen keyboard.</li>
+        <li data-i18n="lq1Point2" data-i18n-html="1">The signs <strong>*</strong> and <strong>&infin;</strong> were used for unreadable letters: <strong>*</strong> stands for a single letter, <strong>&infin;</strong> for an unknown number of letters.</li>
+        <li data-i18n="lq1Point3">The bottom row of the keyboard held starred characters for the toothed letters whose dots could not be read.</li>
+        <li data-i18n="lq1Point4" data-i18n-html="1">The keyboard had only the connected form of <span data-direction="rtl">ه</span>, and <span data-direction="rtl">ی</span> appeared with its dots.</li>
+      </ul>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -32,6 +32,7 @@ css/<feature>.css                     one CSS file per feature, scoped under .<f
 css/ottoman-keyboard.css              the on-screen keyboard, shared by any field
 js/app.js                             starts Stimulus, runs feather.replace() and tooltip init
 js/controllers/<feature>_controller.js one Stimulus controller per behaviour
+js/page_chrome.js                     the top bar and side menu, written once
 js/translations.js                    Turkish strings, keyed by data-i18n
 js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
                                       Latin-to-Ottoman map for physical typing
@@ -48,7 +49,17 @@ docs/                                 the dev team's instructions and review pro
 | --- | --- | --- |
 | Main page (search) | `pages/home.html` | Built |
 | Word Decoder | `pages/home.html`, decoder tab | Built |
-| About, Team, Pricing, User guide, and the other menu pages | — | Not started; the menu links name the files they will live in |
+| About | `pages/about.html` | Built |
+| Team | `pages/team.html` | Built |
+| What is LexiQamus? | `pages/what-is-lexiqamus.html` | Built |
+| Institutional Subscribers | `pages/institutional.html` | Built |
+| Pricing | `pages/pricing.html` | Built |
+| LexiQamus 1.0 | `pages/lq1.html` | Built |
+| User guide, data model, lexicon digitization, version notes, suggestion history | — | Not started; the menu entry for each names the file it will live in |
+
+A menu entry only becomes a link once its page exists. `js/page_chrome.js`
+lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list
+stays marked "soon" and is not clickable.
 
 ## Endpoints the backend will need
 

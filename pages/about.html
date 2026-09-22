@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="about"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="aboutEyebrow">About the project</p>
+      <h1 data-i18n="aboutTitle">About</h1>
+      <p class="page-lede" data-i18n="aboutLede">The first linguistic analysis tool developed for Ottoman Turkish.</p>
+    </header>
+
+    <main class="page-content">
+      <p data-i18n="aboutIntro">LexiQamus is a linguistic analysis tool developed for Ottoman Turkish. When it went live on June 7, 2016, it was an innovation in its field: no other digital tool existed for deciphering unreadable words. It does the following:</p>
+
+      <ul class="point-list">
+        <li data-i18n="aboutPoint1">It deciphers words that are difficult to read for various reasons.</li>
+        <li data-i18n="aboutPoint2">It finds the correct word even when the letters are mistyped during a search.</li>
+        <li data-i18n="aboutPoint3">It shows the definitions of words from several dictionaries.</li>
+        <li data-i18n="aboutPoint4">It unearths hidden meanings that are present in the dictionaries but unknown even to their authors.</li>
+        <li data-i18n="aboutPoint5">It provides access to spellings of a word that even Ottoman intellectuals may not have known.</li>
+      </ul>
+
+      <p data-i18n="aboutSupport">With all these features, LexiQamus has quickly gained the support of many reputable institutions in Turkey and around the world.</p>
+      <p data-i18n="aboutWork">Under the project, dictionaries are digitized in a flawless and highly detailed manner, and the search algorithm is constantly being improved.</p>
+
+      <div class="callout">
+        <p data-i18n="aboutContact" data-i18n-html="1">For questions, suggestions, and collaboration requests, you can reach us at <a href="mailto:info@lexiqamus.com">info@lexiqamus.com</a>.</p>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

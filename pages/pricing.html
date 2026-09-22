@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pricing &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/pricing.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+  <script src="../js/controllers/pricing_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="pricing"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="pricingEyebrow">Subscription</p>
+      <h1 data-i18n="pricingTitle">Pricing</h1>
+      <p class="page-lede" data-i18n="pricingLede">Three plans for individual users. Institutional subscriptions are handled separately.</p>
+    </header>
+
+    <main class="page-content">
+      <div data-controller="pricing">
+        <div class="term-switch" role="group" aria-label="Subscription term" data-i18n-aria="termLabel">
+          <button type="button" class="btn term-option" data-term="1" aria-pressed="true"
+                  data-action="click-&gt;pricing#selectTerm" data-pricing-target="term">
+            <span data-i18n="term1">1 month</span>
+          </button>
+          <button type="button" class="btn term-option" data-term="3" aria-pressed="false"
+                  data-action="click-&gt;pricing#selectTerm" data-pricing-target="term">
+            <span data-i18n="term3">3 months</span>
+            <span class="term-saving" data-i18n="term3Saving">save 33%</span>
+          </button>
+          <button type="button" class="btn term-option" data-term="6" aria-pressed="false"
+                  data-action="click-&gt;pricing#selectTerm" data-pricing-target="term">
+            <span data-i18n="term6">6 months</span>
+            <span class="term-saving" data-i18n="term6Saving">save 42%</span>
+          </button>
+          <button type="button" class="btn term-option" data-term="12" aria-pressed="false"
+                  data-action="click-&gt;pricing#selectTerm" data-pricing-target="term">
+            <span data-i18n="term12">1 year</span>
+            <span class="term-saving" data-i18n="term12Saving">save 53%</span>
+          </button>
+        </div>
+
+        <div class="plans">
+      <article class="plan">
+        <div class="plan-head">
+          <h2 class="plan-name" data-i18n="planFreeName">Free</h2>
+          <p class="plan-price"><b>0 TL</b> <span data-i18n="periodMonth">/ month</span></p>
+          <p class="plan-note" data-i18n="planFreeNote">Just create an account</p>
+          <a class="btn plan-cta" href="../index.html" data-i18n="planFreeCta">Create account</a>
+        </div>
+        <ul class="plan-features">
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureDailyLimit">Daily search limit</span>
+              <span class="plan-value">1</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featurePerSearch">Results per search</span>
+              <span class="plan-value">3</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureMatchingEntry">Matching entry</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSearchBar">Search bar</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureChains">Chains</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureExactMatches">Exact matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureWordMatches">Word matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featurePartialMatches">Partial matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureRedhouseDefinitions">Definitions from Redhouse&rsquo;s Lexicon</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureEnglishSearch">Search within English definitions</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureHeadword">Headword</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureContainingEntries">Entries containing the result</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSimilarShape">Results with similar-looking letters</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSimilarSound">Results with similar-sounding letters</span>
+              
+            </li>
+        </ul>
+      </article>
+      <article class="plan">
+        <div class="plan-head">
+          <h2 class="plan-name" data-i18n="planStandardName">Standard</h2>
+          <p class="plan-price"><b data-price-plan="standard">0 TL</b> <span data-price-period="standard">/ month</span></p>
+          <p class="plan-note" data-price-saving="standard"></p>
+          <button type="button" class="btn plan-cta" data-i18n="planBuy">Buy</button>
+        </div>
+        <ul class="plan-features">
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureDailyLimit">Daily search limit</span>
+              <span class="plan-value" data-i18n="planUnlimited">Unlimited</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featurePerSearch">Results per search</span>
+              <span class="plan-value">200</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureMatchingEntry">Matching entry</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSearchBar">Search bar</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureChains">Chains</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureExactMatches">Exact matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureWordMatches">Word matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featurePartialMatches">Partial matches</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureRedhouseDefinitions">Definitions from Redhouse&rsquo;s Lexicon</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureEnglishSearch">Search within English definitions</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureHeadword">Headword</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureContainingEntries">Entries containing the result</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSimilarShape">Results with similar-looking letters</span>
+              
+            </li>
+            <li class="is-excluded">
+              <i data-feather="minus-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planExcluded">Not included</span>
+              <span class="plan-feature" data-i18n="featureSimilarSound">Results with similar-sounding letters</span>
+              
+            </li>
+        </ul>
+      </article>
+      <article class="plan plan-featured">
+        <div class="plan-head">
+          <span class="plan-badge" data-i18n="planPremiumBadge">Most complete</span>
+          <h2 class="plan-name" data-i18n="planPremiumName">Premium</h2>
+          <p class="plan-price"><b data-price-plan="premium">0 TL</b> <span data-price-period="premium">/ month</span></p>
+          <p class="plan-note" data-price-saving="premium"></p>
+          <button type="button" class="btn plan-cta plan-cta-solid" data-i18n="planBuy">Buy</button>
+        </div>
+        <ul class="plan-features">
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureDailyLimit">Daily search limit</span>
+              <span class="plan-value" data-i18n="planUnlimited">Unlimited</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featurePerSearch">Results per search</span>
+              <span class="plan-value" data-i18n="planUnlimited">Unlimited</span>
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureMatchingEntry">Matching entry</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureSearchBar">Search bar</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureChains">Chains</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureExactMatches">Exact matches</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureWordMatches">Word matches</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featurePartialMatches">Partial matches</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureRedhouseDefinitions">Definitions from Redhouse&rsquo;s Lexicon</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureEnglishSearch">Search within English definitions</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureHeadword">Headword</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureContainingEntries">Entries containing the result</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureSimilarShape">Results with similar-looking letters</span>
+              
+            </li>
+            <li class="is-included">
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <span class="visually-hidden" data-i18n="planIncluded">Included</span>
+              <span class="plan-feature" data-i18n="featureSimilarSound">Results with similar-sounding letters</span>
+              
+            </li>
+        </ul>
+      </article>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p data-i18n="pricingInstitutional" data-i18n-html="1">Universities and libraries subscribe on different terms. See <a href="institutional.html">Institutional Subscribers</a>.</p>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

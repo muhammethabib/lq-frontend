@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/team.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="team"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="teamEyebrow">About the project</p>
+      <h1 data-i18n="teamTitle">Team</h1>
+      <p class="page-lede" data-i18n="teamLede">The people who build and maintain LexiQamus.</p>
+    </header>
+
+    <main class="page-content">
+      <article class="person">
+        <img class="person-photo" src="../assets/team/ahmet.jpg" alt="Dr. Ahmet Abdullah Sa&ccedil;malı" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personAhmetName">Dr. Ahmet Abdullah Sa&ccedil;malı</h2>
+          <p class="person-role" data-i18n="personAhmetRole">Founder</p>
+          <p data-i18n="personAhmetBio1">A researcher working on texts written in Ottoman Turkish and the developer of LexiQamus. He is a graduate of Bo&#287;azi&ccedil;i University, where he earned his bachelor&rsquo;s degree in Sociology and History. He subsequently completed his first master&rsquo;s degree in History at the same institution.</p>
+          <p data-i18n="personAhmetBio2">In 2010, he joined the School of Middle Eastern and North African Studies at the University of Arizona in the United States, where he earned his second master&rsquo;s degree. In 2014, Dr. Sa&ccedil;malı began his doctoral studies at the School of Government and International Affairs at Durham University in the United Kingdom. He successfully defended his doctoral thesis in 2019 and was awarded his Doctor of Philosophy (PhD) degree in 2020.</p>
+          <p data-i18n="personAhmetBio3">From 2017 to 2021, Dr. Sa&ccedil;malı worked as a research assistant in the Department of Sociology at Ibn Haldun University. For two years during this period, he taught a range of sociology courses as well as courses in Ottoman Turkish.</p>
+          <p data-i18n="personAhmetBio4">During his doctoral studies, Dr. Sa&ccedil;malı developed LexiQamus, initially conceived as an online tool to assist researchers in deciphering difficult-to-read words in Ottoman texts. The project has since evolved into a much broader digital platform devoted to the historical vocabulary of Turkish. In addition to its linguistic analysis and deciphering tools, LexiQamus aims to digitize, with a high degree of scholarly precision, the dictionaries of Turkish produced from the historical period to the present day. By bringing this extensive lexicographical heritage together within a unified digital environment, the project seeks to document and explore the full historical breadth and lexical boundaries of the Turkish language.</p>
+          <p data-i18n="personAhmetBio5">LexiQamus has attracted considerable attention from scholars and academic institutions around the world. Based in Istanbul, Turkey, Dr. Sa&ccedil;malı and his team continue to develop the platform.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/habib.jpg" alt="Asst. Prof. Habib Sa&ccedil;malı" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personHabibName">Asst. Prof. Habib Sa&ccedil;malı</h2>
+          <p class="person-role" data-i18n="personHabibRole">Project Coordinator</p>
+          <p data-i18n="personHabibBio1">An Assistant Professor in the Department of History at Marmara University. He completed his undergraduate studies at Bo&#287;azi&ccedil;i University with a double major in Sociology and Political Science and International Relations, and earned his MA in the same department. He received his PhD in History from the University of California, Davis, in 2021, with a dissertation on Ottoman-Iranian relations and the Ottoman caliphate. He has published on Ottoman-Safavid relations and Eurasian diplomacy in journals including the Journal of Early Modern History, Ab Imperio, and &#304;slam Ara&#351;tırmaları.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/buse.jpg" alt="Buse B&uuml;y&uuml;kkeskin" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personBuseName">Buse B&uuml;y&uuml;kkeskin</h2>
+          <p class="person-role" data-i18n="personBuseRole">Project Assistant</p>
+          <p data-i18n="personBuseBio1">Completed her B.A. and M.A. degrees in the Department of Turkish Language and Literature at Bo&#287;azi&ccedil;i University. She earned her master&rsquo;s degree with her thesis titled &ldquo;The Story Collection &lsquo;Suppl&eacute;ment Turc 949&rsquo; in the National Library of France: Analysis and Text&rdquo;. She works on early modern Ottoman prose stories. She has been working as part of the LexiQamus project since November 2023.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/hatice.jpg" alt="Hatice T&uuml;fek&ccedil;i" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personHaticeName">Hatice T&uuml;fek&ccedil;i</h2>
+          <p class="person-role" data-i18n="personHaticeRole">Project Assistant</p>
+          <p data-i18n="personHaticeBio1">Graduated from the Department of Turkish Language and Literature at Sivas Cumhuriyet University. In 2024 she completed her master&rsquo;s degree in the Department of Classical Turkish Literature at the same university with a thesis titled &ldquo;Verse Silsile-n&acirc;mes of Sufi Orders in Turkish Literature&rdquo;. She has also published an article, &ldquo;An Overlooked Poem by Muhammed Vahyi Efendi: The S&uuml;nb&uuml;liyye Silsile-n&acirc;me&rdquo;. For about a year she taught Turkish to foreign students at the T&Ouml;MER unit of Sivas Cumhuriyet University. Her work covers the digitization of Ottoman Turkish texts, dictionary projects, and the textual criticism of manuscripts. She joined this project in 2018 and has been running its research and data management processes as a project assistant since 2022.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/seher.jpg" alt="Seher Bulut K&ouml;se" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personSeherName">Seher Bulut K&ouml;se</h2>
+          <p class="person-role" data-i18n="personSeherRole">Project Assistant</p>
+          <p data-i18n="personSeherBio1">Born in Medina in 1992, the second child of a father from Erzurum and a mother from Malatya. She graduated from the Faculty of Theology at Uluda&#287; University in 2015. In Turkish-Islamic Literature she studied The Masnawe Hesht Bahest of Vadi Ahmad. She currently works at LexiQamus. She is married and the mother of Bil&acirc;l, Hamza, Hal&icirc;me, and S&uuml;heyla.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/zeyneb.jpg" alt="Zeyneb Odaba&#351;" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personZeynebName">Zeyneb Odaba&#351;</h2>
+          <p class="person-role" data-i18n="personZeynebRole">Project Assistant</p>
+          <p data-i18n="personZeynebBio1">Completed her undergraduate studies at Marmara University Faculty of Theology. She earned her master&rsquo;s degree from the Department of Tafs&imacr;r at Social Sciences University of Ankara, completing her thesis titled &ldquo;Ibn Taymiyyah and His Muqaddimah as a Methodological Approach to Tafs&imacr;r: A Critical Analysis&rdquo;. She has been working on the LexiQamus project since October 2023.</p>
+        </div>
+      </article>
+      <article class="person">
+        <img class="person-photo" src="../assets/team/enis.jpg" alt="Dr. Enis Tombul" width="96" height="96" loading="lazy">
+        <div class="person-text">
+          <h2 class="person-name" data-i18n="personEnisName">Dr. Enis Tombul</h2>
+          <p class="person-role" data-i18n="personEnisRole">Project Assistant</p>
+          <p data-i18n="personEnisBio1">Completed his B.A. and M.A. in Turkish Language and Literature at Bo&#287;azi&ccedil;i University; his M.A. thesis, Be&#351;ikta&#351;lı Yahya Efendi&rsquo;s Divan, was published as a book by Harvard University. He earned his Ph.D. in Old Turkish Literature at the same university with a dissertation titled The Earthly Beloveds in the Ghazals of the Sixteenth Century. He has taught Turkish literature at Bo&#287;azi&ccedil;i University and literature and prosody at the Istanbul University State Conservatory, and served as project specialist and coordinator of the Historical Turkish Music Research and Multimedia Archive Project at Istanbul University&rsquo;s OMAR center. His articles on Turkish literature and Ottoman music have appeared in academic journals and edited volumes; he currently works as a literary consultant, researcher, author, and editor.</p>
+        </div>
+      </article>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

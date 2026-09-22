@@ -216,3 +216,31 @@
 @media (prefers-reduced-motion: reduce) {
   .ottoman-keyboard * { transition: none !important; }
 }
+
+/* What a skeleton key stands for, shown as the letters themselves. */
+.tooltip .key-matches-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.tooltip .key-matches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.tooltip .key-match {
+  min-width: 22px;
+  padding: 2px 5px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  font-family: "Noto Naskh Arabic", serif;
+  font-size: 15px;
+  line-height: 1.2;
+}

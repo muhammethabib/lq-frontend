@@ -102,16 +102,21 @@ class OttomanKeyboardController extends Stimulus.Controller {
       ? (key.dots === "either" ? '<span class="dot-mark">*</span><span class="dot-mark">*</span>'
         : '<span class="dot-mark">*</span>')
       : "";
+    // A skeleton stands for several letters, and which ones is the whole
+    // point of the key, so they are shown as themselves rather than listed in
+    // a line of running text.
     const title = key.matches
-      ? `${this.translate("keyMatches", "Matches")}: ${key.matches.join(" ")}`
-      : (key.labelKey ? this.translate(key.labelKey, key.face || key.char) : "");
+      ? `<span class="key-matches-label">${this.escape(this.translate("keyMatches", "Matches"))}</span>` +
+        `<span class="key-matches">${key.matches.map((letter) =>
+          `<span class="key-match">${this.escape(letter)}</span>`).join("")}</span>`
+      : (key.labelKey ? this.escape(this.translate(key.labelKey, key.face || key.char)) : "");
 
     return `<button type="button" class="btn key"
       data-kind="${key.type}"${key.dots ? ` data-dots="${key.dots}"` : ""}
       data-char="${this.escape(key.char)}"
       ${key.matches ? `data-matches="${this.escape(key.matches.join(" "))}"` : ""}
       data-action="pointerdown->ottoman-keyboard#press"
-      ${title ? `data-bs-toggle="tooltip" data-bs-title="${this.escape(title)}"` : ""}
+      ${title ? `data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(title)}"` : ""}
       >${this.escape(key.face || key.char)}${dots}</button>`;
   }
 

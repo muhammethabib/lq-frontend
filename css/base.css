@@ -395,7 +395,7 @@ body {
 /* Two names on one line where there is room, stacked where there is not */
 .auth-modal .auth-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
   gap: 14px;
 }
 .auth-modal .auth-field {

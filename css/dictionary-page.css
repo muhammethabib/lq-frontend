@@ -145,6 +145,8 @@
 
 .dictionary-page-modal .scan-card {
   position: absolute;
+  left: var(--card-left, 0);
+  top: var(--card-top, 0);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -155,6 +157,12 @@
   background: rgba(15, 23, 42, .95);
   box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
   white-space: nowrap;
+}
+/* Hanging from the box's right edge, for a box in the right half of the scan,
+   where a card anchored on the left would run off the far side. */
+.dictionary-page-modal .scan-card.is-flipped {
+  left: auto;
+  right: var(--card-right, 0);
 }
 .dictionary-page-modal .scan-card-line {
   padding: 4px 10px;
@@ -324,6 +332,18 @@
 @media (max-width: 767px) {
   .dictionary-page-modal .scan-stage { grid-template-columns: 32px minmax(0, 1fr) 32px; }
   .dictionary-page-modal .scan-arrow { width: 32px; height: 32px; }
+
+  /* There is no room beside a box on a phone, so the card docks at the foot
+     of the scan and wraps rather than running off the side. */
+  .dictionary-page-modal .scan-card {
+    left: 6px;
+    right: 6px;
+    top: auto;
+    bottom: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    white-space: normal;
+  }
   .dictionary-page-modal .modal-footer { flex-direction: column; align-items: stretch; }
   .dictionary-page-modal .scan-views { justify-content: center; }
 }

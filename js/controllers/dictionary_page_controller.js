@@ -152,9 +152,21 @@ class DictionaryPageController extends Stimulus.Controller {
     card.querySelector("[data-scan-word-latin]").textContent = box.latin;
     card.dataset.scanFor = event.currentTarget.dataset.scanBox;
     card.hidden = false;
-    // The card sits over the box it describes, in the frame's own coordinates
-    card.style.left = event.currentTarget.style.left;
-    card.style.top = `calc(${event.currentTarget.style.top} + ${event.currentTarget.style.height})`;
+
+    // The card hangs under the box it describes, in the frame's own
+    // coordinates. They are custom properties rather than top and left so the
+    // stylesheet can dock the card at the foot of the frame on a narrow
+    // screen, where there is no room beside the box.
+    const element = event.currentTarget;
+    card.style.setProperty("--card-left", element.style.left);
+    card.style.setProperty("--card-top",
+      `calc(${element.style.top} + ${element.style.height})`);
+    // A box in the right half would push the card off the scan, so there the
+    // card hangs from the box's right edge instead.
+    const left = parseFloat(element.style.left) || 0;
+    const width = parseFloat(element.style.width) || 0;
+    card.style.setProperty("--card-right", `${Math.max(0, 100 - left - width)}%`);
+    card.classList.toggle("is-flipped", left + width / 2 > 55);
   }
 
   hideWord(event) {

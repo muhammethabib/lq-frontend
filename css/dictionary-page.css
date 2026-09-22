@@ -368,3 +368,52 @@
 @media (prefers-reduced-motion: reduce) {
   .dictionary-page-modal .scan-box { transition: none; }
 }
+
+/* ---------- which kind of record the arrows walk ---------- */
+
+/* One choice of three, so the chosen one is the state of the group rather
+   than three separate buttons: a marker slides under it. */
+.dictionary-page-modal .scan-kinds {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  width: min(360px, 100%);
+  margin: 0 auto 14px;
+  padding: 4px;
+  border: 1px solid var(--lq-line);
+  border-radius: 11px;
+  background: #f1f5f9;
+}
+
+.dictionary-page-modal .scan-kind-marker {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  border-radius: 8px;
+  background: var(--lq-paper);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
+  transform: translateX(calc(var(--scan-kind-at, 0) * 100%));
+  transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+}
+
+.dictionary-page-modal .scan-kind {
+  position: relative;
+  z-index: 1;
+  padding: 8px 6px;
+  border: 0;
+  background: transparent;
+  color: var(--lq-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dictionary-page-modal .scan-kind.active { color: var(--lq-sapphire); }
+.dictionary-page-modal .scan-kind:disabled { opacity: .45; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dictionary-page-surface .scan-kind-marker { transition: none; }
+}

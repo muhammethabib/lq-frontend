@@ -491,8 +491,11 @@ window.LQ_TRANSLATIONS = {
     goToResult: "Sonuca git",
     goToHeadword: "Madde başına git",
     scanAlt: "Maddenin kaynak ciltteki basılı hâli",
-    scanPrevious: "Önceki madde",
-    scanNext: "Sonraki madde",
+    // The arrows name the kind of record they step through, so the word for
+    // the kind is added after these.
+    scanPrevious: "Önceki",
+    scanNext: "Sonraki",
+    scanKindsLabel: "Şunlar arasında gez:",
     scanMissing: "Bu görünümün taraması örnek veride yok. Uç nokta her görünüm için bir görsel döndürür.",
     scanViewLabel: "Görünüm",
     scanSlice: "Dilim",

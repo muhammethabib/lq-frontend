@@ -13,6 +13,10 @@
 // js/dictionary_page_sample.js.
 
 const VIEWS = ["slice", "column", "page"];
+// The three kinds of record a column holds. The arrows step through one kind
+// at a time, because a reader following the headwords down a column does not
+// want to be taken through every subentry on the way.
+const KINDS = ["entry", "sub", "related"];
 
 class DictionaryPageController extends Stimulus.Controller {
   static values = { template: String, endpoint: String }
@@ -59,6 +63,8 @@ class DictionaryPageController extends Stimulus.Controller {
     this.entries = (response && response.entries) || [];
     this.index = (response && response.index) || 0;
     this.entry = this.entries[this.index] || null;
+    // The arrows start on the kind of record the window opened on.
+    this.kind = (this.entry && this.entry.category) || "entry";
     this.view = "slice";
     this.request = request;
     this.reporting = null;
@@ -108,14 +114,69 @@ class DictionaryPageController extends Stimulus.Controller {
       button.querySelector("[data-scan-count]").textContent = entry[name];
     });
 
-    // The arrows step through the entries of the column, so they are disabled
-    // at the ends rather than wrapping round.
+    this.fillKinds();
+    this.drawView();
+  }
+
+  // ==================== stepping through the column ====================
+
+  // Which records the arrows will walk, in the order they sit in the column.
+  neighbours() {
+    return this.entries.filter((record) => (record.category || "entry") === this.kind);
+  }
+
+  fillKinds() {
+    const find = (selector) => this.element.querySelector(selector);
+    const here = this.neighbours();
+    const at = here.indexOf(this.entry);
+
+    KINDS.forEach((kind, column) => {
+      const button = find(`[data-scan-kind="${kind}"]`);
+      if (!button) return;
+      const chosen = kind === this.kind;
+      button.classList.toggle("active", chosen);
+      button.setAttribute("aria-pressed", String(chosen));
+      button.disabled = !this.entries.some((record) => (record.category || "entry") === kind);
+      if (chosen) {
+        const marker = find("[data-scan-kind-marker]");
+        if (marker) marker.style.setProperty("--scan-kind-at", column);
+      }
+    });
+
+    // The arrows say which kind they will step through, and are disabled at
+    // the ends of it rather than wrapping round.
+    const label = find(`[data-scan-kind="${this.kind}"] span`);
+    const name = label ? label.textContent.trim() : "";
     const previous = find("[data-scan-previous]");
     const next = find("[data-scan-next]");
-    if (previous) previous.disabled = this.index <= 0;
-    if (next) next.disabled = this.index >= this.entries.length - 1;
+    if (previous) {
+      previous.disabled = at <= 0;
+      previous.setAttribute("aria-label",
+        `${this.translate("scanPrevious", "Previous")} ${name}`.trim());
+    }
+    if (next) {
+      next.disabled = at < 0 || at >= here.length - 1;
+      next.setAttribute("aria-label",
+        `${this.translate("scanNext", "Next")} ${name}`.trim());
+    }
+  }
 
-    this.drawView();
+  // Switching kind lands on the record of that kind nearest the one on
+  // screen, so the reader stays roughly where they were in the column.
+  selectKind(event) {
+    this.kind = event.currentTarget.dataset.scanKind;
+    const here = this.neighbours();
+    if (!here.length) return;
+    const nearest = here.reduce((best, record) =>
+      Math.abs(this.entries.indexOf(record) - this.index) <
+      Math.abs(this.entries.indexOf(best) - this.index) ? record : best, here[0]);
+    this.entry = nearest;
+    this.index = this.entries.indexOf(nearest);
+    this.fill();
+  }
+
+  translate(key, fallback) {
+    return window.LQ.translate(key, fallback);
   }
 
   drawView() {
@@ -201,10 +262,11 @@ class DictionaryPageController extends Stimulus.Controller {
   next() { this.step(1); }
 
   step(direction) {
-    const wanted = this.index + direction;
-    if (wanted < 0 || wanted >= this.entries.length) return;
-    this.index = wanted;
-    this.entry = this.entries[wanted];
+    const here = this.neighbours();
+    const wanted = here.indexOf(this.entry) + direction;
+    if (wanted < 0 || wanted >= here.length) return;
+    this.entry = here[wanted];
+    this.index = this.entries.indexOf(this.entry);
     this.fill();
   }
 

@@ -3,7 +3,9 @@
 //
 //   GET /dictionary_page/entry?dictionary=…&page=…&word=…
 //
-// One record per entry. The three views are the three ways the guide
+// One record per entry. `category` says what kind of record it is -- entry,
+// sub or related -- which is what the window's three-way switch steps
+// through. The three views are the three ways the guide
 // describes reading an entry: the slice it occupies in its column, the whole
 // column, and the whole page. Each view names its scan and the boxes drawn
 // on it; a box gives its rectangle as a percentage of the scan, because the
@@ -17,6 +19,7 @@ window.LQ_DICTIONARY_PAGE_SAMPLE = {
   entries: [
     {
       id: "kamus-turki-1417-manzara",
+      category: "entry",
       dictionary: "Kamus-ı Türki",
       headwordOttoman: "منظره",
       headwordLatin: "manzara",
@@ -42,6 +45,7 @@ window.LQ_DICTIONARY_PAGE_SAMPLE = {
     },
     {
       id: "kamus-turki-1417-manzar",
+      category: "entry",
       dictionary: "Kamus-ı Türki",
       headwordOttoman: "منظر",
       headwordLatin: "manzar",
@@ -62,6 +66,55 @@ window.LQ_DICTIONARY_PAGE_SAMPLE = {
         column: { image: null },
         page: { image: null }
       }
+    },
+
+    // A subheadword and a related word of the same column, so the arrows have
+    // somewhere to go under each of the three kinds. The sample has no scan
+    // cut for either, so the window shows its empty state for them; the
+    // endpoint will return one slice per record.
+    {
+      id: "kamus-turki-1417-manzara-i-hasene",
+      category: "sub",
+      dictionary: "Kamus-ı Türki",
+      headwordOttoman: "منظره‌ی حسنه",
+      headwordLatin: "manzara-i hasene",
+      slice: 5,
+      column: 3,
+      page: 1417,
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
+    },
+    {
+      id: "kamus-turki-1417-manzum",
+      category: "sub",
+      dictionary: "Kamus-ı Türki",
+      headwordOttoman: "منظوم",
+      headwordLatin: "manzum",
+      slice: 6,
+      column: 3,
+      page: 1417,
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
+    },
+    {
+      id: "kamus-turki-1417-nazar",
+      category: "related",
+      dictionary: "Kamus-ı Türki",
+      headwordOttoman: "نظر",
+      headwordLatin: "nazar",
+      slice: 2,
+      column: 3,
+      page: 1417,
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
+    },
+    {
+      id: "kamus-turki-1417-nazir",
+      category: "related",
+      dictionary: "Kamus-ı Türki",
+      headwordOttoman: "ناظر",
+      headwordLatin: "nazır",
+      slice: 3,
+      column: 3,
+      page: 1417,
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
     }
   ]
 };

@@ -566,11 +566,20 @@
 
 .home-surface .results-stats {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 3px;
   border-left: 3px solid var(--lq-claret);
   padding-left: 12px;
 }
-.home-surface .results-stats p { margin: 0; font-size: 12px; color: var(--lq-ink-soft); }
+/* Set in capitals, as the reference has it: the two lines are a label on the
+   search rather than a sentence to be read. */
+.home-surface .results-stats p {
+  margin: 0;
+  color: var(--lq-ink-soft);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 .home-surface .results-stats b { color: var(--lq-ink); font-variant-numeric: tabular-nums; }
 
 .home-surface .spelling-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }

@@ -461,10 +461,11 @@ class HomeController extends Stimulus.Controller {
 
   // ==================== dictionaries ====================
 
-  // The dictionary column shows the name with its publication year.
+  // The dictionary column shows the name with its publication year. The
+  // shared helper reads it off the same table the citation window uses, so
+  // the two never disagree about a work.
   dictionaryLabelFor(name) {
-    const year = (window.LQ_DICTIONARY_YEARS || {})[name];
-    return year ? `${name}, ${year}` : name;
+    return window.LQ.dictionaryLabel(name);
   }
 
   toggleAllDictionaries(event) {

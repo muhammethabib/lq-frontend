@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="../css/word-decoder.css">
   <link rel="stylesheet" href="../css/ottoman-keyboard.css">
   <link rel="stylesheet" href="../css/citation.css">
+  <link rel="stylesheet" href="../css/dictionary-page.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -27,6 +28,7 @@
   <script src="../js/dictionaries.js" defer></script>
   <script src="../js/sample_data.js" defer></script>
   <script src="../js/decoder_sample_data.js" defer></script>
+  <script src="../js/dictionary_page_sample.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/page_chrome.js" defer></script>
   <script src="../js/app.js" defer></script>
@@ -36,6 +38,7 @@
   <script src="../js/controllers/word_decoder_controller.js" defer></script>
   <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
   <script src="../js/controllers/citation_controller.js" defer></script>
+  <script src="../js/controllers/dictionary_page_controller.js" defer></script>
 </head>
 <body>
 
@@ -689,6 +692,123 @@
           <button type="button" class="btn citation-copy" data-action="click->citation#copy">
             <i data-feather="copy" aria-hidden="true"></i>
             <span data-citation-label data-i18n="citeCopy">Copy reference</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- The original dictionary page window, opened from a result row. -->
+  <div class="modal fade dictionary-page-modal" id="dictionaryPageModal" tabindex="-1" aria-hidden="true"
+       data-controller="dictionary-page"
+       data-dictionary-page-template-value="dictionaryPageTemplate"
+       data-dictionary-page-endpoint-value="/dictionary_page/entry"></div>
+
+  <template id="dictionaryPageTemplate">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="scan-source">
+            <span class="scan-dictionary" data-scan-dictionary></span>
+            <span class="scan-headword">
+              <span data-direction="rtl" data-scan-headword-ottoman></span>
+              <span data-scan-headword-latin></span>
+            </span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close" data-i18n-aria="close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div data-scan-view-body>
+            <div class="scan-stage">
+              <button type="button" class="btn scan-arrow scan-arrow-previous"
+                      data-action="click->dictionary-page#previous" data-scan-previous
+                      aria-label="Previous entry" data-i18n-aria="scanPrevious">
+                <i data-feather="chevron-left" aria-hidden="true"></i>
+              </button>
+
+              <div class="scan-frame" data-scan-frame>
+                <img alt="">
+                <!-- The word under the cursor, and what can be done with it -->
+                <div class="scan-card" data-scan-card hidden
+                     data-action="mouseleave->dictionary-page#hideWord">
+                  <button type="button" class="btn scan-card-line" data-scan-script="ottoman"
+                          data-action="click->dictionary-page#search">
+                    <span data-direction="rtl" data-scan-word-ottoman></span>
+                  </button>
+                  <button type="button" class="btn scan-card-line" data-scan-script="latin"
+                          data-action="click->dictionary-page#search">
+                    <span data-scan-word-latin></span>
+                  </button>
+                  <button type="button" class="btn scan-card-flag"
+                          data-action="click->dictionary-page#report"
+                          aria-label="Report an error" data-i18n-aria="scanReport">
+                    <i data-feather="alert-triangle" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+
+              <p class="scan-missing" data-scan-missing hidden data-i18n="scanMissing">The scan for this view is not in the sample data. The endpoint returns one image per view.</p>
+
+              <button type="button" class="btn scan-arrow scan-arrow-next"
+                      data-action="click->dictionary-page#next" data-scan-next
+                      aria-label="Next entry" data-i18n-aria="scanNext">
+                <i data-feather="chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Reporting an error takes over the window rather than stacking a
+               second one on top of it -->
+          <div class="scan-report" data-scan-report hidden>
+            <h2 class="scan-report-title" data-i18n="scanReportTitle">Report an error</h2>
+            <p class="scan-report-word">
+              <span data-direction="rtl" data-scan-report-ottoman></span>
+              <span class="scan-report-divider" aria-hidden="true"></span>
+              <span data-scan-report-latin></span>
+            </p>
+            <form data-scan-report-form data-action="submit->dictionary-page#sendReport">
+              <label class="visually-hidden" for="scanReportText" data-i18n="scanReportLabel">Describe the error</label>
+              <textarea id="scanReportText" class="form-control" rows="4"
+                        data-i18n-title="scanReportLabel"></textarea>
+              <div class="scan-report-actions">
+                <button type="button" class="btn scan-report-cancel"
+                        data-action="click->dictionary-page#closeReport" data-i18n="cancel">Cancel</button>
+                <button type="submit" class="btn scan-report-send" data-i18n="submit">Submit</button>
+              </div>
+            </form>
+            <div class="scan-report-thanks" data-scan-report-thanks hidden>
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <p data-i18n="scanReportThanks">Thank you. Our editors will look at it.</p>
+              <button type="button" class="btn scan-report-cancel"
+                      data-action="click->dictionary-page#closeReport" data-i18n="close">Close</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="scan-views" role="group" aria-label="View" data-i18n-aria="scanViewLabel">
+            <button type="button" class="btn scan-view" data-scan-view="slice" aria-pressed="true"
+                    data-action="click->dictionary-page#selectView">
+              <span data-i18n="scanSlice">Slice</span>
+              <span class="scan-count" data-scan-count></span>
+            </button>
+            <button type="button" class="btn scan-view" data-scan-view="column" aria-pressed="false"
+                    data-action="click->dictionary-page#selectView">
+              <span data-i18n="scanColumn">Column</span>
+              <span class="scan-count" data-scan-count></span>
+            </button>
+            <button type="button" class="btn scan-view" data-scan-view="page" aria-pressed="false"
+                    data-action="click->dictionary-page#selectView">
+              <span data-i18n="scanPage">Page</span>
+              <span class="scan-count" data-scan-count></span>
+            </button>
+          </div>
+          <button type="button" class="btn scan-cite" data-action="click->dictionary-page#cite">
+            <i data-feather="clipboard" aria-hidden="true"></i>
+            <span data-i18n="cite">Cite</span>
           </button>
         </div>
       </div>

@@ -39,6 +39,7 @@ js/keyboard_layout.js                 the Ottoman keyboard's keys, and the
                                       Latin-to-Ottoman map for physical typing
 js/sample_data.js                     stand-in for the search endpoint
 js/decoder_sample_data.js             stand-in for the decoder endpoint
+js/dictionary_page_sample.js          stand-in for the dictionary page endpoint
 assets/                               logo and static images
 vendor/                               local copies of Bootstrap, jQuery, Stimulus, Feather
 docs/                                 the dev team's instructions and review prompt
@@ -64,10 +65,11 @@ docs/                                 the dev team's instructions and review pro
 | Version 2.0: What's New | `pages/lq2-whats-new.html` | Built |
 | Citation window | `pages/home.html`, the `citationTemplate` template | Built |
 | Account window (sign in / sign up) | `js/page_chrome.js`, the `authTemplate` template | Built |
+| Original dictionary page window | `pages/home.html`, the `dictionaryPageTemplate` template | Built |
 
-Every menu entry now leads to a page. The dictionary page window, where a
-result opens on the scan of the dictionary it came from, is the one piece
-still to build.
+Every menu entry leads to a page, and every action on a result row does
+something: the two click zones open the scan the record came from, Cite
+opens the reference window, and the side menu opens the account window.
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list
@@ -79,6 +81,7 @@ stays marked "soon" and is not clickable.
 | --- | --- | --- |
 | `GET /search_output/results` | Search tab | `q`, `script`, `source`, `categories[]`, `groups[]`, `dictionaries[]` |
 | `GET /word_decoder/results` | Word Decoder tab | `pattern` (JSON), `q` (readable form), `expand` |
+| `GET /dictionary_page/entry` | Dictionary page window | `dictionary`, `page`, `word` |
 
 The decoder's `pattern` is an object with `slots` and `joins`. A slot is one
 letter position and names its kind: a `letter`, a set of `alternatives`, a

@@ -35,6 +35,22 @@ class HomeController extends Stimulus.Controller {
       this.renderSpellings();
       this.renderResults();
     });
+
+    // A word clicked on a dictionary scan is searched here rather than in a
+    // new tab, so the reader keeps one page.
+    this.onSearchRequest = (event) => this.runSearch(event.detail);
+    document.addEventListener("search:run", this.onSearchRequest);
+  }
+
+  disconnect() {
+    document.removeEventListener("search:run", this.onSearchRequest);
+  }
+
+  runSearch({ term, script }) {
+    this.sideValue = script === "ottoman" ? "ottoman" : "latin";
+    this.applySide();
+    this.inputTarget.value = term;
+    this.submitTarget.click();
   }
 
   // ==================== search bar ====================
@@ -346,7 +362,14 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="result-row" data-category="${row.category}">
-        <td>
+        <td class="result-zone" data-action="click->home#openDictionaryPage"
+            data-zone-ottoman="${this.escape(row.resultOttoman)}"
+            data-zone-latin="${this.escape(row.resultLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            title="${this.escape(this.translate("goToResult", "Go to this result"))}">
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl">${this.highlight(row.resultOttoman, "ottoman", markAffixes)}</span>
@@ -362,7 +385,14 @@ class HomeController extends Stimulus.Controller {
         <td class="text-center">
           <i class="row-arrow" data-feather="arrow-right"></i>
         </td>
-        <td class="headword-cell">
+        <td class="headword-cell result-zone" data-action="click->home#openDictionaryPage"
+            data-zone-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-latin="${this.escape(row.headwordLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            title="${this.escape(this.translate("goToHeadword", "Go to the headword"))}">
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl">${this.escape(row.headwordOttoman)}</span>
@@ -418,6 +448,22 @@ class HomeController extends Stimulus.Controller {
         ottoman: citeOttoman,
         dictionary: citeDictionary,
         page: citePage
+      }
+    }));
+  }
+
+  // A row has two click zones, the result and the headword; both open the
+  // scan the record came from.
+  openDictionaryPage(event) {
+    const zone = event.currentTarget.dataset;
+    document.dispatchEvent(new CustomEvent("dictionary-page:open", {
+      detail: {
+        ottoman: zone.zoneOttoman,
+        latin: zone.zoneLatin,
+        headwordOttoman: zone.zoneHeadwordOttoman,
+        headwordLatin: zone.zoneHeadwordLatin,
+        dictionary: zone.zoneDictionary,
+        page: zone.zonePage
       }
     }));
   }

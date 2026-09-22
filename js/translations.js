@@ -1144,6 +1144,24 @@ window.LQ_TRANSLATIONS = {
     authCreate: "Kaydol",
     authNewsletter: "LexiQamus ile ilgili gelişmelerden e-posta yoluyla haberdar olmak istiyorum.",
     authTerms: "<a href=\"#\">Üyelik sözleşmesini</a> okudum ve kabul ediyorum.",
-    authVerified: "Doğrulandı"
+    authVerified: "Doğrulandı",
+
+    // --- Dictionary page window ---
+    goToResult: "Sonuca git",
+    goToHeadword: "Madde başına git",
+    scanAlt: "Maddenin kaynak ciltteki basılı hâli",
+    scanPrevious: "Önceki madde",
+    scanNext: "Sonraki madde",
+    scanMissing: "Bu görünümün taraması örnek veride yok. Uç nokta her görünüm için bir görsel döndürür.",
+    scanViewLabel: "Görünüm",
+    scanSlice: "Dilim",
+    scanColumn: "Sütun",
+    scanPage: "Sayfa",
+    scanReport: "Hata bildir",
+    scanReportTitle: "Hata bildir",
+    scanReportLabel: "Hatayı açıklayın",
+    scanReportThanks: "Teşekkür ederiz. Editörlerimiz bildiriminizi inceleyecek.",
+    cancel: "İptal",
+    submit: "Gönder"
   }
 };

@@ -1,0 +1,333 @@
+/* =========================================================
+   Original dictionary page window
+   The scan of the dictionary an entry came from, with the
+   digitized words boxed on it.
+   ========================================================= */
+
+.dictionary-page-modal .modal-content {
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--lq-shadow);
+}
+
+.dictionary-page-modal .modal-header {
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--lq-line);
+}
+.dictionary-page-modal .scan-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+  margin: 0;
+}
+.dictionary-page-modal .scan-dictionary {
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--lq-lat-bg);
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--lq-sapphire);
+}
+.dictionary-page-modal .scan-headword {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--lq-ink-navy);
+}
+.dictionary-page-modal .scan-headword [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.25rem;
+  color: var(--lq-red);
+}
+
+/* ---------- the scan and the arrows either side of it ---------- */
+
+.dictionary-page-modal .modal-body { padding: 20px 18px; }
+
+.dictionary-page-modal .scan-stage {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 10px;
+}
+
+.dictionary-page-modal .scan-arrow {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background: var(--lq-paper);
+  color: var(--lq-sapphire);
+}
+.dictionary-page-modal .scan-arrow:hover:not(:disabled) {
+  border-color: var(--lq-sapphire);
+  background: var(--lq-lat-bg);
+}
+.dictionary-page-modal .scan-arrow:disabled { opacity: .35; }
+.dictionary-page-modal .scan-arrow svg { width: 18px; height: 18px; }
+
+/* The frame keeps the scan's proportions, so the boxes drawn on it as
+   percentages land on the same words at any size. */
+.dictionary-page-modal .scan-frame {
+  position: relative;
+  aspect-ratio: var(--scan-ratio, 2);
+  max-height: 62vh;
+  margin-inline: auto;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: #fbfaf7;
+  overflow: visible;
+}
+.dictionary-page-modal .scan-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 11px;
+}
+
+.dictionary-page-modal .scan-missing {
+  grid-column: 2;
+  margin: 0;
+  padding: 46px 24px;
+  border: 1px dashed var(--lq-line);
+  border-radius: 12px;
+  text-align: center;
+  color: var(--lq-muted);
+}
+
+/* ---------- a digitized word on the scan ---------- */
+
+/* A word sits in a box coloured by its category, the same three colours the
+   results list uses. The box is quiet until the cursor reaches it. */
+.dictionary-page-modal .scan-box {
+  position: absolute;
+  padding: 0;
+  border: 1.5px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  transition: background .12s, border-color .12s;
+}
+.dictionary-page-modal .scan-box-entry {
+  border-color: var(--lq-entry-border);
+  background: var(--lq-entry-bg);
+}
+.dictionary-page-modal .scan-box-entry:hover,
+.dictionary-page-modal .scan-box-entry:focus-visible {
+  border-color: var(--lq-entry-text);
+  background: rgba(20, 184, 166, .2);
+}
+.dictionary-page-modal .scan-box-sub {
+  border-color: var(--lq-sub-border);
+  background: var(--lq-sub-bg);
+}
+.dictionary-page-modal .scan-box-sub:hover,
+.dictionary-page-modal .scan-box-sub:focus-visible {
+  border-color: var(--lq-sub-text);
+  background: rgba(251, 191, 36, .22);
+}
+.dictionary-page-modal .scan-box-related {
+  border-color: var(--lq-related-border);
+  background: var(--lq-related-bg);
+}
+.dictionary-page-modal .scan-box-related:hover,
+.dictionary-page-modal .scan-box-related:focus-visible {
+  border-color: var(--lq-related-text);
+  background: rgba(59, 130, 246, .26);
+}
+
+/* ---------- the card the box opens ---------- */
+
+.dictionary-page-modal .scan-card {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 5px;
+  border-radius: 11px;
+  background: rgba(15, 23, 42, .95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  white-space: nowrap;
+}
+.dictionary-page-modal .scan-card-line {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #fff;
+  font-size: .9rem;
+}
+.dictionary-page-modal .scan-card-line:hover { background: rgba(255, 255, 255, .14); color: #fff; }
+.dictionary-page-modal .scan-card-line [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.1rem;
+}
+.dictionary-page-modal .scan-card-flag {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(125, 211, 252, .18);
+  color: #7dd3fc;
+}
+/* The flag turns red on approach, the way the guide describes it */
+.dictionary-page-modal .scan-card-flag:hover {
+  background: var(--lq-red);
+  color: #fff;
+}
+.dictionary-page-modal .scan-card-flag svg { width: 14px; height: 14px; }
+
+/* ---------- reporting an error ---------- */
+
+.dictionary-page-modal .scan-report {
+  max-width: 520px;
+  margin: 10px auto;
+  text-align: center;
+}
+.dictionary-page-modal .scan-report-title {
+  margin: 0 0 12px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+.dictionary-page-modal .scan-report-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--lq-lat-bg);
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+.dictionary-page-modal .scan-report-word [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.4rem;
+  color: var(--lq-red);
+}
+.dictionary-page-modal .scan-report-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--lq-lat-border);
+}
+.dictionary-page-modal .scan-report textarea {
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+}
+.dictionary-page-modal .scan-report-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+.dictionary-page-modal .scan-report-cancel {
+  padding: 9px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 9px;
+  background: var(--lq-paper);
+  font-weight: 600;
+  color: var(--lq-ink-soft);
+}
+.dictionary-page-modal .scan-report-send {
+  padding: 9px 18px;
+  border: 1px solid var(--lq-claret);
+  border-radius: 9px;
+  background: var(--lq-claret);
+  font-weight: 600;
+  color: #fff;
+}
+.dictionary-page-modal .scan-report-send:hover {
+  background: var(--lq-claret-hover);
+  border-color: var(--lq-claret-hover);
+  color: #fff;
+}
+.dictionary-page-modal .scan-report-thanks { display: grid; gap: 12px; justify-items: center; }
+.dictionary-page-modal .scan-report-thanks svg {
+  width: 34px;
+  height: 34px;
+  color: var(--lq-entry-text);
+}
+.dictionary-page-modal .scan-report-thanks p { margin: 0; color: var(--lq-ink-soft); }
+
+/* ---------- the three views, and the citation ---------- */
+
+.dictionary-page-modal .modal-footer {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--lq-line);
+}
+.dictionary-page-modal .scan-views {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--lq-line);
+  border-radius: 999px;
+  background: var(--lq-body-bg);
+}
+.dictionary-page-modal .scan-view {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--lq-ink-soft);
+}
+.dictionary-page-modal .scan-view[aria-pressed="true"] {
+  background: var(--lq-paper);
+  color: var(--lq-sapphire);
+  box-shadow: 0 1px 3px rgba(8, 37, 103, .16);
+}
+/* The count is which slice, column or page this is, not how many there are */
+.dictionary-page-modal .scan-count {
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--lq-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.dictionary-page-modal .scan-cite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 9px;
+  background: var(--lq-paper);
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+.dictionary-page-modal .scan-cite:hover { border-color: var(--lq-sapphire); background: var(--lq-lat-bg); }
+.dictionary-page-modal .scan-cite svg { width: 15px; height: 15px; }
+
+/* ---------- the click zones in a result row ---------- */
+
+.home-surface .result-zone { cursor: pointer; }
+.home-surface .result-row:hover .result-zone:hover { background: var(--lq-lat-bg); }
+
+@media (max-width: 767px) {
+  .dictionary-page-modal .scan-stage { grid-template-columns: 32px minmax(0, 1fr) 32px; }
+  .dictionary-page-modal .scan-arrow { width: 32px; height: 32px; }
+  .dictionary-page-modal .modal-footer { flex-direction: column; align-items: stretch; }
+  .dictionary-page-modal .scan-views { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dictionary-page-modal .scan-box { transition: none; }
+}

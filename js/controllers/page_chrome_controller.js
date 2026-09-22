@@ -35,7 +35,7 @@ class PageChromeController extends Stimulus.Controller {
     const template = this.element.querySelector("#authTemplate");
     if (!container || !template) return;
 
-    window.LQ.disposeTooltips(container);
+    window.LQ.disposeWidgets(container);
     container.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(container);
     window.LQ.refreshDynamicContent(container);

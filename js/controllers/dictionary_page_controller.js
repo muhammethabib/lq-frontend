@@ -71,7 +71,7 @@ class DictionaryPageController extends Stimulus.Controller {
   render() {
     const template = document.getElementById(this.templateValue);
     if (!template) return;
-    window.LQ.disposeTooltips(this.element);
+    window.LQ.disposeWidgets(this.element);
     this.element.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(this.element);
     this.fill();

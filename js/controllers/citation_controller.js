@@ -41,7 +41,7 @@ class CitationController extends Stimulus.Controller {
   render() {
     const template = document.getElementById(this.templateValue);
     if (!template) return;
-    window.LQ.disposeTooltips(this.element);
+    window.LQ.disposeWidgets(this.element);
     this.element.innerHTML = template.innerHTML;
     // The markup comes from the template in English, so it is swept before
     // the generated values are written into it.

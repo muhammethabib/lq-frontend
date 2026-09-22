@@ -22,13 +22,29 @@ window.LQ = {
   // element leaves the page rather than left behind. The root is swept too,
   // because querySelectorAll never matches the element it is called on.
   disposeTooltips(root) {
+    this.disposeWidgets(root, { Tooltip: '[data-bs-toggle="tooltip"]' });
+  },
+
+  // Bootstrap keeps one instance per element, so a widget inside markup that
+  // is about to be replaced is disposed first: otherwise the instance outlives
+  // the element it was built for. Controllers that re-render a modal from its
+  // template call this before writing the new markup.
+  disposeWidgets(root, widgets) {
     if (!root) return;
-    const dispose = (element) => {
-      const tooltip = bootstrap.Tooltip.getInstance(element);
-      if (tooltip) tooltip.dispose();
+    const kinds = widgets || {
+      Tooltip: '[data-bs-toggle="tooltip"]',
+      Popover: '[data-bs-toggle="popover"]',
+      Tab: '[data-bs-toggle="tab"]'
     };
-    if (root.matches && root.matches('[data-bs-toggle="tooltip"]')) dispose(root);
-    if (root.querySelectorAll) root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(dispose);
+    Object.keys(kinds).forEach((kind) => {
+      const selector = kinds[kind];
+      const dispose = (element) => {
+        const instance = bootstrap[kind].getInstance(element);
+        if (instance) instance.dispose();
+      };
+      if (root.matches && root.matches(selector)) dispose(root);
+      if (root.querySelectorAll) root.querySelectorAll(selector).forEach(dispose);
+    });
   },
 
   // The Turkish string for a key, or the English fallback.

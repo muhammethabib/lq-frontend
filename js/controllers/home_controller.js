@@ -15,13 +15,18 @@ const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Arrow
 // A group longer than this is not put on screen all at once: the reader is
 // given a page of it and asks for the rest.
 const PAGE = 25;
+// A row has two halves, and which half the pointer is over decides where a
+// press will go. The words themselves, and everything else that has its own
+// answer to a press, are left out of that: a reader over a word is being told
+// about the word, not about the row.
+const ZONE_SKIP = ".word-box, .analysis-badge, .typo-mark, .category-badge, .btn, a";
 
 class HomeController extends Stimulus.Controller {
   static targets = [
     "logo", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "sourceOption", "submit", "scriptHint", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
-    "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
+    "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
     "groupCopy",
     "spellingRow", "pronunciationButton", "pronunciationCount",
     "jumpBar", "jumpLinks",
@@ -779,6 +784,34 @@ class HomeController extends Stimulus.Controller {
       </tbody>`;
   }
 
+  // ==================== what a click zone does ====================
+
+  showZoneTip(event) {
+    const zone = event.target.closest(".result-zone");
+    if (!zone || event.target.closest(ZONE_SKIP)) { this.hideZoneTip(); return; }
+    const tip = this.zoneTipTarget;
+    const key = zone.dataset.zoneTip;
+    tip.textContent = this.translate(key,
+      key === "goToHeadword" ? "Go to the headword" : "Go to this result");
+    tip.classList.add("is-open");
+
+    // Anchored over the row rather than at the pointer, and a little right of
+    // the middle so it does not sit on the words above it.
+    const at = zone.getBoundingClientRect();
+    const size = tip.getBoundingClientRect();
+    const pad = 8;
+    let left = at.left + at.width * 0.62 - size.width / 2;
+    left = Math.max(pad, Math.min(left, window.innerWidth - size.width - pad));
+    let top = at.top - size.height - pad;
+    if (top < pad) top = at.bottom + pad;
+    tip.style.left = `${Math.round(left)}px`;
+    tip.style.top = `${Math.round(top)}px`;
+  }
+
+  hideZoneTip() {
+    if (this.hasZoneTipTarget) this.zoneTipTarget.classList.remove("is-open");
+  }
+
   // ==================== the wordmark and its line ====================
 
   // The line under the wordmark is set to the wordmark's own width, letter by
@@ -929,7 +962,7 @@ class HomeController extends Stimulus.Controller {
             data-zone-headword-latin="${this.escape(row.headwordLatin)}"
             data-zone-dictionary="${this.escape(row.dictionary)}"
             data-zone-page="${this.escape(row.page)}"
-            title="${this.escape(this.translate("goToResult", "Go to this result"))}">
+            data-zone-tip="goToResult">
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
@@ -954,7 +987,7 @@ class HomeController extends Stimulus.Controller {
             data-zone-headword-latin="${this.escape(row.headwordLatin)}"
             data-zone-dictionary="${this.escape(row.dictionary)}"
             data-zone-page="${this.escape(row.page)}"
-            title="${this.escape(this.translate("goToHeadword", "Go to the headword"))}">
+            data-zone-tip="goToHeadword">
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>

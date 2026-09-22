@@ -1437,3 +1437,34 @@
   font-size: 11px;
   opacity: 0.85;
 }
+
+/* Which half of a row a press would follow. Anchored over the row rather
+   than at the pointer, so it does not chase the hand across the screen. */
+.home-surface .zone-tip {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  z-index: 1070;
+  display: block;
+  max-width: 300px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .15s ease;
+}
+
+.home-surface .zone-tip.is-open { opacity: 1; visibility: visible; }
+
+/* A touch screen has no hover to raise it by. */
+@media (pointer: coarse) {
+  .home-surface .zone-tip { display: none; }
+}

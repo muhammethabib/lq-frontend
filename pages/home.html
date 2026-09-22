@@ -637,7 +637,12 @@
         </div>
       </div>
 
-      <div class="results-table-scroll">
+      <!-- Which half of a row the pointer is over, and so where a press would
+           go. One element serves every row. -->
+      <span class="zone-tip" data-home-target="zoneTip" aria-hidden="true"></span>
+
+      <div class="results-table-scroll"
+           data-action="mouseover->home#showZoneTip mouseleave->home#hideZoneTip">
         <table class="table results-table align-middle" data-home-target="resultsTable">
           <thead>
             <tr>

@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="../css/entry-window.css">
   <link rel="stylesheet" href="../css/redhouse.css">
   <link rel="stylesheet" href="../css/morphology.css">
+  <link rel="stylesheet" href="../css/cognates.css">
+  <link rel="stylesheet" href="../css/word-menu.css">
   <link rel="stylesheet" href="../css/innovations.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
@@ -40,6 +42,7 @@
   <script src="../js/dictionary_page_sample.js" defer></script>
   <script src="../js/entry_sample.js" defer></script>
   <script src="../js/morphology_sample.js" defer></script>
+  <script src="../js/cognates_sample.js" defer></script>
   <script src="../js/redhouse_sample.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/search_keyboard_layout.js" defer></script>
@@ -60,6 +63,8 @@
   <script src="../js/controllers/entry_window_controller.js" defer></script>
   <script src="../js/controllers/redhouse_controller.js" defer></script>
   <script src="../js/controllers/morphology_controller.js" defer></script>
+  <script src="../js/controllers/cognates_controller.js" defer></script>
+  <script src="../js/controllers/word_menu_controller.js" defer></script>
   <script src="../js/controllers/innovations_controller.js" defer></script>
 </head>
 <body>
@@ -67,8 +72,9 @@
 <!-- The whole page is one feature: search. The side menu sits inside the same
      root so the language controller can reach both language switches. -->
 <div class="container-fluid p-4 home-surface state-landing"
-     data-controller="home language page-navigation"
-     data-home-endpoint-value="/search_output/results">
+     data-controller="home language page-navigation word-menu"
+     data-home-endpoint-value="/search_output/results"
+     data-word-menu-template-value="wordMenuTemplate">
 
   <!-- ============================= side menu ============================= -->
   <!-- The linked pages are not rebuilt in this repository yet; the hrefs name
@@ -1525,6 +1531,83 @@
           </div>
         </div>
       </div>
+    </div>
+  </template>
+
+
+  <!-- The words that share a root with this one, opened from the menu
+       that appears over a word box. -->
+  <div class="modal fade cognates-modal" id="cognatesModal" tabindex="-1" aria-hidden="true"
+       data-controller="cognates"
+       data-cognates-template-value="cognatesTemplate"
+       data-cognates-endpoint-value="/cognates/show"></div>
+
+  <template id="cognatesTemplate">
+    <div class="modal-dialog modal-dialog-centered cognates-dialog">
+      <div class="modal-content cognates-surface">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close"></button>
+
+        <div class="cognates-toolbar">
+          <h2 class="cognates-title" data-i18n="cogTitle">Same Root</h2>
+          <p class="cognates-anchor">
+            <span class="cognates-anchor-ottoman" data-direction="rtl" data-cognates-ottoman></span>
+            <span class="cognates-anchor-latin" data-cognates-latin></span>
+          </p>
+
+          <!-- A tab both says which part is being read and jumps to it. -->
+          <div class="cognates-tabs" role="tablist">
+            <button type="button" class="btn cognates-tab active" role="tab" aria-selected="true"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-root"
+                    data-i18n="cogTabRoot">Root</button>
+            <button type="button" class="btn cognates-tab" role="tab" aria-selected="false"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-parallel"
+                    data-i18n="cogTabParallel">Parallel</button>
+            <button type="button" class="btn cognates-tab" role="tab" aria-selected="false"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-lexicalized"
+                    data-i18n="cogTabLexInfl">Lexicalized</button>
+            <button type="button" class="btn cognates-tab" role="tab" aria-selected="false"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-derived"
+                    data-i18n="cogTabDerived">Derived</button>
+            <button type="button" class="btn cognates-tab" role="tab" aria-selected="false"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-compounds"
+                    data-i18n="cogTabCompounds">Compounds</button>
+            <button type="button" class="btn cognates-tab" role="tab" aria-selected="false"
+                    data-action="click->cognates#goToPart" data-cognates-section="cognate-phrases"
+                    data-i18n="cogTabPhrases">Phrases</button>
+          </div>
+
+          <div class="cognates-actions">
+            <button type="button" class="btn cognates-action" data-action="click->cognates#openAll"
+                    data-i18n="cogExpandAll">Expand all</button>
+            <button type="button" class="btn cognates-action" data-action="click->cognates#closeAll"
+                    data-i18n="cogCollapseAll">Collapse all</button>
+          </div>
+        </div>
+
+        <div class="cognates-body" data-cognates-body></div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- Raised over a word box on hover; one element serves every word. -->
+  <template id="wordMenuTemplate">
+    <div class="word-menu">
+      <button type="button" class="btn word-menu-item" data-action="click->word-menu#searchInTab">
+        <i data-feather="search" aria-hidden="true"></i>
+        <span data-i18n="wbSearchTab">Search in a new tab</span>
+      </button>
+      <span class="word-menu-divider" aria-hidden="true"></span>
+      <button type="button" class="btn word-menu-item" data-action="click->word-menu#sameRoot">
+        <i data-feather="share-2" aria-hidden="true"></i>
+        <span data-i18n="wbSameRoot">Words from the same root</span>
+      </button>
+      <span class="word-menu-divider" aria-hidden="true"></span>
+      <button type="button" class="btn word-menu-item" data-action="click->word-menu#analysis">
+        <i data-feather="git-merge" aria-hidden="true"></i>
+        <span data-i18n="wbMorph">Morphological analysis</span>
+      </button>
     </div>
   </template>
 

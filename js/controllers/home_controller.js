@@ -64,9 +64,16 @@ class HomeController extends Stimulus.Controller {
     // reviewing aid: this listener comes out with the switcher.
     this.onViewState = (event) => this.showViewState(event.detail.state);
     document.addEventListener("view-state:change", this.onViewState);
+
+    // A word opened in a new tab arrives as ?q=; the page looks it up rather
+    // than showing an empty bar. Deferred by a turn so that the switcher,
+    // which announces its own screen the same way, has had its say first.
+    const asked = new URLSearchParams(window.location.search).get("q");
+    if (asked) this.openingSearch = setTimeout(() => this.searchFor(asked), 0);
   }
 
   disconnect() {
+    clearTimeout(this.openingSearch);
     document.removeEventListener("search:run", this.onSearchRequest);
     document.removeEventListener("view-state:change", this.onViewState);
     document.removeEventListener("search-keyboard:key", this.onKeyboardKey);
@@ -117,6 +124,11 @@ class HomeController extends Stimulus.Controller {
       suggestions: sample.suggestions || [],
       groups: []
     };
+  }
+
+  // A word handed to the page in the address, in either script.
+  searchFor(term) {
+    this.runSearch({ term, script: ARABIC_LETTER.test(term) ? "ottoman" : "latin" });
   }
 
   runSearch({ term, script }) {
@@ -766,11 +778,11 @@ class HomeController extends Stimulus.Controller {
             title="${this.escape(this.translate("goToResult", "Go to this result"))}">
           <div class="word-pair">
             <span class="word-ottoman">
-              <span class="word-box ottoman-box" data-direction="rtl">${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
+              <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
               ${this.misspellingHtml(row)}
             </span>
             <span class="word-latin">
-              <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}">${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
+              <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
             </span>
           </div>
         </td>
@@ -790,10 +802,10 @@ class HomeController extends Stimulus.Controller {
             title="${this.escape(this.translate("goToHeadword", "Go to the headword"))}">
           <div class="word-pair">
             <span class="word-ottoman">
-              <span class="word-box ottoman-box" data-direction="rtl">${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
+              <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
             </span>
             <span class="word-latin">
-              <span class="word-box latin-box">${this.escape(row.headwordLatin)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
+              <span class="word-box latin-box"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordLatin)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
             </span>
           </div>
         </td>
@@ -863,6 +875,13 @@ class HomeController extends Stimulus.Controller {
         page: zone.zonePage
       }
     }));
+  }
+
+  // What the hover menu needs to know about the word it is raised over: the
+  // two spellings, which are enough to look it up, to find its family and to
+  // take it apart.
+  menuData(ottoman, latin) {
+    return ` data-menu-ottoman="${this.escape(ottoman)}" data-menu-latin="${this.escape(latin)}"`;
   }
 
   // A word can be a root with three things hung off it. The badge offers to

@@ -514,7 +514,6 @@ window.LQ_TRANSLATIONS = {
     wayBack: "Geri",
     backToTop: "Başa dön",
 
-    // --- The 2026 innovations, read under the main page ---
     // --- How a word is built ---
     morphTitle: "Yapısal Çözümleme",
     morphHint: "Okunuşunu görmek için bir parçanın üzerine gelin.",
@@ -527,10 +526,40 @@ window.LQ_TRANSLATIONS = {
     morphNoteIncorrect: "Hatalı",
     morphNoteUnused: "Kullanılmıyor",
 
+    // --- The little menu over a word ---
+    wbSearchTab: "Yeni sekmede ara",
+    wbSameRoot: "Aynı kökten kelimeler",
+    wbMorph: "Yapısal çözümleme",
+
+    // --- Words from the same root ---
+    cogTitle: "Aynı Kök",
+    cogTabRoot: "Kök",
+    cogTabParallel: "Paralel",
+    cogTabLexInfl: "Sözlükselleşmiş",
+    cogSecLexInfl: "Sözlükselleşmiş Çekimli Formlar",
+    cogTabDerived: "Türemişler",
+    cogTabCompounds: "Birleşikler",
+    cogTabPhrases: "İbareler",
+    cogSubRoot: "Bu kelimenin türediği kök kelime",
+    cogSubParallel: "Aynı kökten gelen, bu kelimeyle doğrudan türeme bağı olmayan kelimeler",
+    cogSubLexInfl: "Bu kelimenin sözlükte kendine ait ayrı bir anlam kazanmış çekimli biçimleri",
+    cogSubDerived: "Bu kelimeden türemiş kelimeler",
+    cogSubCompounds: "Bu kelimeyi veya ondan türeyen bir kelimeyi içeren birleşik kelimeler",
+    cogSubPhrases: "Bu kelimeyi veya ondan türeyen bir kelimeyi içeren ibareler",
+    cogEmptyRoot: "Bu kelime için ayrı bir kök kaydı bulunmuyor.",
+    cogEmptyParallel: "Bu kelimeyle aynı kökten gelen paralel bir biçim tespit edilmedi.",
+    cogEmptyLexInfl: "Bu kelimenin sözlükselleşmiş çekimli bir biçimi bulunmuyor.",
+    cogEmptyDerived: "Bu kelimeden türemiş başka bir biçim bulunmuyor.",
+    cogEmptyCompounds: "Bu kelimeyi içeren kayıtlı bir birleşik kelime bulunamadı.",
+    cogEmptyPhrases: "Bu kelimeyi içeren kayıtlı bir ibare bulunamadı.",
+    cogExpandAll: "Tümünü aç",
+    cogCollapseAll: "Tümünü kapat",
+
     jumpTo: "Şuraya git:",
     jumpToAria: "Bir gruba git",
     noResultsFor: "Şunun için sonuç bulunamadı:",
     didYouMean: "Bunu mu demek istediniz?",
+    // --- The 2026 innovations, read under the main page ---
     innovationsLabel: "2026 yenilikleri",
     innovationsBack: "Önceki ekran",
     innovationsOn: "Sonraki ekran",

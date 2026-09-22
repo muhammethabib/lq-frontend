@@ -38,7 +38,9 @@ class PricingController extends Stimulus.Controller {
       button.setAttribute("aria-pressed", String(button.dataset.term === this.term));
     });
 
-    // Free has no price to recalculate, only a period to keep in step
+    // Only the paid plans have a period that moves with the term. Free is
+    // free by the month whatever term is chosen, so its period is plain
+    // markup with its own data-i18n key and is left alone here.
     this.element.querySelectorAll("[data-price-period]").forEach((element) => {
       element.textContent = this.periodText();
     });
@@ -47,13 +49,21 @@ class PricingController extends Stimulus.Controller {
       const [total, saving] = LQ_PRICES[plan][this.term];
       const price = this.element.querySelector(`[data-price-plan="${plan}"]`);
       const note = this.element.querySelector(`[data-price-saving="${plan}"]`);
-      if (price) price.textContent = `${total.toLocaleString("tr-TR")} TL`;
+      if (price) price.textContent = this.money(total);
       if (note) {
         note.textContent = saving
           ? window.LQ.translate("planSaving", "Save {n}%").replace("{n}", saving)
           : "";
       }
     });
+  }
+
+  // A price is grouped the way the reader's language groups thousands, so
+  // 8.400 TL in Turkish is 8,400 TL in English. The currency is the same in
+  // both, and at integration it comes from the plan record.
+  money(total) {
+    const language = document.documentElement.lang === "tr" ? "tr-TR" : "en-GB";
+    return `${total.toLocaleString(language)} ${window.LQ.translate("currency", "TL")}`;
   }
 
   // "/ month", "/ 3 months", "/ year" - the three shapes the period takes.

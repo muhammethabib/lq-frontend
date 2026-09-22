@@ -5,14 +5,14 @@
 
 /* Numbered by CSS so the order in the markup is the order on the page, and
    adding a dictionary needs no renumbering. */
-.page-surface .dictionary-list {
+.what-is-surface .dictionary-list {
   counter-reset: dictionary;
   display: grid;
   gap: 12px;
   margin: 26px 0 0;
 }
 
-.page-surface .dictionary-entry {
+.what-is-surface .dictionary-entry {
   position: relative;
   counter-increment: dictionary;
   padding: 18px 22px 18px 64px;
@@ -21,7 +21,7 @@
   background: var(--lq-paper);
   box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
 }
-.page-surface .dictionary-entry::before {
+.what-is-surface .dictionary-entry::before {
   content: counter(dictionary, decimal-leading-zero);
   position: absolute;
   left: 22px;
@@ -33,14 +33,14 @@
   font-variant-numeric: tabular-nums;
 }
 
-.page-surface .dictionary-entry h3 {
+.what-is-surface .dictionary-entry h3 {
   margin: 0 0 2px;
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.18rem;
   font-weight: 600;
   color: var(--lq-sapphire);
 }
-.page-surface .dictionary-meta {
+.what-is-surface .dictionary-meta {
   margin: 0;
   font-size: .9rem;
   color: var(--lq-ink-soft);
@@ -48,12 +48,12 @@
 
 /* The closing note is good news rather than an aside, so it takes the brand
    colour instead of the informational blue. */
-.page-surface .callout-growth {
+.what-is-surface .callout-growth {
   border-left-color: var(--lq-claret);
   background: linear-gradient(to right, #fdf2f7, var(--lq-paper));
 }
 
 @media (max-width: 560px) {
-  .page-surface .dictionary-entry { padding: 16px 18px 16px 18px; }
-  .page-surface .dictionary-entry::before { position: static; display: block; margin-bottom: 4px; }
+  .what-is-surface .dictionary-entry { padding: 16px 18px 16px 18px; }
+  .what-is-surface .dictionary-entry::before { position: static; display: block; margin-bottom: 4px; }
 }

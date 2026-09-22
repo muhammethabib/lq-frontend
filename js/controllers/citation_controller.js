@@ -21,13 +21,23 @@ class CitationController extends Stimulus.Controller {
     document.addEventListener("citation:open", this.onOpen);
     // The window is filled in the language it is opened in, so a switch
     // while it is open re-renders it rather than leaving half of it English.
-    this.onLanguageChange = () => { if (this.record) this.render(); };
+    this.onLanguageChange = () => {
+      if (!this.record) return;
+      // The window is rebuilt from its English template, so the style the
+      // reader had chosen is put back afterwards.
+      const chosen = this.element.querySelector(".nav-link.active");
+      const target = chosen && chosen.dataset.bsTarget;
+      this.render();
+      const restored = target && this.element.querySelector(`[data-bs-target="${target}"]`);
+      if (restored) bootstrap.Tab.getOrCreateInstance(restored).show();
+    };
     document.addEventListener("language:changed", this.onLanguageChange);
   }
 
   disconnect() {
     document.removeEventListener("citation:open", this.onOpen);
     document.removeEventListener("language:changed", this.onLanguageChange);
+    clearTimeout(this.resetTimer);
     if (this.modal) this.modal.dispose();
   }
 
@@ -42,6 +52,15 @@ class CitationController extends Stimulus.Controller {
     const template = document.getElementById(this.templateValue);
     if (!template) return;
     window.LQ.disposeWidgets(this.element);
+    // Bootstrap caches the dialog element when the modal is constructed, so
+    // the instance is disposed before the markup under it is replaced. Not
+    // while the window is open, though: disposing then would take the
+    // backdrop with it and leave the page covered.
+    const existing = bootstrap.Modal.getInstance(this.element);
+    if (existing && !this.element.classList.contains("show")) {
+      existing.dispose();
+      this.modal = null;
+    }
     this.element.innerHTML = template.innerHTML;
     // The markup comes from the template in English, so it is swept before
     // the generated values are written into it.
@@ -76,19 +95,34 @@ class CitationController extends Stimulus.Controller {
   }
 
   // The three styles differ in how they order author, year, volume and page.
+  // Every value is escaped: the page and the volume come from the record, and
+  // this string is written with innerHTML.
   reference(style, values, source) {
-    const title = `<em>${window.LQ.escape(values.title)}</em>`;
-    const author = window.LQ.escape(values.author);
-    const place = `${window.LQ.escape(source.city || "—")}: ${window.LQ.escape(source.publisher || "—")}`;
-    const volume = window.LQ.translate("citeVolumeShort", "vol.");
-    const page = window.LQ.translate("citePageShort", "p.");
+    const safe = window.LQ.escape;
+    const title = `<em>${safe(values.title)}</em>`;
+    const author = safe(values.author);
+    const place = `${safe(this.city(source))}: ${safe(source.publisher || "—")}`;
+    const year = safe(values.year);
+    const volumeNumber = safe(values.volume);
+    const pageNumber = safe(values.page);
+    const volume = safe(window.LQ.translate("citeVolumeShort", "vol."));
+    const page = safe(window.LQ.translate("citePageShort", "p."));
     if (style === "chicago") {
-      return `${author}. ${title}. ${volume} ${values.volume}. ${place}, ${values.year}, ${page} ${values.page}.`;
+      return `${author}. ${title}. ${volume} ${volumeNumber}. ${place}, ${year}, ${page} ${pageNumber}.`;
     }
     if (style === "harvard") {
-      return `${author} ${values.year}, ${title}, ${volume} ${values.volume}, ${page} ${values.page}, ${place}.`;
+      return `${author} ${year}, ${title}, ${volume} ${volumeNumber}, ${page} ${pageNumber}, ${place}.`;
     }
-    return `${author} (${values.year}). ${title} (${volume} ${values.volume}, ${page} ${values.page}). ${place}.`;
+    return `${author} (${year}). ${title} (${volume} ${volumeNumber}, ${page} ${pageNumber}). ${place}.`;
+  }
+
+  // A place of publication is a name, and names differ between languages:
+  // Vienna is Viyana in Turkish. The record carries both.
+  city(source) {
+    const language = document.documentElement.lang === "tr" ? "tr" : "en";
+    const city = source.city;
+    if (!city) return "—";
+    return typeof city === "string" ? city : (city[language] || city.en || "—");
   }
 
   // The reference is copied as plain text, so the italics do not travel into

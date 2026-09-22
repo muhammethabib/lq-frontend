@@ -34,7 +34,8 @@ class LanguageController extends Stimulus.Controller {
     // Markup that arrives after this controller has run - the chrome, the
     // citation window - asks for its own sweep rather than waiting for the
     // next language change.
-    window.LQ.applyTranslations = (root) => this.sweep(root, this.currentValue);
+    this.sweepHelper = (root) => this.sweep(root, this.currentValue);
+    window.LQ.applyTranslations = this.sweepHelper;
 
     // The shared chrome is injected after this controller connects, so its
     // markup is swept once it arrives.
@@ -44,6 +45,9 @@ class LanguageController extends Stimulus.Controller {
 
   disconnect() {
     document.removeEventListener("page-chrome:ready", this.onChromeReady);
+    if (window.LQ.applyTranslations === this.sweepHelper) {
+      delete window.LQ.applyTranslations;
+    }
   }
 
   select(event) {
@@ -98,7 +102,11 @@ class LanguageController extends Stimulus.Controller {
   }
 
   translateText(root, dictionary) {
-    root.querySelectorAll("[data-i18n]").forEach((element) => {
+    // querySelectorAll never matches the element it is called on, so a root
+    // that carries its own key would be skipped.
+    const elements = [...root.querySelectorAll("[data-i18n]")];
+    if (root.matches && root.matches("[data-i18n]")) elements.unshift(root);
+    elements.forEach((element) => {
       const key = element.dataset.i18n;
       const allowsHtml = element.hasAttribute("data-i18n-html");
       const store = `text:${key}`;
@@ -113,7 +121,9 @@ class LanguageController extends Stimulus.Controller {
   // datasetKey is the camelCase form of the data attribute, e.g. "i18nTitle"
   translateAttribute(root, dictionary, datasetKey, attribute) {
     const selector = `[data-${datasetKey.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}]`;
-    root.querySelectorAll(selector).forEach((element) => {
+    const elements = [...root.querySelectorAll(selector)];
+    if (root.matches && root.matches(selector)) elements.unshift(root);
+    elements.forEach((element) => {
       const key = element.dataset[datasetKey];
       const store = `${attribute}:${key}`;
       if (!(store in this.originals)) {

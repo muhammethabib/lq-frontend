@@ -36,6 +36,10 @@ class PageChromeController extends Stimulus.Controller {
     if (!container || !template) return;
 
     window.LQ.disposeWidgets(container);
+    // The window is only ever built while it is closed, so the instance that
+    // cached the old dialog element is disposed with it.
+    const existing = bootstrap.Modal.getInstance(container);
+    if (existing) existing.dispose();
     container.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(container);
     window.LQ.refreshDynamicContent(container);

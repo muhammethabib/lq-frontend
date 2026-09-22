@@ -59,6 +59,7 @@ class GuideController extends Stimulus.Controller {
     list.innerHTML = "";
     this.element.querySelectorAll(".guide-section").forEach((section) => {
       const heading = section.querySelector(".guide-h2");
+      if (!heading) return;
       const item = document.createElement("li");
       item.appendChild(this.entry(section.id, section.dataset.code, heading.textContent));
 
@@ -68,6 +69,7 @@ class GuideController extends Stimulus.Controller {
         inner.className = "guide-toc-sub";
         blocks.forEach((block) => {
           const subheading = block.querySelector(".guide-h3");
+          if (!subheading) return;
           const line = document.createElement("li");
           line.appendChild(this.entry(block.id, block.dataset.code, subheading.textContent));
           inner.appendChild(line);

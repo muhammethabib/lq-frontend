@@ -4,14 +4,14 @@
    by year, so the layout is a dated list, not a card grid.
    ========================================================= */
 
-.page-surface .history-year {
+.history-surface .history-year {
   margin: 0 0 12px;
   padding: 0 0 6px;
 }
 
 /* The year is the anchor of the section, so it is set larger than the running
    headings and carries a rule to its right. */
-.page-surface .history-heading {
+.history-surface .history-heading {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -22,14 +22,14 @@
   color: var(--lq-sapphire);
   font-variant-numeric: tabular-nums;
 }
-.page-surface .history-heading::after {
+.history-surface .history-heading::after {
   content: "";
   flex: 1;
   height: 1px;
   background: var(--lq-line);
 }
 
-.page-surface .history-subhead {
+.history-surface .history-subhead {
   margin: 20px 0 10px;
   font-size: .72rem;
   font-weight: 800;
@@ -40,59 +40,59 @@
 
 /* ---------- a dated suggestion ---------- */
 
-.page-surface .history-item {
+.history-surface .history-item {
   display: grid;
   grid-template-columns: 110px minmax(0, 1fr);
   gap: 18px;
   padding: 12px 0;
 }
-.page-surface .history-date {
+.history-surface .history-date {
   margin: 0;
   font-size: .86rem;
   font-weight: 600;
   color: var(--lq-ink-soft);
 }
-.page-surface .history-text {
+.history-surface .history-text {
   max-width: 66ch;
   margin: 0;
 }
 /* The person who made the suggestion is the point of the entry */
-.page-surface .history-who {
+.history-surface .history-who {
   font-weight: 600;
   color: var(--lq-sapphire);
 }
 
 /* ---------- a year's corrections ---------- */
 
-.page-surface .history-fix {
+.history-surface .history-fix {
   padding: 18px 22px;
   border: 1px solid var(--lq-line);
   border-radius: 13px;
   background: var(--lq-paper-soft);
 }
-.page-surface .history-fix > p { max-width: 66ch; margin: 0 0 10px; }
-.page-surface .history-fix > p:last-child { margin-bottom: 0; }
+.history-surface .history-fix > p { max-width: 66ch; margin: 0 0 10px; }
+.history-surface .history-fix > p:last-child { margin-bottom: 0; }
 
-.page-surface .history-count {
+.history-surface .history-count {
   display: flex;
   align-items: baseline;
   gap: 9px;
 }
-.page-surface .history-number {
+.history-surface .history-number {
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--lq-sapphire);
   font-variant-numeric: tabular-nums;
 }
-.page-surface .history-names { color: var(--lq-ink-soft); }
-.page-surface .history-names b { font-weight: 600; color: var(--lq-ink); }
+.history-surface .history-names { color: var(--lq-ink-soft); }
+.history-surface .history-names b { font-weight: 600; color: var(--lq-ink); }
 
 /* ---------- the 2016-2021 tally ---------- */
 
 /* Three columns of name and count. Each row is a flex line with a leader, so
    the counts read as a column even though the names vary in length. */
-.page-surface .tally-list {
+.history-surface .tally-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
   gap: 2px 26px;
@@ -101,18 +101,18 @@
   list-style: none;
   font-size: .93rem;
 }
-.page-surface .tally-list li {
+.history-surface .tally-list li {
   display: flex;
   align-items: baseline;
   gap: 8px;
   padding: 3px 0;
 }
-.page-surface .tally-name { color: var(--lq-ink); }
-.page-surface .tally-name::after {
+.history-surface .tally-name { color: var(--lq-ink); }
+.history-surface .tally-name::after {
   content: "";
   display: inline-block;
 }
-.page-surface .tally-list li::after {
+.history-surface .tally-list li::after {
   content: "";
   flex: 1;
   height: 1px;
@@ -120,7 +120,7 @@
   background: repeating-linear-gradient(to right, var(--lq-line) 0 2px, transparent 2px 5px);
   order: 1;
 }
-.page-surface .tally-count {
+.history-surface .tally-count {
   order: 2;
   font-weight: 700;
   color: var(--lq-sapphire);
@@ -128,5 +128,5 @@
 }
 
 @media (max-width: 575px) {
-  .page-surface .history-item { grid-template-columns: 1fr; gap: 3px; }
+  .history-surface .history-item { grid-template-columns: 1fr; gap: 3px; }
 }

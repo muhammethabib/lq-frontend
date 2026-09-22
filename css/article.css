@@ -5,7 +5,7 @@
    list beside it.
    ========================================================= */
 
-.page-surface .page-content[data-controller="article"] {
+.article-surface .page-content[data-controller="article"] {
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
   column-gap: 46px;
@@ -14,7 +14,7 @@
 
 /* ---------- contents ---------- */
 
-.page-surface .article-toc {
+.article-surface .article-toc {
   position: sticky;
   top: 24px;
   max-height: calc(100vh - 48px);
@@ -23,7 +23,7 @@
   font-size: .86rem;
 }
 
-.page-surface .article-toc-toggle {
+.article-surface .article-toc-toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,28 +39,28 @@
   text-transform: uppercase;
   color: var(--lq-claret);
 }
-.page-surface .article-toc-toggle svg { display: none; }
+.article-surface .article-toc-toggle svg { display: none; }
 
-.page-surface .article-toc-list {
+.article-surface .article-toc-list {
   margin: 12px 0 0;
   padding: 0;
   list-style: none;
   counter-reset: none;
 }
-.page-surface .article-toc-list a {
+.article-surface .article-toc-list a {
   display: block;
   padding: 5px 0;
   color: var(--lq-ink-soft);
   text-decoration: none;
   line-height: 1.4;
 }
-.page-surface .article-toc-list a:hover { color: var(--lq-sapphire); }
+.article-surface .article-toc-list a:hover { color: var(--lq-sapphire); }
 
 /* ---------- the reading column ---------- */
 
-.page-surface .article-body > p { max-width: 68ch; }
+.article-surface .article-body > p { max-width: 68ch; }
 
-.page-surface .article-h2 {
+.article-surface .article-h2 {
   max-width: 62ch;
   margin: 44px 0 14px;
   font-family: 'EB Garamond', Georgia, serif;
@@ -70,9 +70,9 @@
   color: var(--lq-sapphire);
   scroll-margin-top: 20px;
 }
-.page-surface .article-body > .article-h2:first-child { margin-top: 0; }
+.article-surface .article-body > .article-h2:first-child { margin-top: 0; }
 
-.page-surface .article-h3 {
+.article-surface .article-h3 {
   max-width: 62ch;
   margin: 32px 0 10px;
   font-size: 1.12rem;
@@ -83,7 +83,7 @@
 }
 
 /* An Ottoman word quoted inside an English sentence */
-.page-surface .article-body [data-direction="rtl"] {
+.article-surface .article-body [data-direction="rtl"] {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 1.12em;
   color: var(--lq-claret);
@@ -93,7 +93,7 @@
 
 /* Every figure on these pages is a screenshot of the editor, wide and
    detailed, so it takes the full reading width. */
-.page-surface .article-figure {
+.article-surface .article-figure {
   margin: 20px 0 26px;
   padding: 10px;
   border: 1px solid var(--lq-line);
@@ -101,7 +101,7 @@
   background: var(--lq-paper);
   box-shadow: 0 10px 28px rgba(23, 33, 43, .06);
 }
-.page-surface .article-figure img {
+.article-surface .article-figure img {
   display: block;
   width: 100%;
   height: auto;
@@ -112,7 +112,7 @@
 
 /* Twenty-nine short labels: a plain column would run down the page, so they
    are set in as many columns as fit. */
-.page-surface .article-terms {
+.article-surface .article-terms {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 4px 22px;
@@ -120,7 +120,7 @@
   padding: 0;
   list-style: none;
 }
-.page-surface .article-terms li {
+.article-surface .article-terms li {
   padding: 5px 0 5px 16px;
   border-left: 2px solid var(--lq-lat-border);
   font-size: .94rem;
@@ -128,7 +128,7 @@
 
 /* ---------- the contributor roster ---------- */
 
-.page-surface .article-roster {
+.article-surface .article-roster {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
   gap: 2px 22px;
@@ -136,23 +136,23 @@
   padding: 0 0 0 26px;
   font-size: .95rem;
 }
-.page-surface .article-roster li { padding: 3px 0; }
+.article-surface .article-roster li { padding: 3px 0; }
 
 /* ---------- signature, references, notes ---------- */
 
-.page-surface .article-signature {
+.article-surface .article-signature {
   margin: 0;
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.05rem;
   color: var(--lq-ink-navy);
 }
-.page-surface .article-signature + .article-signature {
+.article-surface .article-signature + .article-signature {
   margin-bottom: 8px;
   font-size: .92rem;
   color: var(--lq-ink-soft);
 }
 
-.page-surface .article-bibliography {
+.article-surface .article-bibliography {
   max-width: 74ch;
   margin: 0 0 12px;
   padding-left: 26px;
@@ -160,12 +160,12 @@
   font-size: .95rem;
 }
 
-.page-surface .article-notes {
+.article-surface .article-notes {
   margin-top: 48px;
   padding-top: 8px;
   border-top: 1px solid var(--lq-line);
 }
-.page-surface .article-notelist {
+.article-surface .article-notelist {
   max-width: 74ch;
   margin: 0;
   padding-left: 22px;
@@ -173,25 +173,25 @@
   line-height: 1.65;
   color: var(--lq-ink-soft);
 }
-.page-surface .article-notelist li {
+.article-surface .article-notelist li {
   padding: 6px 0;
   scroll-margin-top: 20px;
 }
 
 /* A footnote number in the running text, and the mark that leads back */
-.page-surface .footnote-ref {
+.article-surface .footnote-ref {
   text-decoration: none;
   font-weight: 700;
 }
-.page-surface .footnote-back { text-decoration: none; }
+.article-surface .footnote-back { text-decoration: none; }
 
 /* ---------- responsive ---------- */
 
 @media (max-width: 991px) {
-  .page-surface .page-content[data-controller="article"] {
+  .article-surface .page-content[data-controller="article"] {
     grid-template-columns: minmax(0, 1fr);
   }
-  .page-surface .article-toc {
+  .article-surface .article-toc {
     position: static;
     max-height: none;
     margin-bottom: 18px;
@@ -200,12 +200,12 @@
     border-radius: 13px;
     background: var(--lq-body-bg);
   }
-  .page-surface .article-toc-toggle { padding: 0; border-bottom: 0; }
-  .page-surface .article-toc-toggle svg { display: block; width: 15px; height: 15px; }
-  .page-surface .article-toc-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-  .page-surface .article-toc-list { display: none; }
-  .page-surface .article-toc.is-open .article-toc-list { display: block; }
-  .page-surface .article-h2 { font-size: 1.5rem; }
+  .article-surface .article-toc-toggle { padding: 0; border-bottom: 0; }
+  .article-surface .article-toc-toggle svg { display: block; width: 15px; height: 15px; }
+  .article-surface .article-toc-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .article-surface .article-toc-list { display: none; }
+  .article-surface .article-toc.is-open .article-toc-list { display: block; }
+  .article-surface .article-h2 { font-size: 1.5rem; }
 }
 
 /* ---------- a numbered stage in the project story ---------- */
@@ -213,14 +213,14 @@
 /* The seven stages were single-item ordered lists in the original, which is
    how they carried their number. Here the number is a mark before the
    heading, so the stage reads as a heading and not as a one-item list. */
-.page-surface .article-step {
+.article-surface .article-step {
   display: flex;
   align-items: baseline;
   gap: 14px;
   counter-increment: stage;
 }
-.page-surface .article-body { counter-reset: stage; }
-.page-surface .article-step::before {
+.article-surface .article-body { counter-reset: stage; }
+.article-surface .article-step::before {
   content: counter(stage);
   display: grid;
   place-items: center;
@@ -238,11 +238,11 @@
 
 /* ---------- an ordinary list in the running text ---------- */
 
-.page-surface .article-list {
+.article-surface .article-list {
   max-width: 68ch;
   margin: 14px 0 22px;
   padding-left: 26px;
   line-height: 1.7;
 }
-.page-surface .article-list li { padding: 3px 0; }
-.page-surface .article-list .article-list { margin: 6px 0 4px; }
+.article-surface .article-list li { padding: 3px 0; }
+.article-surface .article-list .article-list { margin: 6px 0 4px; }

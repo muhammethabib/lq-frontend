@@ -8,7 +8,7 @@
 
 /* A segmented control rather than four separate buttons: the four terms are
    one choice, and the pressed one is the state of that choice. */
-.page-surface .term-switch {
+.pricing-surface .term-switch {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -21,7 +21,7 @@
   background: var(--lq-body-bg);
 }
 
-.page-surface .term-option {
+.pricing-surface .term-option {
   display: flex;
   align-items: baseline;
   gap: 7px;
@@ -34,8 +34,8 @@
   color: var(--lq-ink-soft);
   white-space: nowrap;
 }
-.page-surface .term-option:hover { color: var(--lq-sapphire); }
-.page-surface .term-option[aria-pressed="true"] {
+.pricing-surface .term-option:hover { color: var(--lq-sapphire); }
+.pricing-surface .term-option[aria-pressed="true"] {
   background: var(--lq-paper);
   color: var(--lq-sapphire);
   box-shadow: 0 1px 3px rgba(8, 37, 103, .16);
@@ -43,24 +43,24 @@
 
 /* The saving rides along with the term it belongs to, so the reader does not
    have to compare the four prices themselves. */
-.page-surface .term-saving {
+.pricing-surface .term-saving {
   font-size: .76rem;
   font-weight: 700;
   letter-spacing: .02em;
   color: var(--lq-entry-text);
 }
-.page-surface .term-option[aria-pressed="true"] .term-saving { color: var(--lq-claret); }
+.pricing-surface .term-option[aria-pressed="true"] .term-saving { color: var(--lq-claret); }
 
 /* ---------- the three plans ---------- */
 
-.page-surface .plans {
+.pricing-surface .plans {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 16px;
   align-items: start;
 }
 
-.page-surface .plan {
+.pricing-surface .plan {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--lq-line);
@@ -70,21 +70,21 @@
 }
 /* The most complete plan is lifted by a sapphire edge, not by a larger card,
    so the three stay comparable row for row. */
-.page-surface .plan-featured {
+.pricing-surface .plan-featured {
   border-color: var(--lq-sapphire);
   box-shadow: var(--lq-shadow);
 }
 
-.page-surface .plan-head {
+.pricing-surface .plan-head {
   position: relative;
   padding: 44px 22px 22px;
   border-bottom: 1px solid var(--lq-line);
   background: var(--lq-paper-soft);
   text-align: center;
 }
-.page-surface .plan-featured .plan-head { background: var(--lq-lat-bg); }
+.pricing-surface .plan-featured .plan-head { background: var(--lq-lat-bg); }
 
-.page-surface .plan-badge {
+.pricing-surface .plan-badge {
   position: absolute;
   top: 14px;
   left: 50%;
@@ -100,7 +100,7 @@
   color: #fff;
 }
 
-.page-surface .plan-name {
+.pricing-surface .plan-name {
   margin: 0 0 10px;
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.5rem;
@@ -108,7 +108,7 @@
   color: var(--lq-sapphire);
 }
 
-.page-surface .plan-price {
+.pricing-surface .plan-price {
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -116,27 +116,27 @@
   margin: 0;
   line-height: 1.2;
 }
-.page-surface .plan-price b {
+.pricing-surface .plan-price b {
   font-size: 1.85rem;
   font-weight: 700;
   color: var(--lq-ink-navy);
   font-variant-numeric: tabular-nums;
 }
-.page-surface .plan-price span {
+.pricing-surface .plan-price span {
   font-size: .9rem;
   color: var(--lq-ink-soft);
 }
 
 /* Kept at a fixed height so the three buttons line up even when only one
    plan has a saving to report. */
-.page-surface .plan-note {
+.pricing-surface .plan-note {
   min-height: 1.4em;
   margin: 8px 0 16px;
   font-size: .85rem;
   color: var(--lq-entry-text);
 }
 
-.page-surface .plan-cta {
+.pricing-surface .plan-cta {
   width: 100%;
   padding: 10px 16px;
   border: 1px solid var(--lq-sapphire);
@@ -146,15 +146,15 @@
   color: var(--lq-sapphire);
   text-decoration: none;
 }
-.page-surface .plan-cta:hover {
+.pricing-surface .plan-cta:hover {
   background: var(--lq-sapphire);
   color: #fff;
 }
-.page-surface .plan-cta-solid {
+.pricing-surface .plan-cta-solid {
   background: var(--lq-sapphire);
   color: #fff;
 }
-.page-surface .plan-cta-solid:hover {
+.pricing-surface .plan-cta-solid:hover {
   background: #061d50;
   border-color: #061d50;
   color: #fff;
@@ -162,13 +162,13 @@
 
 /* ---------- the feature rows ---------- */
 
-.page-surface .plan-features {
+.pricing-surface .plan-features {
   flex: 1;
   margin: 0;
   padding: 14px 20px 22px;
   list-style: none;
 }
-.page-surface .plan-features li {
+.pricing-surface .plan-features li {
   display: flex;
   align-items: flex-start;
   gap: 9px;
@@ -177,40 +177,40 @@
   font-size: .92rem;
   line-height: 1.45;
 }
-.page-surface .plan-features li:last-child { border-bottom: 0; }
+.pricing-surface .plan-features li:last-child { border-bottom: 0; }
 
-.page-surface .plan-features svg {
+.pricing-surface .plan-features svg {
   flex: none;
   width: 17px;
   height: 17px;
   margin-top: 2px;
 }
-.page-surface .plan-features .is-included,
-.page-surface .plan-features li.is-included svg { color: var(--lq-entry-text); }
-.page-surface .plan-features li.is-included { color: var(--lq-ink); }
+.pricing-surface .plan-features .is-included,
+.pricing-surface .plan-features li.is-included svg { color: var(--lq-entry-text); }
+.pricing-surface .plan-features li.is-included { color: var(--lq-ink); }
 /* A row the plan does not cover stays readable but recedes, so the reader can
    still compare the three lists line by line. */
-.page-surface .plan-features li.is-excluded { color: var(--lq-muted); }
-.page-surface .plan-features li.is-excluded svg { color: #cbd5e1; }
+.pricing-surface .plan-features li.is-excluded { color: var(--lq-muted); }
+.pricing-surface .plan-features li.is-excluded svg { color: #cbd5e1; }
 
-.page-surface .plan-feature { flex: 1; }
+.pricing-surface .plan-feature { flex: 1; }
 
-.page-surface .plan-value {
+.pricing-surface .plan-value {
   flex: none;
   font-weight: 700;
   color: var(--lq-ink-navy);
   font-variant-numeric: tabular-nums;
 }
-.page-surface .plan-features li.is-excluded .plan-value { color: var(--lq-muted); }
+.pricing-surface .plan-features li.is-excluded .plan-value { color: var(--lq-muted); }
 
 /* ---------- responsive ---------- */
 
 @media (max-width: 575px) {
-  .page-surface .term-switch {
+  .pricing-surface .term-switch {
     width: 100%;
     border-radius: 14px;
   }
-  .page-surface .term-option {
+  .pricing-surface .term-option {
     flex: 1 1 calc(50% - 6px);
     justify-content: center;
     padding: 9px 10px;

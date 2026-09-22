@@ -72,6 +72,15 @@ class DictionaryPageController extends Stimulus.Controller {
     const template = document.getElementById(this.templateValue);
     if (!template) return;
     window.LQ.disposeWidgets(this.element);
+    // Bootstrap caches the dialog element when the modal is constructed, so
+    // the instance is disposed before the markup under it is replaced. Not
+    // while the window is open, though: disposing then would take the
+    // backdrop with it and leave the page covered.
+    const existing = bootstrap.Modal.getInstance(this.element);
+    if (existing && !this.element.classList.contains("show")) {
+      existing.dispose();
+      this.modal = null;
+    }
     this.element.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(this.element);
     this.fill();

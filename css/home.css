@@ -791,3 +791,10 @@
 @media (prefers-reduced-motion: reduce) {
   .home-surface * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- the two click zones in a row ---------- */
+
+/* Either zone opens the dictionary page window: the left on the result
+   itself, the right on the headword it belongs to. */
+.home-surface .result-zone { cursor: pointer; }
+.home-surface .result-row:hover .result-zone:hover { background: var(--lq-lat-bg); }

@@ -35,6 +35,7 @@ class ArticleController extends Stimulus.Controller {
     const list = this.listTarget;
     list.innerHTML = "";
     this.element.querySelectorAll(".article-body .article-h2").forEach((heading) => {
+      if (!heading.id) return;
       const item = document.createElement("li");
       const link = document.createElement("a");
       link.href = `#${heading.id}`;

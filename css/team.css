@@ -6,17 +6,17 @@
 
 /* A stacked roster with hairline separators, not a card grid: these are
    people to read about one at a time. */
-.page-surface .person {
+.team-surface .person {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
   gap: 26px;
   padding: 34px 0;
   border-bottom: 1px solid var(--lq-line);
 }
-.page-surface .person:first-of-type { padding-top: 0; }
-.page-surface .person:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.team-surface .person:first-of-type { padding-top: 0; }
+.team-surface .person:last-of-type { border-bottom: 0; padding-bottom: 0; }
 
-.page-surface .person-photo {
+.team-surface .person-photo {
   width: 96px;
   height: 96px;
   border-radius: 50%;
@@ -25,7 +25,7 @@
   box-shadow: 0 0 0 3px var(--lq-paper), 0 0 0 4px var(--lq-line);
 }
 
-.page-surface .person-name {
+.team-surface .person-name {
   margin: 0;
   font-family: 'EB Garamond', Georgia, serif;
   font-size: 1.3rem;
@@ -33,7 +33,7 @@
   color: var(--lq-sapphire);
 }
 
-.page-surface .person-role {
+.team-surface .person-role {
   margin: 2px 0 12px;
   font-size: 11px;
   font-weight: 800;
@@ -44,9 +44,9 @@
 
 /* A bio is running text like any other, so it keeps the same measure as the
    page's own paragraphs even though it sits beside a photo. */
-.page-surface .person-text p { max-width: 68ch; }
-.page-surface .person-text p:last-child { margin-bottom: 0; }
+.team-surface .person-text p { max-width: 68ch; }
+.team-surface .person-text p:last-child { margin-bottom: 0; }
 
 @media (max-width: 640px) {
-  .page-surface .person { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .team-surface .person { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 }

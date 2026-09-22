@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../css/language-flag.css">
   <link rel="stylesheet" href="../css/entry-window.css">
   <link rel="stylesheet" href="../css/redhouse.css">
+  <link rel="stylesheet" href="../css/innovations.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -55,6 +56,7 @@
   <script src="../js/controllers/dictionary_page_controller.js" defer></script>
   <script src="../js/controllers/entry_window_controller.js" defer></script>
   <script src="../js/controllers/redhouse_controller.js" defer></script>
+  <script src="../js/controllers/innovations_controller.js" defer></script>
 </head>
 <body>
 
@@ -597,6 +599,16 @@
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
   </div>
 
+  <!-- The only way into the 2026 story. It sits at the foot of the screen and
+       waits to be pressed; nothing below it can be reached any other way. -->
+  <button type="button" class="innovations-prompt" data-action="click->innovations#open">
+    <span class="innovations-prompt-text" data-i18n="discoverStory">DISCOVER 2026 INNOVATIONS</span>
+    <span class="innovations-prompt-arrows" aria-hidden="true">
+      <span class="innovations-chevron"></span>
+      <span class="innovations-chevron"></span>
+    </span>
+  </button>
+
   <!-- Result-group copy. It lives in the markup so the English text sits with
        the rest of the page and the language sweep translates it; the controller
        reads it by group key when it writes the rows. -->
@@ -637,6 +649,471 @@
       <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"></span>
     </div>
   </div>
+
+
+
+  <!-- ================= the 2026 innovations =================
+       Five screens under the main page, read one at a time and reached only
+       from the prompt at the foot of the page. The controller decides when
+       they are open and takes them away the moment a search tool is used. -->
+  <section class="innovations" id="innovations" data-controller="innovations"
+           aria-label="What is new in 2026" data-i18n-aria="innovationsLabel">
+
+    <div class="snap-section buildlq-section" id="innovations-programme">
+      <div class="abstract-bg-ui ui-table-right">
+        <div class="ui-row active"></div><div class="ui-row"></div><div class="ui-row short"></div><div class="ui-row"></div>
+      </div>
+      <div class="abstract-bg-ui ui-table-left">
+        <div class="ui-block highlight"></div><div class="ui-block"></div><div class="ui-block"></div>
+      </div>
+      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTop">
+        <div class="arrow-shape"></div>
+      </button>
+      <svg class="connection-layer connection-layer-fill">
+        <line opacity="0.25" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="1.5" x1="15%" x2="85%" y1="25%" y2="28%"></line>
+        <line opacity="0.25" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="1.5" x1="85%" x2="85%" y1="28%" y2="80%"></line>
+        <line opacity="0.25" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="1.5" x1="85%" x2="15%" y1="80%" y2="75%"></line>
+        <line opacity="0.25" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="1.5" x1="15%" x2="15%" y1="75%" y2="25%"></line>
+        <line opacity="0.25" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="1.5" x1="15%" x2="85%" y1="25%" y2="80%"></line>
+      </svg>
+      <div class="osm-tech-node pos-1 otn-blue otn-latin">Lexicon</div>
+      <div class="osm-tech-node pos-2 otn-green">لغت</div>
+      <div class="osm-tech-node pos-3 otn-orange otn-latin">Kamus</div>
+      <div class="osm-tech-node pos-4 otn-blue">املا</div>
+      <div class="vision-wrapper">
+        <h1 class="lq-title-hero" data-i18n="story1" data-i18n-html="1">A New Digital Era for<br/>Ottoman Dictionaries</h1>
+        <div class="hero-card" id="innovations-hero-card">
+          <div class="hero-card-blot"></div>
+          <h2 class="hero-card-title" data-i18n="story2">The BuildLQ Program</h2>
+          <p class="hero-card-text" data-i18n="story3">Aware of the profound importance of dictionary digitization, LexiQamus has developed a dedicated program called BuildLQ. Through the new digital architecture offered by BuildLQ, dictionaries are digitized with academic rigor.</p>
+          <div class="buildlq-features">
+            <div class="blq-feat-item">
+              <h4 data-i18n="story4">Preserved Link to the Original</h4> <p data-i18n="story5">Users can access and verify the original text at any moment.</p>
+            </div>
+            <div class="blq-feat-item">
+              <h4 data-i18n="story6">Verified Data</h4> <p data-i18n="story7">Reliable information through expert input and peer review.</p>
+            </div>
+            <div class="blq-feat-item">
+              <h4 data-i18n="story8">Transparent Knowledge</h4> <p data-i18n="story9">An open, democratic structure subject to user oversight.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-library">
+        <div class="arrow-shape"></div>
+      </button>
+    </div>
+    <div class="snap-section" id="innovations-library">
+      <div class="noise-overlay"></div>
+      <div class="heritage-section">
+        <div class="heritage-real-bg"></div>
+        <div class="heritage-container">
+          <div class="left-panel">
+            <h2 class="lq-gradient-title-sm anim-enter d-1" data-i18n="story10">Digitized Heritage</h2>
+            <div class="hi-text-block anim-enter d-2">
+              <span class="highlight-row" data-i18n="story12" data-i18n-html="1">9 major Ottoman Turkish dictionaries<br/>(17 volumes in total)</span>
+              <p class="no-margin" data-i18n="story13" data-i18n-html="1">have been processed to "<strong>LQ-Digital</strong>" standards through the <strong>BuildLQ</strong> program.</p>
+            </div>
+            <div class="vision-box-premium anim-enter d-3">
+              <div class="vp-content">
+                <span class="vp-main-text" data-i18n="story14">Expanding Collection</span>
+                <span class="vp-sub-text" data-i18n="story15" data-i18n-html="1">New dictionaries will continue<br/>to be added throughout 2026…</span>
+              </div>
+              <div class="vp-icon-box">
+                <div class="stack-col c1">
+                  <div class="s-book b1"></div>
+                  <div class="s-book b2"></div>
+                  <div class="s-book b3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-panel">
+            <div class="library-grid">
+              <div class="lib-row lib-row-top">
+                <div class="book-stage book-9 bd-9">
+                  <div class="fulltext-badge" data-i18n="storyFullText">FULL TEXT · ONLY ON LQ</div>
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-red">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Turkish &amp;<br/>English<br/>Lexicon</div>
+                        <div class="bk-auth">James W.<br/>Redhouse</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="storyVol9a" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1890</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Turkish &amp;<br/>English<br/>Lexicon</div>
+                      <div class="ic-auth">James W.<br/>Redhouse</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="storyVol9b" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1890</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage book-1 bd-1">
+                  <div class="exclusive-badge" data-i18n="story16">ONLY ON LQ</div>
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-red">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Ahterî-i<br/>Kebîr</div>
+                        <div class="bk-auth">Muslihiddin<br/>Mustafa</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="story17" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1892</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Ahterî-i<br/>Kebîr</div>
+                      <div class="ic-auth">Muslihiddin<br/>Mustafa</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="story18" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1892</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage multi-vol mv-blue book-2 bd-2">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-blue">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Kamus-ı<br/>Türki</div>
+                        <div class="bk-auth">Şemseddin Sami</div>
+                        <div class="bk-vol-box vol-multi"><div class="bk-vol" data-i18n="story19" data-i18n-html><b class="vol-n">2</b> VOLUMES</div></div>
+                        <div class="bk-year">1900</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Kamus-ı<br/>Türki</div>
+                      <div class="ic-auth">Şemseddin Sami</div>
+                      <div class="ic-vol-box vol-multi"><div class="ic-vol" data-i18n="story20" data-i18n-html><b class="vol-n">2</b> VOLUMES</div></div>
+                      <div class="ic-year">1900</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage multi-vol mv-green book-3 bd-3">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-green">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Lehçe-i<br/>Osmanî</div>
+                        <div class="bk-auth">Ahmed Vefik<br/>Paşa</div>
+                        <div class="bk-vol-box vol-multi"><div class="bk-vol" data-i18n="story21" data-i18n-html><b class="vol-n">2</b> VOLUMES</div></div>
+                        <div class="bk-year">1876</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Lehçe-i<br/>Osmanî</div>
+                      <div class="ic-auth">Ahmed Vefik<br/>Paşa</div>
+                      <div class="ic-vol-box vol-multi"><div class="ic-vol" data-i18n="story22" data-i18n-html><b class="vol-n">2</b> VOLUMES</div></div>
+                      <div class="ic-year">1876</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lib-row lib-row-bottom">
+                <div class="book-stage book-4 bd-4">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-blue">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Lûgat-ı<br/>Naci</div>
+                        <div class="bk-auth">Muallim Naci</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="story23" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1891</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Lûgat-ı<br/>Naci</div>
+                      <div class="ic-auth">Muallim Naci</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="story24" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1891</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage book-5 bd-5">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-red">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Lûgat-ı<br/>Ebuzziya</div>
+                        <div class="bk-auth">Ebuzziya Tevfik</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="story25" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1888</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Lûgat-ı<br/>Ebuzziya</div>
+                      <div class="ic-auth">Ebuzziya Tevfik</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="story26" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1888</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage multi-vol mv-green book-6 bd-6">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-green">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Kamusü’l<br/>A’lâm</div>
+                        <div class="bk-auth">Şemseddin Sami</div>
+                        <div class="bk-vol-box vol-multi"><div class="bk-vol" data-i18n="story27" data-i18n-html><b class="vol-n">6</b> VOLUMES</div></div>
+                        <div class="bk-year">1889</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Kamusü’l<br/>A’lâm</div>
+                      <div class="ic-auth">Şemseddin Sami</div>
+                      <div class="ic-vol-box vol-multi"><div class="ic-vol" data-i18n="story28" data-i18n-html><b class="vol-n">6</b> VOLUMES</div></div>
+                      <div class="ic-year">1889</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage book-7 bd-7">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-blue">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Kamus-ı<br/>Fransevî</div>
+                        <div class="bk-auth">Şemseddin Sami</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="storyVol7a" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1883</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Kamus-ı<br/>Fransevî</div>
+                      <div class="ic-auth">Şemseddin Sami</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="storyVol7b" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1883</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="book-stage book-8 bd-8">
+                  <div class="book">
+                    <div class="book-covers">
+                      <div class="book-front bk-green">
+                        <div class="book-deco-border"></div>
+                        <div class="approved-stamp">✓</div>
+                        <div class="bk-title">Türkçeden<br/>Almancaya</div>
+                        <div class="bk-auth">Galancızade<br/>Hakkı Tevfik</div>
+                        <div class="bk-vol-box"><div class="bk-vol" data-i18n="storyVol8a" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                        <div class="bk-year">1907</div>
+                      </div>
+                      <div class="book-back"></div>
+                    </div>
+                    <div class="ic-sayfa">
+                      <div class="ic-title">Türkçeden<br/>Almancaya</div>
+                      <div class="ic-auth">Galancızade<br/>Hakkı Tevfik</div>
+                      <div class="ic-vol-box"><div class="ic-vol" data-i18n="storyVol8b" data-i18n-html><b class="vol-n">1</b> VOLUME</div></div>
+                      <div class="ic-year">1907</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-programme">
+        <div class="arrow-shape"></div>
+      </button>
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-flow">
+        <div class="arrow-shape"></div>
+      </button>
+    </div>
+    <div class="snap-section" id="innovations-flow">
+      <div class="stage-container">
+        <canvas id="innovations-rain"></canvas>
+        <div class="flow-header-area" id="innovations-flow-header">
+          <h2 class="ha-title" data-i18n="story29">Lexicography Redefined</h2>
+          <div class="ha-sub-container" id="innovations-flow-strips">
+            <div class="strip-wrapper" id="innovations-strip-1">
+              <div class="category-line" data-i18n="story30" data-i18n-html="1">Beyond the classical approach to lexicography, LexiQamus builds a <span class="bold-text spaced-word">two-tiered</span> <span class="bold-text spaced-word">digital infrastructure</span> directly on the original copy.</div>
+            </div>
+            <div class="strip-wrapper" id="innovations-strip-2">
+              <div class="category-line" data-i18n="story31" data-i18n-html="1">It processes words in three categories:
+                <span class="cat-dot first dot-entry"></span>
+                <span class="cat-entry">Headword</span>
+                <span class="cat-dot dot-sub"></span>
+                <span class="cat-sub">Subheadwords</span>
+                <span class="cat-dot dot-rel"></span>
+              <span class="cat-rel">Related Words</span></div>
+            </div>
+          </div>
+        </div>
+        <div id="innovations-pyramid">
+          <svg class="pyramid-svg" id="innovations-pyramid-lines"></svg>
+          <div class="lq-node node-main" id="innovations-node-main">
+            <div class="ln-osm" id="innovations-node-ottoman"></div>
+            <div class="ln-lat" id="innovations-node-latin"></div>
+          </div>
+          <div class="desc-box box-entry" id="innovations-desc-main">
+            <span class="db-title in-entry" data-i18n="story32">Headword</span>
+            <p class="db-text" data-i18n="story33">The headword head, listed alphabetically in the dictionary, with its spelling, pronunciation, and meaning provided.</p>
+          </div>
+          <div class="sub-group">
+            <div class="lq-node mini-node mn-sub" id="innovations-sub-1">
+              <div class="mn-osm">حركت ارض</div> <div class="mn-lat">hareket-i arz</div>
+            </div>
+            <div class="lq-node mini-node mn-sub" id="innovations-sub-2">
+              <div class="mn-osm">بلا حركت</div> <div class="mn-lat">bilâ hareket</div>
+            </div>
+            <div class="lq-node mini-node mn-sub" id="innovations-sub-3">
+              <div class="mn-osm">حركت اضافيه</div> <div class="mn-lat">hareket-i izâfiyye</div>
+            </div>
+          </div>
+          <div class="desc-box box-sub" id="innovations-desc-sub">
+            <span class="db-title in-sub" data-i18n="story34">Subheadwords</span>
+            <p class="db-text" data-i18n="story35">Compound phrases, idioms, and compound verbs formed with the headword, found within the entry's definition.</p>
+          </div>
+          <div class="rel-group">
+            <div class="lq-node mini-node mn-rel" id="innovations-rel-1">
+              <div class="mn-osm">سكون</div> <div class="mn-lat" data-i18n="story36" data-i18n-html="1">sükun<br/><span class="mn-note">(antonym)</span></div>
+            </div>
+            <div class="lq-node mini-node mn-rel" id="innovations-rel-2">
+              <div class="mn-osm">عطالت</div> <div class="mn-lat" data-i18n="story37" data-i18n-html="1">atalet<br/><span class="mn-note">(antonym)</span></div>
+            </div>
+            <div class="lq-node mini-node mn-rel" id="innovations-rel-3">
+              <div class="mn-osm">حركات</div> <div class="mn-lat" data-i18n="story38" data-i18n-html="1">harekât<br/><span class="mn-note">(plural)</span></div>
+            </div>
+            <div class="lq-node mini-node mn-rel" id="innovations-rel-4">
+              <div class="mn-osm">حركه</div> <div class="mn-lat" data-i18n="story39" data-i18n-html="1">hareke<br/><span class="mn-note">(variant spelling)</span></div>
+            </div>
+          </div>
+          <div class="desc-box box-rel" id="innovations-desc-rel">
+            <span class="db-title in-rel" data-i18n="story40">Related Words</span>
+            <p class="db-text" data-i18n="story41">Words etymologically or semantically connected to the entry, along with variant spellings and pronunciations of the entry itself.</p>
+          </div>
+        </div>
+        <div class="doc-stack-container">
+          <div class="ghost-spot" id="innovations-spot-raw"></div>
+          <div class="ghost-spot" id="innovations-spot-processed"></div>
+        </div>
+        <div class="active-card" id="innovations-card-raw">
+          <div class="cr-header" id="innovations-scan-strip">
+            <div class="cr-titles">
+              <span class="cr-dict">Kamus-i Türki</span> <span class="cr-sep">|</span> <span class="cr-entry">Hareket</span>
+            </div>
+            <span class="cr-pg" data-i18n="story42">p.545</span>
+          </div>
+          <div class="raw-img-wrapper">
+            <img class="img-content" id="innovations-scan" src="../assets/innovations/layer-original.jpg" alt="Scanned dictionary page" data-i18n-alt="altScannedPage"/>
+          </div>
+        </div>
+        <div class="active-card" id="innovations-card-processed">
+          <div class="align-spacer"></div>
+          <div class="proc-wrapper">
+            <div class="scan-line-container" id="innovations-scan-line">
+              <div class="scan-beam" id="innovations-scan-beam"></div> <div class="scan-label" id="innovations-scan-label">ANALYZING</div>
+            </div>
+            <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+            <div id="innovations-flash"></div>
+            <img class="img-content overlay-layer above-base" id="innovations-layer-filter" src="../assets/innovations/layer-original.jpg" alt=""/>
+            <img class="img-content overlay-layer" id="innovations-layer-base" src="../assets/innovations/layer-original.jpg" alt=""/>
+            <img class="img-content overlay-layer" id="innovations-layer-entry" src="../assets/innovations/layer-headword.jpg" alt=""/>
+            <img class="img-content overlay-layer" id="innovations-layer-sub" src="../assets/innovations/layer-subheadword.jpg" alt=""/>
+            <img class="img-content overlay-layer" id="innovations-layer-rel" src="../assets/innovations/layer-related.jpg" alt=""/>
+          </div>
+        </div>
+        <div class="transfer-orb" id="innovations-orb"></div>
+      </div>
+      <button type="button" class="page-nav-arrow pna-top above-all" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-library">
+        <div class="arrow-shape"></div>
+      </button>
+      <button type="button" class="page-nav-arrow pna-bottom above-all" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-interface">
+        <div class="arrow-shape"></div>
+      </button>
+    </div>
+    <div class="snap-section lab-section" id="innovations-interface">
+      <div class="lab-glow lg-1"></div>
+      <div class="lab-glow lg-2"></div>
+      <div class="lab-container">
+        <div class="lab-header">
+          <h2 class="lab-title" data-i18n="story43">Smart Analysis &amp; Discovery</h2>
+          <p class="lab-subtitle" data-i18n="story44">Go beyond the surface meanings of words. Move from categorized results into the depths of the original document with a single click.</p>
+        </div>
+        <div class="interface-grid">
+          <div class="mockup-stage">
+            <div class="browser-frame">
+              <div class="browser-header">
+                <div class="b-dot bd-red"></div> <div class="b-dot bd-yellow"></div> <div class="b-dot bd-green"></div>
+              </div>
+              <div class="screen-content">
+                <img alt="Arama Sonuçları" class="ui-image active" id="innovations-shot-results" data-action="click->innovations#openOriginal" src="../assets/innovations/results-screen.jpg"/>
+                <div class="ui-image lqs-live" id="innovations-shot-popup"><iframe id="innovations-popup-frame" title="LexiQamus popup" scrolling="no"></iframe></div>
+                <div class="lqs-openhint" data-action="click->innovations#openOriginal">
+                  <span class="oh-ico oh-ico-click"><svg viewBox="-5 -5 29 29"><path d="M5.5 3.2v15.6l3.9-3.7 2.3 5.1 2.4-1.1-2.2-4.9h5.2z" fill="currentColor"></path><g class="oh-wave" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M2.1 3.2A3.4 3.4 0 0 1 5.5 -0.2" stroke-width="1.5"></path><path d="M-0.7 3.2A6.2 6.2 0 0 1 5.5 -3" stroke-width="1.3" opacity=".55"></path></g></svg></span>
+                  <span data-i18n="storyOpenOriginal">Open the original page</span>
+                </div>
+                <div class="lqs-hoverhint" id="innovations-hover-hint">
+                  <span class="oh-ico"><svg viewBox="0 0 24 24"><path d="M5.5 3.2v15.6l3.9-3.7 2.3 5.1 2.4-1.1-2.2-4.9h5.2z" fill="currentColor"></path></svg></span>
+                  <span data-i18n="storyHoverWords">Hover a marked word</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="controls-panel">
+            <div class="lqs-toggle-hint"><span data-i18n="storySwitchHint">Two views, one click apart</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13"></path><polyline points="13 5 17 9 13 13"></polyline><path d="M20 15H7"></path><polyline points="11 11 7 15 11 19"></polyline></svg></div>
+            <div class="toggle-pill-container">
+              <button class="toggle-btn active" data-action="click->innovations#showResults"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="20" y2="6"></line><line x1="9" y1="12" x2="20" y2="12"></line><line x1="9" y1="18" x2="20" y2="18"></line><circle cx="4.5" cy="6" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="4.5" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="4.5" cy="18" r="1.4" fill="currentColor" stroke="none"></circle></svg><span data-i18n="story45">Smart Results</span></button>
+              <button class="toggle-btn" data-action="click->innovations#showEntry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8"></path><path d="M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8"></path><path d="M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16"></path><path d="M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg><span data-i18n="story46">Original Document</span></button>
+            </div>
+            <div class="info-card-deck">
+              <div class="feature-card active" id="innovations-card-results">
+                <h3 class="fc-title" data-i18n="story47">Categorical Classification</h3>
+                <ul class="fc-list">
+                  <li data-i18n="story48" data-i18n-html="1"><strong>Smart Parsing:</strong> Results are presented in three distinct categories: Headwords, Subheadwords, and Related Words.</li>
+                  <li data-i18n="story49" data-i18n-html="1"><strong>Deep Search:</strong> Every word on the results screen is clickable; clicking it launches a new search for that word.</li>
+                </ul>
+                <div class="citation-badge" data-i18n="story50" data-i18n-html="1"><span>❝</span> One-Click Academic Citation Copy</div>
+              </div>
+              <div class="feature-card" id="innovations-card-popup">
+                <h3 class="fc-title" data-i18n="story51">Visual Navigation</h3>
+                <ul class="fc-list">
+                  <li data-i18n="story52" data-i18n-html="1"><strong>Automatic Highlighting:</strong> When you jump to the original page, the system detects and highlights your search term.</li>
+                  <li data-i18n="story53" data-i18n-html="1"><strong>In-Image Interaction:</strong> Not just text — click on any word in the original image to search the database.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-flow">
+        <div class="arrow-shape arrow-shape-light"></div>
+      </button>
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-future">
+        <div class="arrow-shape arrow-shape-light"></div>
+      </button>
+    </div>
+    <div class="snap-section future-section" id="innovations-future">
+      <canvas id="innovations-network"></canvas>
+      <div class="future-content">
+        <div class="lq-title-section future-eyebrow" data-i18n="story54">What's Coming Next</div>
+        <div class="future-title" data-i18n="story55" data-i18n-html="1">Endless Connections<br/>Between Words</div>
+        <div class="future-text" data-i18n="story56" data-i18n-html="1">In LexiQamus, words are no longer alone. With our new infrastructure, words are linked to one another through 25 different semantic tags (root, synonym, antonym, etc.).<br/><br/>
+          You will now be able to follow a word's historical journey and the expansion of its meaning on a single screen, in a seamless discovery experience.</div>
+          <div class="brand-footer" data-i18n="story57">MUCH MORE COMING SOON.</div>
+        </div>
+        <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-interface">
+          <div class="arrow-shape arrow-shape-light"></div>
+        </button>
+      </div>
+  </section>
 
 
   <!-- On-screen Ottoman keyboard. It types into whichever field asked for it,

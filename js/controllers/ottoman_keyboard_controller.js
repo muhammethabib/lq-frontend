@@ -28,6 +28,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // The field being typed into asks for the keyboard and says where it is
     this.onRequest = (event) => {
       this.owner = event.detail.owner || null;
+      this.below = event.detail.below || null;
       this.openNear(event.detail.anchor, event.detail.canClear);
     };
     this.onDismiss = () => this.close();
@@ -181,15 +182,21 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.place();
     // Only on opening: doing it from place() would make the page scroll
     // itself every time the scroll listener fired.
-    if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) this.scrollAnchorClear();
+    this.scrollIntoReach();
   }
 
   close(event) {
     if (event) event.preventDefault();
+    if (!this.openValue) return;
     this.openValue = false;
     this.element.classList.remove("is-open");
     this.anchor = null;
+    this.below = null;
     this.owner = null;
+    window.LQ.releaseRoom();
+    // Whoever was typing needs to know: the Clear that was hidden behind the
+    // panel comes back, and the row's hint is allowed again.
+    document.dispatchEvent(new CustomEvent("ottoman-keyboard:closed"));
   }
 
   // Sits under whatever asked for it, kept inside the viewport. Below 768px
@@ -202,25 +209,39 @@ class OttomanKeyboardController extends Stimulus.Controller {
       this.element.style.top = "";
       return;
     }
+    // Lined up with whatever asked for it, but clear of the row that holds it:
+    // the boxes carry their own controls underneath, and a panel over them
+    // would be as good as taking them away.
     const bounds = this.anchor.getBoundingClientRect();
+    const clears = (this.below && this.below.isConnected ? this.below : this.anchor).getBoundingClientRect();
     const width = this.element.offsetWidth || 460;
-    const height = this.element.offsetHeight || 340;
     const left = Math.min(
       Math.max(8, bounds.left + bounds.width / 2 - width / 2),
       window.innerWidth - width - 8
     );
-    const top = Math.min(Math.max(8, bounds.bottom + 8), window.innerHeight - height - 8);
+    // Not clamped to the bottom of the window: the panel belongs under what
+    // asked for it, and scrollIntoReach() brings the page to it instead of
+    // letting it slide up over the row.
+    const top = Math.max(8, clears.bottom + 8);
     this.element.style.left = `${Math.round(left)}px`;
     this.element.style.top = `${Math.round(top)}px`;
   }
 
-  // Keeps the field clear of the docked keyboard, with a little room to spare
-  scrollAnchorClear() {
-    const gap = 16;
-    const bounds = this.anchor.getBoundingClientRect();
-    const keyboardTop = window.innerHeight - (this.element.offsetHeight || 0);
-    const overlap = bounds.bottom + gap - keyboardTop;
-    if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
+  // The keyboard must be reachable wherever it lands. Docked at the foot of a
+  // narrow screen it can cover the field, so the page moves the field clear
+  // of it; on a wide screen it opens under the box and can fall past the
+  // bottom edge, so the page moves it into view instead.
+  scrollIntoReach() {
+    if (!this.anchor || !this.anchor.isConnected) return;
+    if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) {
+      const gap = 16;
+      const bounds = this.anchor.getBoundingClientRect();
+      const keyboardTop = window.innerHeight - (this.element.offsetHeight || 0);
+      const overlap = bounds.bottom + gap - keyboardTop;
+      if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
+      return;
+    }
+    window.LQ.makeRoomFor(this.element);
   }
 
   // ==================== helpers ====================

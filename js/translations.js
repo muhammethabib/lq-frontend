@@ -500,6 +500,16 @@ window.LQ_TRANSLATIONS = {
     redhouseSaved: "Değişiklik kaydedildi",
     redhouseNoNeighbour: "Komşu görsel örnek veride yok.",
 
+    // --- One bar, two scripts ---
+    hintLatin: "Latin harfleri",
+    hintMiddle: "tek çubuk, iki yön",
+    hintOttoman: "Osmanlıca harfler",
+    scriptWarning: "Lütfen Osmanlıca bir harf girin",
+    scriptWarningSub: "Kendi klavyenizde aşağıdaki harflere karşılık gelen tuşlara basın",
+    keyboardTeach: "Kendi klavyenizden yazabilirsiniz",
+    keyboardTeachRest: "veya aşağıdaki tuşlara tıklayın",
+    decoderOwnKeyboard: "Kendi klavyenizle yazabilirsiniz",
+
     // --- LexiQamus 2.0 what's new ---
     v2Eyebrow: "Arşiv duyurusu · 2020",
     v2Title: "2.0 Yenilikleri",

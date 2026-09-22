@@ -346,3 +346,13 @@ body {
   padding: 1px 7px;
 }
 .side-sublink.is-unavailable { display: flex; align-items: center; gap: 8px; }
+
+/* A panel fixed to the window — either on-screen keyboard — can open below
+   the fold, and a fixed panel cannot be scrolled to unless the page has
+   somewhere to scroll. While one is open the page is given exactly the room
+   it needs; window.LQ.makeRoomFor() sets the measurement. */
+body.has-panel-room::after {
+  content: "";
+  display: block;
+  height: var(--lq-panel-room, 0px);
+}

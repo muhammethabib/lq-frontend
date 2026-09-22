@@ -15,7 +15,7 @@
 
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
-    "strip", "clear", "results", "resultsTable", "pattern",
+    "strip", "clear", "rowHint", "results", "resultsTable", "pattern",
     "recordCount", "dictionaryCount", "expansionRow", "emptyState", "error", "groupCopy"
   ]
 
@@ -58,6 +58,25 @@ class WordDecoderController extends Stimulus.Controller {
     // aid: this listener comes out with the switcher.
     this.onViewState = (event) => this.showViewState(event.detail.state);
     document.addEventListener("view-state:change", this.onViewState);
+
+    // The keyboard covers the row, so the two Clear buttons take turns: the
+    // panel's while it is open, this one once it is closed.
+    this.onKeyboardOpen = (event) => {
+      if (event.detail.owner !== this.ownerName) return;
+      this.keyboardOpen = true;
+      this.hideRowHint();
+      this.refreshClear();
+    };
+    this.onKeyboardClosed = () => {
+      this.keyboardOpen = false;
+      this.refreshClear();
+    };
+    document.addEventListener("ottoman-keyboard:request", this.onKeyboardOpen);
+    document.addEventListener("ottoman-keyboard:closed", this.onKeyboardClosed);
+    // The search bar has a keyboard of its own; the row's hint stays away
+    // while either is on screen.
+    this.onOtherKeyboard = () => this.hideRowHint();
+    document.addEventListener("search-keyboard:request", this.onOtherKeyboard);
   }
 
   // The reference mock fills the row with the guide's worked example whenever
@@ -77,6 +96,9 @@ class WordDecoderController extends Stimulus.Controller {
 
   disconnect() {
     document.removeEventListener("ottoman-keyboard:key", this.onKey);
+    document.removeEventListener("ottoman-keyboard:request", this.onKeyboardOpen);
+    document.removeEventListener("ottoman-keyboard:closed", this.onKeyboardClosed);
+    document.removeEventListener("search-keyboard:request", this.onOtherKeyboard);
     document.removeEventListener("pointerdown", this.onOutside);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("view-state:change", this.onViewState);
@@ -152,7 +174,7 @@ class WordDecoderController extends Stimulus.Controller {
         </button>
         <input type="text" class="slot-input" maxlength="1" spellcheck="false" value="${this.escape(char)}"
                data-direction="rtl" aria-label="${this.escape(this.translate("decoderLetter", "Letter"))}"
-               data-action="focus->word-decoder#openKeyboard keydown->word-decoder#handleKey input->word-decoder#handleInput">
+               data-action="focus->word-decoder#openKeyboard click->word-decoder#openKeyboard keydown->word-decoder#handleKey input->word-decoder#handleInput">
       </div>`;
   }
 
@@ -267,10 +289,27 @@ class WordDecoderController extends Stimulus.Controller {
     return this.translate(key, fallback);
   }
 
+  // Both Clear buttons do the same work; they differ in what is left behind.
+  // The row's own one closed the keyboard on purpose, so it stays closed.
   clearStrip() {
+    this.resetStrip();
+    this.dismissKeyboard();
+  }
+
+  // The panel's Clear is pressed with the keyboard open, so it stays open and
+  // the caret goes back to the first box, ready for the next attempt.
+  clearFromKeyboard() {
+    this.resetStrip();
+    const first = this.stripTarget.querySelector(".slot-input");
+    if (first) {
+      first.focus();
+      this.activeCell = first.closest(".slot-cell");
+    }
+  }
+
+  resetStrip() {
     window.LQ.disposeTooltips(this.stripTarget);
     this.buildStrip();
-    this.dismissKeyboard();
   }
 
   // ==================== typing ====================
@@ -346,10 +385,19 @@ class WordDecoderController extends Stimulus.Controller {
 
   // ==================== the on-screen keyboard ====================
 
+  // The keyboard opens under the box that was pressed, so the letters and the
+  // place they are going to are in the same part of the screen.
   openKeyboard(event) {
     this.activeCell = event.currentTarget.closest(".slot-cell");
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:request", {
-      detail: { anchor: this.stripTarget, canClear: this.isDirty(), owner: this.ownerName }
+      detail: {
+        anchor: this.activeCell,
+        // The boxes carry the join rings and the add and remove buttons
+        // underneath, so the panel starts below the whole row.
+        below: this.stripTarget,
+        canClear: this.isDirty(),
+        owner: this.ownerName
+      }
     }));
   }
 
@@ -363,7 +411,7 @@ class WordDecoderController extends Stimulus.Controller {
   applyKey(detail) {
     // The keyboard is shared, so only keys addressed here are acted on
     if (detail.owner !== this.ownerName) return;
-    if (detail.kind === "clear") { this.clearStrip(); return; }
+    if (detail.kind === "clear") { this.clearFromKeyboard(); return; }
     if (!this.activeCell || !this.activeCell.isConnected) return;
     const input = this.activeCell.querySelector(".slot-input");
 
@@ -479,11 +527,31 @@ class WordDecoderController extends Stimulus.Controller {
     return this.inputs().some((input) => input.value.trim() !== "");
   }
 
+  // The row's own Clear appears only when there is something to clear, and
+  // never while the keyboard is open: the panel covers the row, so a button
+  // behind it would be one the reader cannot see.
   refreshClear() {
     const dirty = this.isDirty();
-    this.clearTarget.hidden = !dirty;
+    // Its place in the row is kept whether it is on screen or not: a button
+    // appearing to the left of the boxes would push them sideways, and a row
+    // that moves under the cursor loses the press that was meant for it.
+    this.clearTarget.classList.toggle("is-hidden", !dirty || Boolean(this.keyboardOpen));
     // The keyboard carries its own Clear, so it is told when the strip changes
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:state", { detail: { canClear: dirty } }));
+  }
+
+  // ==================== the row's hint ====================
+
+  // For a first-time reader: the boxes take the reader's own keyboard too.
+  // The keyboard says the same in its own header, so one of them is enough.
+  showRowHint() {
+    if (this.keyboardOpen) return;
+    if (document.querySelector(".search-keyboard.is-open")) return;
+    this.rowHintTarget.hidden = false;
+  }
+
+  hideRowHint() {
+    this.rowHintTarget.hidden = true;
   }
 
   // ==================== the pattern ====================

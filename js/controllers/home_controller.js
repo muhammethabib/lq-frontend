@@ -1,10 +1,22 @@
 // js/controllers/home_controller.js
 // The main page: the search bar, the filters and the result list.
 
+// The Ottoman side of the bar takes Arabic script, the marks that go with it,
+// the two joiners, a space and the wildcard; nothing else belongs in a word
+// that is going to be looked for.
+const OTTOMAN_ALLOWED = /[\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/u;
+const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/gu;
+const ARABIC_LETTER = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const YE_DOTTED = "\u064A";
+const YE_BARE = "\u0649";
+// Keys that move around the field rather than write in it.
+const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp",
+  "ArrowDown", "Home", "End", "Tab", "Enter", "Escape"];
+
 class HomeController extends Stimulus.Controller {
   static targets = [
     "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
-    "sourceOption", "submit",
+    "sourceOption", "submit", "scriptHint", "scriptWarning",
     "filter", "filterCount", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
     "groupCopy",
@@ -27,6 +39,11 @@ class HomeController extends Stimulus.Controller {
     this.activeSpelling = null;
     this.updateFilterCount();
     this.applySide();
+    this.listenForOttoman();
+    // The bar is what the reader came for, so the caret is already in it. Not
+    // on a touch screen: there it would throw up the device's own keyboard
+    // over the page before the reader has asked for anything.
+    if (window.matchMedia("(pointer: fine)").matches) this.inputTarget.focus();
     this.refreshDictionaryLabel();
     // Text this controller writes itself is not covered by the data-i18n sweep,
     // so it is rewritten whenever the interface language changes.
@@ -50,6 +67,10 @@ class HomeController extends Stimulus.Controller {
   disconnect() {
     document.removeEventListener("search:run", this.onSearchRequest);
     document.removeEventListener("view-state:change", this.onViewState);
+    document.removeEventListener("search-keyboard:key", this.onKeyboardKey);
+    document.removeEventListener("search-keyboard:closed", this.onKeyboardClosed);
+    document.removeEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
+    this.inputTarget.removeEventListener("keydown", this.onKeyDown);
   }
 
   // The four screens this controller owns. The other two, the entry window
@@ -71,8 +92,10 @@ class HomeController extends Stimulus.Controller {
     this.results = null;
     this.activeSpelling = null;
     this.inputTarget.value = "";
-    this.sideValue = "latin";
+    // No side chosen: the bar is back to advertising that it takes either.
+    this.sideValue = "";
     this.applySide();
+    this.closeKeyboard();
     this.element.classList.add("state-landing");
     this.element.classList.remove("state-results");
     this.emptyStateTarget.hidden = false;
@@ -125,6 +148,10 @@ class HomeController extends Stimulus.Controller {
     }
     this.applySide();
     this.inputTarget.focus();
+    // The Ottoman side is the one a reader needs help with, so it brings its
+    // keyboard; the hint steps aside, since two floating things under one bar
+    // is one too many.
+    if (this.sideValue === "ottoman") this.openKeyboard(); else this.closeKeyboard();
   }
 
   applySide() {
@@ -145,6 +172,12 @@ class HomeController extends Stimulus.Controller {
 
   handleInput() {
     this.updatePlaceholders();
+    if (this.inputTarget.value) this.hideScriptHint();
+    // On the Ottoman side, a Latin letter is not a typo the reader can see:
+    // it is a word that will never be found. It is taken back out and the
+    // bar says why.
+    if (this.isOttomanSide()) this.keepOttomanOnly();
+    if (this.inputTarget.value) this.markKeyboardLearned();
   }
 
   // Both prompts show until a side is chosen, so the bar advertises that it
@@ -157,6 +190,214 @@ class HomeController extends Stimulus.Controller {
     this.placeholderLatinTarget.classList.toggle("is-hidden", hasText || side === "latin");
     this.placeholderEnglishTarget.classList.toggle("is-hidden", hasText);
     this.placeholderOttomanTarget.classList.toggle("is-hidden", hasText || side === "ottoman");
+  }
+
+  // ==================== the Ottoman side ====================
+  //
+  // One bar takes both scripts, so everything the bar says about that is
+  // temporary: it appears when it can help and steps out of the way the
+  // moment the reader starts working.
+
+  isOttomanSide() {
+    return this.sideValue === "ottoman" && this.sourceValue !== "english";
+  }
+
+  listenForOttoman() {
+    // Keys pressed on the on-screen keyboard.
+    this.onKeyboardKey = (event) => {
+      if (!this.isOttomanSide()) return;
+      if (event.detail.kind === "backspace") { this.deleteBack(); return; }
+      this.insertOttoman(event.detail.char);
+    };
+    document.addEventListener("search-keyboard:key", this.onKeyboardKey);
+
+    // Closing the keyboard puts the bar back to rest.
+    this.onKeyboardClosed = () => {
+      this.keyboardOpen = false;
+      if (!this.inputTarget.value) {
+        this.sideValue = "";
+        this.applySide();
+      }
+    };
+    document.addEventListener("search-keyboard:closed", this.onKeyboardClosed);
+
+    // The reader's own keyboard writes Ottoman too, which is what the line in
+    // the keyboard's header promises.
+    this.onKeyDown = (event) => this.typeOttoman(event);
+    this.inputTarget.addEventListener("keydown", this.onKeyDown);
+
+    // The decoder has a keyboard of its own; while either is open the bar
+    // keeps its hint to itself.
+    this.onDecoderKeyboard = () => this.hideScriptHint();
+    document.addEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
+  }
+
+  openKeyboard() {
+    this.keyboardOpen = true;
+    this.hideScriptHint();
+    document.dispatchEvent(new CustomEvent("search-keyboard:request", {
+      detail: { anchor: this.inputWrapperTarget }
+    }));
+  }
+
+  closeKeyboard() {
+    if (!this.keyboardOpen) return;
+    this.keyboardOpen = false;
+    document.dispatchEvent(new CustomEvent("search-keyboard:dismiss"));
+  }
+
+  markKeyboardLearned() {
+    document.dispatchEvent(new CustomEvent("search-keyboard:typed"));
+  }
+
+  // ---- what goes into the field
+
+  insertOttoman(char) {
+    const input = this.inputTarget;
+    const letter = char === "_ye_" ? YE_BARE : char;
+    const start = input.selectionStart == null ? input.value.length : input.selectionStart;
+    const end = input.selectionEnd == null ? start : input.selectionEnd;
+    input.value = input.value.slice(0, start) + letter + input.value.slice(end);
+    input.setSelectionRange(start + 1, start + 1);
+    this.settleYe();
+    this.updatePlaceholders();
+    this.markKeyboardLearned();
+    input.focus();
+  }
+
+  deleteBack() {
+    const input = this.inputTarget;
+    const start = input.selectionStart == null ? input.value.length : input.selectionStart;
+    const end = input.selectionEnd == null ? start : input.selectionEnd;
+    if (start !== end) {
+      input.value = input.value.slice(0, start) + input.value.slice(end);
+      input.setSelectionRange(start, start);
+    } else if (start > 0) {
+      input.value = input.value.slice(0, start - 1) + input.value.slice(start);
+      input.setSelectionRange(start - 1, start - 1);
+    }
+    this.settleYe();
+    this.updatePlaceholders();
+    input.focus();
+  }
+
+  // Each key of the reader's own keyboard writes the Ottoman letter printed
+  // on the matching key of the on-screen one. Shift and Alt reach the second
+  // and third letters that key carries.
+  typeOttoman(event) {
+    if (!this.isOttomanSide()) return;
+    if (event.ctrlKey || event.metaKey) return;
+    if (PASSED_THROUGH.includes(event.key)) return;
+    const layout = this.keyboardLayout();
+    const lower = event.key.toLowerCase();
+
+    if (event.altKey) {
+      // A Mac writes something else entirely for Alt combinations, so the
+      // physical position of the key is read when the letter is not one the
+      // layout knows.
+      const named = layout.dual[lower] ? lower
+        : (/^Key[A-Z]$/.test(event.code || "") ? event.code.slice(3).toLowerCase() : lower);
+      const alt = (layout.dual[named] || [])[3];
+      if (alt) { event.preventDefault(); this.insertOttoman(alt); }
+      else if (event.key.length === 1) event.preventDefault();
+      return;
+    }
+
+    const key = event.shiftKey ? event.key.toUpperCase() : lower;
+    if (layout.map[key]) {
+      event.preventDefault();
+      this.insertOttoman(layout.map[key]);
+      return;
+    }
+    // A letter with no Ottoman equivalent is refused rather than left to be
+    // searched for and never found.
+    if (event.key.length === 1 && !OTTOMAN_ALLOWED.test(event.key)) {
+      event.preventDefault();
+      this.warnScript();
+    }
+  }
+
+  keyboardLayout() {
+    const layouts = window.LQ_SEARCH_KEYBOARD || {};
+    const one = layouts[document.documentElement.lang === "tr" ? "tr" : "en"] || layouts.en || {};
+    return { map: one.map || {}, dual: one.dual || {} };
+  }
+
+  // Pasting, dragging and a device's own keyboard all get past keydown, so
+  // whatever arrives is checked again once it is in the field.
+  keepOttomanOnly() {
+    const input = this.inputTarget;
+    const value = input.value;
+    if (!NOT_OTTOMAN.test(value)) return;
+    const at = input.selectionStart == null ? value.length : input.selectionStart;
+    const caret = value.slice(0, at).replace(NOT_OTTOMAN, "").length;
+    input.value = value.replace(NOT_OTTOMAN, "");
+    input.setSelectionRange(caret, caret);
+    this.warnScript();
+    this.settleYe();
+  }
+
+  // A ye keeps its dots only where a letter follows it; on its own, or at the
+  // end of a word, it is written bare. The field is read right to left, so
+  // "follows" is the character after it in the string.
+  settleYe() {
+    const input = this.inputTarget;
+    const value = input.value;
+    let settled = "";
+    for (let at = 0; at < value.length; at += 1) {
+      const letter = value[at];
+      if (letter === YE_DOTTED || letter === YE_BARE) {
+        const after = at < value.length - 1 ? value[at + 1] : "";
+        settled += after && ARABIC_LETTER.test(after) ? YE_DOTTED : YE_BARE;
+      } else {
+        settled += letter;
+      }
+    }
+    if (settled === value) return;
+    const caret = input.selectionStart;
+    input.value = settled;
+    input.setSelectionRange(caret, caret);
+  }
+
+  warnScript() {
+    const warning = this.scriptWarningTarget;
+    warning.hidden = false;
+    // The keyboard carries the answer to what just went wrong, so it comes up
+    // with the warning.
+    if (!this.keyboardOpen) this.openKeyboard();
+    clearTimeout(this.warningTimer);
+    this.warningTimer = setTimeout(() => { warning.hidden = true; }, 2800);
+  }
+
+  // ---- the hint under the bar
+
+  // It says which script goes in which side, and it is worth saying only
+  // while the bar is empty and nothing else is already under it.
+  showScriptHint() {
+    if (this.inputTarget.value) return;
+    if (this.sourceValue === "english") return;
+    if (this.keyboardOpen) return;
+    if (document.querySelector(".ottoman-keyboard.is-open")) return;
+    if (!this.element.classList.contains("state-landing")) return;
+    this.placeScriptHint();
+    this.scriptHintTarget.hidden = false;
+  }
+
+  hideScriptHint() {
+    this.scriptHintTarget.hidden = true;
+  }
+
+  // Centred between the two carets rather than on the bar: the Latin caret
+  // sits at the start of the left prompt, the Ottoman one at the end of the
+  // right.
+  placeScriptHint() {
+    const wrapper = this.inputWrapperTarget.getBoundingClientRect();
+    const latin = this.placeholderLatinTarget.getBoundingClientRect();
+    const ottoman = this.placeholderOttomanTarget.getBoundingClientRect();
+    const between = this.placeholderOttomanTarget.hidden
+      ? wrapper.width / 2
+      : ((latin.left - wrapper.left) + (ottoman.right - wrapper.left)) / 2;
+    this.scriptHintTarget.style.left = `${Math.round(between)}px`;
   }
 
   // ==================== filters ====================

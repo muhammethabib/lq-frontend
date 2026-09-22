@@ -737,3 +737,109 @@
 @media (prefers-reduced-motion: reduce) {
   .word-decoder-surface * { transition: none !important; animation: none !important; }
 }
+
+/* ---------------------------------------------------------------
+   The row's hint
+   For a first-time reader: the boxes take the reader's own
+   keyboard too. It appears on hover and never while a keyboard
+   panel is open, since the panel says the same thing itself.
+   --------------------------------------------------------------- */
+
+.word-decoder-surface .decoder-row { position: relative; }
+
+.word-decoder-surface .decoder-row-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 16px);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 11px 18px 12px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: #1e293b;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.3);
+  pointer-events: none;
+}
+
+.word-decoder-surface .decoder-row-hint::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 2px;
+  background: #1e293b;
+  transform: rotate(45deg);
+}
+
+.word-decoder-surface .decoder-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.word-decoder-surface .decoder-demo-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  color: #0f172a;
+  animation: decoder-key-press 2s infinite;
+}
+
+.word-decoder-surface .decoder-demo-arrow { font-size: 11px; color: var(--lq-muted); }
+
+.word-decoder-surface .decoder-demo-out {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 16px;
+  line-height: 1;
+  color: #f9a8d4;
+  animation: decoder-key-pop 2s infinite;
+}
+
+@keyframes decoder-key-press {
+  0%, 100% { transform: none; border-bottom-width: 3px; }
+  5% { transform: translateY(2px); border-bottom-width: 1px; border-color: var(--lq-claret); }
+  11% { transform: none; border-bottom-width: 3px; }
+}
+
+@keyframes decoder-key-pop {
+  0%, 4%, 100% { opacity: 0.45; transform: none; }
+  8% { opacity: 1; transform: scale(1.25); }
+  16% { opacity: 0.45; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-decoder-surface .decoder-demo-key,
+  .word-decoder-surface .decoder-demo-out { animation: none; }
+  .word-decoder-surface .decoder-demo-out { opacity: 1; }
+}
+
+@media (max-width: 575.98px) {
+  .word-decoder-surface .decoder-row-hint { white-space: normal; max-width: calc(100vw - 32px); }
+}
+
+/* The row's Clear keeps its place whether it is on screen or not: appearing
+   to the left of the boxes would push them sideways, and a row that moves
+   under the cursor loses the press that was meant for it. */
+.word-decoder-surface .decoder-clear.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}

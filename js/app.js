@@ -61,6 +61,38 @@ window.LQ = {
     }[character]));
   },
 
+  // A panel fixed to the window can open below the fold, and a fixed panel
+  // cannot be scrolled to: the page has to have somewhere to scroll first.
+  // These give the page exactly the room the panel needs and take it back
+  // when the panel closes. Both keyboards use them.
+  makeRoomFor(panel) {
+    const past = panel.getBoundingClientRect().bottom + 16 - window.innerHeight;
+    if (past <= 0) { this.releaseRoom(); return; }
+    document.body.classList.add("has-panel-room");
+    document.body.style.setProperty("--lq-panel-room", `${Math.ceil(past)}px`);
+    window.scrollBy({ top: past, behavior: "smooth" });
+  },
+
+  // Taking the room back moves everything under the pointer, and a press that
+  // lands on one thing and lets go over another is a press that never
+  // happened. So the room goes only when the page is back at the top, which
+  // is the one moment nothing moves.
+  releaseRoom() {
+    if (window.scrollY > 0) {
+      if (this.waitingForTop) return;
+      this.waitingForTop = () => {
+        if (window.scrollY > 0) return;
+        window.removeEventListener("scroll", this.waitingForTop);
+        this.waitingForTop = null;
+        this.releaseRoom();
+      };
+      window.addEventListener("scroll", this.waitingForTop, { passive: true });
+      return;
+    }
+    document.body.classList.remove("has-panel-room");
+    document.body.style.removeProperty("--lq-panel-room");
+  },
+
   // A dictionary is shown with its publication year where one is known.
   dictionaryLabel(name) {
     const record = (window.LQ_DICTIONARIES || {})[name];

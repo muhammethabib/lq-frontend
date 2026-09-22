@@ -1,0 +1,248 @@
+/* =========================================================
+   The search bar's Ottoman keyboard
+   Laid out like the keyboard in front of the reader: three
+   rows, each key showing the Latin letter it sits under and
+   the Ottoman letter it writes. The header is the handle.
+   ========================================================= */
+
+.search-keyboard {
+  position: fixed;
+  z-index: 1080;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 16px 20px 14px;
+  border: 1px solid var(--lq-line);
+  border-radius: 16px;
+  background: var(--lq-paper);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.18);
+}
+
+.search-keyboard.is-open { display: flex; }
+.search-keyboard.is-springing { transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ---------------------------------------------------- the header */
+
+.search-keyboard-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  font-size: 11px;
+  color: #94a3b8;
+  cursor: grab;
+  user-select: none;
+}
+
+.search-keyboard.is-dragging .search-keyboard-bar { cursor: grabbing; }
+
+.search-keyboard-teach {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Once the reader has typed anything the line has done its work. The row
+   stays, because it is also the handle the panel is moved by. */
+.search-keyboard.is-learned .search-keyboard-teach { display: none; }
+.search-keyboard.is-learned .search-keyboard-bar { min-height: 16px; padding-bottom: 4px; }
+
+.search-keyboard-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.search-keyboard-demo-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  background: var(--lq-paper);
+  font-size: 10px;
+  font-weight: 800;
+  color: #334155;
+  animation: search-key-press 2s infinite;
+}
+
+.search-keyboard-demo-arrow { font-size: 11px; color: #cbd5e1; }
+
+.search-keyboard-demo-out {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--lq-claret);
+  animation: search-key-pop 2s infinite;
+}
+
+@keyframes search-key-press {
+  0%, 100% { transform: none; border-bottom-width: 3px; background: #fff; }
+  5% { transform: translateY(2px); border-bottom-width: 1px; background: #fdf2f8; border-color: var(--lq-claret); color: var(--lq-claret); }
+  11% { transform: none; border-bottom-width: 3px; background: #fff; }
+}
+
+@keyframes search-key-pop {
+  0%, 4%, 100% { opacity: 0.3; transform: none; }
+  8% { opacity: 1; transform: scale(1.25); }
+  16% { opacity: 0.3; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-keyboard-demo-key,
+  .search-keyboard-demo-out { animation: none; }
+  .search-keyboard-demo-out { opacity: 1; }
+}
+
+.search-keyboard-teach-text b { font-weight: 700; color: #475569; }
+
+.search-keyboard-buttons { display: flex; gap: 5px; }
+
+.search-keyboard-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 6px;
+  background: var(--lq-paper-soft);
+  color: #94a3b8;
+}
+
+.search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
+.search-keyboard-button svg { width: 13px; height: 13px; }
+
+/* ---------------------------------------------------- the keys */
+
+.search-keyboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-key-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.search-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: var(--lq-paper-soft);
+  user-select: none;
+}
+
+.search-key:hover { background: #fff1f2; border-color: #fda4af; }
+
+.search-key:not(.search-key-split):active {
+  transform: scale(0.92);
+  background: var(--lq-claret);
+  border-color: var(--lq-claret);
+}
+
+.search-key:not(.search-key-split):active .search-key-latin,
+.search-key:not(.search-key-split):active .search-key-ottoman { color: #fff; }
+
+.search-key-latin {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.search-key-ottoman {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--lq-claret);
+}
+
+/* A key that carries more than one letter is split into as many parts, each
+   pressed on its own. */
+.search-key-split {
+  flex-direction: row;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 80px;
+  background: var(--lq-lat-bg);
+  border-color: var(--lq-lat-border);
+}
+
+.search-key-split:hover { background: var(--lq-lat-bg); border-color: var(--lq-lat-border); }
+.search-key-triple { width: 114px; }
+
+.search-key-part {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 100%;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 0;
+  background: var(--lq-lat-bg);
+}
+
+.search-key-part + .search-key-part { border-left: 1px solid var(--lq-lat-border); }
+.search-key-part:hover { background: #dbeafe; }
+
+.search-key-part:active { background: var(--lq-claret); }
+.search-key-part:active .search-key-latin,
+.search-key-part:active .search-key-ottoman { color: #fff; }
+
+.search-key-part + .search-key-part .search-key-latin { font-size: 7px; font-weight: 800; color: var(--lq-muted); }
+
+/* ---------------------------------------------------- narrow screens */
+
+@media (max-width: 1100px) {
+  .search-keyboard { padding: 14px 14px 12px; gap: 7px; }
+  .search-key { width: 44px; height: 44px; }
+  .search-key-split { width: 76px; }
+  .search-key-triple { width: 108px; }
+}
+
+@media (max-width: 900px) {
+  .search-keyboard { padding: 12px 12px 10px; }
+  .search-key-row { gap: 5px; }
+}
+
+@media (max-width: 767.98px) {
+  .search-keyboard {
+    left: 0 !important;
+    top: auto !important;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+  }
+  .search-key { width: 34px; height: 40px; }
+  .search-key-split { width: 62px; }
+  .search-key-triple { width: 86px; }
+  .search-key-ottoman { font-size: 15px; }
+}

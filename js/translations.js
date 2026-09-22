@@ -60,6 +60,7 @@ window.LQ_TRANSLATIONS = {
     filtersNone: "Hiçbiri",
     filtersColWord: "Kelime Türü",
     filtersColMatch: "Sonuçlar",
+    groupNoteToggle: "Bu açıklamayı göster veya gizle",
     fuzzyHint: "Aradığınızı bulamadınız mı?",
     fuzzyMain: "Benzer Eşleşmeleri Tara",
     nrFuzzyHint: "Hâlâ bulamadınız mı?",

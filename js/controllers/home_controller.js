@@ -753,7 +753,16 @@ class HomeController extends Stimulus.Controller {
               <span class="group-title">${title}</span>
               <span class="group-count">${rows.length}</span>
             </button>
-            ${note ? `<span class="group-note">${note}${example ? ` &middot; ${example}` : ""}</span>` : ""}
+            ${note ? `
+              <span class="group-note is-open">
+                <span class="group-note-text">${note}${example ? ` &middot; ${example}` : ""}</span>
+                <button type="button" class="btn group-note-toggle" aria-expanded="true"
+                        data-action="click->home#toggleNote"
+                        aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">
+                  <i data-feather="info" aria-hidden="true"></i>
+                  <span class="group-note-close" aria-hidden="true">&times;</span>
+                </button>
+              </span>` : ""}
           </th>
         </tr>
         ${rows.map((row, at) => this.rowHtml(row, group.key, at >= PAGE)).join("")}
@@ -930,6 +939,30 @@ class HomeController extends Stimulus.Controller {
     const body = button.closest("tbody");
     const collapsed = body.classList.toggle("is-collapsed");
     button.setAttribute("aria-expanded", String(!collapsed));
+    // Opening a group again starts it at the first page. Someone who closed a
+    // group they had read all of is putting it away, not keeping their place
+    // in it.
+    if (!collapsed) this.resetPages(body);
+  }
+
+  resetPages(body) {
+    const rows = Array.from(body.querySelectorAll("tr.result-row"));
+    if (rows.length <= PAGE) return;
+    rows.forEach((row, at) => row.classList.toggle("is-held", at >= PAGE));
+    const controls = body.querySelector("tr.show-more-row");
+    const markup = this.showMoreHtml(body.id, PAGE, rows.length);
+    if (controls) controls.outerHTML = markup;
+    else body.insertAdjacentHTML("beforeend", markup);
+    window.LQ.refreshDynamicContent(body);
+  }
+
+  // The description of a group says what belongs in it, which is worth
+  // reading once and not on every visit; the toggle beside it puts it away.
+  toggleNote(event) {
+    const button = event.currentTarget;
+    const note = button.closest(".group-note");
+    const open = note.classList.toggle("is-open");
+    button.setAttribute("aria-expanded", String(open));
   }
 
   cite(event) {

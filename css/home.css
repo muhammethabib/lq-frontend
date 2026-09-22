@@ -714,13 +714,47 @@
   font-variant-numeric: tabular-nums;
 }
 .home-surface .group-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--lq-body-bg);
+  color: var(--lq-ink-soft);
   font-size: 11.5px;
   font-weight: 500;
-  color: var(--lq-ink-soft);
-  background: var(--lq-body-bg);
-  border-radius: 999px;
-  padding: 5px 12px;
-  margin-left: 4px;
+}
+
+/* The description is worth reading once, not on every visit. Put away, the
+   pill shrinks to the mark that brings it back. */
+.home-surface .group-note:not(.is-open) .group-note-text { display: none; }
+.home-surface .group-note:not(.is-open) { padding: 4px; }
+
+.home-surface .group-note-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #94a3b8;
+}
+
+.home-surface .group-note-toggle:hover { color: var(--lq-sapphire); }
+.home-surface .group-note-toggle svg { width: 12px; height: 12px; }
+
+/* Open, the mark is a cross that closes it; closed, it is the info mark. */
+.home-surface .group-note.is-open .group-note-toggle svg { display: none; }
+.home-surface .group-note:not(.is-open) .group-note-close { display: none; }
+
+.home-surface .group-note-close {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
 }
 .home-surface .group-note b { color: var(--lq-ink); font-weight: 700; }
 /* Hide the note before the table gets narrow enough for it to squeeze the columns */

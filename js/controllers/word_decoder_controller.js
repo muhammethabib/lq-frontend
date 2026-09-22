@@ -698,6 +698,15 @@ class WordDecoderController extends Stimulus.Controller {
         </button>`).join("");
   }
 
+  // For a reader who has been through the candidates and recognised none of
+  // them: the search is run again over letters that sound close to the ones
+  // given, which is the widest of the three expansions.
+  scanSimilar() {
+    const chip = this.expansionRowTarget.querySelector('[data-expansion="pronunciation"]');
+    if (!chip || chip.classList.contains("active")) return;
+    chip.click();
+  }
+
   // The chips are alternatives, so turning one on turns the others off
   toggleExpansion(event) {
     const chip = event.currentTarget;

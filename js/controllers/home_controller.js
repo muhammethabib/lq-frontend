@@ -599,8 +599,8 @@ class HomeController extends Stimulus.Controller {
     this.resultsAccentTarget.dataset.script = spelling.script;
   }
 
-  togglePronunciation(event) {
-    const button = event.currentTarget;
+  togglePronunciation() {
+    const button = this.pronunciationButtonTarget;
     const active = button.classList.toggle("active");
     button.setAttribute("aria-pressed", String(active));
     // With the real endpoint this re-runs the search with a wider match set
@@ -759,6 +759,36 @@ class HomeController extends Stimulus.Controller {
         ${rows.map((row, at) => this.rowHtml(row, group.key, at >= PAGE)).join("")}
         ${this.showMoreHtml(bodyId, Math.min(PAGE, rows.length), rows.length)}
       </tbody>`;
+  }
+
+  // ==================== widening the search ====================
+
+  // For a reader who has been through the list and not found the word: the
+  // search is run again over spellings near the one they tried. Every kind of
+  // result is let back in, since a reader at this point is no longer ruling
+  // anything out, and the list is left at the group that holds them.
+  scanSimilar() {
+    // Matches the Rails route this asks for:
+    //   GET /search_output/results?term=…&scan=similar
+    $.ajax({
+      url: this.endpointValue,
+      type: "GET",
+      data: { term: this.inputTarget.value, scan: "similar" },
+      // No backend yet: returning false cancels the request and the widening
+      // is done against the sample. Delete beforeSend once the route exists.
+      beforeSend: () => { this.widen(); return false; },
+      success: (response) => { this.results = response; this.widen(); },
+      error: () => this.widen()
+    });
+  }
+
+  widen() {
+    this.filterTargets.forEach((filter) => { filter.checked = true; });
+    this.updateFilterCount();
+    if (!this.pronunciationButtonTarget.classList.contains("active")) this.togglePronunciation();
+    this.renderResults();
+    const similar = this.resultsTableTarget.querySelector("#group-partial");
+    if (similar) similar.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   // ==================== a group longer than a page ====================

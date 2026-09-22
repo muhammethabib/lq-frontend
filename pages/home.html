@@ -208,6 +208,29 @@
               <!-- One tbody per result group, written by the controller -->
             </table>
           </div>
+
+          <!-- The same foot the search results carry: one press widens the
+               reading to letters that look or sound close to the ones given,
+               and the library question sits beside it. -->
+          <div class="fuzzy-row">
+            <button type="button" class="btn fuzzy-button" data-action="click->word-decoder#scanSimilar">
+              <span class="fuzzy-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
+                </svg>
+              </span>
+              <span class="fuzzy-divider" aria-hidden="true"></span>
+              <span class="fuzzy-text">
+                <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
+                <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
+              </span>
+            </button>
+            <button type="button" class="btn library-button"
+                    data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+          </div>
         </section>
 
         <p class="decoder-hint" data-word-decoder-target="emptyState" data-i18n="decoderEmptyState">
@@ -625,6 +648,36 @@
         </table>
       </div>
 
+      <!-- At the foot of the list, for a reader who has read it and not found
+           what they came for: one press widens the search to spellings near
+           the one they tried, and the library question sits beside it. -->
+      <div class="fuzzy-row">
+        <button type="button" class="btn fuzzy-button" data-action="click->home#scanSimilar">
+          <span class="fuzzy-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
+            </svg>
+          </span>
+          <span class="fuzzy-divider" aria-hidden="true"></span>
+          <!-- The same press means something a little different when the list
+               is empty, so it is worded for that case too and the surface
+               chooses between the two. -->
+          <span class="fuzzy-text fuzzy-text-found">
+            <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
+            <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
+          </span>
+          <span class="fuzzy-text fuzzy-text-empty">
+            <span class="fuzzy-hint" data-i18n="nrFuzzyHint">Still can&rsquo;t find it?</span>
+            <span class="fuzzy-main" data-i18n="nrFuzzyMain">Widen the Search Further</span>
+          </span>
+        </button>
+        <button type="button" class="btn library-button"
+                data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+      </div>
+
       <!-- Nothing matched. The word that was looked for is said back, and the
            spellings closest to it are offered: an Ottoman word can be written
            several ways, so the answer is nearly always one of these. -->
@@ -648,8 +701,10 @@
     </div>
   </div>
 
-  <!-- A page-level action, offered under either tab -->
-  <div class="text-center mt-4">
+  <!-- The same question on the landing screen, where there is no list for it
+       to sit under. The results surface carries its own, so this one steps
+       out of the way as soon as a search has been run. -->
+  <div class="text-center mt-4 library-row">
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
   </div>
 

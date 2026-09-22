@@ -41,46 +41,47 @@ class HomeController extends Stimulus.Controller {
     this.onSearchRequest = (event) => this.runSearch(event.detail);
     document.addEventListener("search:run", this.onSearchRequest);
 
-    this.openRequestedState();
-  }
-
-  // The development navigator opens a state of this page directly, so the
-  // reviewer does not have to search to see it. Reads ?state= once, on load;
-  // it is a reviewing aid and comes out with the navigator at integration.
-  openRequestedState() {
-    const state = new URLSearchParams(window.location.search).get("state");
-    if (!state) return;
-
-    if (state === "results" || state === "citation" || state === "dictionary-page") {
-      this.inputTarget.value = "nazar";
-      this.submitTarget.click();
-      if (state === "citation") this.openFirst(".cite-button:not(.admin-only)");
-      if (state === "dictionary-page") this.openFirst(".result-zone");
-      return;
-    }
-    if (state === "no-results") {
-      this.receive({ term: "qqq", totals: { records: 0, dictionaries: 0 }, spellings: [], groups: [] });
-      return;
-    }
-    if (state === "sign-up") {
-      const button = document.querySelector('[data-mode="signup"]');
-      if (button) button.click();
-    }
-    // The decoder's own states are opened by its controller, which owns the
-    // strip they need filled.
-  }
-
-  openFirst(selector) {
-    // The row has to be on the page before the window it opens can be asked
-    // for, and the table is written in the same turn as the search.
-    window.requestAnimationFrame(() => {
-      const button = this.element.querySelector(selector);
-      if (button) button.click();
-    });
+    // The view switcher asks for one of the main page's six screens. A
+    // reviewing aid: this listener comes out with the switcher.
+    this.onViewState = (event) => this.showViewState(event.detail.state);
+    document.addEventListener("view-state:change", this.onViewState);
   }
 
   disconnect() {
     document.removeEventListener("search:run", this.onSearchRequest);
+    document.removeEventListener("view-state:change", this.onViewState);
+  }
+
+  // The four screens this controller owns. The other two, the entry window
+  // and the Redhouse entry, belong to their own controllers.
+  showViewState(state) {
+    if (state === "results" || state === "no-results") {
+      this.sideValue = "ottoman";
+      this.applySide();
+      this.inputTarget.value = "نظر";
+      this.receive(state === "results" ? this.sample() : this.emptySample());
+      return;
+    }
+    if (state === "home" || state === "new-visitor") this.resetToLanding();
+  }
+
+  // Back to the screen a reader first sees: nothing typed, nothing found and
+  // no side of the bar carrying a focus colour from the screen before.
+  resetToLanding() {
+    this.results = null;
+    this.activeSpelling = null;
+    this.inputTarget.value = "";
+    this.sideValue = "latin";
+    this.applySide();
+    this.element.classList.add("state-landing");
+    this.element.classList.remove("state-results");
+    this.emptyStateTarget.hidden = false;
+    this.resultsSurfaceTarget.hidden = true;
+    this.noMatchesTarget.hidden = true;
+  }
+
+  emptySample() {
+    return { term: "نظر", totals: { records: 0, dictionaries: 0 }, spellings: [], groups: [] };
   }
 
   runSearch({ term, script }) {
@@ -399,7 +400,7 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="result-row" data-category="${row.category}">
-        <td class="result-zone" data-action="click->home#openDictionaryPage"
+        <td class="result-zone" data-action="click->home#openEntry" data-zone-focus="result"
             data-zone-ottoman="${this.escape(row.resultOttoman)}"
             data-zone-latin="${this.escape(row.resultLatin)}"
             data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
@@ -410,6 +411,7 @@ class HomeController extends Stimulus.Controller {
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl">${this.highlight(row.resultOttoman, "ottoman", markAffixes)}</span>
+              ${this.misspellingHtml(row)}
             </span>
             <span class="word-latin">
               <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}">${this.escape(row.resultLatin)}</span>
@@ -422,7 +424,7 @@ class HomeController extends Stimulus.Controller {
         <td class="text-center">
           <i class="row-arrow" data-feather="arrow-right"></i>
         </td>
-        <td class="headword-cell result-zone" data-action="click->home#openDictionaryPage"
+        <td class="headword-cell result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
             data-zone-ottoman="${this.escape(row.headwordOttoman)}"
             data-zone-latin="${this.escape(row.headwordLatin)}"
             data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
@@ -490,17 +492,61 @@ class HomeController extends Stimulus.Controller {
   }
 
   // A row has two click zones, the result and the headword; both open the
-  // scan the record came from.
-  openDictionaryPage(event) {
+  // entry window, and which one was pressed decides where it opens: the
+  // result zone asks about the phrase, the headword zone about the entry.
+  openEntry(event) {
     const zone = event.currentTarget.dataset;
-    document.dispatchEvent(new CustomEvent("dictionary-page:open", {
+    document.dispatchEvent(new CustomEvent("entry:open", {
       detail: {
+        focus: zone.zoneFocus,
         ottoman: zone.zoneOttoman,
         latin: zone.zoneLatin,
         headwordOttoman: zone.zoneHeadwordOttoman,
         headwordLatin: zone.zoneHeadwordLatin,
         dictionary: zone.zoneDictionary,
         page: zone.zonePage
+      }
+    }));
+  }
+
+  // Some dictionaries print a word wrongly. The row carries the mark, and
+  // the mark carries the proof: the word as the page has it. Pressing it
+  // opens that page rather than the entry, so the reader can see for
+  // themselves; the zone underneath must not answer the same press.
+  misspellingHtml(row) {
+    if (!row.misspelling) return "";
+    const crop = this.escape("../assets/scans/words/" + row.misspelling.crop);
+    return `
+      <button type="button" class="btn typo-mark"
+              data-action="click->home#openScan:stop"
+              data-scan-ottoman="${this.escape(row.resultOttoman)}"
+              data-scan-latin="${this.escape(row.resultLatin)}"
+              data-scan-headword-ottoman="${this.escape(row.headwordOttoman)}"
+              data-scan-headword-latin="${this.escape(row.headwordLatin)}"
+              data-scan-dictionary="${this.escape(row.dictionary)}"
+              data-scan-page="${this.escape(row.page)}"
+              aria-label="${this.escape(this.translate("typoAria", "Printed differently in this dictionary"))}">
+        <i data-feather="alert-circle" aria-hidden="true"></i>
+        <span class="typo-card">
+          <img src="${crop}" alt="" data-i18n-alt="typoAlt">
+          <span class="typo-card-labels">
+            <span data-i18n="typoOriginal">Original</span>
+            <span data-i18n="typoPrinted">As printed</span>
+          </span>
+        </span>
+      </button>`;
+  }
+
+  openScan(event) {
+    const mark = event.currentTarget.dataset;
+    document.dispatchEvent(new CustomEvent("dictionary-page:open", {
+      detail: {
+        ottoman: mark.scanOttoman,
+        latin: mark.scanLatin,
+        headwordOttoman: mark.scanHeadwordOttoman,
+        headwordLatin: mark.scanHeadwordLatin,
+        dictionary: mark.scanDictionary,
+        page: mark.scanPage
       }
     }));
   }

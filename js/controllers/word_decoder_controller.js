@@ -54,35 +54,32 @@ class WordDecoderController extends Stimulus.Controller {
     };
     document.addEventListener("language:changed", this.onLanguageChange);
 
-    this.openRequestedState();
+    // The view switcher asks for one of the main page's screens. A reviewing
+    // aid: this listener comes out with the switcher.
+    this.onViewState = (event) => this.showViewState(event.detail.state);
+    document.addEventListener("view-state:change", this.onViewState);
   }
 
-  // The development navigator opens a state of this tab directly. It fills
-  // the strip with the guide's worked example, ح ا ٭ ر, because a decoder
-  // with nothing in it has nothing to show. A reviewing aid, and it comes out
-  // with the navigator at integration.
-  openRequestedState() {
-    const state = new URLSearchParams(window.location.search).get("state");
-    if (state !== "decoder" && state !== "decoder-results") return;
-
-    const tab = document.getElementById("decoderTab");
-    if (tab) bootstrap.Tab.getOrCreateInstance(tab).show();
-    if (state !== "decoder-results") return;
-
-    const cells = Array.from(this.stripTarget.querySelectorAll(".slot-cell"));
-    [{ char: "ح" }, { char: "ا" }, { wildcard: "any" }, { char: "ر" }]
-      .forEach((content, index) => {
-        if (cells[index]) this.writeCell(cells[index], content);
-      });
+  // The reference mock fills the row with the guide's worked example whenever
+  // the page is shown in a searched state, and empties it otherwise.
+  showViewState(state) {
+    if (state === "results" || state === "no-results") {
+      const cells = Array.from(this.stripTarget.querySelectorAll(".slot-cell"));
+      [{ char: "ح" }, { char: "ا" }, { wildcard: "any" }, { char: "ر" }]
+        .forEach((content, index) => {
+          if (cells[index]) this.writeCell(cells[index], content);
+        });
+    } else {
+      this.clearStrip();
+    }
     this.refreshClear();
-    const search = this.element.querySelector(".decoder-submit");
-    if (search) search.click();
   }
 
   disconnect() {
     document.removeEventListener("ottoman-keyboard:key", this.onKey);
     document.removeEventListener("pointerdown", this.onOutside);
     document.removeEventListener("language:changed", this.onLanguageChange);
+    document.removeEventListener("view-state:change", this.onViewState);
     window.LQ.disposeTooltips(this.element);
   }
 

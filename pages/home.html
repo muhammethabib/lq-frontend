@@ -13,12 +13,14 @@
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/account-window.css">
-  <link rel="stylesheet" href="../css/dev-nav.css">
+  <link rel="stylesheet" href="../css/view-switcher.css">
+  <link rel="stylesheet" href="../css/announcement.css">
   <link rel="stylesheet" href="../css/home.css">
   <link rel="stylesheet" href="../css/word-decoder.css">
   <link rel="stylesheet" href="../css/ottoman-keyboard.css">
   <link rel="stylesheet" href="../css/citation.css">
   <link rel="stylesheet" href="../css/dictionary-page.css">
+  <link rel="stylesheet" href="../css/entry-window.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
   <script src="../vendor/jquery.min.js" defer></script>
@@ -31,18 +33,21 @@
   <script src="../js/sample_data.js" defer></script>
   <script src="../js/decoder_sample_data.js" defer></script>
   <script src="../js/dictionary_page_sample.js" defer></script>
+  <script src="../js/entry_sample.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
-  <script src="../js/dev_pages.js" defer></script>
+  <script src="../js/view_states.js" defer></script>
   <script src="../js/page_chrome.js" defer></script>
   <script src="../js/app.js" defer></script>
   <script src="../js/controllers/language_controller.js" defer></script>
   <script src="../js/controllers/page_chrome_controller.js" defer></script>
-  <script src="../js/controllers/dev_nav_controller.js" defer></script>
+  <script src="../js/controllers/view_switcher_controller.js" defer></script>
+  <script src="../js/controllers/announcement_controller.js" defer></script>
   <script src="../js/controllers/home_controller.js" defer></script>
   <script src="../js/controllers/word_decoder_controller.js" defer></script>
   <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
   <script src="../js/controllers/citation_controller.js" defer></script>
   <script src="../js/controllers/dictionary_page_controller.js" defer></script>
+  <script src="../js/controllers/entry_window_controller.js" defer></script>
 </head>
 <body>
 
@@ -625,6 +630,10 @@
   </div>
 
 
+  <!-- The view switcher, bottom left. A reviewing aid: it and the three
+       files behind it come out at integration. -->
+  <nav class="view-switcher" data-controller="view-switcher" aria-label="View"></nav>
+
   <!-- The citation window. The container stays empty; its markup is in the
        template below and is put in place when a Cite button is pressed. -->
   <div class="modal fade citation-modal" id="citationModal" tabindex="-1" aria-hidden="true"
@@ -822,6 +831,201 @@
             <i data-feather="clipboard" aria-hidden="true"></i>
             <span data-i18n="cite">Cite</span>
           </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- The announcement a first-time visitor sees. Opened by the New Visitor
+       screen of the view switcher; on the live site it opens once per reader. -->
+  <div class="modal fade announcement-modal" id="announcementModal" tabindex="-1" aria-hidden="true"
+       data-controller="announcement" data-announcement-template-value="announcementTemplate"></div>
+
+  <template id="announcementTemplate">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close"></button>
+
+        <p class="announcement-badge" data-i18n="ekualBadge">TÜBİTAK ULAKBİM · EKUAL</p>
+        <h2 class="announcement-title" data-i18n="ekualTitle">Great News: Full Access for All Universities in Türkiye and TRNC!</h2>
+        <p class="announcement-body" data-i18n="ekualBody" data-i18n-html="1">LexiQamus has been open to all universities in Türkiye and the TRNC since the beginning of 2026, under the <b>TÜBİTAK ULAKBİM EKUAL Project</b>. From deciphering hard-to-read words to their meanings across different dictionaries, you have unlimited access to all content.</p>
+
+        <div class="announcement-cards">
+          <article class="announcement-card">
+            <span class="announcement-pill" data-i18n="ekualPill">No VPN or proxy</span>
+            <h3>
+              <i data-feather="log-in" aria-hidden="true"></i>
+              <span data-i18n="ekualOffTitle">Off campus</span>
+            </h3>
+            <p data-i18n="ekualOffText" data-i18n-html="1">Sign up once with your <b>.edu.tr</b> e-mail, no institutional authorization needed.</p>
+          </article>
+          <article class="announcement-card">
+            <h3>
+              <i data-feather="wifi" aria-hidden="true"></i>
+              <span data-i18n="ekualOnTitle">On campus</span>
+            </h3>
+            <p data-i18n="ekualOnText">On the campus network you can reach everything directly, without even creating an account.</p>
+          </article>
+        </div>
+
+        <div class="announcement-actions">
+          <button type="button" class="btn announcement-cta" data-action="click->announcement#signUp">
+            <i data-feather="user-plus" aria-hidden="true"></i>
+            <span data-i18n="ekualCta">Create your account</span>
+          </button>
+          <button type="button" class="btn announcement-later" data-bs-dismiss="modal"
+                  data-i18n="ekualLater">Later</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- The entry window, opened from either click zone of a result row. -->
+  <div class="modal fade entry-window-modal" id="entryWindowModal" tabindex="-1" aria-hidden="true"
+       data-controller="entry-window"
+       data-entry-window-template-value="entryWindowTemplate"
+       data-entry-window-endpoint-value="/dictionary_entry/show"></div>
+
+  <template id="entryWindowTemplate">
+    <div class="modal-dialog modal-dialog-centered entry-dialog">
+      <div class="modal-content entry-surface">
+        <button type="button" class="btn-close entry-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close"></button>
+
+        <header class="entry-header">
+          <div class="entry-header-top">
+            <span class="entry-badge" data-entry-badge></span>
+            <p class="entry-breadcrumb" data-entry-breadcrumb></p>
+          </div>
+
+          <nav class="entry-tabs" data-entry-tabs
+               aria-label="Languages" data-i18n-aria="entryLanguages"></nav>
+
+          <div class="entry-controls">
+            <button type="button" class="btn entry-control" data-action="click->entry-window#expandAll"
+                    data-i18n="entryExpandAll">Expand all</button>
+            <span class="entry-control-divider" aria-hidden="true"></span>
+            <button type="button" class="btn entry-control" data-action="click->entry-window#collapseAll"
+                    data-i18n="entryCollapseAll">Collapse all</button>
+          </div>
+        </header>
+
+        <main class="entry-body" data-entry-body
+              data-action="click->entry-window#bodyClick mouseover->entry-window#bodyOver mouseout->entry-window#bodyOut">
+          <p class="entry-notice">
+            <i data-feather="alert-triangle" aria-hidden="true"></i>
+            <span data-entry-notice></span>
+          </p>
+          <div data-entry-sections></div>
+        </main>
+
+        <footer class="entry-footer">
+          <div class="entry-views" data-entry-views></div>
+          <div class="entry-cite-group">
+            <button type="button" class="btn entry-cite-open" aria-expanded="false"
+                    data-action="click->entry-window#toggleCite">
+              <i data-feather="clipboard" aria-hidden="true"></i>
+              <span data-i18n="cite">Cite</span>
+            </button>
+            <div class="entry-cite-pop" data-entry-cite-pop hidden>
+              <button type="button" class="btn" data-action="click->entry-window#cite">Chicago</button>
+              <button type="button" class="btn" data-action="click->entry-window#cite">Harvard</button>
+              <button type="button" class="btn" data-action="click->entry-window#cite">APA</button>
+            </div>
+          </div>
+        </footer>
+
+        <!-- What the other panels call the same word -->
+        <div class="entry-parallel" data-entry-parallel hidden role="dialog"
+             aria-label="Equivalents in other languages" data-i18n-aria="entryEquivalents"
+             data-action="click->entry-window#bodyClick">
+          <div class="entry-parallel-head">
+            <span class="entry-parallel-title" data-i18n="entryEquivalents">Equivalents in other languages</span>
+            <button type="button" class="btn-close" data-action="click->entry-window#closeParallel"
+                    aria-label="Close" data-i18n-aria="close"></button>
+          </div>
+          <div data-entry-parallel-rows></div>
+        </div>
+
+        <!-- The pieces of the scan a marked word was read from -->
+        <div class="entry-crop entry-crop-above" data-entry-crop-above hidden
+             data-action="mouseenter->entry-window#holdCards mouseleave->entry-window#hideSoon click->entry-window#bodyClick"></div>
+        <div class="entry-crop entry-crop-below" data-entry-crop-below hidden
+             data-action="mouseenter->entry-window#holdCards mouseleave->entry-window#hideSoon click->entry-window#bodyClick"></div>
+
+        <!-- What a place marked on the scan reads as -->
+        <div class="entry-card" data-entry-box-card hidden
+             data-action="mouseenter->entry-window#holdCards mouseleave->entry-window#hideSoon click->entry-window#search click->entry-window#report"></div>
+        <div class="entry-card entry-card-phrase" data-entry-phrase hidden
+             data-action="mouseenter->entry-window#holdCards mouseleave->entry-window#hideSoon click->entry-window#search click->entry-window#report"></div>
+
+        <!-- Reporting a word takes over the window rather than stacking a
+             second one on top of it -->
+        <div class="entry-takeover" data-entry-report hidden>
+          <div class="entry-takeover-card">
+            <div data-entry-form-view>
+              <h2 class="entry-takeover-title" data-i18n="entryReportTitle">Report a typo</h2>
+              <p class="entry-takeover-word">
+                <span data-direction="rtl" data-entry-report-word-ottoman></span>
+                <span class="entry-takeover-divider" aria-hidden="true"></span>
+                <span data-entry-report-word-latin></span>
+              </p>
+              <form data-entry-report-form data-action="submit->entry-window#sendReport">
+                <label class="visually-hidden" for="entryReportText"
+                       data-i18n="entryReportLabel">Describe the error</label>
+                <textarea id="entryReportText" class="form-control" rows="4"
+                          placeholder="Please describe the error or suggest a correction."
+                          data-i18n-placeholder="entryReportLabel"></textarea>
+                <div class="entry-takeover-actions">
+                  <button type="submit" class="btn entry-takeover-send" data-i18n="submit">Submit</button>
+                  <button type="button" class="btn entry-takeover-cancel"
+                          data-action="click->entry-window#closeReport" data-i18n="cancel">Cancel</button>
+                </div>
+              </form>
+            </div>
+            <div class="entry-thanks" data-entry-thanks hidden>
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <p data-i18n="entryThanks">Thank you. Your note has reached the editors.</p>
+              <button type="button" class="btn entry-takeover-send"
+                      data-action="click->entry-window#closeReport" data-i18n="close">Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sending a correction asks who to credit it to; the details are
+             optional and the correction goes for review either way -->
+        <div class="entry-takeover" data-entry-contribute hidden>
+          <div class="entry-takeover-card">
+            <div data-entry-form-view>
+              <h2 class="entry-takeover-title" data-i18n="entryCorrectionTitle">Submit a correction</h2>
+              <p class="entry-takeover-note" data-i18n="entryCorrectionNote">Your details are optional, but they help us acknowledge contributors.</p>
+              <form data-entry-contribute-form data-action="submit->entry-window#sendCorrection">
+                <label for="entryContribFirst" data-i18n="firstName">First name</label>
+                <input type="text" id="entryContribFirst" class="form-control" autocomplete="given-name">
+                <label for="entryContribLast" data-i18n="lastName">Last name</label>
+                <input type="text" id="entryContribLast" class="form-control" autocomplete="family-name">
+                <label for="entryContribEmail" data-i18n="email">E-mail</label>
+                <input type="email" id="entryContribEmail" class="form-control" autocomplete="email">
+                <div class="entry-takeover-actions">
+                  <button type="submit" class="btn entry-takeover-send" data-i18n="submit">Submit</button>
+                  <button type="button" class="btn entry-takeover-plain"
+                          data-action="click->entry-window#sendAnonymously"
+                          data-i18n="entryAnonymously">Submit anonymously</button>
+                  <button type="button" class="btn entry-takeover-cancel"
+                          data-action="click->entry-window#closeContribute" data-i18n="cancel">Cancel</button>
+                </div>
+              </form>
+            </div>
+            <div class="entry-thanks" data-entry-thanks hidden>
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <p data-i18n="entryThanks">Thank you. Your note has reached the editors.</p>
+              <button type="button" class="btn entry-takeover-send"
+                      data-action="click->entry-window#closeContribute" data-i18n="close">Close</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -461,6 +461,30 @@ window.LQ_TRANSLATIONS = {
     cancel: "İptal",
     submit: "Gönder",
 
+    // --- Entry window ---
+    entryLanguages: "Diller",
+    entryExpandAll: "Tümünü Aç",
+    entryCollapseAll: "Tümünü Kapat",
+    entryEquivalents: "Diğer dillerdeki karşılıklar",
+    entryEdit: "Düzenle",
+    entrySource: "Kaynak",
+    save: "Kaydet",
+    entryReportTitle: "Yazım Hatası Bildir",
+    entryReportLabel: "Lütfen hatayı açıklayın veya bir düzeltme önerin.",
+    entryCorrectionTitle: "Düzeltme Gönder",
+    entryCorrectionNote: "Bilgileriniz isteğe bağlıdır, ancak katkı sağlayanları belirtmemize yardımcı olur.",
+    entryAnonymously: "Anonim gönder",
+    entryThanks: "Teşekkürler. Notunuz editörlerimize ulaştı.",
+    firstName: "Ad",
+    lastName: "Soyad",
+    email: "E-posta",
+
+    // --- A word a dictionary prints wrongly ---
+    typoAria: "Bu sözlükte farklı basılmış",
+    typoAlt: "Kelimenin sayfadaki basılı hâli",
+    typoOriginal: "Aslı",
+    typoPrinted: "Basılı hâli",
+
     // --- LexiQamus 2.0 what's new ---
     v2Eyebrow: "Arşiv duyurusu · 2020",
     v2Title: "2.0 Yenilikleri",
@@ -1172,29 +1196,24 @@ window.LQ_TRANSLATIONS = {
     storyNotes: "Notlar",
     storyT104: "A.g.e.<a href=\"#fnref2\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a>",
 
-    // --- Development navigator ---
-    devNavigator: "Sayfalar",
-    devMainPage: "Ana sayfa",
-    devPages: "Sayfalar",
-    devWindows: "Pencereler",
-    devLanding: "Ana sayfa",
-    devResults: "Arama sonuçları",
-    devNoResults: "Sonuç yok",
-    devDecoder: "Kelime Çözücü",
-    devDecoderResults: "Çözücü sonuçları",
-    devSuggestions: "Öneri geçmişi",
-    devCitation: "Künye",
-    devDictionaryPage: "Sözlük sayfası",
-    devSignUp: "Kaydol",
+    // --- View switcher ---
+    viewHome: "Ana Sayfa",
+    viewNewVisitor: "Ana Sayfa – Yeni Ziyaretçi",
+    viewNoResults: "Sonuç Yok",
+    viewResults: "Sonuçlar",
+    viewPopup: "Madde Penceresi",
+    viewRedhouse: "Redhouse",
 
-    // --- Development navigator, labels ---
-    devInstitutional: "Kurumsal",
-    devWhatIs: "LexiQamus Nedir?",
-    devLexicon: "Lexicon projesi",
-
-    // --- Development navigator, versions ---
-    devV3WhatsNew: "3.0 Yenilikleri",
-    devV2WhatsNew: "2.0 Yenilikleri",
-    devDataModel: "Veri modeli"
+    // --- Announcement ---
+    ekualBadge: "TÜBİTAK ULAKBİM · EKUAL",
+    ekualTitle: "Müjde: Türkiye ve KKTC'deki Tüm Üniversiteler için Tam Erişim!",
+    ekualBody: "LexiQamus, 2026 yılı başından itibaren <b>TÜBİTAK ULAKBİM EKUAL Projesi</b> kapsamında Türkiye ve KKTC'deki tüm üniversitelerin erişimine açılmıştır. Okunması zor kelimelerin çözümünden farklı sözlüklerdeki anlamlarına kadar tüm içeriklerden sınırsız olarak yararlanabilirsiniz.",
+    ekualPill: "VPN ve proxy gerekmez",
+    ekualOffTitle: "Kurum dışından",
+    ekualOffText: "Kurumsal yetkilendirmeyle uğraşmadan <b>.edu.tr</b> e-posta adresinizle bir kez kaydolun.",
+    ekualOnTitle: "Kampüs ağından",
+    ekualOnText: "Kampüs ağı üzerinden bağlandığınızda hesap dahi açmadan tüm içeriklere doğrudan erişebilirsiniz.",
+    ekualCta: "Hesabınızı Oluşturun",
+    ekualLater: "Daha sonra"
   }
 };

@@ -1,0 +1,132 @@
+/* =========================================================
+   Announcement
+   The EKUAL notice a first-time visitor sees, opened by the
+   New Visitor screen. Scoped under .announcement-modal.
+   ========================================================= */
+
+.announcement-modal .modal-dialog { max-width: 560px; }
+
+.announcement-modal .modal-content {
+  position: relative;
+  padding: 30px 32px 26px;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: var(--lq-shadow);
+}
+.announcement-modal .btn-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+}
+
+.announcement-modal .announcement-badge {
+  margin: 0 0 14px;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lq-claret);
+}
+
+.announcement-modal .announcement-title {
+  margin: 0 0 12px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--lq-sapphire);
+  text-wrap: balance;
+}
+
+.announcement-modal .announcement-body {
+  margin: 0 0 20px;
+  font-size: .97rem;
+  line-height: 1.65;
+  color: var(--lq-ink-soft);
+}
+
+/* ---------- the two ways in ---------- */
+
+.announcement-modal .announcement-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.announcement-modal .announcement-card {
+  position: relative;
+  padding: 16px 18px;
+  border: 1px solid var(--lq-line);
+  border-radius: 13px;
+  background: var(--lq-body-bg);
+}
+.announcement-modal .announcement-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--lq-ink-navy);
+}
+.announcement-modal .announcement-card h3 svg { width: 15px; height: 15px; color: var(--lq-sapphire); }
+.announcement-modal .announcement-card p {
+  margin: 0;
+  font-size: .86rem;
+  line-height: 1.55;
+  color: var(--lq-ink-soft);
+}
+
+/* The one thing a reader off campus most needs to know */
+.announcement-modal .announcement-pill {
+  position: absolute;
+  top: -9px;
+  right: 14px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--lq-entry-text);
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: #fff;
+}
+
+/* ---------- actions ---------- */
+
+.announcement-modal .announcement-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.announcement-modal .announcement-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border: 1px solid var(--lq-claret);
+  border-radius: 10px;
+  background: var(--lq-claret);
+  font-weight: 600;
+  color: #fff;
+}
+.announcement-modal .announcement-cta:hover {
+  background: var(--lq-claret-hover);
+  border-color: var(--lq-claret-hover);
+  color: #fff;
+}
+.announcement-modal .announcement-cta svg { width: 16px; height: 16px; }
+
+.announcement-modal .announcement-later {
+  padding: 11px 16px;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  color: var(--lq-muted);
+}
+.announcement-modal .announcement-later:hover { color: var(--lq-ink-navy); }
+
+@media (max-width: 575px) {
+  .announcement-modal .modal-content { padding: 24px 20px 20px; }
+  .announcement-modal .announcement-title { font-size: 1.3rem; }
+}

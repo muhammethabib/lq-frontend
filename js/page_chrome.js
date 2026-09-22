@@ -185,10 +185,6 @@ window.LQ_PAGE_CHROME = `
     </div>
   </div>
 
-  <!-- The development navigator, bottom left. A reviewing aid: it and the
-       three files behind it come out at integration. -->
-  <nav class="dev-nav" data-controller="dev-nav" aria-label="Pages of the mock"></nav>
-
   <!-- The account window. Empty until one of the buttons above is pressed;
        its markup is in the template below. -->
   <div class="modal fade auth-modal" id="authModal" tabindex="-1" aria-hidden="true"></div>

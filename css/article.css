@@ -1,6 +1,6 @@
 /* =========================================================
    Long article pages
-   Scoped under .page-surface. These pages are read straight
+   Scoped under .article-surface. These pages are read straight
    through, so the layout is a reading column with a contents
    list beside it.
    ========================================================= */
@@ -128,12 +128,14 @@
 
 /* ---------- the contributor roster ---------- */
 
+/* Forty names read as columns rather than as one long run. The padding
+   leaves room for a two-digit marker, which would otherwise be clipped. */
 .article-surface .article-roster {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
   gap: 2px 22px;
   margin: 16px 0 26px;
-  padding: 0 0 0 26px;
+  padding: 0 0 0 34px;
   font-size: .95rem;
 }
 .article-surface .article-roster li { padding: 3px 0; }

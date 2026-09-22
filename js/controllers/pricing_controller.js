@@ -54,6 +54,16 @@ class PricingController extends Stimulus.Controller {
   render() {
     this.termTargets.forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.term === this.term));
+      // The saving on a term button comes from the same prices as the plans,
+      // so the two cannot say different things. It is the Standard plan's,
+      // which is the one the sales page quotes.
+      const slot = button.querySelector("[data-term-saving]");
+      if (!slot) return;
+      const quoted = (this.prices.standard || {})[button.dataset.term];
+      const saving = quoted && quoted.saving;
+      slot.textContent = saving
+        ? window.LQ.translate("planSaving", "Save {n}%").replace("{n}", saving)
+        : "";
     });
 
     // Only the paid plans have a period that moves with the term. Free is

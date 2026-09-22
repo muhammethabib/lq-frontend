@@ -36,10 +36,12 @@ class PageChromeController extends Stimulus.Controller {
     if (!container || !template) return;
 
     window.LQ.disposeWidgets(container);
-    // The window is only ever built while it is closed, so the instance that
-    // cached the old dialog element is disposed with it.
+    // Bootstrap caches the dialog element when the modal is built, so the
+    // instance goes before the markup under it is replaced. The guard is the
+    // one the other two windows use: disposing an open modal would take the
+    // backdrop with it.
     const existing = bootstrap.Modal.getInstance(container);
-    if (existing) existing.dispose();
+    if (existing && !container.classList.contains("show")) existing.dispose();
     container.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(container);
     window.LQ.refreshDynamicContent(container);

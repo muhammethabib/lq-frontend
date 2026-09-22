@@ -504,17 +504,11 @@ class HomeController extends Stimulus.Controller {
     return this.translate(labels[category], fallbacks[category] || category);
   }
 
-  translate(key, fallback) {
-    const language = document.documentElement.lang === "tr" ? "tr" : "en";
-    const dictionary = (window.LQ_TRANSLATIONS && window.LQ_TRANSLATIONS[language]) || {};
-    return key in dictionary ? dictionary[key] : fallback;
-  }
+  // The shared helpers, named here so the calls above read the same as they
+  // do in every other controller.
+  translate(key, fallback) { return window.LQ.translate(key, fallback); }
 
-  escape(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, (character) => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[character]));
-  }
+  escape(value) { return window.LQ.escape(value); }
 }
 
 application.register("home", HomeController);

@@ -1062,7 +1062,20 @@ class HomeController extends Stimulus.Controller {
   // two spellings, which are enough to look it up, to find its family and to
   // take it apart.
   menuData(ottoman, latin) {
-    return ` data-menu-ottoman="${this.escape(ottoman)}" data-menu-latin="${this.escape(latin)}"`;
+    return ` data-menu-ottoman="${this.escape(ottoman)}" data-menu-latin="${this.escape(latin)}"` +
+      ` data-action="click->home#selectWord:stop"`;
+  }
+
+  // Pressing a word in a list marks it and leaves the row alone: the zone
+  // around the words is what opens the entry window, so a reader can pick a
+  // word out of a long list without the window taking over the screen.
+  // Pressing it again, or pressing another, clears the mark.
+  selectWord(event) {
+    const box = event.currentTarget;
+    const wasMarked = box.classList.contains("is-selected");
+    this.element.querySelectorAll(".word-box.is-selected")
+      .forEach((other) => other.classList.remove("is-selected"));
+    if (!wasMarked) box.classList.add("is-selected");
   }
 
   // ==================== what a filter means ====================

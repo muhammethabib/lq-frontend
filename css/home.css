@@ -869,6 +869,26 @@
 .home-surface .latin-box.reading-unverified { opacity: .82; }
 .home-surface .latin-box.reading-unverified:hover { opacity: 1; }
 
+/* A word pressed in a list stays marked until another is pressed or it is
+   pressed again: a reader working through a long list keeps their place in
+   it. The mark is the box filled with its own colour. */
+.home-surface .ottoman-box.is-selected,
+.home-surface .ottoman-box.is-selected:hover {
+  background: var(--lq-red);
+  border-color: var(--lq-red);
+  color: #fff;
+  transform: none;
+}
+.home-surface .latin-box.is-selected,
+.home-surface .latin-box.is-selected:hover {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+  opacity: 1;
+  transform: none;
+}
+.home-surface .word-box.is-selected .affix { color: inherit; }
+
 /* The searched term stays plain and the affixes around it are marked, so the
    eye lands on what the dictionary added rather than on what was typed. */
 .home-surface .affix { color: #0284c7; }

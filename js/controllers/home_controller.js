@@ -970,13 +970,15 @@ class HomeController extends Stimulus.Controller {
         </td>
         <td>
           <div class="row-actions">
+          <!-- A citation is of the dictionary entry the record sits under, not
+               of the form that matched, so it names the headword. -->
           <button type="button" class="btn cite-button" data-action="click->home#cite"
-                  data-cite-latin="${this.escape(row.resultLatin)}"
-                  data-cite-ottoman="${this.escape(row.resultOttoman)}"
+                  data-cite-latin="${this.escape(row.headwordLatin)}"
+                  data-cite-ottoman="${this.escape(row.headwordOttoman)}"
                   data-cite-dictionary="${this.escape(row.dictionary)}"
                   data-cite-page="${this.escape(row.page)}"
                   title="${this.escape(this.translate("cite", "Cite"))}"
-                  aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.resultLatin)}">
+                  aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
             <i data-feather="clipboard"></i>
           </button>
           <!-- Staff only: editing a stored reading, as opposed to a reader

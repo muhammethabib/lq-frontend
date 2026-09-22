@@ -857,12 +857,14 @@ class WordDecoderController extends Stimulus.Controller {
         </td>
         <td>
           <div class="row-actions">
+            <!-- A citation is of the dictionary entry the record sits under,
+                 not of the reading that matched, so it names the headword. -->
             <button type="button" class="btn cite-button" data-action="click->word-decoder#cite"
-                    data-cite-latin="${this.escape(candidate.latin)}"
-                    data-cite-ottoman="${this.escape(candidate.ottoman)}"
+                    data-cite-latin="${this.escape(row.headwordLatin)}"
+                    data-cite-ottoman="${this.escape(row.headwordOttoman)}"
                     data-cite-dictionary="${this.escape(row.dictionary)}"
                     data-cite-page="${this.escape(row.page)}"
-                    aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(candidate.latin)}">
+                    aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
               <i data-feather="clipboard"></i>
             </button>
             <!-- Staff only: editing a stored reading, as opposed to a reader

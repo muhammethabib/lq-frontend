@@ -6,7 +6,8 @@ class HomeController extends Stimulus.Controller {
     "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "sourceOption", "submit",
     "filter", "filterCount", "dictionary", "dictionaryLabel", "allDictionaries",
-    "resultsSurface", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
+    "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
+    "groupCopy",
     "spellingRow", "pronunciationButton", "pronunciationCount",
     "emptyState", "noMatches"
   ]
@@ -75,7 +76,6 @@ class HomeController extends Stimulus.Controller {
   applySide() {
     const isOttoman = this.sideValue === "ottoman" && this.sourceValue !== "english";
     this.inputTarget.dataset.direction = isOttoman ? "rtl" : "ltr";
-    this.inputTarget.style.textAlign = isOttoman ? "right" : "left";
     this.inputWrapperTarget.classList.toggle("focus-ottoman", isOttoman);
     this.inputWrapperTarget.classList.toggle("focus-latin", this.sideValue === "latin" || this.sourceValue === "english");
 
@@ -197,9 +197,20 @@ class HomeController extends Stimulus.Controller {
       // No backend yet: returning false from beforeSend cancels the request and
       // the page is fed sample data instead. Delete beforeSend once the route
       // exists; success already handles the real response shape.
-      beforeSend: () => { this.receive(this.sampleFor(query)); return false; },
-      success: (response) => this.receive(response)
+      beforeSend: () => { this.receive(this.sample()); return false; },
+      success: (response) => this.receive(response),
+      error: () => this.showError()
     });
+  }
+
+  showError() {
+    this.element.classList.remove("state-landing");
+    this.element.classList.add("state-results");
+    this.emptyStateTarget.hidden = true;
+    this.resultsSurfaceTarget.hidden = false;
+    this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => body.remove());
+    this.noMatchesTarget.textContent = this.translate("searchFailed", "The search could not be completed. Please try again.");
+    this.noMatchesTarget.hidden = false;
   }
 
   receive(results) {
@@ -210,9 +221,11 @@ class HomeController extends Stimulus.Controller {
     this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
 
-    this.recordCountTarget.textContent = results.totals.records;
-    this.dictionaryCountTarget.textContent = results.totals.dictionaries;
+    const totals = results.totals || {};
+    this.recordCountTarget.textContent = totals.records || 0;
+    this.dictionaryCountTarget.textContent = totals.dictionaries || 0;
     this.pronunciationCountTarget.textContent = results.similarPronunciationCount || 0;
+    this.noMatchesTarget.textContent = this.translate("noResults", "No results found.");
 
     this.renderSpellings();
     this.renderTerm();
@@ -224,7 +237,7 @@ class HomeController extends Stimulus.Controller {
   // corpus records available here and a coherent set exercises the layout,
   // the grouping and the affix marking properly. The real endpoint keys off
   // the query instead; nothing else on the page needs to change.
-  sampleFor(query) {
+  sample() {
     return window.LQ_SAMPLE_RESULTS;
   }
 
@@ -233,7 +246,7 @@ class HomeController extends Stimulus.Controller {
   renderSpellings() {
     const spellings = (this.results && this.results.spellings) || [];
     this.spellingRowTarget.innerHTML = spellings.map((spelling, index) => `
-      <button type="button" class="spelling-button${spelling === this.activeSpelling ? " active" : ""}"
+      <button type="button" class="btn spelling-button${spelling === this.activeSpelling ? " active" : ""}"
               data-script="${spelling.script}" data-spelling-index="${index}"
               ${spelling.script === "ottoman" ? 'data-direction="rtl"' : ""}
               data-action="click->home#selectSpelling" aria-pressed="${spelling === this.activeSpelling}">
@@ -270,7 +283,7 @@ class HomeController extends Stimulus.Controller {
   renderResults() {
     if (!this.results) return;
 
-    const table = this.resultsSurfaceTarget.querySelector(".results-table");
+    const table = this.resultsTableTarget;
     const allowedCategories = this.selectedFilters("category");
     const allowedGroups = this.selectedFilters("group");
     const allowedDictionaries = this.selectedDictionaries();
@@ -293,26 +306,29 @@ class HomeController extends Stimulus.Controller {
   }
 
   groupHtml(group, rows) {
-    // Translation keys follow the group key: lemma -> groupLemma, groupLemmaNote,
-    // groupLemmaExample.
-    const base = "group" + group.key.charAt(0).toUpperCase() + group.key.slice(1);
-    const title = this.translate(base, this.groupTitles[group.key] || group.key);
-    const note = this.translate(`${base}Note`, this.groupNotes[group.key] || "");
-    const example = this.translate(`${base}Example`, this.groupExamples[group.key] || "");
+    // The title, the note and the example come from the hidden copy block in
+    // the markup, already in the current language.
+    const copy = this.groupCopyTarget.querySelector(`[data-group="${group.key}"]`);
+    const read = (part) => {
+      const element = copy && copy.querySelector(`[data-copy="${part}"]`);
+      return element ? element.innerHTML.trim() : "";
+    };
+    const title = read("title") || group.key;
+    const note = read("note");
+    const example = read("example");
     const bodyId = `group-${group.key}`;
 
     return `
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
           <th colspan="6" scope="colgroup">
-            <button type="button" class="group-toggle" aria-expanded="true" aria-controls="${bodyId}"
+            <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->home#toggleGroup">
               <span class="group-chevron"><i data-feather="chevron-down"></i></span>
-              <span class="group-title">${this.escape(title)}</span>
+              <span class="group-title">${title}</span>
               <span class="group-count">${group.count}</span>
             </button>
-            ${note ? `<span class="group-note">${this.escape(note)}${example ? ` &middot; ${example}` : ""}</span>` : ""}
-            <!-- note is escaped; example is our own markup with <b>, not data -->
+            ${note ? `<span class="group-note">${note}${example ? ` &middot; ${example}` : ""}</span>` : ""}
           </th>
         </tr>
         ${rows.map((row) => this.rowHtml(row, group.key)).join("")}
@@ -362,7 +378,7 @@ class HomeController extends Stimulus.Controller {
         </td>
         <td>
           <div class="row-actions">
-          <button type="button" class="cite-button" data-action="click->home#cite"
+          <button type="button" class="btn cite-button" data-action="click->home#cite"
                   data-cite-latin="${this.escape(row.resultLatin)}"
                   data-cite-ottoman="${this.escape(row.resultOttoman)}"
                   data-cite-dictionary="${this.escape(row.dictionary)}"
@@ -373,7 +389,7 @@ class HomeController extends Stimulus.Controller {
           </button>
           <!-- Staff only: editing a stored reading, as opposed to a reader
                suggesting a correction. Restrict this when permissions land. -->
-          <button type="button" class="cite-button admin-only" data-action="click->home#editEntry"
+          <button type="button" class="btn cite-button admin-only" data-action="click->home#editEntry"
                   title="${this.escape(this.translate("editEntry", "Edit entry"))}"
                   aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
             <i data-feather="edit-2"></i>
@@ -402,18 +418,6 @@ class HomeController extends Stimulus.Controller {
 
   editEntry() {
     // Placeholder for the staff editing screen.
-  }
-
-  // ==================== side menu ====================
-
-  // Menu entries carry both language variants, so the link follows the
-  // interface language instead of duplicating the menu per language.
-  openPage(event) {
-    event.preventDefault();
-    const link = event.currentTarget;
-    const language = document.documentElement.lang === "tr" ? "tr" : "en";
-    const target = language === "tr" ? link.dataset.pageTr : link.dataset.pageEn;
-    if (target) window.open(target, "_blank", "noopener");
   }
 
   // ==================== helpers ====================
@@ -458,42 +462,6 @@ class HomeController extends Stimulus.Controller {
     return String(value == null ? "" : value).replace(/[&<>"']/g, (character) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[character]));
-  }
-
-  get groupTitles() {
-    return {
-      lemma: "Lemma",
-      inflected: "Inflected Forms",
-      lexicalizedInflected: "Lexicalized Inflected Forms",
-      derived: "Derived Forms",
-      phrases: "Phrases",
-      compounds: "Compounds",
-      partial: "Similar Spellings"
-    };
-  }
-
-  get groupNotes() {
-    return {
-      lemma: "Results without an affix, including the base or singular form of a value",
-      inflected: "Results showing inflected forms of the search term",
-      lexicalizedInflected: "Inflected forms that carry their own dictionary meaning",
-      derived: "Words built with derivational affixes",
-      phrases: "Phrases containing the search term",
-      compounds: "Compound words containing the search term",
-      partial: "Results spelled close to the search term"
-    };
-  }
-
-  get groupExamples() {
-    return {
-      lemma: "<b>kalem</b>, <b>dost</b>",
-      inflected: "<b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e",
-      lexicalizedInflected: "<b>civar</b> &rarr; <b>civarında</b>",
-      derived: "<b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci",
-      phrases: "<b>nazar</b> &rarr; <b>nazar</b> değmek",
-      compounds: "<b>nazar</b> &rarr; <b>nazar</b>gâh",
-      partial: ""
-    };
   }
 }
 

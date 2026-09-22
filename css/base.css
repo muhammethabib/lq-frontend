@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
-
 /* =========================================================
    LexiQamus - shared tokens and page chrome
    Feature CSS lives in css/<feature>.css and must not add
@@ -22,11 +20,9 @@
   --lq-red: #be123c;             /* Ottoman theme */
   --lq-gold: #d97706;
 
-  /* Language themes: Latin (blue) and Ottoman (red) */
-  --lq-lat-primary: #082567;
+  /* Language themes: Latin is the sapphire family, Ottoman the red one */
   --lq-lat-bg: #eff6ff;
   --lq-lat-border: #dbeafe;
-  --lq-osm-primary: #be123c;
   --lq-osm-bg: #fff1f2;
   --lq-osm-border: #ffe4e6;
 
@@ -40,6 +36,13 @@
   --lq-related-text: #1e3a8a;
   --lq-related-bg: rgba(59, 130, 246, 0.12);
   --lq-related-border: #bfdbfe;
+
+  /* Deeper claret used by the filter controls, and the navy of their labels */
+  --lq-claret-deep: #8e1537;
+  --lq-ink-navy: #1c2a4e;
+  --lq-ink-soft: #5a687d;
+  --lq-paper-soft: #f8fafc;
+  --lq-focus-latin: #1c449c;
 
   --lq-shadow: 0 22px 60px -30px rgba(8, 37, 103, 0.35);
   --lq-max-width: 1440px;
@@ -221,8 +224,7 @@ body {
   color: #94a3b8;
   transition: transform .2s;
 }
-.side-menu .side-year + .side-chevron { margin-left: 6px; }
-/* Bootstrap drops .collapsed on a collapse toggle once it is open */
+/* Bootstrap keeps aria-expanded in step with the collapse state */
 .side-menu .side-link[aria-expanded="true"] .side-chevron { transform: rotate(180deg); }
 
 .side-menu .side-submenu {
@@ -247,3 +249,39 @@ body {
 @media (max-width: 640px) {
   .side-menu { width: 84vw; }
 }
+
+/* ---------- shared: keyboard focus ---------- */
+
+/* The bespoke controls override Bootstrap's look, so they need their own
+   focus ring; without this, keyboard users get the browser default only. */
+.btn:focus-visible,
+.side-link:focus-visible,
+.side-sublink:focus-visible,
+.classic-link:focus-visible,
+.form-check-input:focus-visible,
+.script-input:focus-visible {
+  outline: 2px solid var(--lq-sapphire);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ---------- shared: pages not built yet ---------- */
+
+/* A menu entry whose page has not been rebuilt. Remove the class when the
+   page lands; nothing else about the entry changes. */
+.side-link.is-unavailable,
+.side-sublink.is-unavailable { opacity: .55; cursor: not-allowed; }
+.side-link.is-unavailable:hover,
+.side-sublink.is-unavailable:hover { background: none; border-color: transparent; box-shadow: none; }
+.is-unavailable .side-soon {
+  margin-left: auto;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--lq-muted);
+  border: 1px solid var(--lq-line);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.side-sublink.is-unavailable { display: flex; align-items: center; gap: 8px; }

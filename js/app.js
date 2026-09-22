@@ -6,6 +6,10 @@ const application = Stimulus.Application.start();
 // Feather icons and Bootstrap tooltips are rendered once on load and must be
 // re-run whenever new HTML is injected (modals, AJAX results). Controllers call
 // window.LQ.refreshDynamicContent(rootElement) after such changes.
+//
+// feather.replace() has no scoped form, so it always sweeps the whole document;
+// it only touches elements that still carry data-feather, so re-running it is
+// cheap. The root argument scopes the tooltip pass, which does support it.
 window.LQ = {
   refreshDynamicContent(root = document) {
     feather.replace();

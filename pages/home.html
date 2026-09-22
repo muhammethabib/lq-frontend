@@ -6,7 +6,10 @@
   <title>LexiQamus</title>
   <link rel="icon" href="../assets/lexiqamus-logo.png">
 
-  <!-- Stylesheets: Bootstrap first, then shared tokens, then this feature -->
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, then this feature -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/home.css">
@@ -41,11 +44,11 @@
         <img src="../assets/lexiqamus-logo.png" alt="LexiQamus">
       </a>
       <h2 class="visually-hidden" id="sideMenuLabel" data-i18n="menuHeading">Menu</h2>
-      <div class="language-switch" role="group" aria-label="Language">
+      <div class="language-switch" role="group" aria-label="Language" data-i18n-aria="ariaLanguage">
         <span class="language-thumb" aria-hidden="true"></span>
-        <button type="button" class="language-option active" data-language="en" aria-pressed="true"
+        <button type="button" class="btn language-option active" data-language="en" aria-pressed="true"
                 data-language-target="option" data-action="click->language#select">EN</button>
-        <button type="button" class="language-option" data-language="tr" aria-pressed="false"
+        <button type="button" class="btn language-option" data-language="tr" aria-pressed="false"
                 data-language-target="option" data-action="click->language#select">TR</button>
       </div>
     </div>
@@ -58,40 +61,45 @@
     <div class="offcanvas-body side-menu-body">
       <ul class="side-nav">
         <li>
-          <a class="side-link" href="#" data-page-en="about-en.html" data-page-tr="hakkimizda-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="about-en.html" data-page-tr="hakkimizda-tr.html"
+            >
             <i data-feather="info"></i><span data-i18n="menuAbout">About</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="team-en.html" data-page-tr="ekip-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="team-en.html" data-page-tr="ekip-tr.html"
+            >
             <i data-feather="users"></i><span data-i18n="menuTeam">Team</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="what-is-lexiqamus-en.html" data-page-tr="lexiqamus-nedir-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="what-is-lexiqamus-en.html" data-page-tr="lexiqamus-nedir-tr.html"
+            >
             <i data-feather="help-circle"></i><span data-i18n="menuWhat">What is LexiQamus?</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="user-guide-en.html" data-page-tr="kullanim-kilavuzu-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="user-guide-en.html" data-page-tr="kullanim-kilavuzu-tr.html"
+            >
             <i data-feather="book-open"></i><span data-i18n="menuGuide">Instructions</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="institutional-subscribers-en.html" data-page-tr="kurumsal-uyeler-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="institutional-subscribers-en.html" data-page-tr="kurumsal-uyeler-tr.html"
+            >
             <i data-feather="briefcase"></i><span data-i18n="menuInstitutional">Institutional Subscribers</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
 
         <!-- Version entries group their own sub-pages; Bootstrap's collapse
              drives the accordion. -->
         <li>
-          <button type="button" class="side-link side-link-parent" data-bs-toggle="collapse"
+          <button type="button" class="btn side-link side-link-parent" data-bs-toggle="collapse"
                   data-bs-target="#menuVersion3" aria-expanded="false" aria-controls="menuVersion3">
             <i data-feather="search"></i>
             <span data-i18n="menuLQ3">LexiQamus 3.0</span>
@@ -100,17 +108,21 @@
           </button>
           <ul class="collapse side-submenu" id="menuVersion3">
             <li>
-              <a class="side-sublink" href="#" data-page-en="data-model-en.html" data-page-tr="veri-modeli-tr.html"
-                 data-action="click->home#openPage" data-i18n="menuV3DataModel">Digitization and Data Model</a>
+              <a class="side-sublink is-unavailable" aria-disabled="true" data-page-en="data-model-en.html" data-page-tr="veri-modeli-tr.html"
+                 ><span data-i18n="menuV3DataModel">Digitization and Data Model</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
+          </a>
             </li>
             <li>
-              <a class="side-sublink" href="#" data-page-en="lq3-whats-new-en.html" data-page-tr="lq3-yenilikler-tr.html"
-                 data-action="click->home#openPage" data-i18n="menuV3WhatsNew">What&rsquo;s New</a>
+              <a class="side-sublink is-unavailable" aria-disabled="true" data-page-en="lq3-whats-new-en.html" data-page-tr="lq3-yenilikler-tr.html"
+                 ><span data-i18n="menuV3WhatsNew">What&rsquo;s New</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
+          </a>
             </li>
           </ul>
         </li>
         <li>
-          <button type="button" class="side-link side-link-parent" data-bs-toggle="collapse"
+          <button type="button" class="btn side-link side-link-parent" data-bs-toggle="collapse"
                   data-bs-target="#menuVersion2" aria-expanded="false" aria-controls="menuVersion2">
             <i data-feather="search"></i>
             <span data-i18n="menuLQ2">LexiQamus 2.0</span>
@@ -119,34 +131,41 @@
           </button>
           <ul class="collapse side-submenu" id="menuVersion2">
             <li>
-              <a class="side-sublink" href="#" data-page-en="lexicon-digitization-en.html" data-page-tr="lexicon-dijitallestirme-tr.html"
-                 data-action="click->home#openPage" data-i18n="menuLexicon">Lexicon Digitization Project</a>
+              <a class="side-sublink is-unavailable" aria-disabled="true" data-page-en="lexicon-digitization-en.html" data-page-tr="lexicon-dijitallestirme-tr.html"
+                 ><span data-i18n="menuLexicon">Lexicon Digitization Project</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
+          </a>
             </li>
             <li>
-              <a class="side-sublink" href="#" data-page-en="lq2-new-features-en.html" data-page-tr="lq2-yeni-ozellikler-tr.html"
-                 data-action="click->home#openPage" data-i18n="menuV2WhatsNew">What&rsquo;s New</a>
+              <a class="side-sublink is-unavailable" aria-disabled="true" data-page-en="lq2-new-features-en.html" data-page-tr="lq2-yeni-ozellikler-tr.html"
+                 ><span data-i18n="menuV2WhatsNew">What&rsquo;s New</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
+          </a>
             </li>
           </ul>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="lq1-first-version-en.html" data-page-tr="lq1-ilk-surum-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="lq1-first-version-en.html" data-page-tr="lq1-ilk-surum-tr.html"
+            >
             <i data-feather="search"></i>
             <span data-i18n="menuLQ1">LexiQamus 1.0</span>
             <span class="side-year">2016</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
 
         <li>
-          <a class="side-link" href="#" data-page-en="suggestions-corrections-history-en.html" data-page-tr="oneri-duzeltme-gecmisi-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="suggestions-corrections-history-en.html" data-page-tr="oneri-duzeltme-gecmisi-tr.html"
+            >
             <i data-feather="edit-3"></i><span data-i18n="menuUpdates">History of Suggestions and Corrections</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
-          <a class="side-link" href="#" data-page-en="pricing-en.html" data-page-tr="fiyatlar-tr.html"
-             data-action="click->home#openPage">
+          <a class="side-link is-unavailable" aria-disabled="true" data-page-en="pricing-en.html" data-page-tr="fiyatlar-tr.html"
+            >
             <i data-feather="tag"></i><span data-i18n="menuPricing">Pricing</span>
+            <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
       </ul>
@@ -155,7 +174,7 @@
 
   <!-- ============================== top row ============================== -->
   <div class="home-top-row">
-    <button type="button" class="menu-button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu"
+    <button type="button" class="btn menu-button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu"
             aria-controls="sideMenu" aria-label="Menu" data-i18n-aria="menuHeading">
       <i data-feather="menu"></i>
     </button>
@@ -167,11 +186,11 @@
         <i data-feather="external-link"></i>
       </a>
 
-      <div class="language-switch" role="group" aria-label="Language">
+      <div class="language-switch" role="group" aria-label="Language" data-i18n-aria="ariaLanguage">
         <span class="language-thumb" aria-hidden="true"></span>
-        <button type="button" class="language-option active" data-language="en" aria-pressed="true"
+        <button type="button" class="btn language-option active" data-language="en" aria-pressed="true"
                 data-language-target="option" data-action="click->language#select">EN</button>
-        <button type="button" class="language-option" data-language="tr" aria-pressed="false"
+        <button type="button" class="btn language-option" data-language="tr" aria-pressed="false"
                 data-language-target="option" data-action="click->language#select">TR</button>
       </div>
     </div>
@@ -228,12 +247,12 @@
                    data-home-target="inputWrapper"
                    data-action="click->home#chooseSide">
 
-                <div class="source-switch" role="group" aria-label="Search source"
+                <div class="source-switch" role="group" aria-label="Search source" data-i18n-aria="ariaSearchSource"
                      data-action="click->home#stopSideDetection">
-                  <button type="button" class="source-option active" data-source="ottoman"
+                  <button type="button" class="btn source-option active" data-source="ottoman"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
                           data-i18n="sourceOttoman">OTT</button>
-                  <button type="button" class="source-option" data-source="english"
+                  <button type="button" class="btn source-option" data-source="english"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
                           title="Search English definitions in Redhouse" data-i18n-title="sourceEnglishTitle"
                           data-i18n="sourceEnglish">ENG</button>
@@ -254,13 +273,13 @@
                        autocomplete="off" aria-label="Word to search" data-i18n-aria="ariaMainSearch">
               </div>
 
-              <button type="submit" class="search-submit" id="homeSearchSubmit"
+              <button type="submit" class="btn search-submit" id="homeSearchSubmit"
                       data-home-target="submit" data-i18n="btnSearch">Search</button>
             </div>
 
             <!-- Filters: Bootstrap dropdown, kept open while boxes are ticked -->
             <div class="dropdown">
-              <button type="button" class="filter-trigger" data-bs-toggle="dropdown"
+              <button type="button" class="btn filter-trigger" data-bs-toggle="dropdown"
                       data-bs-auto-close="outside" aria-expanded="false">
                 <i data-feather="sliders"></i>
                 <span class="filter-label" data-i18n="filtersLabel">Filters</span>
@@ -272,9 +291,9 @@
                 <div class="filter-panel-head">
                   <span class="filter-panel-title" data-i18n="filtersTitle">Search Filters</span>
                   <span>
-                    <button type="button" class="filter-link" data-action="click->home#checkAllFilters"
+                    <button type="button" class="btn btn-link filter-link" data-action="click->home#checkAllFilters"
                             data-i18n="filtersAll">All</button>
-                    <button type="button" class="filter-link" data-action="click->home#clearAllFilters"
+                    <button type="button" class="btn btn-link filter-link" data-action="click->home#clearAllFilters"
                             data-i18n="filtersNone">None</button>
                   </span>
                 </div>
@@ -308,43 +327,43 @@
                       <input class="form-check-input" type="checkbox" checked value="lemma"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterLemma">
-                      <span class="form-check-label" data-i18n="chipLemma">Lemma</span>
+                      <span class="form-check-label" data-i18n="filterLemma">Lemma</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="inflected"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterInflected">
-                      <span class="form-check-label" data-i18n="chipInflected">Inflected Forms</span>
+                      <span class="form-check-label" data-i18n="filterInflected">Inflected Forms</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="lexicalizedInflected"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterLexicalized">
-                      <span class="form-check-label" data-i18n="chipLexInfl">Lexicalized Inflected Forms</span>
+                      <span class="form-check-label" data-i18n="filterLexicalizedInflected">Lexicalized Inflected Forms</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="derived"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterDerived">
-                      <span class="form-check-label" data-i18n="chipDerived">Derived Forms</span>
+                      <span class="form-check-label" data-i18n="filterDerived">Derived Forms</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="phrases"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterPhrases">
-                      <span class="form-check-label" data-i18n="chipPhrases">Phrases</span>
+                      <span class="form-check-label" data-i18n="filterPhrases">Phrases</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="compounds"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterCompounds">
-                      <span class="form-check-label" data-i18n="chipCompounds">Compounds</span>
+                      <span class="form-check-label" data-i18n="filterCompounds">Compounds</span>
                     </label>
                     <label class="filter-check form-check">
                       <input class="form-check-input" type="checkbox" checked value="partial"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterPartial">
-                      <span class="form-check-label" data-i18n="chipPartial">Similar Spellings</span>
+                      <span class="form-check-label" data-i18n="filterPartial">Similar Spellings</span>
                     </label>
                   </div>
                 </div>
@@ -353,7 +372,7 @@
 
             <!-- Dictionary picker -->
             <div class="dropdown">
-              <button type="button" class="dictionary-trigger" data-bs-toggle="dropdown"
+              <button type="button" class="btn dictionary-trigger" data-bs-toggle="dropdown"
                       data-bs-auto-close="outside" aria-expanded="false">
                 <!-- Text is written by the controller, including the "{n} selected" form -->
                 <span data-home-target="dictionaryLabel">All Dictionaries</span>
@@ -524,7 +543,48 @@
   </div>
 
   <div class="text-center mt-4">
-    <button type="button" class="library-button" data-i18n="dmlBtn">Does My Library Subscribe?</button>
+    <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+  </div>
+
+  <!-- Result-group copy. It lives in the markup so the English text sits with
+       the rest of the page and the language sweep translates it; the controller
+       reads it by group key when it writes the rows. -->
+  <div hidden data-home-target="groupCopy">
+    <div data-group="lemma">
+      <span data-copy="title" data-i18n="groupLemma">Lemma</span>
+      <span data-copy="note" data-i18n="groupLemmaNote">Results without an affix, including the base or singular form of a value</span>
+      <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1"><b>kalem</b>, <b>dost</b></span>
+    </div>
+    <div data-group="inflected">
+      <span data-copy="title" data-i18n="groupInflected">Inflected Forms</span>
+      <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflected forms of the search term</span>
+      <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e</span>
+    </div>
+    <div data-group="lexicalizedInflected">
+      <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
+      <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms that carry their own dictionary meaning</span>
+      <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1"><b>civar</b> &rarr; <b>civarında</b></span>
+    </div>
+    <div data-group="derived">
+      <span data-copy="title" data-i18n="groupDerived">Derived Forms</span>
+      <span data-copy="note" data-i18n="groupDerivedNote">Words built with derivational affixes</span>
+      <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
+    </div>
+    <div data-group="phrases">
+      <span data-copy="title" data-i18n="groupPhrases">Phrases</span>
+      <span data-copy="note" data-i18n="groupPhrasesNote">Phrases containing the search term</span>
+      <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazar</b> değmek</span>
+    </div>
+    <div data-group="compounds">
+      <span data-copy="title" data-i18n="groupCompounds">Compounds</span>
+      <span data-copy="note" data-i18n="groupCompoundsNote">Compound words containing the search term</span>
+      <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazar</b>gâh</span>
+    </div>
+    <div data-group="partial">
+      <span data-copy="title" data-i18n="groupPartial">Similar Spellings</span>
+      <span data-copy="note" data-i18n="groupPartialNote">Results spelled close to the search term</span>
+      <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"></span>
+    </div>
   </div>
 
   <!-- ============================== results ============================== -->
@@ -552,7 +612,7 @@
 
         <div class="expand-row">
           <span class="spelling-label" data-i18n="expandLabel">Expand search</span>
-          <button type="button" class="pronunciation-button" data-home-target="pronunciationButton"
+          <button type="button" class="btn pronunciation-button" data-home-target="pronunciationButton"
                   data-action="click->home#togglePronunciation" aria-pressed="false">
             <i data-feather="volume-2"></i>
             <span data-i18n="soundsLike">Similar Pronunciation</span>
@@ -563,7 +623,7 @@
     </div>
 
     <div class="results-table-scroll">
-      <table class="table results-table align-middle">
+      <table class="table results-table align-middle" data-home-target="resultsTable">
         <thead>
           <tr>
             <th scope="col" class="col-result" data-i18n="colResult">Result</th>

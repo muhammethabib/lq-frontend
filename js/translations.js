@@ -16,6 +16,9 @@ window.LQ_TRANSLATIONS = {
     legacyTitle: "Önceki kararlı sürümü aç",
     ariaHome: "LexiQamus ana sayfa",
     menuHeading: "Menü",
+    ariaLanguage: "Dil",
+    ariaSearchSource: "Arama kaynağı",
+    soonLabel: "yakında",
 
     // --- side menu ---
     menuSignIn: "Giriş yap",
@@ -50,7 +53,7 @@ window.LQ_TRANSLATIONS = {
     placeholderLatin: "Latin harfleriyle ara...",
     placeholderEnglish: "İngilizce tanımları arayın...",
     placeholderOttoman: "عثمانلى حرفلريله آره...",
-    dmlBtn: "Kütüphaneniz LexiQamus’a üye mi?",
+    librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",
 
     // --- filters ---
     filtersLabel: "Filtreler",
@@ -90,41 +93,44 @@ window.LQ_TRANSLATIONS = {
     editEntry: "Maddeyi düzenle",
     emptyState: "Bir kelime yazıp Ara düğmesine basın.",
     noResults: "Seçtiğiniz filtrelerle sonuç bulunamadı.",
+    searchFailed: "Arama tamamlanamadı. Lütfen tekrar deneyin.",
+
+    // --- filter labels ---
+    filterLemma: "Lemma",
+    filterInflected: "Çekimli Biçimler",
+    filterLexicalizedInflected: "Sözlükselleşmiş Çekimli Formlar",
+    filterDerived: "Türemiş Biçimler",
+    filterPhrases: "İbareler",
+    filterCompounds: "Birleşik Kelimeler",
+    filterPartial: "Benzer İmlalar",
+
 
     // --- result groups: <key>, <key>Note, <key>Example ---
-    chipLemma: "Lemma",
-    chipInflected: "Çekimli Biçimler",
-    chipLexInfl: "Sözlükselleşmiş Çekimli Formlar",
-    chipDerived: "Türemiş Biçimler",
-    chipPhrases: "İbareler",
-    chipCompounds: "Birleşik Kelimeler",
-    chipPartial: "Benzer İmlalar",
-
-    groupLemma: "LEMMA",
+    groupLemma: "Lemma",
     groupLemmaNote: "Ek almamış sonuçlar; bir değerin temel veya tekil biçimi",
     groupLemmaExample: "<b>kalem</b>, <b>dost</b>",
 
-    groupInflected: "ÇEKİMLİ BİÇİMLER",
+    groupInflected: "Çekimli Biçimler",
     groupInflectedNote: "Arama teriminin çekimli biçimlerini gösteren sonuçlar",
     groupInflectedExample: "<b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e",
 
-    groupLexicalizedInflected: "SÖZLÜKSELLEŞMİŞ ÇEKİMLİ FORMLAR",
+    groupLexicalizedInflected: "Sözlükselleşmiş Çekimli Formlar",
     groupLexicalizedInflectedNote: "Sözlükte kendine ait ayrı bir anlam kazanmış çekimli biçimler",
     groupLexicalizedInflectedExample: "<b>civar</b> &rarr; <b>civarında</b>",
 
-    groupDerived: "TÜREMİŞ BİÇİMLER",
+    groupDerived: "Türemiş Biçimler",
     groupDerivedNote: "Yapım ekleriyle oluşturulmuş kelimeleri gösteren sonuçlar",
     groupDerivedExample: "<b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci",
 
-    groupPhrases: "İBARELER",
+    groupPhrases: "İbareler",
     groupPhrasesNote: "Arama terimini içeren ibareler",
     groupPhrasesExample: "<b>nazar</b> &rarr; <b>nazar</b> değmek",
 
-    groupCompounds: "BİRLEŞİK KELİMELER",
+    groupCompounds: "Birleşik Kelimeler",
     groupCompoundsNote: "Arama terimini içeren birleşik kelimeler",
     groupCompoundsExample: "<b>nazar</b> &rarr; <b>nazar</b>gâh",
 
-    groupPartial: "BENZER İMLALAR",
+    groupPartial: "Benzer İmlalar",
     groupPartialNote: "Arama terimine yakın bir imlayla yazılmış sonuçlar",
     groupPartialExample: ""
   }

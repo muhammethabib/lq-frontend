@@ -43,7 +43,9 @@ window.LQ_SAMPLE_RESULTS = {
         { category: "ENTRY", resultLatin: "nazar-ı dikkate alınmasını istirham eylemek", resultOttoman: "نظر دقته آلينمه‌سنی استرحام ايله‌مك", headwordLatin: "nazar", headwordOttoman: "نظر", dictionary: "Kamus-ı Türki", page: "1452", readingVerified: false },
         { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "iskara", headwordOttoman: "اسقارە", dictionary: "Ahteri-i Kebir", page: "940", readingVerified: true },
         { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "manzara", headwordOttoman: "منظره", dictionary: "Lehçe-i Osmani", page: "900", readingVerified: false },
-        { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "nazarî", headwordOttoman: "نظری", dictionary: "Kamus-ı Fransevi", page: "1205", readingVerified: true }
+        { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "nazarî", headwordOttoman: "نظری", dictionary: "Kamus-ı Fransevi", page: "1205", readingVerified: true },
+        // Longest dictionary name in the corpus, so the column is exercised
+        { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "manzar", headwordOttoman: "منظر", dictionary: "Müntahabat-ı Lügat-ı Osmaniye", page: "204", readingVerified: true }
       ]
     },
     {

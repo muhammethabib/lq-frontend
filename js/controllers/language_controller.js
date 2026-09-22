@@ -6,8 +6,15 @@
 // js/translations.js. The English original is captured on first use, so
 // switching back needs no second copy of the page.
 //
-// Attribute keys are handled too: data-i18n-placeholder, data-i18n-title and
-// data-i18n-aria set placeholder, title and aria-label respectively.
+// An element with data-i18n has its whole content replaced, so put the key on
+// the span holding just that text, never on a parent that also holds icons,
+// badges or other children.
+//
+// Attribute keys are handled too: data-i18n-title and data-i18n-aria set
+// title and aria-label. Elements carrying data-i18n-html have their markup
+// replaced instead of their text, for copy that contains tags.
+//
+// It also points every menu link at the page for the chosen language.
 
 class LanguageController extends Stimulus.Controller {
   static targets = ["option"]
@@ -28,9 +35,9 @@ class LanguageController extends Stimulus.Controller {
     document.documentElement.lang = language;
 
     this.translateText(dictionary);
-    this.translateAttribute(dictionary, "i18nPlaceholder", "placeholder");
     this.translateAttribute(dictionary, "i18nTitle", "title");
     this.translateAttribute(dictionary, "i18nAria", "aria-label");
+    this.switchPageLinks(language);
 
     this.optionTargets.forEach((option) => {
       const isActive = option.dataset.language === language;
@@ -42,6 +49,24 @@ class LanguageController extends Stimulus.Controller {
     this.element.dispatchEvent(new CustomEvent("language:changed", {
       detail: { language }, bubbles: true
     }));
+  }
+
+  // Menu entries exist once and carry both language variants, so switching the
+  // language rewrites the href rather than duplicating the menu. They stay
+  // ordinary links: hover shows the destination and middle-click works.
+  //
+  // An entry marked .is-unavailable names a page that has not been rebuilt
+  // yet, so it is left without an href and cannot be followed. Removing that
+  // class is all it takes to turn the entry back into a working link.
+  switchPageLinks(language) {
+    document.querySelectorAll("[data-page-en]").forEach((link) => {
+      if (link.classList.contains("is-unavailable")) {
+        link.removeAttribute("href");
+        return;
+      }
+      const target = language === "tr" ? link.dataset.pageTr : link.dataset.pageEn;
+      if (target) link.setAttribute("href", target);
+    });
   }
 
   translateText(dictionary) {

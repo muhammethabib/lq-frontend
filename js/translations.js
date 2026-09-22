@@ -62,6 +62,7 @@ window.LQ_TRANSLATIONS = {
     selectAll: "Tümünü Seç",
     allDictionaries: "Tüm Sözlükler",
     noDictionaries: "Sözlük Seçilmedi",
+    nDictionary: "{n} sözlük seçili",
     nDictionaries: "{n} sözlük seçili",
 
     // --- results header ---

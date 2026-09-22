@@ -414,7 +414,19 @@
 .home-surface .filter-column[data-filter-group="group"] .filter-check:has(:checked) { background: #fdeef1; }
 
 .home-surface .dictionary-panel { width: 320px; max-height: 340px; overflow-y: auto; }
-.home-surface .dictionary-panel .form-check { padding: 6px 12px; margin: 0; border-radius: 8px; }
+/* Laid out as a flex row rather than with Bootstrap's floated input, whose
+   negative left margin would push the box outside the panel once the default
+   padding is replaced. */
+.home-surface .dictionary-panel .form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.home-surface .dictionary-panel .form-check-input { margin: 0; flex: none; }
 .home-surface .dictionary-panel .form-check:hover { background: var(--lq-body-bg); }
 .home-surface .dictionary-panel .form-check-label { font-size: 14px; cursor: pointer; }
 

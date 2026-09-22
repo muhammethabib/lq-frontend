@@ -161,9 +161,12 @@ class HomeController extends Stimulus.Controller {
     } else if (selected.length === 0) {
       this.dictionaryLabelTarget.textContent = this.translate("noDictionaries", "No Dictionaries");
     } else {
-      // The count sits inside the sentence, so the translation carries a {n} slot
+      // The count sits inside the sentence, so the translation carries a {n}
+      // slot. English needs a singular form; Turkish does not inflect here.
+      const key = selected.length === 1 ? "nDictionary" : "nDictionaries";
+      const fallback = selected.length === 1 ? "{n} Dictionary Selected" : "{n} Dictionaries Selected";
       this.dictionaryLabelTarget.textContent =
-        this.translate("nDictionaries", "{n} Dictionaries Selected").replace("{n}", selected.length);
+        this.translate(key, fallback).replace("{n}", selected.length);
     }
   }
 

@@ -1,0 +1,248 @@
+/* =========================================================
+   Long article pages
+   Scoped under .page-surface. These pages are read straight
+   through, so the layout is a reading column with a contents
+   list beside it.
+   ========================================================= */
+
+.page-surface .page-content[data-controller="article"] {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  column-gap: 46px;
+  align-items: start;
+}
+
+/* ---------- contents ---------- */
+
+.page-surface .article-toc {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding-right: 8px;
+  font-size: .86rem;
+}
+
+.page-surface .article-toc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 0 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--lq-line);
+  background: none;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lq-claret);
+}
+.page-surface .article-toc-toggle svg { display: none; }
+
+.page-surface .article-toc-list {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.page-surface .article-toc-list a {
+  display: block;
+  padding: 5px 0;
+  color: var(--lq-ink-soft);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.page-surface .article-toc-list a:hover { color: var(--lq-sapphire); }
+
+/* ---------- the reading column ---------- */
+
+.page-surface .article-body > p { max-width: 68ch; }
+
+.page-surface .article-h2 {
+  max-width: 62ch;
+  margin: 44px 0 14px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--lq-sapphire);
+  scroll-margin-top: 20px;
+}
+.page-surface .article-body > .article-h2:first-child { margin-top: 0; }
+
+.page-surface .article-h3 {
+  max-width: 62ch;
+  margin: 32px 0 10px;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--lq-ink-navy);
+  scroll-margin-top: 20px;
+}
+
+/* An Ottoman word quoted inside an English sentence */
+.page-surface .article-body [dir="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.12em;
+  color: var(--lq-claret);
+}
+
+/* ---------- figures ---------- */
+
+/* Every figure on these pages is a screenshot of the editor, wide and
+   detailed, so it takes the full reading width. */
+.page-surface .article-figure {
+  margin: 20px 0 26px;
+  padding: 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 13px;
+  background: var(--lq-paper);
+  box-shadow: 0 10px 28px rgba(23, 33, 43, .06);
+}
+.page-surface .article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ---------- the relation categories ---------- */
+
+/* Twenty-nine short labels: a plain column would run down the page, so they
+   are set in as many columns as fit. */
+.page-surface .article-terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 4px 22px;
+  margin: 18px 0 26px;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .article-terms li {
+  padding: 5px 0 5px 16px;
+  border-left: 2px solid var(--lq-lat-border);
+  font-size: .94rem;
+}
+
+/* ---------- the contributor roster ---------- */
+
+.page-surface .article-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 2px 22px;
+  margin: 16px 0 26px;
+  padding: 0 0 0 26px;
+  font-size: .95rem;
+}
+.page-surface .article-roster li { padding: 3px 0; }
+
+/* ---------- signature, references, notes ---------- */
+
+.page-surface .article-signature {
+  margin: 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--lq-ink-navy);
+}
+.page-surface .article-signature + .article-signature {
+  margin-bottom: 8px;
+  font-size: .92rem;
+  color: var(--lq-ink-soft);
+}
+
+.page-surface .article-bibliography {
+  max-width: 74ch;
+  margin: 0 0 12px;
+  padding-left: 26px;
+  text-indent: -26px;
+  font-size: .95rem;
+}
+
+.page-surface .article-notes {
+  margin-top: 48px;
+  padding-top: 8px;
+  border-top: 1px solid var(--lq-line);
+}
+.page-surface .article-notelist {
+  max-width: 74ch;
+  margin: 0;
+  padding-left: 22px;
+  font-size: .9rem;
+  line-height: 1.65;
+  color: var(--lq-ink-soft);
+}
+.page-surface .article-notelist li {
+  padding: 6px 0;
+  scroll-margin-top: 20px;
+}
+
+/* A footnote number in the running text, and the mark that leads back */
+.page-surface .footnote-ref {
+  text-decoration: none;
+  font-weight: 700;
+}
+.page-surface .footnote-back { text-decoration: none; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 991px) {
+  .page-surface .page-content[data-controller="article"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-surface .article-toc {
+    position: static;
+    max-height: none;
+    margin-bottom: 18px;
+    padding: 14px 18px;
+    border: 1px solid var(--lq-line);
+    border-radius: 13px;
+    background: var(--lq-body-bg);
+  }
+  .page-surface .article-toc-toggle { padding: 0; border-bottom: 0; }
+  .page-surface .article-toc-toggle svg { display: block; width: 15px; height: 15px; }
+  .page-surface .article-toc-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .page-surface .article-toc-list { display: none; }
+  .page-surface .article-toc.is-open .article-toc-list { display: block; }
+  .page-surface .article-h2 { font-size: 1.5rem; }
+}
+
+/* ---------- a numbered stage in the project story ---------- */
+
+/* The seven stages were single-item ordered lists in the original, which is
+   how they carried their number. Here the number is a mark before the
+   heading, so the stage reads as a heading and not as a one-item list. */
+.page-surface .article-step {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  counter-increment: stage;
+}
+.page-surface .article-body { counter-reset: stage; }
+.page-surface .article-step::before {
+  content: counter(stage);
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--lq-claret);
+  align-self: center;
+  font-family: 'Inter', sans-serif;
+  font-size: .9rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ---------- an ordinary list in the running text ---------- */
+
+.page-surface .article-list {
+  max-width: 68ch;
+  margin: 14px 0 22px;
+  padding-left: 26px;
+  line-height: 1.7;
+}
+.page-surface .article-list li { padding: 3px 0; }
+.page-surface .article-list .article-list { margin: 6px 0 4px; }

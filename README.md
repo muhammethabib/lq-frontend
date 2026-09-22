@@ -58,7 +58,12 @@ docs/                                 the dev team's instructions and review pro
 | User Guide | `pages/user-guide.html` | Built |
 | Version 3.0: What's New | `pages/lq3-whats-new.html` | Built |
 | History of Suggestions and Corrections | `pages/suggestions-history.html` | Built |
-| Data model, lexicon digitization, version 2.0 notes | — | Not started; the menu entry for each names the file it will live in |
+| Dictionary Digitization and Data Model | `pages/data-model.html` | Built |
+| Lexicon Digitization Project | `pages/lexicon-digitization.html` | Built |
+| Version 2.0: What's New | `pages/lq2-whats-new.html` | Built |
+
+Every menu entry now leads to a page. The sign-up screen and the dictionary
+entry window are the two pieces still to build.
 
 A menu entry only becomes a link once its page exists. `js/page_chrome.js`
 lists the built ones in `window.LQ_BUILT_PAGES`; an entry not on that list

@@ -1,0 +1,137 @@
+/* =========================================================
+   LexiQamus 2.0: What's New
+   Scoped under .page-surface. An archived announcement, read
+   straight through, with a dated log of what followed it.
+   ========================================================= */
+
+.page-surface .v2-kicker {
+  margin: 0 0 14px;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lq-claret);
+}
+
+.page-surface .page-content p { max-width: 68ch; }
+
+.page-surface .v2-h2 {
+  margin: 44px 0 14px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.72rem;
+  font-weight: 600;
+  color: var(--lq-sapphire);
+}
+.page-surface .v2-h3 {
+  margin: 30px 0 10px;
+  font-size: 1.14rem;
+  font-weight: 700;
+  color: var(--lq-ink-navy);
+}
+/* The tab names are set in italic in the announcement, so the emphasis is
+   kept rather than flattened into the heading. */
+.page-surface .v2-h3 em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--lq-claret);
+}
+
+/* ---------- the note that this is an archive ---------- */
+
+.page-surface .v2-archive-note {
+  max-width: 72ch;
+  margin: 26px 0;
+  padding: 18px 22px;
+  border: 1px solid var(--lq-sub-border);
+  border-radius: 13px;
+  background: var(--lq-sub-bg);
+}
+.page-surface .v2-archive-title {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: var(--lq-sub-text);
+}
+.page-surface .v2-archive-note p:last-child { margin-bottom: 0; }
+
+/* The offer the note supersedes, set back so it reads as a record */
+.page-surface .v2-offer {
+  color: var(--lq-muted);
+  font-size: .95rem;
+}
+
+/* ---------- lists and figures ---------- */
+
+.page-surface .v2-list {
+  display: grid;
+  gap: 10px;
+  max-width: 72ch;
+  margin: 16px 0 24px;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .v2-list li {
+  position: relative;
+  padding-left: 22px;
+  line-height: 1.65;
+}
+.page-surface .v2-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .66em;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--lq-claret);
+}
+
+.page-surface .v2-figure {
+  margin: 18px 0 26px;
+  padding: 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 13px;
+  background: var(--lq-paper);
+  box-shadow: 0 10px 28px rgba(23, 33, 43, .06);
+}
+.page-surface .v2-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.page-surface .v2-published {
+  margin-top: 30px;
+  font-size: .92rem;
+  color: var(--lq-ink-soft);
+}
+
+/* ---------- what came after the announcement ---------- */
+
+/* A dated log rather than a list: each line is one change, and the date is
+   what places it. */
+.page-surface .v2-later {
+  display: grid;
+  gap: 4px;
+  margin: 14px 0 26px;
+}
+.page-surface .v2-later-item {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 18px;
+  padding: 12px 0;
+  border-top: 1px solid var(--lq-line);
+}
+.page-surface .v2-later-item:first-child { border-top: 0; }
+.page-surface .v2-later-date {
+  margin: 0;
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--lq-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.page-surface .v2-later-item p:last-child { margin: 0; }
+
+@media (max-width: 575px) {
+  .page-surface .v2-later-item { grid-template-columns: 1fr; gap: 3px; }
+}

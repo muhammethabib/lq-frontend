@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lexicon Digitization Project &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/article.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+  <script src="../js/controllers/article_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="lexicon-digitization"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="storyEyebrow">Archived project story &middot; 2020</p>
+      <h1 data-i18n="storyTitle">Lexicon Digitization Project</h1>
+      <p class="page-lede" data-i18n="storyLede">The methodology, seven-stage workflow, statistics, and people behind the complete digitization of James Redhouse’s 1890 A Turkish and English Lexicon.</p>
+    </header>
+
+    <main class="page-content" data-controller="article">
+      <nav class="article-toc" data-article-target="toc" aria-labelledby="storyTocTitle">
+        <button type="button" class="btn article-toc-toggle" data-action="click-&gt;article#toggle"
+                aria-expanded="false" aria-controls="storyTocList">
+          <span id="storyTocTitle" data-i18n="storyOnThisPage">On this page</span>
+          <i data-feather="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ol class="article-toc-list" id="storyTocList" data-article-target="list"></ol>
+      </nav>
+
+      <div class="article-body">
+        <p data-i18n="storyT001" data-i18n-html="1">Roughly ten years ago as a master’s student studying history at
+Boğaziçi University, I, like everyone else, frequently used James
+Redhouse’s Lexicon during my studies. Since the book was prohibitively
+large and heavy, everybody had difficulty carrying it from place to
+place. After some research, I found that no PDF version existed on the
+Internet. This drove me to scan the entire book into a PDF file, which I
+found myself sharing with several email groups. This is how, on March 6,
+2010, the book was added to an electronic environment, albeit as an
+image, for the very first time.</p>
+        <p data-i18n="storyT002" data-i18n-html="1">I knew, however, that this was not sufficient and that the entire
+work would need to be properly digitized. Consequently, we began this
+project in June 2015—one year prior to the launch of LexiQamus in June
+2016—by typing out the Ottoman words included in the Lexicon. In summer
+of 2017, approximately one year after LexiQamus was launched, we began
+efforts to completely digitize the dictionary. Through crowd-sourcing, I
+endeavored to direct a project in which a great many people would
+participate and that would result in the release of a final product.
+However, I had no idea where to start. The methodology that we would
+adopt was absolutely critical, as projects of such magnitude, when
+executed by a single individual, not only require a considerably large
+amount of time but also risk giving rise to a multitude of errors
+impossible to correct later because restrictions cannot be made with a
+specially designed software. In order to overcome these obstacles, we
+were in need of either a desktop or web application.</p>
+        <p data-i18n="storyT003" data-i18n-html="1">Here, I must certainly acknowledge the immense support and assistance
+of Orhan Aykut, a computer engineer as well as an invaluable mentor of
+mine working as a senior specialist in charge of the database
+architecture at the Information Technologies Authority (Bilgi
+Teknolojileri ve İletişim Kurumu). I mentioned this project to him and
+asked how it could be brought to life, to which he replied that he would
+be able to write a program for it. I explained to him in great detail
+what I was mulling over in my head and we began working. Consulting with
+each other at great length throughout the entire process, we developed a
+program named LQ-Edit and over the course of a year and a half,
+completed writing the program’s software and digitizing the dictionary.
+Whereas we had originally thought that the entire process would be very
+short, we found ourselves running into a myriad of unforeseen obstacles,
+like text or software-related issues, throughout our journey. Although
+tiring, we were able to overcome each and every one of these
+obstacles.</p>
+        <h2 class="article-h2" id="methodology-and-stages" data-i18n="storyT004" data-i18n-html="1">Methodology and Stages</h2>
+        <p data-i18n="storyT005" data-i18n-html="1">We used the 1890 copy of the dictionary published in Istanbul, whose
+title page may be seen below, as the basis for our digitization
+project.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story01.png" data-i18n-src="storyT006" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT007" data-i18n-html="1">The work consisted of 2,224 pages, with each page containing two
+separate columns. We made each column into its own image, which resulted
+in a total of 4,448 separate images. Using visual editing software, we
+removed all objects that were not part of the actual text, like page
+numbers and the lines between the two columns.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story02.png" data-i18n-src="storyT008" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT009" data-i18n-html="1">Subsequently, we ran these columns through an OCR process and
+obtained an editable text. However, as the example below illustrates,
+the resulting product contained multitudes of errors. Since the Ottoman
+portions of the text were impossible to isolate, they were also read and
+converted into unintelligible streams of characters by the OCR
+program.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story03.png" data-i18n-src="storyT010" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT011" data-i18n-html="1">Consequently, we found it necessary to form a team to enter data and
+make the necessary corrections and adjustments.</p>
+        <p data-i18n="storyT012" data-i18n-html="1">We then took all the images and made them into sets composed of five
+pages (ten columns) each. This resulted in a total of 445 sets.</p>
+        <p data-i18n="storyT013" data-i18n-html="1">Those wishing to be a part of the program would first need to be
+approved. After approval, participants made a username and password with
+which they would use to log in to the program they had downloaded and
+request a set. After making the necessary changes to the texts, they
+would submit the set and would then be allowed to request a new one. We
+would check submitted sets and if any errors were found, we would return
+the set to the submitting individual. Only after having made the
+necessary corrections and resubmitting the set for approval could they
+continue to request new sets.</p>
+        <p data-i18n="storyT014" data-i18n-html="1">After a fourteen-month period spanning from October 13, 2017 to
+December 8, 2018, during which we distributed and collected all sets
+five separate times, we finally completed the digitization process.</p>
+        <h2 class="article-h2" id="digitization-steps" data-i18n="storyT015" data-i18n-html="1">Digitization Steps</h2>
+        <h2 class="article-h2 article-step" id="typing-out-ottoman-words" data-i18n="storyT016" data-i18n-html="1"><em>Typing out Ottoman words</em></h2>
+        <p data-i18n="storyT017" data-i18n-html="1">In an effort to minimize potential errors resulting from different
+alphabets being used simultaneously and because very few people are able
+to type Ottoman letters quickly, we decided that entering the Ottoman
+words in the Lexicon should constitute a single step in and of itself.
+To this end, we created an Excel spreadsheet and, while maintaining the
+order in which they appeared in the original text, we transcribed every
+single Ottoman word appearing in the dictionary between June and August
+of 2015.</p>
+        <h2 class="article-h2 article-step" id="selecting-ottoman-words-appearing-in-the-scanned-images" data-i18n="storyT018" data-i18n-html="1"><em>Selecting Ottoman words appearing in the scanned
+images</em></h2>
+        <p data-i18n="storyT019" data-i18n-html="1">During this step, project team members were asked to find the Ottoman
+words appearing in the scanned images of the original dictionary and,
+using their computer mouse, to encase them completely in red
+rectangles.</p>
+        <p data-i18n="storyT020" data-i18n-html="1">Words were then highlighted as illustrated below.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story04.png" data-i18n-src="storyT021" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT022" data-i18n-html="1">Utmost attention was paid while encasing words in rectangles.
+Anything not belonging to the word in question was excluded and every
+pixel belonging to the word was to be included in the rectangle.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story05.png" data-i18n-src="storyT023" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT024" data-i18n-html="1">Sometimes a hyphen, which James Redhouse frequently used to represent
+the main entry instead of rewriting the Ottoman word, appeared
+immediately prior or subsequent to an Ottoman word. As a result, this
+hyphen was included in the rectangle while selecting entries.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story06.png" data-i18n-src="storyT025" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT026" data-i18n-html="1">After comparing several examples, however, we noticed that a double
+hyphen, which represented the first two words of the sub-entry
+immediately preceding it, was sometimes used.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story07.png" data-i18n-src="storyT027" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT028" data-i18n-html="1">Another issue encountered was the frequent occurance of <span dir="rtl">ا</span> and <span dir="rtl">او</span> throughout the text,
+which represented the Ottoman words <span dir="rtl">ایتمك</span>and
+<span dir="rtl">اولمق</span>, respectively.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story08.png" data-i18n-src="storyT029" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT030" data-i18n-html="1">So that these words would appear when searched for, the full Ottoman
+word was written out instead of simply the initial characters
+representing them.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story09.png" data-i18n-src="storyT031" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT032" data-i18n-html="1">After all regions had been selected, the following image emerged.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story10.png" data-i18n-src="storyT033" alt="" loading="lazy" width="1720">
+        </figure>
+        <h2 class="article-h2 article-step" id="correcting-and-arranging-the-text" data-i18n="storyT034" data-i18n-html="1"><em>Correcting and arranging the text</em></h2>
+        <p data-i18n="storyT035" data-i18n-html="1">Team members performed the following tasks during this step:</p>
+        <ol class="article-list" type="a">
+          <li data-i18n="storyT036" data-i18n-html="1">Corrected errors in the English text emerging after the
+OCR,</li>
+          <li data-i18n="storyT037" data-i18n-html="1">Entered <em>Main Entry Separators</em> at the beginning of each
+entry,</li>
+          <li data-i18n="storyT038" data-i18n-html="1">Entered <em>Ottoman Separators</em> where Ottoman words
+appeared,</li>
+          <li data-i18n="storyT039" data-i18n-html="1">Entered a <em>Pronunciation Separator</em> where phonetic
+pronunciations appeared,</li>
+          <li data-i18n="storyT040" data-i18n-html="1">Entered a <em>Foreign Word Separator</em> for words originating
+from Greek, Hebrew, or another language,</li>
+          <li data-i18n="storyT041" data-i18n-html="1">Made each enumerated meaning for entries into its own paragraph,
+and</li>
+        </ol>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story11.png" data-i18n-src="storyT042" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT043" data-i18n-html="1">Since our project is an electronic copy of an original text that has
+no space restrictions, we deliberately preferred to employ a different
+method than the original for the last two items. Accordingly, as long as
+coherence and content integrity were maintained, we broke long,
+multifaceted definitions into smaller parts and frequently made parts of
+definitions into their own paragraphs so as to facilitate reading. In a
+similar vein, we made all tags (indicating the word’s part of speech and
+other similar information), each enumerated meaning appearing under
+definitions, and every sub-entry into their own paragraphs, even if they
+appeared differently in the original text.</p>
+        <h2 class="article-h2 article-step" id="entering-pronunciations" data-i18n="storyT044" data-i18n-html="1"><em>Entering Pronunciations</em></h2>
+        <p data-i18n="storyT045" data-i18n-html="1">We entered the phonetic pronunciations for words during this step.
+Since certain characters were impossible to emulate using available
+keyboards, any numerals or other diacritical marks above the letters in
+the original text were entered immediately following letters.</p>
+        <p data-i18n="storyT046" data-i18n-html="1">Characters are represented as illustrated below:</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story12.png" data-i18n-src="storyT047" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT048" data-i18n-html="1">While editing entries, the region in which the pronunciation would be
+written was placed immediately below the original entry in order to
+avoid potential mistakes.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story13.png" data-i18n-src="storyT049" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT050" data-i18n-html="1">All possible character combinations were identified and, using an
+algorithm, impossible combinations were restricted from being
+entered.</p>
+        <h2 class="article-h2 article-step" id="entering-words-from-other-languages" data-i18n="storyT051" data-i18n-html="1"><em>Entering words from other languages</em></h2>
+        <p data-i18n="storyT052" data-i18n-html="1">We encountered a total of 692 words mostly of Greek, but also of
+Hebrew, Russian, Armenian, or Syriac origin. After encasing these words
+in rectangles wherever they appeared in the original scanned images, we
+typed them out in their original characters.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story14.png" data-i18n-src="storyT053" alt="" loading="lazy" width="1720">
+        </figure>
+        <h2 class="article-h2 article-step" id="matching-words-regions-and-separators" data-i18n="storyT054" data-i18n-html="1"><em>Matching words, regions, and separators</em></h2>
+        <p data-i18n="storyT055" data-i18n-html="1">During this stage, team members confirmed that every word had been
+matched with its respective region in the original image and that it had
+been written correctly in the digitized version. Any mistakes were
+accordingly corrected.</p>
+        <p data-i18n="storyT056" data-i18n-html="1">Team members further checked whether pronunciations and previously
+entered words of other languages had been indicated in their appropriate
+places and corrected any mistakes. Any spelling errors for these words,
+however, were not edited by team members themselves. Instead, they were
+referred to us for correction so as not to compromise
+standardization.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story15.png" data-i18n-src="storyT057" alt="" loading="lazy" width="1720">
+        </figure>
+        <h2 class="article-h2 article-step" id="orthographical-audit-checking-each-ottoman-word-individually" data-i18n="storyT058" data-i18n-html="1"><em>Orthographical Audit: Checking each Ottoman word
+individually</em></h2>
+        <p data-i18n="storyT059" data-i18n-html="1">After matching words with their corresponding regions, the button
+Orthographical Audit (YazımDenetim) became active, which team members
+used to manually audit whether each Ottoman word or any other word item
+had been correctly transcribed.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story16.png" data-i18n-src="storyT060" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT061" data-i18n-html="1">In order to identify typographic errors, the original images and
+editable text were enlarged as much as possible and each letter was
+individually audited. Starting from the right, team members were
+expected to examine each letter as illustrated below:</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story17.png" data-i18n-src="storyT062" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT063" data-i18n-html="1">In order that each word were allocated sufficient time, the program
+restricted members from continuing to the next word before a specific
+period of time based on the number of letters in the entry (half second
+per letter) had passed. Essentially, short words were allotted a shorter
+waiting period whereas long words were accordingly allotted a longer
+period.</p>
+        <p data-i18n="storyT064" data-i18n-html="1">In the event that that team members discovered an error or any other
+discrepancy, they were asked to select the relevant word from the list
+on the left side of the page and mark it appropriately with one of the
+following three options:</p>
+        <ol class="article-list" type="1">
+          <li data-i18n="storyT065" data-i18n-html="1">Incorrectly Written</li>
+          <li data-i18n="storyT066" data-i18n-html="1">Error in Original Text Corrected</li>
+          <li data-i18n="storyT067" data-i18n-html="1">Erratic Case</li>
+        </ol>
+        <p data-i18n="storyT068" data-i18n-html="1">Using this method allowed us to perform the necessary amendments once
+the orthographical audit had been completed. If the word had been
+incorrectly written, we corrected it. Erratic cases were examined, and
+their appropriate spelling was decided upon and implemented. Although we
+did not intervene when an error in the original text had been corrected,
+we left the marker indicating such intact.</p>
+        <p data-i18n="storyT069" data-i18n-html="1">From time to time, cases similar to the following were
+encountered:</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story18.png" data-i18n-src="storyT070" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT071" data-i18n-html="1">In the original image, the letter following <span dir="rtl">ز</span>
+was ambiguous and a single dot was visible. Given the context in which
+the word appeared, we determined that this letter should be written with
+two dots.</p>
+        <figure class="article-figure">
+          <img src="../assets/story/en/story19.png" data-i18n-src="storyT072" alt="" loading="lazy" width="1720">
+        </figure>
+        <p data-i18n="storyT073" data-i18n-html="1">I would like to emphasize here that we gave great importance to the
+opinions, recommendations, and input of our users when auditing the
+orthography of such words in particular.</p>
+        <p data-i18n="storyT074" data-i18n-html="1">After completing the seventh step, we successfully came to the end of
+our digitization project.</p>
+        <h2 class="article-h2" id="statistical-information" data-i18n="storyT075" data-i18n-html="1">Statistical Information</h2>
+        <p data-i18n="storyT076" data-i18n-html="1">Now, we would like to share several important statistics in the
+following section.</p>
+        <p data-i18n="storyT077" data-i18n-html="1">First and foremost, although the original book’s introduction states
+that the initial plan was to include 100 thousand words and that 93
+thousand words had effectively been included in the dictionary<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, the book contained a total of
+79,491 entries. Of these, 8,385 were homographs with their own distinct
+pronunciations and meanings.</p>
+        <p data-i18n="storyT078" data-i18n-html="1">Moreover, sometimes multiple entries in the dictionary shared the
+same definition. The number of entries for which the same definition is
+given is 3,006.</p>
+        <p data-i18n="storyT079" data-i18n-html="1">The author also specified in the book’s introduction that words of
+various linguistic origins were grouped into four categories, namely
+Turkish, Arabic, Farsi, and European languages,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>
+without defining what is meant by European languages. Based on this
+categorization, the numbers of words in each category are as
+follows:</p>
+        <p data-i18n="storyT080" data-i18n-html="1">Turkish (T): 21,904 words.</p>
+        <p data-i18n="storyT081" data-i18n-html="1">Arabic (A): 46,050 words.</p>
+        <p data-i18n="storyT082" data-i18n-html="1">Farsi (P): 10,136 words.</p>
+        <p data-i18n="storyT083" data-i18n-html="1">European languages (F): 1,401 words.</p>
+        <p data-i18n="storyT084" data-i18n-html="1">Whereas the total number of sub-entries is 30,572, unique sub-entries
+total 28,638. In fact, our project has allowed us the opportunity to
+identify sub-entries included in more than one main entry. For example,
+the sub-entry <em>eşref saat</em> is listed under both <em>eşref</em>
+and <em>saat</em>. Similarly, the word <em>binbaşı</em> is mentioned
+under both <em>bin</em> and <em>baş</em>. Interesting is that Redhouse
+provides different meanings each time these sub-entries appear. From
+this, we understand that the author did not have a precontrived list
+containing all of these entries and that he instead identified relevant
+sub-entries as he wrote entries. I believe that the existence of
+multiple, diverse meanings for the same word or phrases will be of
+interest to historians, literati, and especially philologists.</p>
+        <p data-i18n="storyT085" data-i18n-html="1">Additionally, there are Ottoman words that appear in definitions
+without their own definition and for which neither an entry nor
+sub-entry exists. For example, the word <strong><span dir="rtl">میدانیە</span></strong> appears as the feminine form of the
+entry <strong><span dir="rtl">میدانی</span></strong>. The total of such
+words for which no definition is provided is 50,422. The number of
+unique Ottoman words for which no definition is provided is 35,611.</p>
+        <h2 class="article-h2" id="acknowledgments" data-i18n="storyT086" data-i18n-html="1">Acknowledgments</h2>
+        <p data-i18n="storyT087" data-i18n-html="1">A great many valuable people contributed to this two-and-a-half-year
+project. Only after many sessions of comprehensive consultation and the
+active participation of many competent individuals was this project to
+be realized.</p>
+        <p data-i18n="storyT088" data-i18n-html="1">First and foremost, I offer my most sincere thanks and endless
+gratitude to my very first thesis advisor in my academic career, dear
+Prof. Dr. Edhem Eldem, who, upon mentioning this project while still in
+its earliest conceptual stage, encouraged me to pursue it and who
+offered his valuable support when I encountered difficulties during
+digitization. Moreover, I wish to express my deepest respect and thanks
+to Mehmet Genç, Prof. Dr. Suraiya Faroqhi, Prof. Dr. Hatice Aynur, Prof.
+Dr. Engin Deniz Akarlı, and Prof. Dr. Mehmet İpşirli, all of whom
+expressed their enthusiasm when I explained the project to them and
+encouraged me to continue throughout the process.</p>
+        <p data-i18n="storyT089" data-i18n-html="1">Concerning software-related logistics, the invaluable contributions
+made by my mentor, Orhan Aykut, must be acknowledged. Mr. Aykut worked
+painstakingly on the project day and night so that data input would be
+as seamless as possible. Not only did he develop the software we used,
+he designed the architecture of its database. At the end of the day,
+despite so many different people using the software, Mr. Aykut developed
+an original and highly-efficient crowd-sourcing program that allowed a
+standard, cohesive product to be created. Other than the program itself,
+I am deeply grateful to him for sharing his helpful ideas about the
+project in general. I do not know how many obstacles we faced or how
+many complex problems we solved over the course of this long journey
+together. As for coding, the recommendations made by Hasan Özdemir, a
+long-time friend from my undergraduate days at Boğaziçi University who
+is now living in Seattle and working as a program manager and
+accessibility leader in Microsoft, are truly worth their weight in gold.
+He would guide me whenever I was stuck in a difficult situation. His
+advice both during the coding phase and concerning how the project
+should be run were always right on the mark. I am further greatly
+indebted to another friend from my undergraduate years, Abdurrahman
+Açıkgöz, who supported me in a wide range of matters, like directing the
+project, making decisions concerning user experience, deliberating over
+developments to be made to the LQ-Edit program, and the general running
+of the process. Currently working as a product manager at TRT-World,
+Abdurrahman was frequently the first person I would call and ask for
+ideas when I found myself in a dilemma. He has left his mark on several
+parts of the website, from the designs of boxes to the text appearing
+over buttons when your mouse hovers over them. With his vast knowledge
+of industrial engineering, he curbed my perfectionist tendencies and
+continually directed me to the best and most efficient option, for which
+I am truly grateful to him. Without his critical, yet constructive
+advice, we would still be working on this project.</p>
+        <p data-i18n="storyT090" data-i18n-html="1">Burak Şahin’s canny mediation of the problems we encountered related
+to reporting, obtaining statistics, and coding combined with his
+willingness to offer whatever assistance he could regardless of his
+schedule was certainly remarkable. With his vast knowledge both in
+computer engineering and in diverse academic fields, Dr. Harun Şencal is
+one of the people with whom I regularly consulted from the very onset of
+the project. Not only did Dr. Şencal offer several important pieces of
+advice on how to direct the program and form the software team, he
+assisted us in making appropriate decisions on several critical issues,
+including the database architecture and solutions to several technical
+problems emerging during digitization. The profound software knowledge
+of Assist. Prof. Ahmet Kaplan, faculty member and IT director at Ibn
+Haldun University, was quite veritably a saving grace in our darkest
+hours—like when our website was subject to a cyber-attack—where his
+intervention and valuable advice allowed us to continue working. Yusuf
+Akbulut’s straightforward, invaluable ideas were instrumental in the
+project’s continuation especially during its initial stages. He was also
+an individual whose consultation regarding LQ-Edit I continually sought
+during the digitization process. The original solutions that he would
+frequently share showed me once again just how vital consultation
+is.</p>
+        <p data-i18n="storyT091" data-i18n-html="1">Since the very inception of LexiQamus and well before the
+digitization of the Lexicon even began, Haluk Dortluoğlu, the CFO of BİM
+Inc., would always make time for me whenever I wanted to speak with him
+either on the phone or face to face, for which I am eternally indebted.
+Throughout the entire project, Dortluoğlu would generously offer words
+of encouragement and his own experience as a highly-qualified,
+successful businessman. Always by my side through thick and thin was
+Metin Karabaşoğlu, whose support I was able to feel over the entire
+course of the project. Making a separate TV program together with Şener
+Boztaş was an indication as to how much importance they attached to the
+study. İlhan Kartal never hesitated to share his years of experience as
+a high-level manager and an electronics and communication engineer in
+the telecommunication sector. His advice and critique were both
+innovative and constructive. İzzet Akyol, a successful businessman
+deeply interested in Ottoman history and language, believed in the
+project from the very beginning and did not withhold valuable advice
+from us. Also, I thank him for all his efforts in making more people
+aware of and able to benefit from our project. I am grateful to both
+Ramazan Saçmalı and Osman Zeki Uğur, who offered their support
+throughout the course of the project. Dr. Yunus Uğur, the first name
+that comes to mind in Turkey when discussing experimental and digital
+historiography, always gave value to my eccentric ideas, offered words
+of encouragement, and actively supported us in seeking financial support
+for our project. Indeed, he was one of the most important sources of
+motivation for me in believing that this project would be successful.
+Prof. Dr. Abdülhamit Kırmızı and Assoc. Prof. Dr. Berat Açıl would
+always lend an ear and offer constructive criticism whenever I would
+discuss with them on the project’s direction. With their knowledge of
+history, Dr. Ayşe Başaran and Dr. Betül İpşirli Argıt were both
+immensely helpful on a number of topics and would always point us to the
+right people with the right expertise in a wide variety of fields.</p>
+        <p data-i18n="storyT092" data-i18n-html="1">Since the entries in the dictionary are written in Ottoman script,
+their definitions in English, and the edition is somewhat dated, we
+would sometimes have doubts concerning the text itself. In such cases,
+the first person I would turn to for help was my philologist friend,
+John Zacharias Crist. As his first language is English, he provided us
+with satisfying answers to all of our English-related questions. Zack
+was always there to offer his help and guidance on whatever questions we
+had pertaining to English, and his recommendations can be seen in the
+written content appearing on the home page and what is written on the
+website’s buttons. Moreover, because of his knowledge of both modern and
+Ottoman Turkish along with being familiar with Farsi and Arabic, we were
+very fortunate to have him on this project. All of the questions he
+asked and the problems he pointed out while entering data not only were
+incisive but also forced us to reevaluate some of our earlier decisions.
+I am grateful and offer many thanks to Ebubekir Subaşı, a history and
+language specialist as well as expert archivist with whom I consulted
+concerning the distinction between the letter <span dir="rtl">ە</span>
+in Farsi and Arabic <span dir="rtl"></span>and in which cases which one
+should be used. For had this dilemma not been resolved, we would have
+encountered tremendous problems like either thousands of words in the
+database remaining invisible during searches or our not being able to
+devise an adequately detailed filtering system. I also thank Mustafa
+Karapınar, currently writing his master’s thesis in the School of
+Islamic Studies at Ibn Haldun University and who replied with patience
+each of my unending questions as to the special conditions of Arabic
+words, especially <em>hamza</em>. Whenever I ran into difficulties
+entering Greek words included in the lexicon, the assistance of Yusuf
+Ziya Karabıçak, who is about to complete his PhD in history at McGill
+University and EHESS, was especially valuable. Similarly, I must also
+thank Assist. Prof. Dr. Fatih Uslu, faculty member of Istanbul Şehir
+University’s Department of Turkish Language and Literature, for his help
+solving an Armenian word.</p>
+        <p data-i18n="storyT093" data-i18n-html="1">My dear friends Dr. Abdullah Taha Orhan, Dr. Hasan Umut and Muhammet
+Habib Saçmalı, currently pursuing his PhD in history at UCLA, were the
+very first individuals I would consult about linguistic issues as a
+result of their experience with and deep knowledge of English, Arabic,
+Farsi, and Ottoman Turkish. Dr. Abdullah Taha Orhan would provide
+genuinely satisfying answers to the questions I asked without any delay
+and would even brilliantly solve complicated problems that were outside
+of his field of expertise. Muhammet Habib Saçmalı pointed out problems
+that had remained hidden to us because of our position as producers and
+helped us find appropriate arrangements to overcome them. Being an
+active user of LexiQamus instead of merely an observer, his
+recommendations and critique were certainly worth their weight in gold.
+Keeping us informed of new developments and works emerging in the
+related academic literature, Dr. Hasan Umut was integral in keeping the
+project up to date. The contributions made by my dear friend Ali Bengü
+in situating the project’s steps into a workable framework cannot be
+underestimated, especially those steps taken during the period in which
+he actively participated. By devising well-defined result-oriented
+steps, he visibly increased the efficiency of the software team, for
+which I am truly grateful. Fortified by his brilliant power of reason
+and never hesitating to share his sagacious insight on the most
+complicated of issues, despite not being fully versed on the technical
+details of the problem, not only did my long-time friend and colleague
+Dr. Abdullah Enes Tüzgen prevent us from making wrong decisions on a
+variety of subjects, he saved us from suffering potential losses of
+time. I further owe a debt of gratitude to my dear friend and colleague
+Ömer Faruk Petek, who, in addition to his legal expertise, followed new
+technological trends and would inform me of alternative solution methods
+that opened many locked doors for us. I must also thank my dear friend
+İsmail Benli not only for sharing his ideas on a wide variety of topics,
+ranging from the project’s general direction to changes needing to be
+made so that the website’s interface would be more user-friendly, but
+also for offering his assistance wherever he could without
+hesitation.</p>
+        <p data-i18n="storyT094" data-i18n-html="1">Finally, I would like to touch upon the contributions made while
+entering data through LQ-Edit. Moderating the third phase of the
+project, my sister Ayşe Seyyide Adıgüzel was extremely precise in her
+work. After having analyzed submitted sets down to the finest detail,
+she would return those needing further work to team members along with
+appropriate commentary. I am grateful to her for her sacrifice, intense
+effort, and rigorous labor. I am also indebted to PhD candidate Ali Reza
+Hodaei at Istanbul Şehir University, who, by entering all of the Ottoman
+words contained in the dictionary, played an integral role in bringing
+the project to fruition.</p>
+        <p data-i18n="storyT095" data-i18n-html="1">True to our word, we have listed the names of all the project members
+who entered data into the system, with those making the greatest
+contribution at the top:</p>
+        <ol class="article-list" type="1">
+          <li>Mustafa Atalay</li>
+          <li>Hatice Tüfekçi</li>
+          <li>Seher Kocaibiş</li>
+          <li>Emre Gebece</li>
+          <li>Zeynep Kılıç</li>
+          <li>Sıdıka Düzen</li>
+          <li>Eren Aras Aydın</li>
+          <li>Betül Ayhan</li>
+          <li>Yasemin Satar</li>
+          <li>Murat Yücel</li>
+          <li>John Zacharias Crist</li>
+          <li>Zeynep Yılmaz</li>
+          <li>Mustafa Aksu</li>
+          <li>Emre Baysan</li>
+          <li>Hasan Demir</li>
+          <li>Onur Nizam</li>
+          <li>Rumeysa Ervan</li>
+          <li>Kadir Pürde</li>
+          <li>Şehnaz İyibaş</li>
+          <li>Şeyma Nur Demirci</li>
+          <li>Burcu Çoğalmış</li>
+          <li>Meryem İdiler</li>
+          <li>Numan Deniz</li>
+          <li>Osman Tozbey</li>
+        </ol>
+        <p data-i18n="storyT096" data-i18n-html="1">As such, I thank all of the valuable project team members who worked
+through so many divergent and arduous tasks, like correcting, arranging,
+and editing the text, and whose efforts succeeded in bringing this
+project to life.</p>
+        <p data-i18n="storyT097" data-i18n-html="1">Regardless of the number of people who had a hand in this project,
+any and all shortcomings in the final product are my own. Since, unlike
+a printed book, making corrections and adjustments is very easy, I ask
+that any errors noticed be informed to us so that they may be
+immediately corrected.</p>
+        <h2 class="article-h2" id="whats-next" data-i18n="storyT098" data-i18n-html="1">What’s Next?</h2>
+        <p data-i18n="storyT099" data-i18n-html="1">With your insight and feedback, we will continually strive to locate
+and reduce the likely errors in the dictionary. With our current program
+and the opportunities it confers to us, we plan to eliminate all
+possible errors within the medium term.</p>
+        <p data-i18n="storyT100" data-i18n-html="1">In the summer of 2020, we will integrate <em>Kamus-ı Türkî</em> into
+LexiQamus in both Ottoman and Latin script, as we have already digitized
+a significant portion of this dictionary. After that, we will continue
+to digitize another 250 or so dictionaries printed in the
+19<sup>th</sup> and 20<sup>th</sup> centuries so as to preserve and
+further enhance the academic integrity of our project. This way we will
+continue to provide novel services and support to researchers.</p>
+        <p class="article-signature">Dr. Ahmet Abdullah Saçmalı</p>
+        <p class="article-signature" data-i18n="storyT101" data-i18n-html="1">LexiQamus Founder</p>
+        <p class="article-signature" data-i18n="storyT102" data-i18n-html="1">February 10, 2020</p>
+        <h2 class="article-h2" id="bibliography" data-i18n="storyT103" data-i18n-html="1">Bibliography</h2>
+        <p class="article-bibliography">Redhouse, James. 1890. <em>A Turkish and English Lexicon</em>.
+Constantinople: Printed for the American mission.</p>
+        <section class="article-notes" id="notes">
+          <h2 class="article-h2" data-i18n="storyNotes">Notes</h2>
+          <ol class="article-notelist">
+            <li id="fn1">“It was computed that the work would contain about
+100,000 Turkish words of Turkish, Arabic, Persian, and European origin,
+in the Turkish character, with their pronunciation in European letters,
+their various significations, and as many usual compounds and phrases as
+could be collected. Four years sufficed for the preparation of the
+manuscript of about 93,000 words.” James Redhouse. 1890. <em>A Turkish
+and English Lexicon</em>. Constantinople: Printed for the American
+mission. p. xi.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+            <li id="fn2" data-i18n="storyT104" data-i18n-html="1">Ibid.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>
+          </ol>
+        </section>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

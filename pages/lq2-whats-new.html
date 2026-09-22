@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Version 2.0: What’s New &middot; LexiQamus</title>
+  <link rel="icon" href="../assets/lexiqamus-logo.png">
+
+  <!-- Stylesheets: fonts, Bootstrap, shared tokens, the page layout, then this page's own -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/lq2-whats-new.css">
+
+  <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
+  <script src="../vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="../vendor/feather.min.js" defer></script>
+  <script src="../vendor/stimulus.umd.js" defer></script>
+  <script src="../js/translations.js" defer></script>
+  <script src="../js/page_chrome.js" defer></script>
+  <script src="../js/app.js" defer></script>
+  <script src="../js/controllers/page_chrome_controller.js" defer></script>
+  <script src="../js/controllers/language_controller.js" defer></script>
+</head>
+<body>
+
+<div class="container-fluid p-4 page-surface" data-controller="language">
+
+  <!-- Top bar and side menu, shared with every other page -->
+  <div data-controller="page-chrome" data-page-chrome-page-value="lq2-whats-new"></div>
+
+  <div class="page-body">
+    <header class="page-hero">
+      <p class="page-eyebrow" data-i18n="v2Eyebrow">Archived announcement &middot; 2020</p>
+      <h1 data-i18n="v2Title">What’s New in 2.0</h1>
+      <p class="page-lede" data-i18n="v2Lede">A record of the expanded search experience, digitized Lexicon content, and research tools introduced with LexiQamus 2.0.</p>
+    </header>
+
+    <main class="page-content">
+        <p class="v2-kicker"><span lang="en">LexiQamus</span> 2.0</p>
+        <p data-i18n="v2T001" data-i18n-html="1">LexiQamus was first published June 7, 2016. To date, we have provided word solving services while only being able to provide links to words’ definitions. Over the past three and a half years, however, we have continued our efforts by digitizing every entry, subentry, English definition, and word from other languages of James Redhouse’s 1890 <em>A Turkish and English Lexicon</em>. Being one of the most formidable works in the field, we are therefore pleased to be able to present the fruits of our labor to you, our valuable subscribers, colleagues, and partners.</p>
+        <p data-i18n="v2T002" data-i18n-html="1">LexiQamus is a self-funding project which has not been receiving any funds from either public or private institutions. This momentous development has been made possible through the support given to us especially by our institutional subscribers. We further owe a deep debt of gratitude all those who have helped us realize this service.</p>
+        <p data-i18n="v2T003" data-i18n-html="1">With that said, we are in need of further library subscribers so that we may continue our efforts and digitize further dictionaries.</p>
+        <aside class="v2-archive-note">
+          <p class="v2-archive-title" data-i18n="v2T004">Please note: this is an archived announcement, first published in 2020.</p>
+          <p data-i18n="v2T005" data-i18n-html="1">The offer described below is no longer available on its original terms. Under the current referral programme, a user who recommends LexiQamus to their library is eligible for <b>one month of complimentary Premium access</b>.</p>
+        </aside>
+        <p class="v2-offer" data-i18n="v2T006" data-i18n-html="1">By using this form to recommend LexiQamus to your library, you will earn one year’s worth of premium membership. If your library subscribes within six months, you will receive an additional two years of premium membership.</p>
+        <h2 class="v2-h2" id="general-improvements" data-i18n="v2T007">What Does This New Version Include?</h2>
+        <h3 class="v2-h3" data-i18n="v2T008" data-i18n-html="1">General improvements</h3>
+        <ul class="v2-list">
+          <li data-i18n="v2T009" data-i18n-html="1">In the first version, clicking on certain words would result in the following message, “We are unable to provide a definition for this word.” In the current version, this message is no longer operative since either the definition for the word itself or that of the entry in which it is found is now provided.</li>
+          <li data-i18n="v2T010" data-i18n-html="1">Single letter searches were not prohibited. This restriction has been lifted.</li>
+          <li data-i18n="v2T011" data-i18n-html="1">We have removed all broken links.</li>
+          <li data-i18n="v2T012" data-i18n-html="1">We have put the links together and list them, for Ottoman words having definitions in different pages.</li>
+          <li data-i18n="v2T013" data-i18n-html="1">For entries containing characters like - and &amp;, we divided them into separate parts using these characters as a basis. This has allowed a number of previously overlooked results to be found.</li>
+          <li data-i18n="v2T014" data-i18n-html="1">We have performed deep-seated spelling reforms, particularly for the letters <span data-direction="rtl">ك</span> and <span data-direction="rtl">ی</span>, rendering it possible for multiple words to be displayed in results lists.</li>
+        </ul>
+        <h2 class="v2-h2" id="search" data-i18n="v2T015">Search</h2>
+        <p data-i18n="v2T016" data-i18n-html="1">We have made several substantial improvements to the search algorithm. In the previous version, we only provided lists of exact, one-to-one matches.</p>
+        <p data-i18n="v2T017" data-i18n-html="1">In this version we have divided the search into three tabs.</p>
+        <h3 class="v2-h3" data-i18n="v2T018" data-i18n-html="1"><em>Exact</em></h3>
+        <p data-i18n="v2T019" data-i18n-html="1">This tab keeps the approach of the previous version: it shows the results that match the search term exactly.</p>
+        <p data-i18n="v2T020" data-i18n-html="1">We have added one thing, though. When ∞, which stands for an unreadable run of characters of unknown length, appears in the search term, two further tabs are shown.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq201.png" data-i18n-src="v2T021" alt="An Exact search in LexiQamus 2.0 with results that exclude spaces." data-i18n-alt="v2T022" loading="lazy">
+        </figure>
+        <p data-i18n="v2T023" data-i18n-html="1">By default we list the results in which that character covers no space.</p>
+        <p data-i18n="v2T024" data-i18n-html="1">Allowing for the possibility that the part it stands for does contain a space, we offer the results that do contain one in a separate tab.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq202.png" data-i18n-src="v2T025" alt="An Exact search in LexiQamus 2.0 with results that include spaces." data-i18n-alt="v2T026" loading="lazy">
+        </figure>
+        <h3 class="v2-h3" data-i18n="v2T027" data-i18n-html="1"><em>Word</em></h3>
+        <p data-i18n="v2T028" data-i18n-html="1">This tab shows results made up of more than one word, at least one of which matches the search term.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq203.png" data-i18n-src="v2T029" alt="The Word tab displaying multi-word entries containing the searched word." data-i18n-alt="v2T030" loading="lazy">
+        </figure>
+        <p data-i18n="v2T031" data-i18n-html="1">We have colored matching words so as to make them more easily noticed.</p>
+        <h3 class="v2-h3" data-i18n="v2T032" data-i18n-html="1"><em>Partial</em></h3>
+        <p data-i18n="v2T033" data-i18n-html="1">The third tab shows results that neither match exactly nor match on any one of their words, but that match the search term in part. The point is to assume that the beginning or the end of the search term may have been misread, and to show researchers every possible result.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq204.png" data-i18n-src="v2T034" alt="The Partial tab displaying entries partially matching the search criteria." data-i18n-alt="v2T035" loading="lazy">
+        </figure>
+        <h2 class="v2-h2" id="buttons" data-i18n="v2T036">Buttons</h2>
+        <p data-i18n="v2T037" data-i18n-html="1">Since we have included words’ definitions after integrating the Lexicon into our website, three buttons have been added subsequent to each result: Definition, Parent Entry, and Mentioned in.</p>
+        <p data-i18n="v2T038" data-i18n-html="1">The backgrounds of active buttons are black and those of inactive buttons are grey.</p>
+        <h3 class="v2-h3" data-i18n="v2T039" data-i18n-html="1"><em>Definition</em></h3>
+        <p data-i18n="v2T040" data-i18n-html="1">Clicking on this button shows users the word’s definition found in the Lexicon.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq205.png" data-i18n-src="v2T041" alt="A LexiQamus search result with the Definition panel open." data-i18n-alt="v2T042" loading="lazy">
+        </figure>
+        <p data-i18n="v2T043" data-i18n-html="1">For readers who would rather see the English text in Turkish, we have put a button at the top of the definition box that translates it with Google Translate.</p>
+        <h3 class="v2-h3" data-i18n="v2T044" data-i18n-html="1"><em>Links to words within the definition</em></h3>
+        <p data-i18n="v2T045" data-i18n-html="1">If a word included in the definition exists as an exact, one-to-one entry in the dictionary, we have made it into a link that users may follow to view the related entry for the word.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq206.png" data-i18n-src="v2T046" alt="A definition panel containing linked words that lead to related entries." data-i18n-alt="v2T047" loading="lazy">
+        </figure>
+        <h3 class="v2-h3" data-i18n="v2T048" data-i18n-html="1"><em>Parent Entry</em></h3>
+        <p data-i18n="v2T049" data-i18n-html="1">If a search result is a sub-entry, we have included a button that allows users to view the main entry to which it belongs.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq207.png" data-i18n-src="v2T050" alt="A Parent Entry panel showing the main entry for a sub-entry result." data-i18n-alt="v2T051" loading="lazy">
+        </figure>
+        <h3 class="v2-h3" data-i18n="v2T052" data-i18n-html="1"><em>Mentioned in</em></h3>
+        <p data-i18n="v2T053" data-i18n-html="1">This button allows users to view all the other places in the dictionary in which the result appears.</p>
+        <p data-i18n="v2T054" data-i18n-html="1">We have separated one-to-one and partial matches from each other.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq208.png" data-i18n-src="v2T055" alt="Mentioned in panels separating exact and partial occurrences." data-i18n-alt="v2T056" loading="lazy">
+        </figure>
+        <h2 class="v2-h2" id="view-original" data-i18n="v2T057">View Original</h2>
+        <p data-i18n="v2T058" data-i18n-html="1">We have added the View Original button in the event that researchers might need to access the original text in which the entry appears.</p>
+        <p data-i18n="v2T059" data-i18n-html="1">Clicking on this button displays <b>an image of the column</b> in which the entry is found.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq209.png" data-i18n-src="v2T060" alt="A scanned dictionary column displayed through View Original." data-i18n-alt="v2T061" loading="lazy">
+        </figure>
+        <p data-i18n="v2T062" data-i18n-html="1">If the user wants to see the original page without any modification, we have included the button View Original Page that is linked to the original page.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq210.png" data-i18n-src="v2T063" alt="A full scanned dictionary page displayed through View Original Page." data-i18n-alt="v2T064" loading="lazy">
+        </figure>
+        <p data-i18n="v2T065" data-i18n-html="1">As the above examples illustrate, <b>colors are used</b> to aid users find the entry or sub-entry for which they are searching.</p>
+        <p data-i18n="v2T066" data-i18n-html="1">Clicking on the arrows on the sides of the column or page being viewed allows users <b>to surf through the pages</b>.</p>
+        <p data-i18n="v2T067" data-i18n-html="1">Using the form included at the bottom of columns allows users <b>to jump directly to another column</b> in the dictionary. The letter <em>a</em> stands for the column on the left of the pages, whereas the letter <em>b</em> represents the columns on the right.</p>
+        <p data-i18n="v2T068" data-i18n-html="1">Similarly, using the form at the bottom of the original pages allows users <b>to jump directly to another page</b> by entering the desired page number.</p>
+        <h2 class="v2-h2" id="keyboard-improvements" data-i18n="v2T069">Keyboard improvements</h2>
+        <p data-i18n="v2T070" data-i18n-html="1">We have added five new characters to the keyboard.</p>
+        <figure class="v2-figure">
+          <img src="../assets/lq2/en/lq211.png" data-i18n-src="v2T071" alt="The LexiQamus 2.0 Ottoman keyboard showing its search controls and character keys." data-i18n-alt="v2T072" loading="lazy">
+        </figure>
+        <p data-i18n="v2T073" data-i18n-html="1">The keyboard now holds 42 letters.</p>
+        <p data-i18n="v2T074" data-i18n-html="1">Below are the newly added letters and characters:</p>
+        <ul class="v2-list">
+          <li data-i18n="v2T075" data-i18n-html="1"><span data-direction="rtl">إ</span> : Since this letter is included in a multitude of words, we have added it to the keyboard in order to allow for more detailed search filters.</li>
+          <li data-i18n="v2T076" data-i18n-html="1"><span data-direction="rtl">ﺌ</span> : This is actually the intermediate form of <span data-direction="rtl">ئ</span>. However, this letter, at times, is confused with <span data-direction="rtl">ء</span>, we have added this form of <span data-direction="rtl">ئ</span> to the keyboard as its own independent letter.</li>
+          <li data-i18n="v2T077" data-i18n-html="1"><span data-direction="rtl">ە</span> : In the previous version there was only the connector <span data-direction="rtl">ه</span>. In order to perform more detailed searches, the Farsi <span data-direction="rtl">ە</span>, which does not join with subsequent letters, has been added to the keyboard.</li>
+          <li data-i18n="v2T078" data-i18n-html="1"><span data-direction="rtl">ۀ</span> : Despite appearing in texts, no corresponding letter existed on the keyboard. It has since been added, allowing for more precise searches.</li>
+          <li data-i18n="v2T079" data-i18n-html="1">][ : This symbol represents a zero-width space. Though rare, this character is more common in compound words stemming from Western languages. Take, for example, the word <span data-direction="rtl">فوت‌بول</span> (i.e., football). Although the letter <span data-direction="rtl">ت</span> should normally be written conjoined to the following letter, it is written in its final form without a space demarking a new word. As such, we have added a zero-width space to the keyboard. Although this word could be found using a normal space, we would have compromised LexiQamus’ primary objective of narrowing results. By adding this character to the keyboard, we have ensured that the quality of the algorithm has been maintained and allowed for more thorough searches.</li>
+          <li data-i18n="v2T080" data-i18n-html="1"><span data-direction="rtl">ی</span> : We have removed the dots for the independent form of this letter.</li>
+        </ul>
+        <p class="v2-published" data-i18n="v2T081" data-i18n-html="1"><em>Published on</em> February 5, 2020</p>
+        <h2 class="v2-h2" id="later-additions" data-i18n="v2T082">Added while 2.0 was current</h2>
+        <p data-i18n="v2T083" data-i18n-html="1">What we added to the tool and improved while 2.0 was in service, after the announcement above. The additions that came from our users’ suggestions are on the <a href="suggestions-history.html">History of Suggestions and Corrections</a> page.</p>
+        <h3 class="v2-h3" data-i18n="v2T084" data-i18n-html="1">Search and results</h3>
+        <div class="v2-later">
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T085">28 October 2021</p>
+            <p data-i18n="v2T086" data-i18n-html="1"><b>Letters that look alike, letters that sound alike.</b> You can now reach results containing letters that resemble one another in shape. Results that are phonetically close to your search can be shown from the matching tab.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T087">28 October 2021</p>
+            <p data-i18n="v2T088" data-i18n-html="1"><b>Search history.</b> The <em>My Search History</em> button in your profile shows the searches you have made before.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T089">8 January 2022</p>
+            <p data-i18n="v2T090" data-i18n-html="1"><b>Search within the English definitions.</b> Until now only Ottoman expressions could be searched in the <em>Lexicon</em>; the English definition is now searchable too. Type the word into the search bar, press <b>Search</b>, and every entry whose definition contains it is listed. The part holding the word is scrolled into view automatically, so you reach it at once.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T091">15 April 2022</p>
+            <p data-i18n="v2T092" data-i18n-html="1"><b>Rika and Divani tabs.</b> Because the letters that resemble one another change from one hand to another, we added two tabs, <em>Rika</em> and <em>Divani</em>, under the similar-letter results. Results in different hands now appear in their own tabs.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T093">3 May 2022</p>
+            <p data-i18n="v2T094" data-i18n-html="1"><b>Similar letters by position in the word.</b> The <em>Similar Letters</em> tab now searches by where the letter stands in the word. Searching <span data-direction="rtl">لبیب</span>, for instance, we also look for <span data-direction="rtl">ی</span> in place of the first <span data-direction="rtl">ب</span> but not the last, because the two resemble each other at the start of a word and not at the end.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T095">26 May 2022</p>
+            <p data-i18n="v2T096" data-i18n-html="1"><b>Show / Hide All Definitions.</b> We added <b>Show / Hide All Definitions</b> at the top right of the results list, so every definition on the page opens at once and the meanings can be read through faster.</p>
+          </div>
+        </div>
+        <h3 class="v2-h3" data-i18n="v2T097" data-i18n-html="1">Entry and dictionary view</h3>
+        <div class="v2-later">
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T098">8 January 2022</p>
+            <p data-i18n="v2T099" data-i18n-html="1"><b>Seeing the original of an Ottoman word.</b> With this update you can hover over an entry, a sub-entry, or an Ottoman word or phrase that appears in a definition without one of its own, and see its original in the <em>Lexicon</em>. Clicking that image takes you to where the word sits in the dictionary column.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T100">8 January 2022</p>
+            <p data-i18n="v2T101" data-i18n-html="1"><b>A new tab under Mentioned in.</b> An <b>Entry</b> tab was added to the box that shows the other entries whose definition contains the result. It lists the entries the result appears within in part.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T102">8 January 2022</p>
+            <p data-i18n="v2T103" data-i18n-html="1"><b>Special characters in the transliterations.</b> We brought the transliterations closer to the original in shape as well. Numerals now sit above the letters, as they do in the source.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T104">1 July 2022</p>
+            <p data-i18n="v2T105" data-i18n-html="1"><b>Plainer definition boxes and navigation arrows.</b> We redesigned the boxes that carry an entry’s definition from <em>Redhouse</em>’s <em>Lexicon</em> and made them plainer, and added arrows that move to the previous and the next entry.</p>
+          </div>
+        </div>
+        <h3 class="v2-h3" data-i18n="v2T106" data-i18n-html="1">Word Decoder and keyboard</h3>
+        <div class="v2-later">
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T107">28 October 2021</p>
+            <p data-i18n="v2T108" data-i18n-html="1"><b>Typing into the boxes.</b> You can now enter letters into the boxes with the keys of your own keyboard.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T109">28 October 2021</p>
+            <p data-i18n="v2T110" data-i18n-html="1"><b>Sharing a search.</b> The <b>Share Search</b> button under the boxes copies a link to your search. Whoever opens it sees the characters you entered, in the same forms and the same order.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T111">28 October 2021</p>
+            <p data-i18n="v2T112" data-i18n-html="1"><b>The hints that appear over the buttons.</b> Clearing the tick in the box marked <em>Show button information</em> hides the explanations that appear when the cursor is brought onto a key.</p>
+          </div>
+          <div class="v2-later-item">
+            <p class="v2-later-date" data-i18n="v2T113">8 September 2022</p>
+            <p data-i18n="v2T114" data-i18n-html="1"><b>Join chains.</b> We added chains between the boxes that show whether the letters are joined. Clicking a chain marked with a question mark tells LexiQamus whether they are, and narrows your results further.</p>
+          </div>
+        </div>
+    </main>
+  </div>
+
+</div>
+
+</body>
+</html>

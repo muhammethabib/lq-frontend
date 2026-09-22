@@ -18,7 +18,7 @@ const PAGE = 25;
 
 class HomeController extends Stimulus.Controller {
   static targets = [
-    "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
+    "logo", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "sourceOption", "submit", "scriptHint", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
@@ -50,9 +50,12 @@ class HomeController extends Stimulus.Controller {
     // over the page before the reader has asked for anything.
     if (window.matchMedia("(pointer: fine)").matches) this.inputTarget.focus();
     this.refreshDictionaryLabel();
+    this.watchTagline();
     // Text this controller writes itself is not covered by the data-i18n sweep,
     // so it is rewritten whenever the interface language changes.
     this.element.addEventListener("language:changed", () => {
+      // The line under the wordmark is a different length in each language.
+      this.fitTagline();
       this.refreshDictionaryLabel();
       this.renderSpellings();
       this.renderResults();
@@ -84,6 +87,8 @@ class HomeController extends Stimulus.Controller {
     document.removeEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
     this.inputTarget.removeEventListener("keydown", this.onKeyDown);
     if (this.onPageScroll) window.removeEventListener("scroll", this.onPageScroll);
+    window.removeEventListener("resize", this.onResize);
+    clearTimeout(this.taglineTimer);
   }
 
   // The four screens this controller owns. The other two, the entry window
@@ -111,6 +116,7 @@ class HomeController extends Stimulus.Controller {
     this.closeKeyboard();
     this.element.classList.add("state-landing");
     this.element.classList.remove("state-results");
+    this.fitTagline();
     this.emptyStateTarget.hidden = false;
     this.resultsSurfaceTarget.hidden = true;
     this.noMatchesTarget.hidden = true;
@@ -528,6 +534,7 @@ class HomeController extends Stimulus.Controller {
   showError() {
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
+    this.fitTagline();
     this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
     this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => body.remove());
@@ -545,6 +552,7 @@ class HomeController extends Stimulus.Controller {
     this.activeSpelling = (results.spellings || []).find((s) => s.active) || null;
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
+    this.fitTagline();
     this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
 
@@ -768,6 +776,56 @@ class HomeController extends Stimulus.Controller {
         ${rows.map((row, at) => this.rowHtml(row, group.key, at >= PAGE)).join("")}
         ${this.showMoreHtml(bodyId, Math.min(PAGE, rows.length), rows.length)}
       </tbody>`;
+  }
+
+  // ==================== the wordmark and its line ====================
+
+  // The line under the wordmark is set to the wordmark's own width, letter by
+  // letter, so the two end together. It is measured rather than guessed
+  // because the text is translated and the wordmark changes size between the
+  // landing screen and the results.
+  fitTagline() {
+    const line = this.taglineTarget;
+    const target = this.logoTarget.getBoundingClientRect().width;
+    const text = line.textContent.trim();
+    line.style.letterSpacing = "";
+    line.style.marginRight = "";
+    line.style.width = "";
+    line.style.textAlign = "";
+    line.style.whiteSpace = "";
+    if (!target || text.length < 2) return;
+
+    // Measured with no spacing of its own, in a copy that is not shown.
+    const probe = document.createElement("span");
+    probe.style.cssText =
+      "visibility:hidden;position:absolute;white-space:nowrap;font:inherit;letter-spacing:0;";
+    probe.textContent = text;
+    line.appendChild(probe);
+    const natural = probe.getBoundingClientRect().width;
+    probe.remove();
+    if (!natural || natural > target) return;
+
+    // Spacing is added after every letter, the last one included, so the
+    // trailing gap is taken back off the end.
+    const spacing = (target - natural) / (text.length - 1);
+    line.style.width = `${target}px`;
+    line.style.textAlign = "left";
+    // Set to the wordmark's width to the pixel, it must not be allowed to
+    // fall onto a second line over a rounding error.
+    line.style.whiteSpace = "nowrap";
+    line.style.letterSpacing = `${spacing}px`;
+    line.style.marginRight = `${-spacing}px`;
+  }
+
+  watchTagline() {
+    this.onResize = () => {
+      clearTimeout(this.taglineTimer);
+      this.taglineTimer = setTimeout(() => this.fitTagline(), 120);
+    };
+    window.addEventListener("resize", this.onResize);
+    this.fitTagline();
+    // Web fonts land after the first paint and change every measurement.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fitTagline());
   }
 
   // ==================== widening the search ====================

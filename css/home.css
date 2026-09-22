@@ -22,22 +22,22 @@
   align-items: center;
   margin-bottom: 14px;
 }
+/* The row is only as wide as the wordmark, so the badge beside it can hang
+   off the end without pushing the wordmark off centre, and the tagline
+   underneath has the wordmark's own width to measure itself against. */
 .home-surface .logo-row {
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  margin-bottom: 10px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 10px;
 }
-.home-surface .logo-link { display: inline-block; width: 220px; max-width: 100%; }
+.home-surface .logo-link { display: block; width: 220px; max-width: 100%; }
 .home-surface .logo-link img { width: 100%; height: auto; display: block; }
 
-/* Sits just after the wordmark; .logo-row is flex with align-items:flex-end,
-   so no absolute offset is needed. */
 .home-surface .version-badge {
-  align-self: flex-end;
-  margin: 0 0 10px 5px;
-  flex: none;
+  position: absolute;
+  left: calc(100% + 4px);
+  bottom: 3px;
   font-size: 8.5px;
   font-weight: 800;
   letter-spacing: .4px;

@@ -515,6 +515,18 @@ window.LQ_TRANSLATIONS = {
     backToTop: "Başa dön",
 
     // --- The 2026 innovations, read under the main page ---
+    // --- How a word is built ---
+    morphTitle: "Yapısal Çözümleme",
+    morphHint: "Okunuşunu görmek için bir parçanın üzerine gelin.",
+    morphArabic: "Arapça",
+    morphPersian: "Farsça",
+    morphTurkish: "Türkçe",
+    morphOther: "Diğer dil",
+    morphNoteUnclear: "Okunuşu belirsiz",
+    morphNoteTurkishVerb: "Türkçe fiil",
+    morphNoteIncorrect: "Hatalı",
+    morphNoteUnused: "Kullanılmıyor",
+
     jumpTo: "Şuraya git:",
     jumpToAria: "Bir gruba git",
     noResultsFor: "Şunun için sonuç bulunamadı:",

@@ -766,11 +766,11 @@ class HomeController extends Stimulus.Controller {
             title="${this.escape(this.translate("goToResult", "Go to this result"))}">
           <div class="word-pair">
             <span class="word-ottoman">
-              <span class="word-box ottoman-box" data-direction="rtl">${this.highlight(row.resultOttoman, "ottoman", markAffixes)}</span>
+              <span class="word-box ottoman-box" data-direction="rtl">${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
               ${this.misspellingHtml(row)}
             </span>
             <span class="word-latin">
-              <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}">${this.escape(row.resultLatin)}</span>
+              <span class="word-box latin-box${readingClass}" title="${this.escape(readingLabel)}">${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
             </span>
           </div>
         </td>
@@ -790,10 +790,10 @@ class HomeController extends Stimulus.Controller {
             title="${this.escape(this.translate("goToHeadword", "Go to the headword"))}">
           <div class="word-pair">
             <span class="word-ottoman">
-              <span class="word-box ottoman-box" data-direction="rtl">${this.escape(row.headwordOttoman)}</span>
+              <span class="word-box ottoman-box" data-direction="rtl">${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
             </span>
             <span class="word-latin">
-              <span class="word-box latin-box">${this.escape(row.headwordLatin)}</span>
+              <span class="word-box latin-box">${this.escape(row.headwordLatin)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
             </span>
           </div>
         </td>
@@ -862,6 +862,27 @@ class HomeController extends Stimulus.Controller {
         dictionary: zone.zoneDictionary,
         page: zone.zonePage
       }
+    }));
+  }
+
+  // A word can be a root with three things hung off it. The badge offers to
+  // take it apart, and only shows itself when the box is hovered, so the list
+  // stays quiet until someone asks.
+  analysisHtml(ottoman, latin) {
+    return `
+      <button type="button" class="btn analysis-badge"
+              data-action="click->home#openAnalysis:stop"
+              data-analysis-ottoman="${this.escape(ottoman)}"
+              data-analysis-latin="${this.escape(latin)}"
+              aria-label="${this.escape(this.translate("morphTitle", "Morphological analysis"))}">
+        <i data-feather="git-merge" aria-hidden="true"></i>
+      </button>`;
+  }
+
+  openAnalysis(event) {
+    const { analysisOttoman, analysisLatin } = event.currentTarget.dataset;
+    document.dispatchEvent(new CustomEvent("morphology:open", {
+      detail: { ottoman: analysisOttoman, latin: analysisLatin }
     }));
   }
 

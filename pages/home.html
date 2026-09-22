@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../css/language-flag.css">
   <link rel="stylesheet" href="../css/entry-window.css">
   <link rel="stylesheet" href="../css/redhouse.css">
+  <link rel="stylesheet" href="../css/morphology.css">
   <link rel="stylesheet" href="../css/innovations.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
@@ -38,6 +39,7 @@
   <script src="../js/decoder_sample_data.js" defer></script>
   <script src="../js/dictionary_page_sample.js" defer></script>
   <script src="../js/entry_sample.js" defer></script>
+  <script src="../js/morphology_sample.js" defer></script>
   <script src="../js/redhouse_sample.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/search_keyboard_layout.js" defer></script>
@@ -57,6 +59,7 @@
   <script src="../js/controllers/dictionary_page_controller.js" defer></script>
   <script src="../js/controllers/entry_window_controller.js" defer></script>
   <script src="../js/controllers/redhouse_controller.js" defer></script>
+  <script src="../js/controllers/morphology_controller.js" defer></script>
   <script src="../js/controllers/innovations_controller.js" defer></script>
 </head>
 <body>
@@ -1465,6 +1468,61 @@
           </button>
           <button type="button" class="btn announcement-later" data-bs-dismiss="modal"
                   data-i18n="ekualLater">Later</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- How a word is built, opened from the badge on a word box. -->
+  <div class="modal fade morphology-modal" id="morphologyModal" tabindex="-1" aria-hidden="true"
+       data-controller="morphology"
+       data-morphology-template-value="morphologyTemplate"
+       data-morphology-endpoint-value="/word_analysis/show"></div>
+
+  <template id="morphologyTemplate">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable morphology-dialog">
+      <div class="modal-content morphology-surface">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close"></button>
+
+        <h2 class="morphology-title" data-i18n="morphTitle">Morphological analysis</h2>
+
+        <div class="morphology-tree" data-morphology-tree></div>
+
+        <p class="morphology-hint" data-i18n="morphHint">Hover a piece to see its reading.</p>
+
+        <!-- Saying a piece is wrong takes over the window rather than
+             stacking a second one on top of it -->
+        <div class="morphology-report" data-morphology-report hidden>
+          <div class="morphology-report-card">
+            <div data-morphology-form-view>
+              <h3 class="morphology-report-title" data-i18n="entryReportTitle">Report a typo</h3>
+              <p class="morphology-report-word">
+                <span data-direction="rtl" data-morphology-report-ottoman></span>
+                <span class="morphology-report-divider" aria-hidden="true"></span>
+                <span data-morphology-report-latin></span>
+              </p>
+              <form data-morphology-report-form data-action="submit->morphology#sendReport">
+                <label class="visually-hidden" for="morphologyReportText"
+                       data-i18n="entryReportLabel">Describe the error</label>
+                <textarea id="morphologyReportText" class="form-control" rows="4"
+                          placeholder="Please describe the error or suggest a correction."
+                          data-i18n-placeholder="entryReportLabel"></textarea>
+                <div class="morphology-report-actions">
+                  <button type="submit" class="btn morphology-send" data-i18n="submit">Submit</button>
+                  <button type="button" class="btn morphology-cancel"
+                          data-action="click->morphology#closeReport" data-i18n="cancel">Cancel</button>
+                </div>
+              </form>
+            </div>
+            <div class="morphology-thanks" data-morphology-thanks hidden>
+              <i data-feather="check-circle" aria-hidden="true"></i>
+              <p data-i18n="entryThanks">Thank you. Your note has reached the editors.</p>
+              <button type="button" class="btn morphology-send"
+                      data-action="click->morphology#closeReport" data-i18n="close">Close</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

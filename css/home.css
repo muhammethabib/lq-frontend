@@ -1180,3 +1180,34 @@
   .home-surface .jump-label { margin-right: 10px; }
   .home-surface .jump-link { padding: 7px 12px; font-size: 11px; }
 }
+
+/* The badge that offers to take a word apart. It keeps to itself until the
+   box it sits on is hovered. */
+.home-surface .analysis-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background: var(--lq-paper);
+  color: var(--lq-muted);
+}
+
+.home-surface .word-box { position: relative; }
+.home-surface .word-box:hover .analysis-badge,
+.home-surface .analysis-badge:focus-visible { display: flex; }
+
+.home-surface .analysis-badge:hover {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+  box-shadow: 0 10px 15px -3px rgba(8, 37, 103, 0.2);
+}
+
+.home-surface .analysis-badge svg { width: 12px; height: 12px; }

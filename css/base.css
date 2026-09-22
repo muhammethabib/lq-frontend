@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   LexiQamus - shared tokens and page chrome
+   Feature CSS lives in css/<feature>.css and must not add
+   rules here. This file only holds brand values, fonts and
+   the top bar that every page shares.
+   ========================================================= */
+
+:root {
+  /* Brand colours, carried over from the reference mock */
+  --lq-ink: #0f172a;
+  --lq-muted: #64748b;
+  --lq-line: #e2e8f0;
+  --lq-paper: #ffffff;
+  --lq-soft: #f5f8fb;
+  --lq-body-bg: #eef2f7;
+
+  --lq-sapphire: #082567;        /* primary brand blue */
+  --lq-claret: #9d1c51;          /* search button / accent */
+  --lq-claret-hover: #831843;
+  --lq-red: #be123c;             /* Ottoman theme */
+  --lq-gold: #d97706;
+
+  /* Language themes: Latin (blue) and Ottoman (red) */
+  --lq-lat-primary: #082567;
+  --lq-lat-bg: #eff6ff;
+  --lq-lat-border: #dbeafe;
+  --lq-osm-primary: #be123c;
+  --lq-osm-bg: #fff1f2;
+  --lq-osm-border: #ffe4e6;
+
+  /* Result category colours: entry, sub-entry, related */
+  --lq-entry-text: #0f766e;
+  --lq-entry-bg: rgba(20, 184, 166, 0.08);
+  --lq-entry-border: #99f6e4;
+  --lq-sub-text: #b45309;
+  --lq-sub-bg: rgba(251, 191, 36, 0.06);
+  --lq-sub-border: #fde68a;
+  --lq-related-text: #1e3a8a;
+  --lq-related-bg: rgba(59, 130, 246, 0.12);
+  --lq-related-border: #bfdbfe;
+
+  --lq-shadow: 0 22px 60px -30px rgba(8, 37, 103, 0.35);
+  --lq-max-width: 1440px;
+
+  /* Map Bootstrap's primary colour to the brand blue so btn-primary etc. match */
+  --bs-primary: #082567;
+  --bs-primary-rgb: 8, 37, 103;
+  --bs-body-color: #0f172a;
+  --bs-body-bg: #eef2f7;
+  --bs-body-font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ottoman text: font and size are driven by data-direction, never by a hardcoded class */
+[data-direction="rtl"] {
+  direction: rtl;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.2em;
+  line-height: 1.2;
+}
+[data-direction="ltr"] {
+  direction: ltr;
+}
+
+/* Sections that only Admin/Staff should see. The Rails side wraps these in permission checks. */
+.admin-only {
+  outline: 1px dashed var(--lq-gold);
+  outline-offset: 2px;
+}
+
+/* ---------- shared top bar ---------- */
+.lq-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #dfe6ef;
+}
+.lq-topbar .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--lq-sapphire);
+}
+.lq-topbar .navbar-brand img {
+  height: 26px;
+}
+.lq-topbar .nav-link {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #5b6a80;
+  border-radius: 8px;
+}
+.lq-topbar .nav-link:hover {
+  background: #eef3fa;
+  color: var(--lq-sapphire);
+}

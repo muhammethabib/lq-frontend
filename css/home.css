@@ -24,9 +24,9 @@
 @media (min-width: 1024px) {
   .home-surface > .page-chrome > .page-top-row {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 28px;
+    left: 24px;
+    right: 24px;
     z-index: 3;
   }
 }

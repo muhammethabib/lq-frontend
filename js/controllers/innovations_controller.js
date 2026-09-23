@@ -85,11 +85,18 @@ class InnovationsController extends Stimulus.Controller {
     };
     document.addEventListener("view-state:change", this.onViewState);
 
-    this.onResize = () => { this.placePrompt(); this.park(); this.sizeCanvases(); };
+    // The invitation sits at the foot of the main page, outside this element,
+    // so its press is bound here rather than with a data-action.
+    this.prompt = document.querySelector(".innovations-prompt");
+    this.onPrompt = () => this.open();
+    if (this.prompt) this.prompt.addEventListener("click", this.onPrompt);
+
+    this.onResize = () => { this.placePrompt(); this.park(); this.sizeCanvases(); this.placeBadges(); };
     window.addEventListener("resize", this.onResize);
   }
 
   disconnect() {
+    if (this.prompt) this.prompt.removeEventListener("click", this.onPrompt);
     document.removeEventListener("view-state:change", this.onViewState);
     window.removeEventListener("resize", this.onResize);
     document.removeEventListener("wheel", this.onWheel, { capture: true });
@@ -111,6 +118,7 @@ class InnovationsController extends Stimulus.Controller {
     window.scrollTo({ top: 0 });
     this.placePrompt();
     this.park();
+    [100, 400, 1200].forEach((delay) => setTimeout(() => this.placeBadges(), delay));
     this.lock();
   }
 
@@ -757,8 +765,37 @@ class InnovationsController extends Stimulus.Controller {
     frame.src = "home.html?state=popup";
   }
 
-  // Pressing the results picture opens the page it came from.
-  openOriginal() { this.setView(1); }
+  // Pressing the results picture opens the page it came from, and says how to
+  // read what it opened.
+  openOriginal() {
+    this.setView(1);
+    const hint = document.getElementById("innovations-hover-hint");
+    if (!hint) return;
+    this.placeBadges();
+    [60, 200, 600].forEach((delay) => setTimeout(() => this.placeBadges(), delay));
+    hint.classList.add("show");
+    clearTimeout(this.hoverHintTimer);
+    this.hoverHintTimer = setTimeout(() => hint.classList.remove("show"), 7000);
+  }
+
+  // The two badges over the screenshot sit at the same point of it whatever
+  // its size: a little right of centre, a third of the way down, over the row
+  // they are talking about. They are placed in whole pixels, because a badge
+  // landing on a half pixel blurs the writing on it.
+  placeBadges() {
+    const host = this.element.querySelector(".screen-content");
+    if (!host) return;
+    const width = host.clientWidth, height = host.clientHeight;
+    host.querySelectorAll(".lqs-openhint, .lqs-hoverhint").forEach((badge) => {
+      const left = Math.round(width * 0.62 - badge.offsetWidth / 2);
+      const top = Math.round(height * 0.34 - badge.offsetHeight / 2);
+      badge.style.left = `${left}px`;
+      badge.style.top = `${top}px`;
+      const box = badge.getBoundingClientRect();
+      badge.style.left = `${left - (box.left - Math.round(box.left))}px`;
+      badge.style.top = `${top - (box.top - Math.round(box.top))}px`;
+    });
+  }
 }
 
 application.register("innovations", InnovationsController);

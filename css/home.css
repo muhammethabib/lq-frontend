@@ -52,8 +52,10 @@
   max-width: 100%;
   margin: 0 auto 10px;
 }
-.home-surface .logo-link { display: block; width: 220px; max-width: 100%; }
-.home-surface .logo-link img { width: 100%; height: auto; display: block; }
+/* The wordmark's box is drawn tighter than the letters it holds: the L drops
+   below it and the Q's glass rides above, so nothing here may clip. */
+.home-surface .logo-link { display: block; width: 220px; max-width: 100%; overflow: visible; }
+.home-surface .logo-link img { width: 100%; height: auto; display: block; overflow: visible; }
 
 .home-surface .version-badge {
   position: absolute;
@@ -192,9 +194,8 @@
   width: 80px;
   display: flex;
   padding: 3px;
-  gap: 2px;
-  background: var(--lq-body-bg);
-  border: 1px solid var(--lq-line);
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   z-index: 10;
 }
@@ -203,6 +204,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
   border: 0;
   background: transparent;
   border-radius: 6px;
@@ -620,16 +622,24 @@
 .home-surface .library-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  border: 1px solid #f6cfdf;
-  border-radius: 999px;
-  background: #fdf2f7;
+  border: 1.5px solid var(--lq-claret);
+  border-radius: 10px;
+  background: #f9eff3;
   color: var(--lq-claret);
   font-size: 13px;
   font-weight: 700;
   padding: 10px 20px;
+  white-space: nowrap;
 }
-.home-surface .library-button:hover { background: #fce7f0; border-color: #f0b6ce; }
+.home-surface .library-button:hover {
+  background: #f3dde6;
+  border-color: var(--lq-claret);
+  color: var(--lq-claret);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(157, 28, 81, .12);
+}
 
 /* ---------- results surface ---------- */
 
@@ -656,14 +666,25 @@
 .home-surface .results-header-main { flex: 1 1 320px; min-width: 0; }
 .home-surface .results-header-side { flex: 1 1 340px; min-width: 0; padding-top: 14px; }
 
-.home-surface .results-label,
+/* The label over the searched term is the quieter of the two: it names the
+   thing below it and then steps out of the way. The one over the spellings
+   reads as a heading, so it keeps its weight. */
+.home-surface .results-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
 .home-surface .spelling-label {
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: .8px;
   text-transform: uppercase;
-  color: #64748b;
+  color: #5d718c;
+  padding-left: 2px;
 }
+.home-surface .expand-row .spelling-label { font-size: 11px; margin-right: 12px; padding-left: 0; }
 
 /* The term is Ottoman, so it is set right to left; left to itself it would
    fill the column and sit at its far edge instead of under its own label. */
@@ -726,26 +747,38 @@
 
 .home-surface .spelling-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }
 .home-surface .spelling-button {
-  border: 1px solid transparent;
-  border-radius: 9px;
-  padding: 8px 16px;
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 20px;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: .01em;
+  box-shadow: none;
   transition: background .2s, color .2s, border-color .2s;
 }
+/* The Ottoman chip carries a larger face than the Latin one, and its foot is
+   trimmed so the two sit on the same line. */
 .home-surface .spelling-button[data-script="ottoman"] {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: 19px;
-  color: var(--lq-red);
-  background: var(--lq-osm-bg);
-  border-color: var(--lq-osm-border);
+  font-size: 22px;
+  line-height: 1;
+  padding-bottom: 4px;
+  color: #9f1239;
+  background: #fff1f2;
+  border-color: #ffe4e6;
 }
+.home-surface .spelling-button[data-script="ottoman"]:hover:not(.active) { background: #ffe4e6; border-color: #fda4af; }
 .home-surface .spelling-button[data-script="ottoman"].active { background: var(--lq-claret); color: #fff; border-color: var(--lq-claret); }
 .home-surface .spelling-button[data-script="latin"] {
-  color: var(--lq-sapphire);
-  background: var(--lq-lat-bg);
-  border-color: var(--lq-lat-border);
+  color: #1e40af;
+  background: #eff6ff;
+  border-color: #dbeafe;
 }
+.home-surface .spelling-button[data-script="latin"]:hover:not(.active) { background: #dbeafe; border-color: #93c5fd; }
 .home-surface .spelling-button[data-script="latin"].active { background: var(--lq-sapphire); color: #fff; border-color: var(--lq-sapphire); }
 
 .home-surface .expand-row {
@@ -908,10 +941,10 @@
   font-weight: 700;
   line-height: 1;
 }
-.home-surface .group-note b { color: var(--lq-ink); font-weight: 700; }
+.home-surface .group-note b { color: #334155; font-weight: 700; }
 
 /* The worked example stands a little apart from the sentence it illustrates */
-.home-surface .group-note-example { margin-left: 10px; color: #5d718c; }
+.home-surface .group-note-example { margin-left: 8px; color: #5d718c; }
 .home-surface .group-note-ex-label { color: var(--lq-ink-soft); }
 /* Hide the note before the table gets narrow enough for it to squeeze the columns */
 @media (max-width: 1200px) { .home-surface .group-note { display: none; } }
@@ -931,7 +964,7 @@
 .home-surface .result-group.is-collapsed .show-more-row { display: none; }
 
 .home-surface .show-more {
-  margin: 0 5px;
+  margin: 0;
   padding: 8px 24px;
   border: 1px solid var(--lq-line);
   border-radius: 20px;

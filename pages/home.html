@@ -746,7 +746,10 @@
 
   <!-- The only way into the 2026 story. It sits at the foot of the screen and
        waits to be pressed; nothing below it can be reached any other way. -->
-  <button type="button" class="innovations-prompt" data-action="click->innovations#open">
+  <!-- The press is wired by the controller rather than by a data-action: the
+       invitation belongs to the foot of the main page, which is outside the
+       story's own element, and Stimulus only binds actions within it. -->
+  <button type="button" class="innovations-prompt">
     <span class="innovations-prompt-text" data-i18n="discoverStory">DISCOVER 2026 INNOVATIONS</span>
     <span class="innovations-prompt-arrows" aria-hidden="true">
       <span class="innovations-chevron"></span>

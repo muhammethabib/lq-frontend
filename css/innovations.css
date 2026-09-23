@@ -927,9 +927,15 @@
 }
 
 .innovations .pna-top .arrow-shape {
-  opacity: 0.4;
+  opacity: .75;
   border-color: #94a3b8;
 }
+
+/* Inside the story the arrows are always there to be seen, a little larger,
+   and the one that carries on down is in the brand claret. */
+.innovations .page-nav-arrow { opacity: 1; z-index: 600; }
+.innovations .page-nav-arrow .arrow-shape { width: 16px; height: 16px; }
+.innovations .pna-bottom .arrow-shape { border-color: var(--lq-claret); }
 
 @keyframes bounceSmall_lqs{ 0%, 100% { transform: translateY(0) rotate(-135deg); } 50% { transform: translateY(5px) rotate(-135deg); } }
 /* =========================================
@@ -2953,7 +2959,7 @@ body.vs-home:not(.tool-focus)::-webkit-scrollbar {
 }
 
 .innovations .pna-bottom .arrow-shape {
-  border-color: var(--brand-claret);
+  border-color: var(--lq-claret);
 }
 
 .innovations .page-nav-arrow:hover {
@@ -3067,7 +3073,7 @@ body.vs-home:not(.tool-focus)::-webkit-scrollbar {
   justify-content: center;
   margin-left: -4px;
   background: rgba(157,28,81,.12);
-  color: var(--brand-claret);
+  color: var(--lq-claret);
 }
 
 .innovations .oh-ico svg {
@@ -3092,7 +3098,7 @@ body.vs-home:not(.tool-focus)::-webkit-scrollbar {
 .innovations .oh-arrow {
   width: 17px;
   height: 17px;
-  color: var(--brand-claret);
+  color: var(--lq-claret);
   transition: transform .2s ease;
 }
 

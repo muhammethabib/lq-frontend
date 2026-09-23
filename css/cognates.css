@@ -34,9 +34,10 @@
 }
 
 .cognates-surface .cognates-title {
-  margin: 3px 48px 4px;
+  margin: 3px 48px 15px;
   color: var(--lq-sapphire);
   font-size: 17px;
+  line-height: 1.5;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-align: center;
@@ -75,12 +76,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0;
   margin-top: 10px;
 }
 
 .cognates-surface .cognates-action {
   padding: 4px 12px;
   border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--lq-muted);
   font-size: 10px;
@@ -98,7 +101,7 @@
   position: relative;
   flex: 1 1 auto;
   padding: 20px 22px 12px 28px;
-  margin: 0 6px 12px 0;
+  margin: 0 6px 24px 0;
   overflow-y: auto;
   scroll-behavior: smooth;
 }

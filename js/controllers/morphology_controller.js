@@ -188,7 +188,12 @@ class MorphologyController extends Stimulus.Controller {
       return `<span class="tree-origin" style="--origin-bg: ${colour.bg}; --origin-ink: ${colour.ink}"
                     >${safe(this.originName(code))}</span>`;
     }).join("");
-    return `<span class="tree-origin-badge${codes.length > 1 ? " is-split" : ""}">${segments}</span>`;
+    // A node in one language wears that language's own edge; a node in two
+    // keeps the neutral one, which the line between the halves matches.
+    const single = codes.length === 1
+      ? ` style="--origin-edge: ${(ORIGINS[codes[0]] || {}).border || "#e2e8f0"}"`
+      : "";
+    return `<span class="tree-origin-badge${codes.length > 1 ? " is-split" : " is-single"}"${single}>${segments}</span>`;
   }
 
   originName(code) {

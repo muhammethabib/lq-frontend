@@ -1391,23 +1391,17 @@
           </dl>
 
           <h3 class="citation-heading" data-i18n="citeFormats">Reference Formats</h3>
-          <ul class="nav nav-tabs citation-tabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="citeApaTab" data-bs-toggle="tab"
-                      data-bs-target="#citeApa" type="button" role="tab"
-                      aria-controls="citeApa" aria-selected="true">APA</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="citeChicagoTab" data-bs-toggle="tab"
-                      data-bs-target="#citeChicago" type="button" role="tab"
-                      aria-controls="citeChicago" aria-selected="false">Chicago</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="citeHarvardTab" data-bs-toggle="tab"
-                      data-bs-target="#citeHarvard" type="button" role="tab"
-                      aria-controls="citeHarvard" aria-selected="false">Harvard</button>
-            </li>
-          </ul>
+          <div class="citation-tabs" role="tablist">
+            <button class="cite-tab active" id="citeApaTab" data-bs-toggle="tab"
+                    data-bs-target="#citeApa" type="button" role="tab"
+                    aria-controls="citeApa" aria-selected="true">APA</button>
+            <button class="cite-tab" id="citeChicagoTab" data-bs-toggle="tab"
+                    data-bs-target="#citeChicago" type="button" role="tab"
+                    aria-controls="citeChicago" aria-selected="false">Chicago</button>
+            <button class="cite-tab" id="citeHarvardTab" data-bs-toggle="tab"
+                    data-bs-target="#citeHarvard" type="button" role="tab"
+                    aria-controls="citeHarvard" aria-selected="false">Harvard</button>
+          </div>
           <div class="tab-content citation-panes">
             <div class="tab-pane fade show active" id="citeApa" role="tabpanel" aria-labelledby="citeApaTab">
               <p class="citation-reference" data-citation-style="apa"></p>

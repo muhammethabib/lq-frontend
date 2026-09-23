@@ -25,7 +25,7 @@ class CitationController extends Stimulus.Controller {
       if (!this.record) return;
       // The window is rebuilt from its English template, so the style the
       // reader had chosen is put back afterwards.
-      const chosen = this.element.querySelector(".nav-link.active");
+      const chosen = this.element.querySelector(".cite-tab.active");
       const target = chosen && chosen.dataset.bsTarget;
       this.render();
       const restored = target && this.element.querySelector(`[data-bs-target="${target}"]`);

@@ -1447,47 +1447,72 @@
 
         <div class="modal-body">
           <div data-scan-view-body>
+            <!-- The column is read the way the page is, right to left: the
+                 next record sits to the left of the one in hand. -->
             <div class="scan-stage">
-              <button type="button" class="btn scan-arrow scan-arrow-previous"
-                      data-action="click->dictionary-page#previous" data-scan-previous
-                      aria-label="Previous entry">
+              <button type="button" class="btn scan-arrow scan-arrow-next"
+                      data-action="click->dictionary-page#next" data-scan-next
+                      data-bs-toggle="tooltip" data-bs-placement="top"
+                      aria-label="Next" title="Next">
                 <i data-feather="chevron-left" aria-hidden="true"></i>
               </button>
 
               <div class="scan-frame" data-scan-frame>
                 <img alt="">
-                <!-- The word under the cursor, and what can be done with it -->
+                <!-- The word under the cursor: its two spellings, one above
+                     the other, either of which starts a search. The flag that
+                     reports a misreading hangs off the line it belongs to and
+                     is only there while the cursor is on that line. -->
                 <div class="scan-card" data-scan-card hidden
-                     data-action="mouseleave->dictionary-page#hideWord">
-                  <button type="button" class="btn scan-card-line" data-scan-script="ottoman"
-                          data-action="click->dictionary-page#search">
-                    <span data-direction="rtl" data-scan-word-ottoman></span>
-                  </button>
-                  <button type="button" class="btn scan-card-line" data-scan-script="latin"
-                          data-action="click->dictionary-page#search">
-                    <span data-scan-word-latin></span>
-                  </button>
-                  <button type="button" class="btn scan-card-flag"
-                          data-action="click->dictionary-page#report"
-                          aria-label="Report an error" data-i18n-aria="scanReport">
-                    <i data-feather="alert-triangle" aria-hidden="true"></i>
-                  </button>
-                  <!-- Staff only: correcting the stored value, as opposed to a
-                       reader reporting that it looks wrong. Restrict this when
-                       permissions land. -->
-                  <button type="button" class="btn scan-card-edit admin-only" hidden
-                          data-action="click->dictionary-page#editWord"
-                          aria-label="Edit this word" data-i18n-aria="scanEdit">
-                    <i data-feather="edit-2" aria-hidden="true"></i>
-                  </button>
+                     data-action="mouseenter->dictionary-page#holdWord mouseleave->dictionary-page#hideWord">
+                  <div class="scan-card-row">
+                    <button type="button" class="btn scan-card-line" data-scan-script="ottoman"
+                            data-action="click->dictionary-page#search">
+                      <span class="scan-card-ottoman" data-direction="rtl" data-scan-word-ottoman></span>
+                    </button>
+                    <span class="scan-card-report-wrap">
+                      <button type="button" class="btn scan-card-report"
+                              data-action="click->dictionary-page#report"
+                              aria-label="Report an error" data-i18n-aria="scanReport"
+                              data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Report an error" data-i18n-title="scanReport">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                      </button>
+                    </span>
+                  </div>
+                  <div class="scan-card-divider" aria-hidden="true"></div>
+                  <div class="scan-card-row">
+                    <button type="button" class="btn scan-card-line" data-scan-script="latin"
+                            data-action="click->dictionary-page#search">
+                      <span class="scan-card-latin" data-scan-word-latin></span>
+                    </button>
+                    <span class="scan-card-report-wrap">
+                      <button type="button" class="btn scan-card-report"
+                              data-action="click->dictionary-page#report"
+                              aria-label="Report an error" data-i18n-aria="scanReport"
+                              data-bs-toggle="tooltip" data-bs-placement="top"
+                              title="Report an error" data-i18n-title="scanReport">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                      </button>
+                      <!-- Staff only: correcting the stored value, as opposed to
+                           a reader reporting that it looks wrong. Restrict this
+                           when permissions land. -->
+                      <button type="button" class="btn scan-card-edit admin-only" hidden
+                              data-action="click->dictionary-page#editWord"
+                              aria-label="Edit this word" data-i18n-aria="scanEdit">
+                        <i data-feather="edit-2" aria-hidden="true"></i>
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <p class="scan-missing" data-scan-missing hidden data-i18n="scanMissing">The scan for this view is not in the sample data. The endpoint returns one image per view.</p>
 
-              <button type="button" class="btn scan-arrow scan-arrow-next"
-                      data-action="click->dictionary-page#next" data-scan-next
-                      aria-label="Next entry">
+              <button type="button" class="btn scan-arrow scan-arrow-previous"
+                      data-action="click->dictionary-page#previous" data-scan-previous
+                      data-bs-toggle="tooltip" data-bs-placement="top"
+                      aria-label="Previous" title="Previous">
                 <i data-feather="chevron-right" aria-hidden="true"></i>
               </button>
             </div>
@@ -1523,29 +1548,34 @@
 
         <div class="modal-footer">
           <div class="scan-views" role="group" aria-label="View" data-i18n-aria="scanViewLabel">
+            <!-- The white pane slides to the view in hand rather than each
+                 button lighting up where it stands. -->
+            <span class="scan-view-indicator" data-scan-indicator aria-hidden="true"></span>
             <button type="button" class="btn scan-view" data-scan-view="slice" aria-pressed="true"
                     data-action="click->dictionary-page#selectView">
-              <span data-i18n="scanSlice">Slice</span>
+              <span class="scan-view-name" data-i18n="scanSlice">Slice</span>
               <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
             <button type="button" class="btn scan-view" data-scan-view="column" aria-pressed="false"
                     data-action="click->dictionary-page#selectView">
-              <span data-i18n="scanColumn">Column</span>
+              <span class="scan-view-name" data-i18n="scanColumn">Column</span>
               <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
             <button type="button" class="btn scan-view" data-scan-view="page" aria-pressed="false"
                     data-action="click->dictionary-page#selectView">
-              <span data-i18n="scanPage">Page</span>
+              <span class="scan-view-name" data-i18n="scanPage">Page</span>
               <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
           </div>
-          <button type="button" class="btn scan-cite" data-action="click->dictionary-page#cite">
+          <div class="scan-cite">
+          <button type="button" class="btn scan-cite-btn" data-action="click->dictionary-page#cite">
             <span data-i18n="cite">Cite</span>
             <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
           </button>
+          </div>
         </div>
       </div>
     </div>

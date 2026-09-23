@@ -40,6 +40,18 @@
   --lq-related-bg: rgba(59, 130, 246, 0.12);
   --lq-related-border: #bfdbfe;
 
+  /* The boxes drawn on a dictionary scan. Stronger than the category colours
+     the result list uses: they have to read over printed type. */
+  --lq-scan-entry: #059669;
+  --lq-scan-entry-bg: rgba(5, 150, 105, 0.2);
+  --lq-scan-entry-bg-hover: rgba(5, 150, 105, 0.35);
+  --lq-scan-related: #2563eb;
+  --lq-scan-related-bg: rgba(37, 99, 235, 0.2);
+  --lq-scan-related-bg-hover: rgba(37, 99, 235, 0.35);
+  --lq-scan-sub: rgba(245, 158, 11, 0.9);
+  --lq-scan-sub-bg: rgba(251, 191, 36, 0.05);
+  --lq-scan-sub-bg-hover: rgba(251, 191, 36, 0.2);
+
   /* Deeper claret used by the filter controls, and the navy of their labels */
   --lq-claret-deep: #8e1537;
   --lq-ink-navy: #1c2a4e;

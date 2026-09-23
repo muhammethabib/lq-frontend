@@ -123,3 +123,47 @@ window.LQ = {
 document.addEventListener('DOMContentLoaded', () => {
   window.LQ.refreshDynamicContent();
 });
+
+// A window opened over another -- the citation over the dictionary page --
+// has to stand above it. Bootstrap gives every modal the same z-index, so
+// each one opened while another is up is lifted a step, and the step is
+// given back when it closes. Escape and a click on the ground then reach the
+// window on top, which is the one the reader is looking at.
+(() => {
+  const STEP = 20;
+
+  // Each open window holds the keyboard inside itself. The one underneath
+  // has to let go, or it takes the focus back and answers the Escape meant
+  // for the window on top.
+  const trap = (element, active) => {
+    const instance = bootstrap.Modal.getInstance(element);
+    const focus = instance && instance._focustrap;
+    if (!focus) return;
+    if (active) focus.activate(); else focus.deactivate();
+  };
+
+  document.addEventListener("show.bs.modal", (event) => {
+    const open = [...document.querySelectorAll(".modal.show")];
+    if (!open.length) return;
+    const lift = open.length * STEP;
+    event.target.style.zIndex = 1055 + lift;
+    open.forEach((element) => trap(element, false));
+    // The backdrop is added after this event, so it is lifted once it exists.
+    requestAnimationFrame(() => {
+      const backdrops = document.querySelectorAll(".modal-backdrop");
+      const backdrop = backdrops[backdrops.length - 1];
+      if (backdrop) backdrop.style.zIndex = 1050 + lift;
+    });
+  });
+
+  // Bootstrap takes the scroll lock off the body as soon as any modal closes,
+  // so it is put back while one is still up.
+  document.addEventListener("hidden.bs.modal", (event) => {
+    event.target.style.removeProperty("z-index");
+    const open = [...document.querySelectorAll(".modal.show")];
+    if (!open.length) return;
+    document.body.classList.add("modal-open");
+    // The window that is now on top takes the keyboard back.
+    trap(open[open.length - 1], true);
+  });
+})();

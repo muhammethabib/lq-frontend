@@ -18,35 +18,31 @@
 window.LQ_DICTIONARY_PAGE_SAMPLE = {
   entries: [
     {
-      id: "kamus-turki-1417-manzara",
-      category: "entry",
-      dictionary: "Kamus-ı Türki",
-      headwordOttoman: "منظره",
-      headwordLatin: "manzara",
-      slice: 5,
+      id: "kamus-turki-1417-nazar",
+      category: "related",
+      dictionary: "Kamus-ı Türkî",
+      headwordOttoman: "نظر",
+      headwordLatin: "nazar",
+      slice: 2,
       column: 3,
       page: 1417,
-      views: {
-        slice: {
-          image: "../assets/scans/kamus-turki-1417-manzara-slice.jpg",
-          ratio: 871 / 499,
-          boxes: [
-            { category: "entry", ottoman: "منظره", latin: "manzara",
-              top: 15.5, left: 82.2, width: 14.9, height: 13.1 },
-            { category: "related", ottoman: "نظر", latin: "nazar",
-              top: 2.4, left: 56.9, width: 10.3, height: 10.1 },
-            { category: "sub", ottoman: "منظره‌ی حسنه", latin: "manzara-i hasene",
-              top: 50.5, left: 40.5, width: 25.0, height: 15.0 }
-          ]
-        },
-        column: { image: null },
-        page: { image: null }
-      }
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
+    },
+    {
+      id: "kamus-turki-1417-nazir",
+      category: "related",
+      dictionary: "Kamus-ı Türkî",
+      headwordOttoman: "ناظر",
+      headwordLatin: "nazır",
+      slice: 3,
+      column: 3,
+      page: 1417,
+      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
     },
     {
       id: "kamus-turki-1417-manzar",
       category: "entry",
-      dictionary: "Kamus-ı Türki",
+      dictionary: "Kamus-ı Türkî",
       headwordOttoman: "منظر",
       headwordLatin: "manzar",
       slice: 4,
@@ -71,11 +67,35 @@ window.LQ_DICTIONARY_PAGE_SAMPLE = {
     // A subheadword and a related word of the same column, so the arrows have
     // somewhere to go under each of the three kinds. The sample has no scan
     // cut for either, so the window shows its empty state for them; the
-    // endpoint will return one slice per record.
+    // endpoint will return one slice per record.,
+    {
+      id: "kamus-turki-1417-manzara",
+      category: "entry",
+      dictionary: "Kamus-ı Türkî",
+      headwordOttoman: "منظره",
+      headwordLatin: "manzara",
+      slice: 5,
+      column: 3,
+      page: 1417,
+      views: {
+        slice: {
+          image: "../assets/scans/kamus-turki-1417-manzara-slice.jpg",
+          ratio: 871 / 499,
+          boxes: [
+            { category: "entry", ottoman: "منظره", latin: "manzara",
+              top: 3.8, left: 80.1, width: 17.62, height: 23.19 },
+            { category: "related", ottoman: "نظر", latin: "nazar",
+              top: 1.3, left: 57.17, width: 9.39, height: 13.61 }
+          ]
+        },
+        column: { image: null },
+        page: { image: null }
+      }
+    },
     {
       id: "kamus-turki-1417-manzara-i-hasene",
       category: "sub",
-      dictionary: "Kamus-ı Türki",
+      dictionary: "Kamus-ı Türkî",
       headwordOttoman: "منظره‌ی حسنه",
       headwordLatin: "manzara-i hasene",
       slice: 5,
@@ -86,32 +106,10 @@ window.LQ_DICTIONARY_PAGE_SAMPLE = {
     {
       id: "kamus-turki-1417-manzum",
       category: "sub",
-      dictionary: "Kamus-ı Türki",
+      dictionary: "Kamus-ı Türkî",
       headwordOttoman: "منظوم",
       headwordLatin: "manzum",
       slice: 6,
-      column: 3,
-      page: 1417,
-      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
-    },
-    {
-      id: "kamus-turki-1417-nazar",
-      category: "related",
-      dictionary: "Kamus-ı Türki",
-      headwordOttoman: "نظر",
-      headwordLatin: "nazar",
-      slice: 2,
-      column: 3,
-      page: 1417,
-      views: { slice: { image: null }, column: { image: null }, page: { image: null } }
-    },
-    {
-      id: "kamus-turki-1417-nazir",
-      category: "related",
-      dictionary: "Kamus-ı Türki",
-      headwordOttoman: "ناظر",
-      headwordLatin: "nazır",
-      slice: 3,
       column: 3,
       page: 1417,
       views: { slice: { image: null }, column: { image: null }, page: { image: null } }

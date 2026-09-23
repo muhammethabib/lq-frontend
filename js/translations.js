@@ -490,8 +490,8 @@ window.LQ_TRANSLATIONS = {
     scanAlt: "Maddenin kaynak ciltteki basılı hâli",
     // The arrows name the kind of record they step through, so the word for
     // the kind is added after these.
-    scanPrevious: "Önceki Madde",
-    scanNext: "Sonraki Madde",
+    scanPrevious: "Önceki",
+    scanNext: "Sonraki",
     scanMissing: "Bu görünümün taraması örnek veride yok. Uç nokta her görünüm için bir görsel döndürür.",
     scanViewLabel: "Görünüm",
     scanSlice: "Dilim",

@@ -31,14 +31,13 @@
 }
 .dictionary-page-modal .scan-source {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 14px;
+  align-items: center;
   margin: 0;
 }
 /* The volume's name is a stamp on the page, so it is set solid rather than
    tinted like the labels inside the window. */
 .dictionary-page-modal .scan-dictionary {
+  margin-right: 12px;
   padding: 4px 10px;
   border-radius: 6px;
   background: #27272a;
@@ -49,13 +48,17 @@
 }
 .dictionary-page-modal .scan-headword {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--lq-ink-soft);
+  color: var(--lq-muted);
 }
-.dictionary-page-modal .scan-headword b { font-weight: 700; color: var(--lq-claret); }
+.dictionary-page-modal .scan-headword b {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--lq-scan-entry);
+}
 
 /* ---------- the scan and the arrows either side of it ---------- */
 
@@ -70,11 +73,16 @@
   overflow: hidden;
 }
 
+/* The body holds one stage at a time; it fills the window so the arrows sit
+   at its edges rather than hugging the scan. */
+.dictionary-page-modal [data-scan-view-body] { width: 100%; }
+
 .dictionary-page-modal .scan-stage {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) 48px;
   align-items: center;
   gap: 20px;
+  width: 100%;
 }
 
 /* The arrows float over the scan's ground rather than sitting on a card of
@@ -105,11 +113,10 @@
 .dictionary-page-modal .scan-frame {
   position: relative;
   aspect-ratio: var(--scan-ratio, 2);
-  max-height: 62vh;
+  max-height: 80vh;
   margin-inline: auto;
-  border: 1px solid var(--lq-line);
-  border-radius: 12px;
-  background: #fbfaf7;
+  background: var(--lq-paper);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
   overflow: visible;
 }
 .dictionary-page-modal .scan-frame img {
@@ -117,7 +124,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 11px;
 }
 
 .dictionary-page-modal .scan-missing {
@@ -136,109 +142,184 @@
    results list uses. The box is quiet until the cursor reaches it. */
 .dictionary-page-modal .scan-box {
   position: absolute;
+  z-index: 10;
   padding: 0;
-  border: 1.5px solid transparent;
-  border-radius: 5px;
+  border: 2px solid transparent;
+  border-radius: 8px;
   background: transparent;
-  transition: background .12s, border-color .12s;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.4, 0, .2, 1);
 }
+
+/* The entry itself breathes, so the eye lands on it before the words around
+   it; everything else on the scan stays still. */
 .dictionary-page-modal .scan-box-entry {
-  border-color: var(--lq-entry-border);
-  background: var(--lq-entry-bg);
+  z-index: 50;
+  border-color: var(--lq-scan-entry);
+  background: var(--lq-scan-entry-bg);
+  opacity: .9;
+  animation: scan-entry-breathe 3s infinite ease-in-out;
+}
+@keyframes scan-entry-breathe {
+  0%, 100% { border-color: rgba(5, 150, 105, .6); box-shadow: 0 0 5px rgba(5, 150, 105, .2); }
+  50% { border-color: var(--lq-scan-entry); box-shadow: 0 0 20px rgba(5, 150, 105, .6); }
 }
 .dictionary-page-modal .scan-box-entry:hover,
 .dictionary-page-modal .scan-box-entry:focus-visible {
-  border-color: var(--lq-entry-text);
-  background: rgba(20, 184, 166, .2);
+  z-index: 60;
+  border-color: var(--lq-scan-entry);
+  background: var(--lq-scan-entry-bg-hover);
+  box-shadow: 0 0 20px rgba(5, 150, 105, .6);
+  opacity: 1;
+  transform: scale(1.01);
+  animation: none;
 }
-.dictionary-page-modal .scan-box-sub {
-  border-color: var(--lq-sub-border);
-  background: var(--lq-sub-bg);
-}
-.dictionary-page-modal .scan-box-sub:hover,
-.dictionary-page-modal .scan-box-sub:focus-visible {
-  border-color: var(--lq-sub-text);
-  background: rgba(251, 191, 36, .22);
-}
+
 .dictionary-page-modal .scan-box-related {
-  border-color: var(--lq-related-border);
-  background: var(--lq-related-bg);
+  z-index: 20;
+  border-color: var(--lq-scan-related);
+  background: var(--lq-scan-related-bg);
+  opacity: .8;
 }
 .dictionary-page-modal .scan-box-related:hover,
 .dictionary-page-modal .scan-box-related:focus-visible {
-  border-color: var(--lq-related-text);
-  background: rgba(59, 130, 246, .26);
+  z-index: 60;
+  background: var(--lq-scan-related-bg-hover);
+  box-shadow: inset 0 0 15px rgba(37, 99, 235, .25);
+  opacity: 1;
+  transform: scale(1.015);
+}
+
+.dictionary-page-modal .scan-box-sub {
+  border-color: var(--lq-scan-sub);
+  background: var(--lq-scan-sub-bg);
+  opacity: .7;
+}
+.dictionary-page-modal .scan-box-sub:hover,
+.dictionary-page-modal .scan-box-sub:focus-visible {
+  background: var(--lq-scan-sub-bg-hover);
+  opacity: 1;
+  transform: scale(1.005);
 }
 
 /* ---------- the card the box opens ---------- */
 
+/* A dark pane over the scan, centred on the box and standing above it, with
+   the two spellings one under the other. */
 .dictionary-page-modal .scan-card {
   position: absolute;
-  left: var(--card-left, 0);
+  left: var(--card-left, 50%);
   top: var(--card-top, 0);
   z-index: 3;
-  display: flex;
+  display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  padding: 5px;
-  border-radius: 11px;
+  width: max-content;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 12px;
   background: rgba(15, 23, 42, .95);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-  white-space: nowrap;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+  backdrop-filter: blur(8px);
+  transform: var(--card-anchor, translate(-50%, -100%));
 }
-/* Hanging from the box's right edge, for a box in the right half of the scan,
-   where a card anchored on the left would run off the far side. */
-.dictionary-page-modal .scan-card.is-flipped {
-  left: auto;
-  right: var(--card-right, 0);
+
+.dictionary-page-modal .scan-card-row {
+  position: relative;
+  display: flex;
+  width: 100%;
 }
 .dictionary-page-modal .scan-card-line {
+  display: flex;
+  flex: 1;
+  text-align: start;
+  align-items: center;
+  justify-content: center;
   padding: 4px 10px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   background: transparent;
-  color: #fff;
-  font-size: .9rem;
+  white-space: nowrap;
+  transition: background-color .2s;
 }
-.dictionary-page-modal .scan-card-line:hover { background: rgba(255, 255, 255, .14); color: #fff; }
-.dictionary-page-modal .scan-card-line [data-direction="rtl"] {
+.dictionary-page-modal .scan-card-line:hover { background: rgba(255, 255, 255, .12); }
+.dictionary-page-modal .scan-card-ottoman {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.1rem;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  color: #fff;
 }
-.dictionary-page-modal .scan-card-flag {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border: 0;
-  border-radius: 7px;
-  background: rgba(125, 211, 252, .18);
-  color: #7dd3fc;
+.dictionary-page-modal .scan-card-latin {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-align: center;
+  color: #fff;
 }
-/* The flag turns red on approach, the way the guide describes it */
-.dictionary-page-modal .scan-card-flag:hover {
+.dictionary-page-modal .scan-card-divider {
+  width: 85%;
+  height: 1px;
+  margin: 2px 0;
+  background: rgba(255, 255, 255, .1);
+}
+
+/* The flag hangs off the line rather than sitting inside the card, so the
+   card stays the width of the word; it appears on the line under the cursor. */
+.dictionary-page-modal .scan-card-report-wrap {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding-left: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity .2s;
+}
+/* Near the right edge of the scan there is no room beside the card, so the
+   flag hangs off the other side. */
+.dictionary-page-modal .scan-card.is-flipped .scan-card-report-wrap {
+  left: auto;
+  right: 100%;
+  padding-right: 8px;
+  padding-left: 0;
+}
+.dictionary-page-modal .scan-card-row:hover .scan-card-report-wrap,
+.dictionary-page-modal .scan-card-report-wrap:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+.dictionary-page-modal .scan-card-report,
+.dictionary-page-modal .scan-card-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background: var(--lq-paper);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+  color: #93c5fd;
+  transition: all .2s;
+}
+.dictionary-page-modal .scan-card-report:hover,
+.dictionary-page-modal .scan-card-edit:hover {
+  border-color: var(--lq-red);
   background: var(--lq-red);
   color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(190, 18, 60, .25);
 }
-.dictionary-page-modal .scan-card-flag svg { width: 14px; height: 14px; }
-
-/* The staff control beside it, marked admin-only and dashed like the one on
-   a result row, so the two read as the same kind of thing. */
-.dictionary-page-modal .scan-card-edit {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border: 1px dashed rgba(255, 255, 255, .35);
-  border-radius: 7px;
-  background: transparent;
-  color: rgba(255, 255, 255, .7);
-}
-.dictionary-page-modal .scan-card-edit:hover {
-  border-color: #fff;
-  color: #fff;
-}
+.dictionary-page-modal .scan-card-report:hover svg { transform: rotate(15deg); }
+.dictionary-page-modal .scan-card-edit { color: var(--lq-muted); }
 .dictionary-page-modal .scan-card-edit svg { width: 13px; height: 13px; }
 
 /* ---------- reporting an error ---------- */
@@ -327,6 +408,9 @@
   padding: 0;
   border-top: 1px solid #e4e4e7;
 }
+/* Bootstrap spaces a footer's children; here the switch is centred and Cite
+   is taken out of the flow, so neither wants a margin. */
+.dictionary-page-modal .modal-footer > * { margin: 0; }
 .dictionary-page-modal .scan-cite {
   position: absolute;
   top: 50%;
@@ -334,6 +418,7 @@
   transform: translateY(-50%);
 }
 .dictionary-page-modal .scan-views {
+  position: relative;
   display: flex;
   width: 340px;
   height: 36px;
@@ -342,7 +427,24 @@
   border-radius: 11px;
   background: #f4f4f5;
 }
+/* The pane that marks the view in hand. It slides rather than jumping, so
+   the three read as one switch and not as three buttons. */
+.dictionary-page-modal .scan-view-indicator {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  z-index: 1;
+  width: var(--scan-indicator-width, 0);
+  border-radius: 9px;
+  background: var(--lq-paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  transform: translateX(var(--scan-indicator-x, 0));
+  transition: width .3s cubic-bezier(.4, 0, .2, 1), transform .3s cubic-bezier(.4, 0, .2, 1);
+}
 .dictionary-page-modal .scan-view {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex: 1;
   align-items: center;
@@ -351,15 +453,24 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
+  transition: all .2s;
+}
+/* The name and the number are set on themselves rather than on the button,
+   so the button carries no type of its own. */
+.dictionary-page-modal .scan-view-name {
   font-size: 12px;
   font-weight: 600;
   color: #71717a;
+  transition: color .2s;
 }
+.dictionary-page-modal .scan-view[aria-pressed="true"] .scan-view-name { color: #18181b; }
+.dictionary-page-modal .scan-view:hover { background: rgba(0, 0, 0, .04); }
 .dictionary-page-modal .scan-view[aria-pressed="true"] {
-  background: var(--lq-paper);
-  color: #18181b;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  background: transparent;
+  transform: scale(.97);
+  cursor: default;
 }
+.dictionary-page-modal .scan-view[aria-pressed="true"]:hover { background: transparent; }
 /* A hairline between the name and the number, so the pair reads as one
    label rather than two words. */
 .dictionary-page-modal .scan-view-divider {
@@ -373,11 +484,10 @@
   font-size: 12px;
   font-weight: 400;
   color: #a1a1aa;
-  font-variant-numeric: tabular-nums;
 }
 .dictionary-page-modal .scan-view[aria-pressed="true"] .scan-count { color: #52525b; font-weight: 500; }
 
-.dictionary-page-modal .scan-cite {
+.dictionary-page-modal .scan-cite-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -390,29 +500,27 @@
   font-weight: 700;
   color: #334155;
 }
-.dictionary-page-modal .scan-cite:hover { border-color: #bfdbfe; background: #eff6ff; color: var(--lq-sapphire); }
-.dictionary-page-modal .scan-cite svg { width: 15px; height: 15px; flex: none; }
+.dictionary-page-modal .scan-cite-btn:hover { border-color: #bfdbfe; background: #eff6ff; color: var(--lq-sapphire); }
+.dictionary-page-modal .scan-cite-btn svg { width: 15px; height: 15px; flex: none; }
 
 @media (max-width: 767px) {
   .dictionary-page-modal .scan-stage { grid-template-columns: 32px minmax(0, 1fr) 32px; }
   .dictionary-page-modal .scan-arrow { width: 32px; height: 32px; }
 
   /* There is no room beside a box on a phone, so the card docks at the foot
-     of the scan and wraps rather than running off the side. */
+     of the scan rather than running off the side. */
   .dictionary-page-modal .scan-card {
-    left: 6px;
-    right: 6px;
+    left: 50%;
     top: auto;
     bottom: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
-    white-space: normal;
+    transform: translateX(-50%);
   }
   .dictionary-page-modal .modal-footer { flex-direction: column; align-items: stretch; }
   .dictionary-page-modal .scan-views { justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dictionary-page-modal .scan-box { transition: none; }
+  .dictionary-page-modal .scan-box { transition: none; animation: none; }
+  .dictionary-page-modal .scan-view-indicator { transition: none; }
 }
 

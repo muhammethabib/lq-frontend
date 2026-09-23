@@ -68,6 +68,10 @@ class DictionaryPageController extends Stimulus.Controller {
 
     this.render();
     this.modal = bootstrap.Modal.getOrCreateInstance(this.element);
+    // The switch has no width until the window is on screen, so the pane
+    // behind the three views is placed once it is.
+    this.element.addEventListener("shown.bs.modal", () => this.placeIndicator(),
+                                  { once: true });
     this.modal.show();
   }
 
@@ -111,9 +115,23 @@ class DictionaryPageController extends Stimulus.Controller {
       button.setAttribute("aria-pressed", String(name === this.view));
       button.querySelector("[data-scan-count]").textContent = entry[name];
     });
+    this.placeIndicator();
 
     this.fillArrows();
     this.drawView();
+  }
+
+  // The white pane behind the three views. It is placed rather than styled
+  // on the button so it can slide from one to the next; the switch is one
+  // control, not three that light up in turn.
+  placeIndicator() {
+    const views = this.element.querySelector(".scan-views");
+    const indicator = this.element.querySelector("[data-scan-indicator]");
+    if (!views || !indicator) return;
+    const width = (views.offsetWidth - 4) / VIEWS.length;
+    indicator.style.setProperty("--scan-indicator-width", `${width}px`);
+    indicator.style.setProperty("--scan-indicator-x",
+      `${VIEWS.indexOf(this.view) * width}px`);
   }
 
   // ==================== stepping through the column ====================
@@ -124,14 +142,28 @@ class DictionaryPageController extends Stimulus.Controller {
     const find = (selector) => this.element.querySelector(selector);
     const previous = find("[data-scan-previous]");
     const next = find("[data-scan-next]");
+    // The arrows name the kind of record they step through, the way the
+    // switch beneath them does: Previous Slice, Next Column.
+    const kind = this.translate(
+      `scan${this.view.charAt(0).toUpperCase()}${this.view.slice(1)}`, this.view);
+    const label = (key, fallback) => `${this.translate(key, fallback)} ${kind}`;
     if (previous) {
       previous.disabled = this.index <= 0;
-      previous.setAttribute("aria-label", this.translate("scanPrevious", "Previous entry"));
+      this.labelArrow(previous, label("scanPrevious", "Previous"));
     }
     if (next) {
       next.disabled = this.index >= this.entries.length - 1;
-      next.setAttribute("aria-label", this.translate("scanNext", "Next entry"));
+      this.labelArrow(next, label("scanNext", "Next"));
     }
+  }
+
+  // The tooltip is built when the window opens, so its text is replaced
+  // through Bootstrap rather than by setting the attribute alone.
+  labelArrow(button, text) {
+    button.setAttribute("aria-label", text);
+    button.setAttribute("title", text);
+    const tip = bootstrap.Tooltip.getInstance(button);
+    if (tip) tip.setContent({ ".tooltip-inner": text });
   }
 
   translate(key, fallback) {
@@ -176,33 +208,47 @@ class DictionaryPageController extends Stimulus.Controller {
   showWord(event) {
     const box = this.boxFor(event.currentTarget);
     if (!box) return;
+    clearTimeout(this.cardTimer);
     const card = this.element.querySelector("[data-scan-card]");
     card.querySelector("[data-scan-word-ottoman]").textContent = box.ottoman;
     card.querySelector("[data-scan-word-latin]").textContent = box.latin;
     card.dataset.scanFor = event.currentTarget.dataset.scanBox;
     card.hidden = false;
 
-    // The card hangs under the box it describes, in the frame's own
-    // coordinates. They are custom properties rather than top and left so the
-    // stylesheet can dock the card at the foot of the frame on a narrow
-    // screen, where there is no room beside the box.
+    // The card stands over the box it describes, centred on it, in the
+    // frame's own coordinates. They are custom properties rather than top and
+    // left so the stylesheet can dock the card at the foot of the frame on a
+    // narrow screen, where there is no room above the box.
     const element = event.currentTarget;
-    card.style.setProperty("--card-left", element.style.left);
-    card.style.setProperty("--card-top",
-      `calc(${element.style.top} + ${element.style.height})`);
-    // A box in the right half would push the card off the scan, so there the
-    // card hangs from the box's right edge instead.
     const left = parseFloat(element.style.left) || 0;
     const width = parseFloat(element.style.width) || 0;
-    card.style.setProperty("--card-right", `${Math.max(0, 100 - left - width)}%`);
-    card.classList.toggle("is-flipped", left + width / 2 > 55);
+    const top = parseFloat(element.style.top) || 0;
+    const height = parseFloat(element.style.height) || 0;
+    card.style.setProperty("--card-left", `${left + width / 2}%`);
+    // A box close to the top of the window leaves no room above it, so there
+    // the card drops below the box instead.
+    const high = element.getBoundingClientRect().top < 120;
+    card.style.setProperty("--card-top",
+      high ? `calc(${top + height}% + 10px)` : `calc(${top}% - 10px)`);
+    card.style.setProperty("--card-anchor",
+      high ? "translate(-50%, 0)" : "translate(-50%, -100%)");
+    // The flag hangs to the right of the card; where that would take it off
+    // the screen it swaps to the other side.
+    card.classList.remove("is-flipped");
+    card.classList.toggle("is-flipped",
+      card.getBoundingClientRect().right + 40 > window.innerWidth);
   }
 
-  hideWord(event) {
-    // Moving onto the card itself must not dismiss it
+  // The card stays while the cursor is on it, so the word can be searched or
+  // reported; it is given a moment to be reached on the way over.
+  holdWord() {
+    clearTimeout(this.cardTimer);
+  }
+
+  hideWord() {
     const card = this.element.querySelector("[data-scan-card]");
-    if (event.relatedTarget && card.contains(event.relatedTarget)) return;
-    card.hidden = true;
+    clearTimeout(this.cardTimer);
+    this.cardTimer = setTimeout(() => { card.hidden = true; }, 300);
   }
 
   boxFor(element) {
@@ -240,17 +286,17 @@ class DictionaryPageController extends Stimulus.Controller {
 
   // The citation window is the same one the row's Cite button opens. This
   // window closes first rather than stacking a second one on top of it.
+  // The citation opens over the scan rather than in its place: the reader is
+  // citing the page in front of them and goes back to it when they are done.
   cite() {
-    const detail = {
-      latin: this.entry.headwordLatin,
-      ottoman: this.entry.headwordOttoman,
-      dictionary: this.entry.dictionary,
-      page: this.entry.page
-    };
-    this.element.addEventListener("hidden.bs.modal", () => {
-      document.dispatchEvent(new CustomEvent("citation:open", { detail }));
-    }, { once: true });
-    this.modal.hide();
+    document.dispatchEvent(new CustomEvent("citation:open", {
+      detail: {
+        latin: this.entry.headwordLatin,
+        ottoman: this.entry.headwordOttoman,
+        dictionary: this.entry.dictionary,
+        page: this.entry.page
+      }
+    }));
   }
 
   // Staff only: opens the editing screen for the word's stored value. The

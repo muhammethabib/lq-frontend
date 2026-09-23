@@ -1154,7 +1154,15 @@
   padding: 16px 8px;
   vertical-align: middle;
 }
-.home-surface .result-row:hover > td { background: #fcfdff; }
+/* The row lifts as one; its ground stays white, the half under the cursor
+   takes the colour of the row's own category. */
+.home-surface .result-row { transition: transform .2s, box-shadow .2s; }
+.home-surface .result-row:hover {
+  position: relative;
+  z-index: 50;
+  transform: scale(1.005);
+  box-shadow: 0 0 0 1px var(--lq-line-strong), 0 8px 20px -8px rgba(0, 0, 0, .08);
+}
 .home-surface .result-row > td:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -1279,8 +1287,19 @@
 .home-surface .result-row[data-category="SUBENTRY"] .category-badge { color: var(--lq-sub-text); background: rgba(251, 191, 36, .12); border-color: var(--lq-sub-border); }
 .home-surface .result-row[data-category="RELATED"] .category-badge { color: var(--lq-related-text); background: rgba(30, 58, 138, .12); border-color: var(--lq-related-border); }
 
-.home-surface .row-arrow { color: #94a3b8; opacity: .35; transition: opacity .3s, transform .3s; }
-.home-surface .result-row:hover .row-arrow { opacity: 1; transform: translateX(4px); color: var(--lq-ink); }
+/* The arrow belongs to the headword half and answers only to it: it points
+   the way a press on that half would take the reader. */
+.home-surface .row-arrow {
+  color: #94a3b8;
+  opacity: .35;
+  transform: translateX(0) scale(1);
+  transition: all .4s;
+}
+.home-surface .result-row:has(> td[data-zone-focus="headword"]:hover) .row-arrow {
+  opacity: 1;
+  transform: translateX(6px) scale(1.15);
+  color: #334155;
+}
 
 /* The headword column repeats the word pair without the chip styling, so the
    result column stays the primary reading. */
@@ -1292,7 +1311,11 @@
   min-width: 82px;
 }
 .home-surface .headword-cell .latin-box { font-size: 14.5px; color: #475569; }
-.home-surface .headword-cell .word-box:hover { background: rgba(15, 23, 42, .035); transform: none; }
+.home-surface .headword-cell .word-box:hover {
+  background: rgba(15, 23, 42, .035);
+  box-shadow: none;
+  transform: translateY(-1px) scale(1.02);
+}
 
 /* The longest real name ("Müntahabat-ı Lügat-ı Osmaniye, 1852") wraps here
    rather than pushing the table wider. */
@@ -1383,8 +1406,19 @@
 
 /* Either zone opens the dictionary page window: the left on the result
    itself, the right on the headword it belongs to. */
-.home-surface .result-zone { cursor: pointer; }
-.home-surface .result-row:hover .result-zone:hover { background: var(--lq-lat-bg); }
+.home-surface .result-zone { cursor: pointer; transition: background-color .2s; }
+.home-surface .result-row:has(> td[data-zone-focus="result"]:hover) > td[data-zone-focus="result"],
+.home-surface .result-row:has(> td[data-zone-focus="headword"]:hover) > td[data-zone-focus="headword"] {
+  background: var(--lq-entry-bg);
+}
+.home-surface .result-row[data-category="SUBENTRY"]:has(> td[data-zone-focus="result"]:hover) > td[data-zone-focus="result"],
+.home-surface .result-row[data-category="SUBENTRY"]:has(> td[data-zone-focus="headword"]:hover) > td[data-zone-focus="headword"] {
+  background: var(--lq-sub-bg);
+}
+.home-surface .result-row[data-category="RELATED"]:has(> td[data-zone-focus="result"]:hover) > td[data-zone-focus="result"],
+.home-surface .result-row[data-category="RELATED"]:has(> td[data-zone-focus="headword"]:hover) > td[data-zone-focus="headword"] {
+  background: var(--lq-related-bg);
+}
 
 /* ---------------------------------------------------------------
    A word some dictionaries print wrongly
@@ -1392,43 +1426,60 @@
    as that page has it. Pressing it opens the page itself.
    --------------------------------------------------------------- */
 
+/* The mark hangs off the corner of the word it belongs to and pulses, so it
+   is seen without the reader looking for it. */
+.home-surface .word-box.is-misspelled { overflow: visible; }
 .home-surface .typo-mark {
-  position: relative;
-  display: inline-flex;
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 3;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   padding: 0;
-  margin-inline-start: 6px;
   border: 0;
   border-radius: 50%;
-  background: var(--lq-gold);
+  background: var(--lq-amber);
+  box-shadow: 0 2px 5px rgba(245, 158, 11, .4);
   color: #fff;
   flex-shrink: 0;
+  animation: typo-pulse 2s infinite;
+  transition: transform .2s;
 }
-
-.home-surface .typo-mark svg { width: 12px; height: 12px; }
-.home-surface .typo-mark:hover { background: #b45309; color: #fff; }
+@keyframes typo-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, .7); }
+  70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+.home-surface .typo-mark svg { width: 16px; height: 16px; }
+.home-surface .typo-mark:hover { background: var(--lq-amber); transform: scale(1.2); }
 
 /* A dark card, so the cut of the page inside it reads as a photograph held
    up rather than as more of the list. */
 .home-surface .typo-card {
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: 110%;
   left: 50%;
   z-index: 20;
-  display: none;
+  display: flex;
   width: 140px;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  transform: translateX(-50%);
   padding: 6px 6px 8px;
   border: 0;
   border-radius: 12px;
   background: #1e293b;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  cursor: pointer;
+  transform: translateX(-50%) translateY(10px) scale(.95);
+  transition: all .2s cubic-bezier(.16, 1, .3, 1);
 }
 
 /* The pointer back to the mark it belongs to */
@@ -1442,21 +1493,37 @@
   border-top-color: #1e293b;
 }
 
-.home-surface .typo-mark:hover .typo-card,
-.home-surface .typo-mark:focus-visible .typo-card { display: flex; }
+.home-surface .word-box.is-misspelled:has(.typo-mark:hover) .typo-card,
+.home-surface .word-box.is-misspelled:has(.typo-mark:focus-visible) .typo-card,
+.home-surface .typo-card:hover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-5px) scale(1);
+}
 
+/* The cut of the page sits on its own white ground inside the card, and
+   leans in when the card is reached. */
+.home-surface .typo-card-frame {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 4px;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
 .home-surface .typo-card img {
   display: block;
   height: 60px;
   width: auto;
-  max-width: 100%;
-  padding: 4px;
-  border-radius: 6px;
-  background: #fff;
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1);
 }
+.home-surface .typo-card:hover img { transform: scale(1.15); }
 
 .home-surface .typo-card-labels {
   display: flex;
+  font-family: 'Inter', sans-serif;
   flex-direction: column;
   gap: 3px;
   width: 100%;

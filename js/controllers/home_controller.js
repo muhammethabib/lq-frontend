@@ -840,9 +840,18 @@ class HomeController extends Stimulus.Controller {
       key === "goToHeadword" ? "Go to the headword" : "Go to this result");
     tip.classList.add("is-open");
 
-    // Anchored over the row rather than at the pointer, and a little right of
-    // the middle so it does not sit on the words above it.
-    const at = zone.getBoundingClientRect();
+    // Anchored over the half the zone belongs to rather than at the pointer,
+    // and a little right of the middle so it does not sit on the words above
+    // it. A half is several cells, so they are taken together.
+    const half = [...zone.closest("tr").querySelectorAll(
+      `td[data-zone-focus="${zone.dataset.zoneFocus}"]`)].map((cell) =>
+      cell.getBoundingClientRect());
+    const at = {
+      left: Math.min(...half.map((r) => r.left)),
+      top: Math.min(...half.map((r) => r.top)),
+      bottom: Math.max(...half.map((r) => r.bottom)),
+      width: Math.max(...half.map((r) => r.right)) - Math.min(...half.map((r) => r.left))
+    };
     const size = tip.getBoundingClientRect();
     const pad = 8;
     let left = at.left + at.width * 0.62 - size.width / 2;
@@ -1020,7 +1029,6 @@ class HomeController extends Stimulus.Controller {
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
-              ${this.misspellingHtml(row)}
             </span>
             <span class="word-latin">
               <span class="word-box latin-box${readingClass}" data-reading="${row.readingVerified ? "verified" : "auto"}"
@@ -1028,10 +1036,27 @@ class HomeController extends Stimulus.Controller {
             </span>
           </div>
         </td>
-        <td class="text-center">
+        <!-- The category belongs to the result and the arrow to the headword,
+             so each sits in that half's zone: a press anywhere in a half opens
+             the same entry, and the half lights as one. -->
+        <td class="text-center result-zone" data-action="click->home#openEntry" data-zone-focus="result"
+            data-zone-ottoman="${this.escape(row.resultOttoman)}"
+            data-zone-latin="${this.escape(row.resultLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            data-zone-tip="goToResult">
           <span class="category-badge">${this.escape(this.categoryLabel(row.category))}</span>
         </td>
-        <td class="text-center">
+        <td class="text-center result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
+            data-zone-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-latin="${this.escape(row.headwordLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            data-zone-tip="goToHeadword">
           <i class="row-arrow" data-feather="arrow-right"></i>
         </td>
         <td class="headword-cell result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
@@ -1044,18 +1069,32 @@ class HomeController extends Stimulus.Controller {
             data-zone-tip="goToHeadword">
           <div class="word-pair">
             <span class="word-ottoman">
-              <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
+              <span class="word-box ottoman-box${row.misspelling ? " is-misspelled" : ""}" data-direction="rtl"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordOttoman)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}${this.misspellingHtml(row)}</span>
             </span>
             <span class="word-latin">
               <span class="word-box latin-box"${this.menuData(row.headwordOttoman, row.headwordLatin)}>${this.escape(row.headwordLatin)}${this.analysisHtml(row.headwordOttoman, row.headwordLatin)}</span>
             </span>
           </div>
         </td>
-        <td class="dictionary-cell">
+        <td class="dictionary-cell result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
+            data-zone-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-latin="${this.escape(row.headwordLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            data-zone-tip="goToHeadword">
           <div class="dictionary-name">${this.escape(this.dictionaryLabelFor(row.dictionary))}</div>
           <div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>
         </td>
-        <td>
+        <td class="result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
+            data-zone-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-latin="${this.escape(row.headwordLatin)}"
+            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
+            data-zone-dictionary="${this.escape(row.dictionary)}"
+            data-zone-page="${this.escape(row.page)}"
+            data-zone-tip="goToHeadword">
           <div class="row-actions">
           <!-- A citation is of the dictionary entry the record sits under, not
                of the form that matched, so it names the headword. -->
@@ -1219,10 +1258,11 @@ class HomeController extends Stimulus.Controller {
     }));
   }
 
-  // Some dictionaries print a word wrongly. The row carries the mark, and
-  // the mark carries the proof: the word as the page has it. Pressing it
-  // opens that page rather than the entry, so the reader can see for
-  // themselves; the zone underneath must not answer the same press.
+  // Some dictionaries print a word wrongly. The mark hangs off the corner of
+  // the headword as that dictionary spells it, and carries the proof: the
+  // word as the page has it. Pressing it opens that page rather than the
+  // entry, so the reader can see for themselves; the zone underneath must
+  // not answer the same press.
   misspellingHtml(row) {
     if (!row.misspelling) return "";
     const crop = this.escape("../assets/scans/words/" + row.misspelling.crop);
@@ -1236,15 +1276,23 @@ class HomeController extends Stimulus.Controller {
               data-scan-dictionary="${this.escape(row.dictionary)}"
               data-scan-page="${this.escape(row.page)}"
               aria-label="${this.escape(this.translate("typoAria", "Printed differently in this dictionary"))}">
-        <i data-feather="alert-circle" aria-hidden="true"></i>
-        <span class="typo-card">
-          <img src="${crop}" alt="" data-i18n-alt="typoAlt">
-          <span class="typo-card-labels">
-            <span data-i18n="typoOriginal">Original</span>
-            <span data-i18n="typoPrinted">Misspelled Word</span>
-          </span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="11" y="6" width="2" height="9" rx="1"></rect><circle cx="12" cy="18" r="1.5"></circle></svg>
+      </button>
+      <!-- The proof stands beside the mark rather than inside it: the mark
+           grows under the cursor and would take the card with it. -->
+      <span class="typo-card" data-action="click->home#openScan:stop"
+            data-scan-ottoman="${this.escape(row.resultOttoman)}"
+            data-scan-latin="${this.escape(row.resultLatin)}"
+            data-scan-headword-ottoman="${this.escape(row.headwordOttoman)}"
+            data-scan-headword-latin="${this.escape(row.headwordLatin)}"
+            data-scan-dictionary="${this.escape(row.dictionary)}"
+            data-scan-page="${this.escape(row.page)}">
+        <span class="typo-card-frame"><img src="${crop}" alt="" data-i18n-alt="typoAlt"></span>
+        <span class="typo-card-labels">
+          <span data-i18n="typoOriginal">Original</span>
+          <span data-i18n="typoPrinted">Misspelled Word</span>
         </span>
-      </button>`;
+      </span>`;
   }
 
   openScan(event) {

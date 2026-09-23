@@ -492,9 +492,8 @@ window.LQ_TRANSLATIONS = {
     scanAlt: "Maddenin kaynak ciltteki basılı hâli",
     // The arrows name the kind of record they step through, so the word for
     // the kind is added after these.
-    scanPrevious: "Önceki",
-    scanNext: "Sonraki",
-    scanKindsLabel: "Şunlar arasında gez:",
+    scanPrevious: "Önceki Madde",
+    scanNext: "Sonraki Madde",
     scanMissing: "Bu görünümün taraması örnek veride yok. Uç nokta her görünüm için bir görsel döndürür.",
     scanViewLabel: "Görünüm",
     scanSlice: "Dilim",
@@ -528,8 +527,8 @@ window.LQ_TRANSLATIONS = {
     // --- A word a dictionary prints wrongly ---
     typoAria: "Bu sözlükte farklı basılmış",
     typoAlt: "Kelimenin sayfadaki basılı hâli",
-    typoOriginal: "Aslı",
-    typoPrinted: "Basılı hâli",
+    typoOriginal: "Orijinal",
+    typoPrinted: "Metindeki yanlış imla",
 
     // --- Redhouse entry window ---
     redhouseEntry: "Madde",

@@ -1233,7 +1233,7 @@ class HomeController extends Stimulus.Controller {
           <img src="${crop}" alt="" data-i18n-alt="typoAlt">
           <span class="typo-card-labels">
             <span data-i18n="typoOriginal">Original</span>
-            <span data-i18n="typoPrinted">As printed</span>
+            <span data-i18n="typoPrinted">Misspelled Word</span>
           </span>
         </span>
       </button>`;

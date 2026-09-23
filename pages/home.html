@@ -1438,10 +1438,7 @@
         <div class="modal-header">
           <p class="scan-source">
             <span class="scan-dictionary" data-scan-dictionary></span>
-            <span class="scan-headword">
-              <span data-direction="rtl" data-scan-headword-ottoman></span>
-              <span data-scan-headword-latin></span>
-            </span>
+            <span class="scan-headword"><b data-scan-headword-latin></b></span>
           </p>
           <button type="button" class="btn window-close" data-bs-dismiss="modal"
                   aria-label="Close" data-i18n-aria="close">
@@ -1451,33 +1448,11 @@
         </div>
 
         <div class="modal-body">
-          <!-- Which kind of record the arrows step through. A column holds
-               headwords, the subheadwords under them and the words they point
-               at; a reader following one of the three does not want to be
-               taken through the other two on the way. -->
-          <div class="scan-kinds" role="group" aria-labelledby="scanKindsLabel">
-            <span class="visually-hidden" id="scanKindsLabel"
-                  data-i18n="scanKindsLabel">Step through</span>
-            <span class="scan-kind-marker" data-scan-kind-marker aria-hidden="true"></span>
-            <button type="button" class="btn scan-kind active" data-scan-kind="entry"
-                    aria-pressed="true" data-action="click->dictionary-page#selectKind">
-              <span data-i18n="catEntry">Headword</span>
-            </button>
-            <button type="button" class="btn scan-kind" data-scan-kind="sub"
-                    aria-pressed="false" data-action="click->dictionary-page#selectKind">
-              <span data-i18n="catSubentry">Subheadword</span>
-            </button>
-            <button type="button" class="btn scan-kind" data-scan-kind="related"
-                    aria-pressed="false" data-action="click->dictionary-page#selectKind">
-              <span data-i18n="catRelated">Related</span>
-            </button>
-          </div>
-
           <div data-scan-view-body>
             <div class="scan-stage">
               <button type="button" class="btn scan-arrow scan-arrow-previous"
                       data-action="click->dictionary-page#previous" data-scan-previous
-                      aria-label="Previous headword">
+                      aria-label="Previous entry">
                 <i data-feather="chevron-left" aria-hidden="true"></i>
               </button>
 
@@ -1514,7 +1489,7 @@
 
               <button type="button" class="btn scan-arrow scan-arrow-next"
                       data-action="click->dictionary-page#next" data-scan-next
-                      aria-label="Next headword">
+                      aria-label="Next entry">
                 <i data-feather="chevron-right" aria-hidden="true"></i>
               </button>
             </div>
@@ -1553,16 +1528,19 @@
             <button type="button" class="btn scan-view" data-scan-view="slice" aria-pressed="true"
                     data-action="click->dictionary-page#selectView">
               <span data-i18n="scanSlice">Slice</span>
+              <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
             <button type="button" class="btn scan-view" data-scan-view="column" aria-pressed="false"
                     data-action="click->dictionary-page#selectView">
               <span data-i18n="scanColumn">Column</span>
+              <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
             <button type="button" class="btn scan-view" data-scan-view="page" aria-pressed="false"
                     data-action="click->dictionary-page#selectView">
               <span data-i18n="scanPage">Page</span>
+              <span class="scan-view-divider" aria-hidden="true"></span>
               <span class="scan-count" data-scan-count></span>
             </button>
           </div>

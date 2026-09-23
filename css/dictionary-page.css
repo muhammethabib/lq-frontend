@@ -8,16 +8,26 @@
    the class sits on.
    ========================================================= */
 
+/* The window is a page of a book held up to the light: it takes most of the
+   screen and keeps its own height, so the scan is not cropped by the fold. */
+.dictionary-page-modal .modal-dialog {
+  width: 95vw;
+  max-width: 1100px;
+}
+
 .dictionary-page-modal .modal-content {
-  border: 0;
-  border-radius: 16px;
-  box-shadow: var(--lq-shadow);
+  height: 90vh;
+  border: 1px solid rgba(255, 255, 255, .5);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+  overflow: hidden;
 }
 
 .dictionary-page-modal .modal-header {
   align-items: center;
-  padding: 16px 22px;
-  border-bottom: 1px solid var(--lq-line);
+  height: 60px;
+  padding: 0 24px;
+  border-bottom: 1px solid #e4e4e7;
 }
 .dictionary-page-modal .scan-source {
   display: flex;
@@ -26,54 +36,69 @@
   gap: 14px;
   margin: 0;
 }
+/* The volume's name is a stamp on the page, so it is set solid rather than
+   tinted like the labels inside the window. */
 .dictionary-page-modal .scan-dictionary {
-  padding: 4px 11px;
-  border-radius: 999px;
-  background: var(--lq-lat-bg);
-  font-size: .78rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #27272a;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--lq-sapphire);
+  text-transform: uppercase;
+  color: #fff;
 }
 .dictionary-page-modal .scan-headword {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  font-weight: 600;
-  color: var(--lq-ink-navy);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lq-ink-soft);
 }
-.dictionary-page-modal .scan-headword [data-direction="rtl"] {
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.25rem;
-  color: var(--lq-red);
-}
+.dictionary-page-modal .scan-headword b { font-weight: 700; color: var(--lq-claret); }
 
 /* ---------- the scan and the arrows either side of it ---------- */
 
-.dictionary-page-modal .modal-body { padding: 20px 18px; }
+/* The scan sits on the ground a page of a book sits on, not on white */
+.dictionary-page-modal .modal-body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background: #f0f0ed;
+  overflow: hidden;
+}
 
 .dictionary-page-modal .scan-stage {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
+/* The arrows float over the scan's ground rather than sitting on a card of
+   their own, so they are a pane of white over it. */
 .dictionary-page-modal .scan-arrow {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--lq-line);
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, .8);
   border-radius: 50%;
-  background: var(--lq-paper);
-  color: var(--lq-sapphire);
+  background: rgba(255, 255, 255, .6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+  color: #52525b;
+  transition: background .2s, color .2s, transform .2s, box-shadow .2s;
 }
 .dictionary-page-modal .scan-arrow:hover:not(:disabled) {
-  border-color: var(--lq-sapphire);
-  background: var(--lq-lat-bg);
+  background: var(--lq-paper);
+  color: #18181b;
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
 }
 .dictionary-page-modal .scan-arrow:disabled { opacity: .35; }
-.dictionary-page-modal .scan-arrow svg { width: 18px; height: 18px; }
+.dictionary-page-modal .scan-arrow svg { width: 24px; height: 24px; }
 
 /* The frame keeps the scan's proportions, so the boxes drawn on it as
    percentages land on the same words at any size. */
@@ -293,58 +318,80 @@
 
 /* ---------- the three views, and the citation ---------- */
 
+/* The three views hold the middle of the bar; Cite sits out at the edge,
+   so it is taken out of the flow rather than pushing them off-centre. */
 .dictionary-page-modal .modal-footer {
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 22px;
-  border-top: 1px solid var(--lq-line);
+  position: relative;
+  justify-content: center;
+  height: 60px;
+  padding: 0;
+  border-top: 1px solid #e4e4e7;
+}
+.dictionary-page-modal .scan-cite {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
 }
 .dictionary-page-modal .scan-views {
   display: flex;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--lq-line);
-  border-radius: 999px;
-  background: var(--lq-body-bg);
+  width: 340px;
+  height: 36px;
+  padding: 2px;
+  border: 0;
+  border-radius: 11px;
+  background: #f4f4f5;
 }
 .dictionary-page-modal .scan-view {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 7px 16px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: 9px;
   background: transparent;
-  font-size: .88rem;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--lq-ink-soft);
+  color: #71717a;
 }
 .dictionary-page-modal .scan-view[aria-pressed="true"] {
   background: var(--lq-paper);
-  color: var(--lq-sapphire);
-  box-shadow: 0 1px 3px rgba(8, 37, 103, .16);
+  color: #18181b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+/* A hairline between the name and the number, so the pair reads as one
+   label rather than two words. */
+.dictionary-page-modal .scan-view-divider {
+  width: 1px;
+  height: 10px;
+  margin: 0 6px;
+  background: #d4d4d8;
 }
 /* The count is which slice, column or page this is, not how many there are */
 .dictionary-page-modal .scan-count {
-  font-size: .76rem;
-  font-weight: 700;
-  color: var(--lq-gold);
+  font-size: 12px;
+  font-weight: 400;
+  color: #a1a1aa;
   font-variant-numeric: tabular-nums;
 }
+.dictionary-page-modal .scan-view[aria-pressed="true"] .scan-count { color: #52525b; font-weight: 500; }
 
 .dictionary-page-modal .scan-cite {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid var(--lq-line);
-  border-radius: 9px;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   background: var(--lq-paper);
-  font-weight: 600;
-  color: var(--lq-sapphire);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
 }
-.dictionary-page-modal .scan-cite:hover { border-color: var(--lq-sapphire); background: var(--lq-lat-bg); }
-.dictionary-page-modal .scan-cite svg { width: 15px; height: 15px; }
+.dictionary-page-modal .scan-cite:hover { border-color: #bfdbfe; background: #eff6ff; color: var(--lq-sapphire); }
+.dictionary-page-modal .scan-cite svg { width: 15px; height: 15px; flex: none; }
 
 @media (max-width: 767px) {
   .dictionary-page-modal .scan-stage { grid-template-columns: 32px minmax(0, 1fr) 32px; }
@@ -369,51 +416,3 @@
   .dictionary-page-modal .scan-box { transition: none; }
 }
 
-/* ---------- which kind of record the arrows walk ---------- */
-
-/* One choice of three, so the chosen one is the state of the group rather
-   than three separate buttons: a marker slides under it. */
-.dictionary-page-modal .scan-kinds {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  width: min(360px, 100%);
-  margin: 0 auto 14px;
-  padding: 4px;
-  border: 1px solid var(--lq-line);
-  border-radius: 11px;
-  background: #f1f5f9;
-}
-
-.dictionary-page-modal .scan-kind-marker {
-  position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 8px) / 3);
-  border-radius: 8px;
-  background: var(--lq-paper);
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.1);
-  transform: translateX(calc(var(--scan-kind-at, 0) * 100%));
-  transition: transform .25s cubic-bezier(.4, 0, .2, 1);
-}
-
-.dictionary-page-modal .scan-kind {
-  position: relative;
-  z-index: 1;
-  padding: 8px 6px;
-  border: 0;
-  background: transparent;
-  color: var(--lq-muted);
-  font-size: 11.5px;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.dictionary-page-modal .scan-kind.active { color: var(--lq-sapphire); }
-.dictionary-page-modal .scan-kind:disabled { opacity: .45; }
-
-@media (prefers-reduced-motion: reduce) {
-  .dictionary-page-surface .scan-kind-marker { transition: none; }
-}

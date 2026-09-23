@@ -9,51 +9,46 @@
    the class sits on.
    ========================================================= */
 
+.auth-modal .modal-dialog { max-width: 468px; }
+
 .auth-modal .modal-content {
   border: 0;
-  border-radius: 16px;
-  box-shadow: var(--lq-shadow);
+  border-radius: 20px;
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, .35), 0 0 1px rgba(0, 0, 0, .05);
 }
 
 .auth-modal .modal-header {
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  padding: 8px 18px 0;
-  border-bottom: 1px solid var(--lq-line);
+  padding: 26px 34px 0;
+  border-bottom: 0;
 }
 .auth-modal .auth-tabs {
-  flex: 1;
   gap: 2px;
   border-bottom: 0;
-  margin-bottom: -1px;
 }
 .auth-modal .auth-tabs .nav-link {
   border: 0;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: 1.16rem;
+  padding: 8px 16px 10px;
+  font-size: 24px;
   font-weight: 600;
+  letter-spacing: -.3px;
   color: var(--lq-ink-soft);
 }
 .auth-modal .auth-tabs .nav-link:hover { color: var(--lq-sapphire); }
 .auth-modal .auth-tabs .nav-link.active {
-  border-bottom-color: var(--lq-claret);
+  border-bottom-color: var(--lq-sapphire);
   background: none;
-  color: var(--lq-claret);
+  color: var(--lq-sapphire);
 }
 
-.auth-modal .modal-body { padding: 24px; }
+.auth-modal .modal-body { padding: 24px 34px 30px; }
 
 .auth-modal .auth-form {
   display: grid;
-  gap: 14px;
-}
-/* Two names on one line where there is room, stacked where there is not */
-.auth-modal .auth-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
   gap: 14px;
 }
 .auth-modal .auth-field {
@@ -61,15 +56,20 @@
   gap: 6px;
 }
 .auth-modal .auth-field label {
-  font-size: .84rem;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--lq-ink-navy);
+  color: var(--lq-ink-soft);
 }
+/* A filled field, so the form reads as a stack of things to fill in rather
+   than a stack of outlines. */
 .auth-modal .auth-field .form-control {
-  padding: 9px 12px;
-  border: 1px solid var(--lq-line);
-  border-radius: 9px;
-  font-size: .95rem;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d2d9ee;
+  border-radius: 10px;
+  background: #eef2fc;
+  font-size: 15px;
+  color: var(--lq-ink);
 }
 .auth-modal .auth-field .form-control:focus {
   border-color: var(--lq-sapphire);
@@ -77,9 +77,9 @@
 }
 .auth-modal .auth-hint {
   margin: 0;
-  font-size: .78rem;
-  line-height: 1.45;
-  color: var(--lq-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--lq-ink-soft);
 }
 
 .auth-modal .auth-forgot {
@@ -100,7 +100,7 @@
   margin: 2px 0 0;
 }
 .auth-modal .auth-check .form-check-label {
-  font-size: .86rem;
+  font-size: 13px;
   line-height: 1.5;
   color: var(--lq-ink-soft);
 }
@@ -109,35 +109,34 @@
 .auth-modal .auth-verified {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin: 0;
-  padding: 11px 14px;
-  border: 1px solid var(--lq-entry-border);
+  gap: 10px;
+  margin: 4px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--lq-line);
   border-radius: 10px;
-  background: var(--lq-entry-bg);
-  font-size: .88rem;
+  background: var(--lq-paper-soft);
+  font-size: 13px;
   font-weight: 600;
-  color: var(--lq-entry-text);
+  color: #334155;
 }
-.auth-modal .auth-verified svg { width: 16px; height: 16px; }
+.auth-modal .auth-verified svg { width: 19px; height: 19px; color: var(--lq-entry-text); }
 .auth-modal .auth-vendor {
   margin-left: auto;
-  font-size: .76rem;
-  font-weight: 500;
-  color: var(--lq-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--lq-ink-soft);
 }
 
 .auth-modal .auth-submit {
+  height: 52px;
   margin-top: 4px;
-  padding: 11px 18px;
-  border: 1px solid var(--lq-claret);
+  border: 0;
   border-radius: 10px;
-  background: var(--lq-claret);
-  font-weight: 600;
+  background: var(--lq-sapphire);
+  font-size: 15px;
+  font-weight: 700;
   color: #fff;
 }
-.auth-modal .auth-submit:hover {
-  background: var(--lq-claret-hover);
-  border-color: var(--lq-claret-hover);
-  color: #fff;
-}
+.auth-modal .auth-submit:hover { filter: brightness(1.12); color: #fff; }

@@ -1116,43 +1116,65 @@
 .home-surface .typo-mark svg { width: 12px; height: 12px; }
 .home-surface .typo-mark:hover { background: #b45309; color: #fff; }
 
+/* A dark card, so the cut of the page inside it reads as a photograph held
+   up rather than as more of the list. */
 .home-surface .typo-card {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
   z-index: 20;
   display: none;
+  width: 140px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   transform: translateX(-50%);
-  padding: 8px;
-  border: 1px solid var(--lq-line);
-  border-radius: 10px;
-  background: var(--lq-paper);
-  box-shadow: var(--lq-shadow);
+  padding: 6px 6px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: #1e293b;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+}
+
+/* The pointer back to the mark it belongs to */
+.home-surface .typo-card::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1e293b;
 }
 
 .home-surface .typo-mark:hover .typo-card,
-.home-surface .typo-mark:focus-visible .typo-card { display: block; }
+.home-surface .typo-mark:focus-visible .typo-card { display: flex; }
 
 .home-surface .typo-card img {
   display: block;
-  height: 44px;
+  height: 60px;
   width: auto;
-  max-width: 200px;
+  max-width: 100%;
+  padding: 4px;
   border-radius: 6px;
   background: #fff;
 }
 
 .home-surface .typo-card-labels {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 6px;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  margin-top: 2px;
+  padding: 4px 0;
+  border-radius: 8px;
+  background: #334155;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  color: var(--lq-muted);
-  white-space: nowrap;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  text-align: center;
+  color: #cbd5e1;
 }
 
 /* ---------------------------------------------------------------

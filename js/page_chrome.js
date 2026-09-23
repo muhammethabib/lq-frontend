@@ -53,35 +53,35 @@ window.LQ_PAGE_CHROME = `
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="about"
             >
-            <i data-feather="info"></i><span data-i18n="menuAbout">About</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><circle cx="12" cy="7.6" r="1.5" fill="var(--lq-cut)"></circle><path d="M12 11.2v6" fill="none" stroke="var(--lq-cut)" stroke-width="2.4"></path></svg><span data-i18n="menuAbout">About</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="team"
             >
-            <i data-feather="users"></i><span data-i18n="menuTeam">Team</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.2" r="3.6" fill="currentColor"></circle><path d="M2.4 20.2c0-3.4 2.9-5.6 6.6-5.6s6.6 2.2 6.6 5.6z" fill="currentColor"></path><circle cx="17.4" cy="7.4" r="2.7" fill="currentColor" opacity=".55"></circle><path d="M17.4 12.6c2.9 0 4.7 1.8 4.7 4.4h-4.2" fill="currentColor" opacity=".55"></path></svg><span data-i18n="menuTeam">Team</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="what-is-lexiqamus"
             >
-            <i data-feather="help-circle"></i><span data-i18n="menuWhat">What is LexiQamus?</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M9.3 9.1a2.8 2.8 0 0 1 5.4.9c0 1.9-2.7 2.3-2.7 4" fill="none" stroke="var(--lq-cut)" stroke-width="2.1"></path><circle cx="12" cy="17.3" r="1.4" fill="var(--lq-cut)"></circle></svg><span data-i18n="menuWhat">What is LexiQamus?</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="user-guide"
             >
-            <i data-feather="book-open"></i><span data-i18n="menuGuide">Instructions</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.8A1.8 1.8 0 0 1 7.3 2h6.9l4.3 4.3V20a1.8 1.8 0 0 1-1.8 1.8H7.3A1.8 1.8 0 0 1 5.5 20z" fill="currentColor"></path><path d="M14 2.4V7h4.4" fill="none" stroke="var(--lq-cut)" stroke-width="1.5"></path><path d="M9 12.5h6M9 16h6" fill="none" stroke="var(--lq-cut)" stroke-width="1.8"></path></svg><span data-i18n="menuGuide">Instructions</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="institutional"
             >
-            <i data-feather="briefcase"></i><span data-i18n="menuInstitutional">Institutional Subscribers</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 21.8 8.6H2.2z" fill="currentColor"></path><rect x="2.2" y="8.6" width="19.6" height="1.5" fill="currentColor"></rect><rect x="5.9" y="9.6" width="2.6" height="9.2" fill="currentColor"></rect><rect x="10.7" y="9.6" width="2.6" height="9.2" fill="currentColor"></rect><rect x="15.5" y="9.6" width="2.6" height="9.2" fill="currentColor"></rect><rect x="2.2" y="18.8" width="19.6" height="1.6" fill="currentColor"></rect></svg><span data-i18n="menuInstitutional">Institutional Subscribers</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
@@ -91,7 +91,7 @@ window.LQ_PAGE_CHROME = `
         <li>
           <button type="button" class="btn side-link side-link-parent" data-bs-toggle="collapse"
                   data-bs-target="#menuVersion3" aria-expanded="false" aria-controls="menuVersion3">
-            <i data-feather="search"></i>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="11" r="9" fill="currentColor"></circle><circle cx="10" cy="11" r="6.4" fill="var(--lq-cut)"></circle><path d="M16.4 17.4l4.4 4.4" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" fill="none"></path><path d="M5.77 10.25 12.76 7.71" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"></path><path d="M12.76 7.71 11.47 15.04" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"></path><path d="M11.47 15.04 5.77 10.25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"></path><circle cx="5.77" cy="10.25" r="2.1" fill="currentColor"></circle><circle cx="12.76" cy="7.71" r="2.1" fill="currentColor"></circle><circle cx="11.47" cy="15.04" r="2.1" fill="currentColor"></circle></svg>
             <span data-i18n="menuLQ3">LexiQamus 3.0</span>
             <span class="side-year">2026</span>
             <i class="side-chevron" data-feather="chevron-down"></i>
@@ -114,7 +114,7 @@ window.LQ_PAGE_CHROME = `
         <li>
           <button type="button" class="btn side-link side-link-parent" data-bs-toggle="collapse"
                   data-bs-target="#menuVersion2" aria-expanded="false" aria-controls="menuVersion2">
-            <i data-feather="search"></i>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="11" r="9" fill="currentColor"></circle><circle cx="10" cy="11" r="6.4" fill="var(--lq-cut)"></circle><path d="M16.4 17.4l4.4 4.4" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" fill="none"></path><path d="M7.2 12.9 12.8 9.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"></path><circle cx="7.2" cy="12.9" r="2.1" fill="currentColor"></circle><circle cx="12.8" cy="9.1" r="2.1" fill="currentColor"></circle></svg>
             <span data-i18n="menuLQ2">LexiQamus 2.0</span>
             <span class="side-year">2020</span>
             <i class="side-chevron" data-feather="chevron-down"></i>
@@ -137,7 +137,7 @@ window.LQ_PAGE_CHROME = `
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="lq1"
             >
-            <i data-feather="search"></i>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="11" r="9" fill="currentColor"></circle><circle cx="10" cy="11" r="6.4" fill="var(--lq-cut)"></circle><path d="M16.4 17.4l4.4 4.4" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" fill="none"></path><circle cx="10" cy="11" r="2.1" fill="currentColor"></circle></svg>
             <span data-i18n="menuLQ1">LexiQamus 1.0</span>
             <span class="side-year">2016</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
@@ -147,14 +147,14 @@ window.LQ_PAGE_CHROME = `
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="suggestions-history"
             >
-            <i data-feather="edit-3"></i><span data-i18n="menuUpdates">History of Suggestions and Corrections</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.2-4.8L15.4 5l3.6 3.6L7.8 19.8 3 21z" fill="currentColor"></path><path d="M16.6 3.8l1-1a1.9 1.9 0 0 1 2.7 0l.9.9a1.9 1.9 0 0 1 0 2.7l-1 1z" fill="currentColor"></path><path d="M14.2 6.2l3.6 3.6" fill="none" stroke="var(--lq-cut)" stroke-width="1.5"></path></svg><span data-i18n="menuUpdates">History of Suggestions and Corrections</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
         <li>
           <a class="side-link is-unavailable" aria-disabled="true" data-page="pricing"
             >
-            <i data-feather="tag"></i><span data-i18n="menuPricing">Pricing</span>
+            <svg class="side-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 5.4A1.8 1.8 0 0 1 5.4 3.6h6.2a1.8 1.8 0 0 1 1.3.5l7 7a1.8 1.8 0 0 1 0 2.6l-6.2 6.2a1.8 1.8 0 0 1-2.6 0l-7-7a1.8 1.8 0 0 1-.5-1.3z" fill="currentColor"></path><circle cx="8.4" cy="8.4" r="1.9" fill="var(--lq-cut)"></circle></svg><span data-i18n="menuPricing">Pricing</span>
             <span class="side-soon" data-i18n="soonLabel">soon</span>
           </a>
         </li>
@@ -213,8 +213,11 @@ window.LQ_PAGE_CHROME = `
                       data-i18n="menuSignUp">Sign up</button>
             </li>
           </ul>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close" data-i18n-aria="close"></button>
+          <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                  aria-label="Close" data-i18n-aria="close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
 
         <div class="modal-body tab-content">
@@ -238,15 +241,13 @@ window.LQ_PAGE_CHROME = `
           <!-- Sign up -->
           <div class="tab-pane fade" id="signUpPane" role="tabpanel" aria-labelledby="signUpTab">
             <form class="auth-form" novalidate>
-              <div class="auth-row">
-                <div class="auth-field">
-                  <label for="signUpFirst" data-i18n="authFirstName">First name</label>
-                  <input type="text" id="signUpFirst" class="form-control" autocomplete="given-name" required>
-                </div>
-                <div class="auth-field">
-                  <label for="signUpLast" data-i18n="authLastName">Last name</label>
-                  <input type="text" id="signUpLast" class="form-control" autocomplete="family-name" required>
-                </div>
+              <div class="auth-field">
+                <label for="signUpFirst" data-i18n="authFirstName">First name</label>
+                <input type="text" id="signUpFirst" class="form-control" autocomplete="given-name" required>
+              </div>
+              <div class="auth-field">
+                <label for="signUpLast" data-i18n="authLastName">Last name</label>
+                <input type="text" id="signUpLast" class="form-control" autocomplete="family-name" required>
               </div>
               <div class="auth-field">
                 <label for="signUpEmail" data-i18n="authEmail">Email</label>
@@ -256,7 +257,7 @@ window.LQ_PAGE_CHROME = `
                 <label for="signUpPassword" data-i18n="authPassword">Password</label>
                 <input type="password" id="signUpPassword" class="form-control"
                        autocomplete="new-password" aria-describedby="signUpPasswordHint" required>
-                <p class="auth-hint" id="signUpPasswordHint" data-i18n="authPasswordHint">At least 8 characters, letters and numbers, with one capital letter.</p>
+                <p class="auth-hint" id="signUpPasswordHint" data-i18n="authPasswordHint">Must be at least 8 characters, alphanumeric, and include at least one capital letter.</p>
               </div>
               <div class="auth-field">
                 <label for="signUpPasswordAgain" data-i18n="authPasswordAgain">Password (again)</label>

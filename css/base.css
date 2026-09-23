@@ -52,12 +52,15 @@
   --bs-primary-rgb: 8, 37, 103;
   --bs-body-color: #0f172a;
   --bs-body-bg: #eef2f7;
-  /* Bootstrap draws modals and dropdowns on the body colour; here that is the
-     page grey, and every window would take it. Both are cards on the page. */
-  --bs-modal-bg: #ffffff;
-  --bs-dropdown-bg: #ffffff;
   --bs-body-font-family: 'Inter', sans-serif;
 }
+
+/* Bootstrap takes a modal's and a dropdown's ground from the body colour,
+   and here that is the page grey, so every window would come up wearing it.
+   Both are cards standing on the page. The variables are set where Bootstrap
+   sets them, since it redefines them on these elements. */
+.modal { --bs-modal-bg: #ffffff; }
+.dropdown-menu { --bs-dropdown-bg: #ffffff; }
 
 body {
   -webkit-font-smoothing: antialiased;
@@ -219,6 +222,9 @@ body {
 /* Bootstrap's offcanvas provides the drawer, the scrim and the focus handling;
    these rules only give it the LexiQamus look. */
 .side-menu {
+  /* Bootstrap sizes an offcanvas from its own variable, so the width is set
+     there rather than fought with. */
+  --bs-offcanvas-width: 292px;
   width: 292px;
   max-width: 86vw;
   background: var(--lq-body-bg);
@@ -233,7 +239,7 @@ body {
   border-bottom: 1px solid var(--lq-line);
 }
 .side-menu .side-menu-logo { display: block; min-width: 0; }
-.side-menu .side-menu-logo img { height: 40px; width: auto; display: block; }
+.side-menu .side-menu-logo img { height: 45px; width: auto; display: block; }
 
 .side-menu .side-menu-auth {
   display: flex;
@@ -292,14 +298,30 @@ body {
   box-shadow: 0 1px 4px rgba(8, 37, 103, .08);
 }
 
-.side-menu .side-link svg {
+/* The marks are drawn solid: the body takes currentColor and the details
+   inside them are knocked out in whatever the mark is sitting on, which is
+   what --lq-cut carries. */
+.side-menu .side-link .side-icon {
+  --lq-cut: var(--lq-body-bg);
   width: 28px;
   height: 28px;
   flex: none;
   padding: 5px;
   box-sizing: border-box;
+  border: 1px solid transparent;
   border-radius: 6px;
   color: var(--lq-red);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.side-menu .side-link:hover .side-icon,
+.side-menu .side-link.active .side-icon,
+.side-menu .side-link[aria-expanded="true"] .side-icon {
+  --lq-cut: #eff6ff;
+  border-color: #cbd5e1;
+  background: #eff6ff;
+  color: var(--lq-sapphire);
 }
 
 .side-menu .side-year {

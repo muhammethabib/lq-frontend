@@ -105,8 +105,13 @@ body {
   direction: ltr;
 }
 
-/* Sections that only Admin/Staff should see. The Rails side wraps these in permission checks. */
-.admin-only {
+/* Sections that only Admin/Staff should see. The Rails side wraps these in
+   permission checks, so the class is a marker for that wrapping rather than
+   a style. It draws nothing here: a reader who can see the control should
+   see it looking like every other control. Set data-admin-hints on the
+   document to have them outlined while working on them. */
+.admin-only { outline: 0; }
+[data-admin-hints] .admin-only {
   outline: 1px dashed var(--lq-gold);
   outline-offset: 2px;
 }

@@ -80,6 +80,7 @@
 }
 
 .home-surface .tagline {
+  margin: 0;
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -90,9 +91,18 @@
 
 /* The landing state shows a larger logo; the results state shrinks it.
    The state class is set by the controller on the root element. */
-.home-surface.state-landing .logo-link { width: 420px; }
+/* On the landing screen the wordmark is larger, and leaves room under
+   itself for the version badge, which is larger with it. */
+.home-surface.state-landing .logo-link { width: 420px; margin-bottom: 12px; }
+.home-surface.state-landing .version-badge {
+  bottom: 5px;
+  font-size: 10px;
+  padding: 3px 8px;
+}
 .home-surface.state-landing .tagline { font-size: 11.5px; font-weight: 600; letter-spacing: 3.2px; }
-.home-surface.state-landing .search-tabs { margin-top: 12vh; }
+/* 16vh, less the 14px the reference's branding block sits below its own
+   layout box, so the tabs land where they land there. */
+.home-surface.state-landing .search-tabs { margin-top: calc(16vh - 14px); }
 
 /* ---------- tabs ---------- */
 
@@ -670,11 +680,12 @@
    thing below it and then steps out of the way. The one over the spellings
    reads as a heading, so it keeps its weight. */
 .home-surface .results-label {
+  display: block;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: var(--lq-muted);
 }
 .home-surface .spelling-label {
   font-size: 10px;
@@ -684,7 +695,13 @@
   color: #5d718c;
   padding-left: 2px;
 }
-.home-surface .expand-row .spelling-label { font-size: 11px; margin-right: 12px; padding-left: 0; }
+.home-surface .expand-row .spelling-label {
+  font-size: 11px;
+  letter-spacing: .8px;
+  margin-right: 10px;
+  padding-left: 0;
+  user-select: none;
+}
 
 /* The term is Ottoman, so it is set right to left; left to itself it would
    fill the column and sit at its far edge instead of under its own label. */
@@ -707,6 +724,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 3px;
   margin-top: 6px;
   padding-left: 15px;
@@ -730,9 +748,11 @@
   margin: 0;
   color: #64748b;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
 }
+/* The words carry a little more weight than the row they sit in */
+.home-surface .results-stats p span { font-weight: 600; }
 /* The first line is the answer and the second is the ground it was found on,
    so the second number steps back. */
 .home-surface .results-stats b {
@@ -781,26 +801,32 @@
 .home-surface .spelling-button[data-script="latin"]:hover:not(.active) { background: #dbeafe; border-color: #93c5fd; }
 .home-surface .spelling-button[data-script="latin"].active { background: var(--lq-sapphire); color: #fff; border-color: var(--lq-sapphire); }
 
+/* Label and buttons share one pill, so the row reads as one control */
 .home-surface .expand-row {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 0;
   flex-wrap: wrap;
   margin-top: 16px;
+  padding: 5px 8px 5px 24px;
+  border: 1px solid var(--lq-line);
+  border-radius: 99px;
+  background: var(--lq-paper-soft);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .02);
 }
 .home-surface .pronunciation-button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--lq-line);
-  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  border-radius: 99px;
   background: var(--lq-paper);
-  padding: 8px 14px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .6px;
   text-transform: uppercase;
-  color: #4a5a82;
+  color: #475569;
 }
 .home-surface .pronunciation-icon { width: 20px; height: 20px; flex: none; }
 .home-surface .pronunciation-button:hover { border-color: var(--lq-sapphire); color: var(--lq-sapphire); }
@@ -1135,9 +1161,8 @@
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: var(--lq-muted);
   margin-top: 4px;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Row actions sit side by side in their own column */

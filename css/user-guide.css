@@ -46,8 +46,10 @@
   background: none;
   font-size: 11px;
   font-weight: 800;
+  line-height: 1.78;
   letter-spacing: .12em;
   text-transform: uppercase;
+  border-radius: 0;
   color: var(--lq-sapphire);
 }
 /* Wide enough for the sidebar, so the list is simply open */
@@ -66,6 +68,7 @@
   position: relative;
   display: block;
   text-decoration: none;
+  text-underline-offset: auto;
 }
 .guide-surface .guide-toc a:hover { color: var(--lq-claret); }
 .guide-surface .guide-toc-list > li > a {
@@ -202,6 +205,17 @@
 
 .guide-surface .guide-steps p { margin: 0 0 1.25em; }
 .guide-surface .guide-block p { margin: 0 0 .95em; }
+/* An Ottoman word quoted in running text is set in the Ottoman face, a
+   little larger than the line and in the red the site gives that script,
+   so it is read as a specimen rather than as part of the sentence. */
+.guide-surface .guide-block p [data-direction="rtl"],
+.guide-surface .section-intro [data-direction="rtl"] {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-weight: 700;
+  font-size: 1.22em;
+  line-height: 1;
+  color: var(--lq-red);
+}
 
 /* ---------- a lettered sub-topic ---------- */
 
@@ -242,7 +256,7 @@
   color: var(--lq-claret);
 }
 .guide-surface .guide-sub b {
-  font: 600 1.18rem 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  font: 600 1.18rem 'EB Garamond', Georgia, serif;
   color: var(--lq-sapphire);
 }
 .guide-surface .guide-sub-note {
@@ -336,31 +350,34 @@
 
 .guide-surface .guide-states {
   display: grid;
-  gap: 8px;
-  max-width: 44ch;
-  margin: 14px 0 18px;
-  padding: 0;
+  gap: 9px;
+  margin: 14px 0 16px;
+  padding: 0 0 0 4px;
   list-style: none;
   counter-reset: state;
 }
+/* The number keeps a column of its own, and the line beside it sits on the
+   number's own baseline rather than on the middle of its badge. */
 .guide-surface .guide-states li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  align-items: baseline;
+  gap: 10px;
   counter-increment: state;
+  font-size: 16.5px;
   font-weight: 500;
+  line-height: 1.7;
+  color: #334155;
 }
 .guide-surface .guide-states li::before {
   content: counter(state);
-  display: grid;
-  place-items: center;
-  flex: none;
+  display: block;
   width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--lq-osm-bg);
-  font-size: .82rem;
-  font-weight: 700;
+  border-radius: 7px;
+  background: #fdf2f6;
+  font: 800 11.5px/1.9 'Inter', system-ui, sans-serif;
+  letter-spacing: .02em;
+  text-align: center;
   color: var(--lq-claret);
 }
 

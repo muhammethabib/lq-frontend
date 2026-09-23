@@ -64,6 +64,7 @@
   position: relative;
   display: block;
   text-decoration: none;
+  text-underline-offset: auto;
   line-height: 1.35;
 }
 .article-surface .article-toc-list a.article-toc-sec {
@@ -128,8 +129,11 @@
 
 /* ---------- the reading column ---------- */
 
-.article-surface .article-body { max-width: 760px; }
-.article-surface .article-body p { margin: 0 0 1.25em; }
+/* The column is set at the page's base size and the text inside it a half
+   point larger, as the reference has it: the reading size belongs to the
+   lines, not to the box that holds them. */
+.article-surface .article-body { max-width: 760px; font-size: 1rem; }
+.article-surface .article-body p { margin: 0 0 1.25em; font-size: 16.5px; line-height: 1.78; }
 /* The opening paragraph is set a shade larger, the way a standfirst is. */
 .article-surface .article-body > p:first-child { font-size: 1.08rem; }
 /* An italic term in running text is set in the serif face; in a heading it
@@ -140,7 +144,7 @@
 .article-surface .article-body strong { color: #2b343d; }
 .article-surface .article-body ol,
 .article-surface .article-body ul { margin: 1rem 0 1.7rem; padding-left: 1.55rem; }
-.article-surface .article-body li { margin: .42rem 0; font-size: 16.5px; color: var(--lq-ink); }
+.article-surface .article-body li { margin: .42rem 0; font-size: 16.5px; line-height: 1.78; color: var(--lq-ink); }
 .article-surface .article-body li p { margin: .25rem 0; }
 
 .article-surface .page-content .article-body .article-h2 {
@@ -191,7 +195,9 @@
   border-radius: 12px;
   background: var(--lq-soft);
 }
-.article-surface .article-body .article-roster li { margin: 0; padding: 2px 0; }
+/* The reference sets each name as a paragraph inside its item, which brings
+   the paragraph's own margins with it; the room is given here instead. */
+.article-surface .article-body .article-roster li { margin: 0; padding: 6px 0; }
 
 /* ---------- signature, references, notes ---------- */
 
@@ -200,11 +206,6 @@
   padding-top: 22px;
   border-top: 1px solid var(--lq-line);
   color: #4f5a65;
-}
-.article-surface .article-body p.article-signature + p.article-signature {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
 }
 
 .article-surface .article-bibliography {

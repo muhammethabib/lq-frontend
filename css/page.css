@@ -17,10 +17,26 @@
      ground; the reading column inside it is what is held narrow. */
   min-height: 100vh;
   background: var(--lq-paper);
+  /* A reading page is set in the darker of the two inks: the main page's
+     slate is for a screen worked in, not one read through. */
+  color: var(--lq-ink);
   font: 16.5px/1.78 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 .page-surface .page-body { width: 100%; }
+
+/* A footnote mark is raised, set smaller, and takes its share of the line,
+   the way a browser draws one. Bootstrap flattens it onto the baseline with
+   no leading of its own, which closes the line the mark sits in. */
+.page-surface :is(sub, sup) {
+  position: static;
+  top: auto;
+  bottom: auto;
+  font-size: smaller;
+  line-height: inherit;
+}
+.page-surface sup { vertical-align: super; }
+.page-surface sub { vertical-align: sub; }
 
 /* The bar the menu button and the language switch sit in. On the main page
    they float over the page; here they have a bar of their own, which the
@@ -137,7 +153,7 @@
 /* An opening section, and a standfirst under a heading, are held to a
    reading measure; ordinary running text takes the panel's full width. */
 .page-surface .page-intro { max-width: 74ch; }
-.page-surface .page-content .section-intro {
+.page-surface .section-intro {
   max-width: 74ch;
   color: var(--lq-muted);
 }

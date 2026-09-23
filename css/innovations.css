@@ -1669,7 +1669,6 @@
   transition: clip-path 3.5s linear;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
 }
 
 .innovations .strip-active .category-line {
@@ -3264,10 +3263,10 @@ body.vs-home:not(.tool-focus)::-webkit-scrollbar {
 
 .innovations .no-margin { margin: 0; }
 /* The line is laid out as a flex row so it can be revealed a character at a
-   time, and a flex row drops the spaces between its parts. The gap puts them
-   back -- between every part, not only before the marked ones, so the word
-   after the last mark does not run into it. */
-.innovations .spaced-word { margin-left: 0; }
+   time, and a flex row drops the ordinary spaces between its parts. The
+   spaces that have to survive are written into the words as hard spaces;
+   this one space, before the first marked word, is set here. */
+.innovations .spaced-word { margin-left: 5px; }
 .innovations .above-base { position: relative; z-index: 1; }
 .innovations .above-all { z-index: 500; }
 .innovations .arrow-shape-light { border-color: rgba(255, 255, 255, 0.5); }

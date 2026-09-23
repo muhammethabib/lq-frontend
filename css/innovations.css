@@ -1653,6 +1653,7 @@
   transition: clip-path 3.5s linear;
   display: inline-flex;
   align-items: center;
+  gap: 5px;
 }
 
 .innovations .strip-active .category-line {
@@ -3246,7 +3247,11 @@ body.vs-home:not(.tool-focus)::-webkit-scrollbar {
 }
 
 .innovations .no-margin { margin: 0; }
-.innovations .spaced-word { margin-left: 5px; }
+/* The line is laid out as a flex row so it can be revealed a character at a
+   time, and a flex row drops the spaces between its parts. The gap puts them
+   back -- between every part, not only before the marked ones, so the word
+   after the last mark does not run into it. */
+.innovations .spaced-word { margin-left: 0; }
 .innovations .above-base { position: relative; z-index: 1; }
 .innovations .above-all { z-index: 500; }
 .innovations .arrow-shape-light { border-color: rgba(255, 255, 255, 0.5); }

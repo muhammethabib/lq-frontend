@@ -464,10 +464,12 @@ body.has-panel-room::after {
 .back-to-top:hover { background: #0b3286; color: #fff; }
 .back-to-top svg { flex: none; width: 16px; height: 16px; }
 
-@media (max-width: 759.98px) {
+/* The written pill only fits while there is room to the right of the result
+   card; below that it sits over the card and covers the button that cites.
+   From there down it is the arrow alone, which reads on its own, with the
+   meaning kept in the label. */
+@media (max-width: 1579.98px) {
   .back-to-top {
-    right: 16px;
-    bottom: 16px;
     width: 48px;
     height: 48px;
     padding: 0;
@@ -476,6 +478,10 @@ body.has-panel-room::after {
   }
   .back-to-top span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .back-to-top svg { width: 20px; height: 20px; }
+}
+
+@media (max-width: 759.98px) {
+  .back-to-top { right: 16px; bottom: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }

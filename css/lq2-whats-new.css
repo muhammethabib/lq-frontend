@@ -9,7 +9,7 @@
 .v2-surface .page-hero h1 { max-width: 760px; }
 
 /* The opening passage is set a shade larger than the rest of the page */
-.v2-surface .v2-intro { font-size: 1.08rem; }
+.v2-surface .article-body .v2-intro { font-size: 1.08rem; }
 
 /* The name of the version opens the page in place of a heading of its own */
 .v2-surface .page-content .article-body .v2-intro h2.v2-kicker {
@@ -107,7 +107,7 @@
   font-weight: 700;
   color: #614b16;
 }
-.v2-surface .v2-archive-note p { margin: 0; color: #5e5338; }
+.v2-surface .v2-archive-note p { margin: 0; font-size: inherit; color: #5e5338; }
 
 /* The offer the note supersedes, set back so it reads as a record */
 .v2-surface .page-content .article-body .v2-offer {

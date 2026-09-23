@@ -24,6 +24,8 @@
 }
 
 .page-surface .page-body { width: 100%; }
+/* The switch's own buttons are centred by their layout, not by a text rule. */
+.page-surface .language-option { text-align: start; }
 
 /* A footnote mark is raised, set smaller, and takes its share of the line,
    the way a browser draws one. Bootstrap flattens it onto the baseline with
@@ -169,7 +171,9 @@
   line-height: 1.18;
   color: var(--lq-sapphire);
 }
-.page-surface .page-content h2:first-child { margin-top: 0; }
+/* The first heading of the column needs no room above it. A heading inside
+   a card of its own is that card's, not the column's, so it keeps its own. */
+.page-surface .page-content > h2:first-child { margin-top: 0; }
 
 /* A standfirst directly under the page title: the same face, a step down,
    and no bar above it. */
@@ -271,7 +275,7 @@
   border: 1px solid var(--lq-line);
   border-radius: 12px;
   background: #f5f8fb;
-  color: #3b4957;
+  color: var(--lq-ink);
 }
 .page-surface .point-list li::before {
   content: "";
@@ -372,7 +376,7 @@
   line-height: 1.35;
   color: var(--lq-sapphire);
 }
-.page-surface .card-note {
+.page-surface .page-content .card-note {
   margin: 0 0 14px;
   font-size: .88rem;
   color: var(--lq-ink-soft);

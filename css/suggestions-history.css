@@ -62,11 +62,10 @@
 
 .history-surface .history-number {
   margin-right: 6px;
-  font-family: 'EB Garamond', Garamond, 'Times New Roman', serif;
+  font-family: 'EB Garamond', Garamond, serif;
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--lq-sapphire);
-  font-variant-numeric: tabular-nums;
 }
 .history-surface .history-names { color: #334155; }
 .history-surface .history-names b { font-weight: 600; color: var(--lq-ink); }

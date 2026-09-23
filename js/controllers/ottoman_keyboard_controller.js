@@ -18,7 +18,7 @@
 const KEYBOARD_DOCK_QUERY = "(max-width: 767px)";
 
 class OttomanKeyboardController extends Stimulus.Controller {
-  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "clear"]
+  static targets = ["basicPanel", "advancedPanel", "wildcardRow"]
   static values = { open: { type: Boolean, default: false } }
 
   connect() {
@@ -29,7 +29,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.onRequest = (event) => {
       this.owner = event.detail.owner || null;
       this.below = event.detail.below || null;
-      this.openNear(event.detail.anchor, event.detail.canClear);
+      this.openNear(event.detail.anchor);
     };
     this.onDismiss = () => this.close();
     document.addEventListener("ottoman-keyboard:request", this.onRequest);
@@ -49,8 +49,9 @@ class OttomanKeyboardController extends Stimulus.Controller {
     };
     document.addEventListener("language:changed", this.onLanguageChange);
 
-    // The strip tells the keyboard when there is something to clear
-    this.onState = (event) => { this.clearTarget.hidden = !event.detail.canClear; };
+    // The panel's Clear is always on show: while the keyboard covers the row,
+    // it is the only one there is.
+    this.onState = () => {};
     document.addEventListener("ottoman-keyboard:state", this.onState);
   }
 
@@ -82,7 +83,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
         data-action="pointerdown->ottoman-keyboard#pressWildcard"
         data-bs-toggle="tooltip" data-bs-title="${this.escape(label)}"
-        aria-label="${this.escape(label)}">${this.escape(wildcard.symbol)}</button>`;
+        aria-label="${this.escape(label)}">${wildcard.mark || this.escape(wildcard.symbol)}</button>`;
     }).join("");
   }
 
@@ -179,15 +180,16 @@ class OttomanKeyboardController extends Stimulus.Controller {
 
   // ==================== showing and placing ====================
 
-  openNear(anchor, canClear) {
+  openNear(anchor) {
     this.anchor = anchor || null;
     this.openValue = true;
     this.element.classList.add("is-open");
-    this.clearTarget.hidden = !canClear;
     this.place();
     // Only on opening: doing it from place() would make the page scroll
-    // itself every time the scroll listener fired.
-    this.scrollIntoReach();
+    // itself every time the scroll listener fired. It is tried again a few
+    // times because the panel's own height is not final until its marks have
+    // been drawn, and a measurement taken before that is short.
+    [0, 80, 320, 700].forEach((delay) => setTimeout(() => this.scrollIntoReach(), delay));
   }
 
   close(event) {

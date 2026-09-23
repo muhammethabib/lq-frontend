@@ -464,11 +464,14 @@ class WordDecoderController extends Stimulus.Controller {
 
     input.value = "";
     if (content.wildcard) {
-      const symbol = (window.LQ_KEYBOARD_LAYOUT.wildcards[content.wildcard] || {}).symbol || "*";
+      // In the slot the wildcard is the plain character the pattern carries;
+      // the drawn star is for the key and for the pattern pill.
+      const wildcard = window.LQ_KEYBOARD_LAYOUT.wildcards[content.wildcard] || {};
+      const symbol = this.escape(wildcard.symbol || "*");
       cell.dataset.wildcard = content.wildcard;
       delete cell.dataset.rasm;
       cell.insertAdjacentHTML("beforeend",
-        `<span class="slot-mark" data-wildcard="${content.wildcard}" aria-hidden="true">${this.escape(symbol)}</span>`);
+        `<span class="slot-mark" data-wildcard="${content.wildcard}" aria-hidden="true">${symbol}</span>`);
     } else if (content.rasm) {
       cell.dataset.rasm = content.rasm;
       cell.dataset.dots = content.dots || "";
@@ -682,8 +685,8 @@ class WordDecoderController extends Stimulus.Controller {
         if (slot.kind === "letter") return `<span class="pattern-slot" data-kind="letter">${this.escape(slot.letters[0])}</span>`;
         if (slot.kind === "alternatives") return `<span class="pattern-slot" data-kind="alternatives">${this.escape(slot.letters.join("/"))}</span>`;
         if (slot.kind === "rasm") return `<span class="pattern-slot" data-kind="rasm">${this.escape(slot.shape)}*</span>`;
-        const symbol = (wildcards[slot.kind] || {}).symbol || "*";
-        return `<span class="pattern-slot" data-kind="${slot.kind}">${this.escape(symbol)}</span>`;
+        const mark = wildcards[slot.kind] || {};
+        return `<span class="pattern-slot" data-kind="${slot.kind}">${mark.mark || this.escape(mark.symbol || "*")}</span>`;
       }).join("");
   }
 

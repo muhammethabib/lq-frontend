@@ -1263,10 +1263,14 @@
 
   <!-- On-screen Ottoman keyboard. It types into whichever field asked for it,
        so it lives beside the features rather than inside one. -->
-  <div class="ottoman-keyboard" data-controller="ottoman-keyboard" data-direction="rtl"
+  <!-- The panel is a row of controls, not a run of Ottoman text: the keys
+       carry the script, the panel itself is laid out left to right and its
+       rows are reversed in the stylesheet. Marking the panel rtl would turn
+       the rows twice and leave them reading the wrong way. -->
+  <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
     <div class="keyboard-bar">
-      <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear" hidden
+      <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
               data-action="pointerdown->ottoman-keyboard#clearAll">
         <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
       </button>

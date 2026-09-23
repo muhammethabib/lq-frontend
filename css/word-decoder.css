@@ -127,7 +127,9 @@
 .word-decoder-surface .slot-mark[data-wildcard="many"] {
   font-family: 'Inter', sans-serif;
   font-size: 22px;
+  color: var(--lq-claret);
 }
+.word-decoder-surface .slot-mark[data-wildcard="many"] { font-family: Georgia, serif; font-weight: 400; }
 
 /* The asterisk on a skeleton key sits where the missing dots would be */
 .word-decoder-surface .slot-mark .dot-mark {
@@ -380,6 +382,8 @@
   font-size: 26px;
   color: var(--lq-claret);
 }
+.word-decoder-surface .pattern-slot .wildcard-star { width: 22px; height: 22px; margin: 0 2px; }
+
 /* Alternatives for one position are stacked behind a slash */
 .word-decoder-surface .pattern-slot[data-kind="alternatives"] { font-size: 26px; }
 

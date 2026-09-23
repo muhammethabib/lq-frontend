@@ -92,6 +92,9 @@
   font-size: 20px;
   font-weight: 800;
 }
+/* The star is drawn rather than typed, so it is sized here */
+.ottoman-keyboard .wildcard-key .wildcard-star { width: 17px; height: 17px; flex: none; }
+.ottoman-keyboard .wildcard-key[data-wildcard="many"] { font-family: Georgia, serif; font-size: 22px; font-weight: 400; }
 .ottoman-keyboard .wildcard-key:hover { background: #dcfce7; border-color: #4ade80; }
 .ottoman-keyboard .wildcard-key:active { background: var(--wildcard-ink); color: #fff; transform: scale(.92); }
 
@@ -101,16 +104,16 @@
 .ottoman-keyboard .keyboard-panel.is-active { display: flex; }
 
 /* Rows read right to left, so the first key in the markup is the rightmost.
-   The order follows the direction attribute on the keyboard rather than being
-   fixed here. */
+   The reversal is here rather than on the panel, which is an ordinary left to
+   right control strip. */
 .ottoman-keyboard .keyboard-row {
   display: flex;
+  flex-direction: row-reverse;
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
   width: 100%;
 }
-.ottoman-keyboard[data-direction="rtl"] .keyboard-row { flex-direction: row-reverse; }
 .ottoman-keyboard .keyboard-row:last-child { justify-content: space-between; }
 
 /* ---------- keys ---------- */

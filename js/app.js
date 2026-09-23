@@ -68,8 +68,20 @@ window.LQ = {
   makeRoomFor(panel) {
     const past = panel.getBoundingClientRect().bottom + 16 - window.innerHeight;
     if (past <= 0) { this.releaseRoom(); return; }
+    // The panel is fixed, so it adds nothing to the page's own height and the
+    // page may have nowhere to scroll to. What is wanted is not the overlap
+    // but the scroll range the page is short of: the room makes up that
+    // difference, and only then is there anywhere to scroll.
+    const current = parseFloat(
+      getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
+    const reach = document.documentElement.scrollHeight - window.innerHeight;
+    const short = (window.scrollY + past) - reach;
     document.body.classList.add("has-panel-room");
-    document.body.style.setProperty("--lq-panel-room", `${Math.ceil(past)}px`);
+    if (short > 0) {
+      document.body.style.setProperty("--lq-panel-room", `${Math.ceil(current + short + 20)}px`);
+    } else if (!current) {
+      document.body.style.setProperty("--lq-panel-room", "0px");
+    }
     window.scrollBy({ top: past, behavior: "smooth" });
   },
 

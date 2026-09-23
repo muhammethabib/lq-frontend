@@ -971,7 +971,7 @@ window.LQ_TRANSLATIONS = {
     subLetters: "Harfler",
     subLettersNote: "normal ve özel karakterler",
     lettersBody: "Bir kutuya tıkladığınızda harf klavyesi açılır. Buradan hem normal harfleri hem de benzer şekilli harfleri temsil eden özel karakterleri girebilirsiniz.",
-    lettersStarred: "Klavyedeki yıldızlı mavi tuşlar bu özel karakterlerdir. Her biri aynı iskelete sahip, yalnızca noktaları farklı olan harflerin hepsini birden arar; noktalarını okuyamadığınız bir harf için bunları kullanabilirsiniz. (Kutularla arama mantığının bütünü gibi, yıldızlı karakterler de LexiQamus’un geliştirdiği bir yeniliktir; ayrıntısı için <a href=\"lq1.html\">LexiQamus 1.0</a>.)",
+    lettersStarred: "Klavyedeki yıldızlı mavi tuşlar bu özel karakterlerdir. Her biri aynı iskelete sahip, yalnızca noktaları farklı olan harflerin hepsini birden arar; noktalarını okuyamadığınız bir harf için bunları kullanabilirsiniz. (Kutularla arama mantığının bütünü gibi, yıldızlı karakterler de LexiQamus’un geliştirdiği bir yeniliktir; ayrıntısı için <a class=\"xlink\" href=\"lq1.html\" target=\"_blank\" rel=\"noopener\">LexiQamus 1.0</a>.)",
     shotStarredKeysTableAlt: "Mavi tuşlar ve aradıkları harfler tablosu",
     shotStarredKeysTableSrc: "../assets/guide/tr/starred-keys-table.webp",
     lettersOwnKeyboard: "Tuşlara tıklamak zorunda değilsiniz. Bir kutunun üzerine geldiğinizde hatırlatıldığı gibi, harfleri kendi klavyenizle de yazabilirsiniz.",

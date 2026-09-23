@@ -164,7 +164,6 @@ window.LQ_TRANSLATIONS = {
     rmClose: "Kapat",
     cite: "Künye",
     editEntry: "Maddeyi düzenle",
-    emptyState: "Bir kelime yazıp Ara düğmesine basın.",
     noResults: "Seçtiğiniz filtrelerle sonuç bulunamadı.",
     searchFailed: "Arama tamamlanamadı. Lütfen tekrar deneyin.",
 

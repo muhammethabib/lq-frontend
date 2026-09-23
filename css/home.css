@@ -7,6 +7,9 @@
 .home-surface {
   /* Card width matches the original: full width up to 1300px, with a gutter */
   --home-card-width: min(100% - 48px, 1300px);
+  /* Bootstrap's p-4 utility carries !important, so the page's own padding is
+     written here rather than fought with there. */
+  padding: 32px 24px 24px;
   --home-radius: 20px;
   --home-surface-radius: 24px;
   max-width: var(--lq-max-width);
@@ -14,7 +17,25 @@
   position: relative;
 }
 
+/* On a wide screen the corner controls sit over the page, as the reference
+   has them, so the wordmark starts at the top of the card rather than a row
+   below it. The wordmark is centred and narrow, so nothing can collide. Below
+   this width the row keeps its place in the flow, where it needs the room. */
+@media (min-width: 1024px) {
+  .home-surface > .page-chrome > .page-top-row {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+  }
+}
+
 /* ---------- branding ---------- */
+
+/* The landing screen gives the wordmark a little more air above it than the
+   searched screens do, which is what the reference does as well. */
+.home-surface.state-landing .branding { margin-top: 14px; }
 
 .home-surface .branding {
   display: flex;
@@ -107,6 +128,12 @@
 /* ---------- search card ---------- */
 
 .home-surface .search-card {
+  /* The card keeps a height of its own whichever tab is showing, so the page
+     below it does not jump when the reader switches between them. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 140px;
   width: var(--home-card-width);
   margin-inline: auto;
   background: var(--lq-paper);
@@ -621,7 +648,11 @@
   color: #64748b;
 }
 
+/* The term is Ottoman, so it is set right to left; left to itself it would
+   fill the column and sit at its far edge instead of under its own label. */
 .home-surface .results-term {
+  width: fit-content;
+  max-width: 100%;
   font-size: 44px;
   font-weight: 600;
   letter-spacing: -.02em;
@@ -695,6 +726,7 @@
   text-transform: uppercase;
   color: #4a5a82;
 }
+.home-surface .pronunciation-icon { width: 20px; height: 20px; flex: none; }
 .home-surface .pronunciation-button:hover { border-color: var(--lq-sapphire); color: var(--lq-sapphire); }
 .home-surface .pronunciation-button.active { background: var(--lq-sapphire); border-color: var(--lq-sapphire); color: #fff; }
 .home-surface .pronunciation-count {
@@ -1034,7 +1066,6 @@
   border-color: var(--lq-lat-border);
 }
 
-.home-surface .results-empty { padding: 48px 40px; text-align: center; color: var(--lq-muted); }
 
 /* ---------- responsive ---------- */
 

@@ -34,7 +34,7 @@ class HomeController extends Stimulus.Controller {
     "groupCopy",
     "spellingRow", "pronunciationButton", "pronunciationCount",
     "jumpBar", "jumpLinks",
-    "emptyState", "noMatches", "noMatchesLine", "noMatchesTerm",
+    "noMatches", "noMatchesLine", "noMatchesTerm",
     "searchFailed", "suggestions", "suggestionsBlock"
   ]
 
@@ -134,7 +134,6 @@ class HomeController extends Stimulus.Controller {
     this.element.classList.add("state-landing");
     this.element.classList.remove("state-results");
     this.fitTagline();
-    this.emptyStateTarget.hidden = false;
     this.resultsSurfaceTarget.hidden = true;
     this.noMatchesTarget.hidden = true;
   }
@@ -553,7 +552,6 @@ class HomeController extends Stimulus.Controller {
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
     this.fitTagline();
-    this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
     this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => body.remove());
     // A request that failed is not a word that could not be found, so the
@@ -571,7 +569,6 @@ class HomeController extends Stimulus.Controller {
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
     this.fitTagline();
-    this.emptyStateTarget.hidden = true;
     this.resultsSurfaceTarget.hidden = false;
 
     const totals = results.totals || {};

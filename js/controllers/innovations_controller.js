@@ -27,6 +27,11 @@
 // cannot carry it past the next screen.
 const GESTURE_LOCK = 700;
 
+// How far the invitation stands off the bottom of the first screen, and the
+// margin it keeps when there is no room to pin it there.
+const PROMPT_GAP = 24;
+const PROMPT_MARGIN = 46;
+
 // Keys that move around rather than reach for a tool.
 const NAVIGATION_KEYS = ["PageDown", "PageUp", "Home", "End", "Tab", "Escape",
   "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
@@ -80,7 +85,7 @@ class InnovationsController extends Stimulus.Controller {
     };
     document.addEventListener("view-state:change", this.onViewState);
 
-    this.onResize = () => { this.park(); this.sizeCanvases(); };
+    this.onResize = () => { this.placePrompt(); this.park(); this.sizeCanvases(); };
     window.addEventListener("resize", this.onResize);
   }
 
@@ -104,6 +109,7 @@ class InnovationsController extends Stimulus.Controller {
     document.body.classList.add("story-armed");
     document.body.classList.remove("story-open", "tool-focus");
     window.scrollTo({ top: 0 });
+    this.placePrompt();
     this.park();
     this.lock();
   }
@@ -124,6 +130,28 @@ class InnovationsController extends Stimulus.Controller {
   standAside() {
     document.body.classList.add("tool-focus");
     document.body.classList.remove("story-open", "lqs-fit");
+  }
+
+  // The invitation sits on the bottom edge of the first screen, so the page
+  // above it is read as one whole thing with an opening at its foot. On a
+  // short screen there is nothing to pin it to, and it keeps its own margin.
+  placePrompt() {
+    const prompt = document.querySelector(".innovations-prompt");
+    if (!prompt || getComputedStyle(prompt).display === "none") return;
+    if (!document.body.classList.contains("story-armed") || window.innerHeight < 680) {
+      prompt.style.marginTop = "";
+      return;
+    }
+    prompt.style.marginTop = "0px";
+    const top = prompt.getBoundingClientRect().top + window.scrollY;
+    const wanted = window.innerHeight - prompt.offsetHeight - PROMPT_GAP;
+    const room = Math.max(PROMPT_MARGIN, Math.round(wanted - top));
+    prompt.style.marginTop = `${room}px`;
+    // Setting the margin can move what it was measured from, the way the
+    // story band's does, so the remainder is added on a second look.
+    const left = Math.round((window.innerHeight - PROMPT_GAP) -
+      (prompt.getBoundingClientRect().bottom + window.scrollY));
+    if (left) prompt.style.marginTop = `${Math.max(PROMPT_MARGIN, room + left)}px`;
   }
 
   // The story begins exactly one screen down, so the main page is whole and

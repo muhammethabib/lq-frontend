@@ -770,6 +770,7 @@ class HomeController extends Stimulus.Controller {
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
           <th colspan="6" scope="colgroup">
+           <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->home#toggleGroup">
               <span class="group-chevron"><i data-feather="chevron-down"></i></span>
@@ -786,6 +787,7 @@ class HomeController extends Stimulus.Controller {
                   <span class="group-note-close" aria-hidden="true">&times;</span>
                 </button>
               </span>` : ""}
+           </div>
           </th>
         </tr>
         ${rows.map((row, at) => this.rowHtml(row, group.key, at >= PAGE)).join("")}
@@ -1068,7 +1070,7 @@ class HomeController extends Stimulus.Controller {
           </button>
           <!-- Staff only: editing a stored reading, as opposed to a reader
                suggesting a correction. Restrict this when permissions land. -->
-          <button type="button" class="btn cite-button admin-only" data-action="click->home#editEntry"
+          <button type="button" class="btn cite-button admin-only" hidden data-action="click->home#editEntry"
                   title="${this.escape(this.translate("editEntry", "Edit entry"))}"
                   aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
             <i data-feather="edit-2"></i>

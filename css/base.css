@@ -112,13 +112,15 @@ body {
   direction: ltr;
 }
 
-/* Sections that only Admin/Staff should see. The Rails side wraps these in
-   permission checks, so the class is a marker for that wrapping rather than
-   a style. It draws nothing here: a reader who can see the control should
-   see it looking like every other control. Set data-admin-hints on the
-   document to have them outlined while working on them. */
-.admin-only { outline: 0; }
-[data-admin-hints] .admin-only {
+/* Controls that only Admin/Staff should see. The Rails side wraps these in
+   permission checks; here there is no one signed in, so they stay off the
+   page and the screens read as a reader sees them. Set data-admin-hints on
+   the document to bring them out, outlined, while working on them. */
+.admin-only[hidden] { display: none; }
+[data-admin-hints] .admin-only[hidden] {
+  /* The attribute's own rule carries !important, so bringing the control
+     back has to as well. */
+  display: revert !important;
   outline: 1px dashed var(--lq-gold);
   outline-offset: 2px;
 }

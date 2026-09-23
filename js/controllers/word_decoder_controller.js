@@ -939,7 +939,7 @@ class WordDecoderController extends Stimulus.Controller {
             </button>
             <!-- Staff only: editing a stored reading, as opposed to a reader
                  suggesting a correction. Restrict this when permissions land. -->
-            <button type="button" class="btn cite-button admin-only" data-action="click->word-decoder#editEntry"
+            <button type="button" class="btn cite-button admin-only" hidden data-action="click->word-decoder#editEntry"
                     aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
               <i data-feather="edit-2"></i>
             </button>

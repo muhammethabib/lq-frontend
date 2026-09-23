@@ -715,11 +715,30 @@
 .home-surface .results-header {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 24px 40px 16px;
 }
-.home-surface .results-header-main { flex: 1 1 320px; min-width: 0; }
-.home-surface .results-header-side { flex: 1 1 340px; min-width: 0; padding-top: 14px; }
+/* The searched term takes a fixed share of the header rather than as much as
+   its own content asks for, so the spellings beside it begin in the same
+   place whatever the term is. */
+.home-surface .results-header-main {
+  flex: 0 0 44%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.home-surface .results-header-side {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  padding-top: 14px;
+}
 
 /* The label over the searched term is the quieter of the two: it names the
    thing below it and then steps out of the way. The one over the spellings
@@ -734,6 +753,7 @@
   color: var(--lq-muted);
 }
 .home-surface .spelling-label {
+  display: block;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .8px;
@@ -751,15 +771,21 @@
 
 /* The term is Ottoman, so it is set right to left; left to itself it would
    fill the column and sit at its far edge instead of under its own label. */
+/* The searched term is given a block of its own height rather than the
+   height of its own letters, so the lines under it sit in the same place
+   whether the term is Ottoman, Latin or both. */
 .home-surface .results-term {
+  display: flex;
+  align-items: center;
   width: fit-content;
   max-width: 100%;
-  font-size: 44px;
+  min-height: 72px;
+  font-size: 48px;
   font-weight: 600;
-  letter-spacing: -.02em;
+  letter-spacing: -.025em;
   line-height: 1.2;
   color: var(--lq-claret);
-  margin: 6px 0 10px;
+  margin: 6px 0 2px;
 }
 .home-surface .results-term[data-direction="rtl"] { font-family: 'Noto Naskh Arabic', serif; }
 .home-surface .results-term[data-script="latin"] { color: var(--lq-sapphire); }
@@ -774,6 +800,11 @@
   gap: 3px;
   margin-top: 6px;
   padding-left: 15px;
+}
+.home-surface .results-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 .home-surface .results-stats::before {
   content: "";
@@ -811,7 +842,14 @@
 .home-surface .results-stats p:last-child { color: #5d718c; }
 .home-surface .results-stats p:last-child b { color: #94a3b8; }
 
-.home-surface .spelling-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 7px; }
+.home-surface .spelling-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 6px;
+  margin-top: 7px;
+}
 .home-surface .spelling-button {
   display: inline-flex;
   align-items: center;
@@ -849,11 +887,11 @@
 
 /* Label and buttons share one pill, so the row reads as one control */
 .home-surface .expand-row {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0;
   flex-wrap: wrap;
-  margin-top: 16px;
+  margin-top: 29px;
   padding: 5px 8px 5px 24px;
   border: 1px solid var(--lq-line);
   border-radius: 99px;
@@ -878,12 +916,21 @@
 .home-surface .pronunciation-button:hover { border-color: var(--lq-sapphire); color: var(--lq-sapphire); }
 .home-surface .pronunciation-button.active { background: var(--lq-sapphire); border-color: var(--lq-sapphire); color: #fff; }
 .home-surface .pronunciation-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 18px;
+  margin-left: 2px;
+  padding: 0 6px;
+  border-radius: 999px;
   background: var(--lq-line);
   color: #475569;
-  border-radius: 20px;
-  padding: 1px 8px;
   font-size: 10.5px;
-  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: .2px;
+  text-transform: none;
+  white-space: nowrap;
 }
 .home-surface .pronunciation-button.active .pronunciation-count { background: rgba(255, 255, 255, .22); color: #fff; }
 
@@ -893,52 +940,89 @@
    page - so this is a real <table> with a header row, rather than the nested
    grid the reference mock used. Groups are separate <tbody> elements, which is
    also what lets a group collapse without wrapping rows in an extra element. */
-.home-surface .results-table-scroll { overflow-x: auto; }
+/* The table is held a gutter in from the card's edges, as the reference
+   holds its rows; the head's two grounds are carried out into those gutters
+   by a shadow rather than by widening the cells. */
+.home-surface .results-table-scroll { overflow-x: auto; padding: 0 20px; }
 .home-surface .results-table {
   margin: 0;
   --bs-table-bg: transparent;
+  /* The columns are set from the head, not measured from the rows: the
+     reference draws its head and its rows on the same twelve-column grid,
+     and a long reading in one row must not widen a column under it. */
+  table-layout: fixed;
+  width: 100%;
   /* Below this the columns squeeze the two scripts into unreadable stacks, so
      the table keeps its width and this container scrolls instead. */
   min-width: 880px;
 }
 
+/* The head is a band of colour rather than a ruled row: the two grounds and
+   the hairlines between the columns are all it is drawn with, as in the
+   reference. The first and last columns carry the card's side gutters in
+   their own padding, so the band runs to the card's edges. */
 .home-surface .results-table > thead th {
   background: var(--lq-paper-soft);
-  border-top: 1px solid var(--lq-line);
-  border-bottom: 1px solid var(--lq-line);
+  border: 0;
   padding: 10px 8px;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+  text-align: center;
   color: #566478;
   white-space: nowrap;
   position: sticky;
   top: 0;
   z-index: 2;
 }
-.home-surface .results-table > thead th.col-result { background: var(--lq-lat-bg); padding-left: 40px; }
-.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); text-align: center; }
-.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 40px; }
-.home-surface .results-table > thead th.col-category { width: 120px; text-align: center; }
-.home-surface .results-table > thead th.col-dictionary { text-align: right; }
-.home-surface .results-table > thead th.col-actions { width: 104px; }
+.home-surface .results-table > thead th.col-result {
+  background: var(--lq-lat-bg);
+  padding: 10px 0 10px 24px;
+  box-shadow: -20px 0 0 var(--lq-lat-bg);
+}
+.home-surface .results-table > thead th.col-category {
+  width: 100px;
+  border-left: 1px solid var(--lq-line);
+  border-right: 1px solid var(--lq-line);
+}
+.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 73px; }
+.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 439px; }
+.home-surface .results-table > thead th.col-dictionary {
+  width: 150px;
+  text-align: right;
+  border-left: 1px solid var(--lq-line);
+}
+.home-surface .results-table > thead th.col-actions {
+  width: 70px;
+  box-shadow: 20px 0 0 var(--lq-paper-soft);
+}
 
 /* group header */
 .home-surface .group-header th {
   background: var(--lq-paper);
   border-bottom: 0;
-  padding: 20px 40px 8px;
+  /* The table's own 4px between rows stands in for the last of the
+     reference's 12px under the group's name. */
+  padding: 20px 24px 8px;
+}
+/* The name and its note are laid out as a row rather than as words on a
+   line, so the cell is as tall as they are and no taller. */
+.home-surface .group-header-inner {
+  display: flex;
+  align-items: center;
 }
 .home-surface .group-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   border: 0;
   background: transparent;
   border-radius: 8px;
   padding: 6px 10px;
-  margin-left: -10px;
+  /* The padding is the hover target's, not the row's: it is taken back off
+     again so the name sits on the row's own line. */
+  margin: -6px 0 -6px -10px;
 }
 .home-surface .group-toggle:hover { background: var(--lq-lat-bg); }
 .home-surface .group-chevron {
@@ -955,6 +1039,7 @@
 }
 .home-surface .group-toggle[aria-expanded="false"] .group-chevron { transform: rotate(-90deg); }
 .home-surface .group-title {
+  margin-right: 10px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .8px;
@@ -1065,7 +1150,7 @@
 .home-surface .result-row > td {
   background: var(--lq-paper);
   border-bottom: 1px solid #f1f5f9;
-  padding: 17px 8px;
+  padding: 16px 8px;
   vertical-align: middle;
 }
 .home-surface .result-row:hover > td { background: #fcfdff; }
@@ -1074,7 +1159,8 @@
   border-bottom-right-radius: 8px;
 }
 .home-surface .result-row > td:first-child {
-  padding-left: 40px;
+  padding-right: 0;
+  padding-left: 23px;
   border-left: 4px solid transparent;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
@@ -1167,7 +1253,7 @@
 
 .home-surface .category-badge {
   display: inline-block;
-  min-width: 96px;
+  min-width: 85px;
   padding: 4px 10px;
   border: 1px solid transparent;
   border-radius: 6px;

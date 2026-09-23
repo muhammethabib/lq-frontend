@@ -804,9 +804,6 @@ window.LQ_TRANSLATIONS = {
     scanEdit: "Bu kelimeyi düzenle",
 
     // --- Suggestions tally ---
-    historyReporter: "Bildiren",
-    historyCount: "Düzeltme",
-    historyTallyCaption: "2016-2021 arasında bildirenler ve bildirdikleri düzeltme sayıları",
 
     // --- User guide ---
     guideEyebrow: "LexiQamus 3.0",

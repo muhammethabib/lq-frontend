@@ -4,58 +4,45 @@
    by year, so the layout is a dated list, not a card grid.
    ========================================================= */
 
-.history-surface .history-year {
-  margin: 0 0 12px;
-  padding: 0 0 6px;
-}
+.history-surface .history-year { margin: 0 0 12px; }
+.history-surface .history-year + .history-year { margin-top: 56px; }
 
-/* The year is the anchor of the section, so it is set larger than the running
-   headings and carries a rule to its right. */
-.history-surface .history-heading {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 34px 0 18px;
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
-  font-size: 1.85rem;
-  font-weight: 600;
-  color: var(--lq-sapphire);
+/* The year rules off the section it opens */
+.history-surface .page-content .history-heading {
+  margin: 0 0 18px;
+  padding-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--lq-line);
   font-variant-numeric: tabular-nums;
 }
-.history-surface .history-heading::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--lq-line);
-}
 
-.history-surface .history-subhead {
-  margin: 20px 0 10px;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
+.history-surface .page-content .history-subhead {
+  margin: 26px 0 12px;
+  font: 800 11px/1 'Inter', sans-serif;
+  letter-spacing: .17em;
   text-transform: uppercase;
   color: var(--lq-claret);
 }
+.history-surface .page-content .history-subhead:first-of-type { margin-top: 0; }
 
 /* ---------- a dated suggestion ---------- */
 
 .history-surface .history-item {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
+  grid-template-columns: 96px 1fr;
   gap: 18px;
   padding: 12px 0;
 }
-.history-surface .history-date {
+.history-surface .history-item + .history-item { border-top: 1px dashed var(--lq-line); }
+.history-surface .page-content .history-date {
   margin: 0;
-  font-size: .86rem;
-  font-weight: 600;
-  color: var(--lq-ink-soft);
+  padding-top: 3px;
+  font: 600 13px/1.5 'Inter', sans-serif;
+  color: var(--lq-muted);
+  white-space: nowrap;
 }
-.history-surface .history-text {
-  max-width: 66ch;
-  margin: 0;
-}
+.history-surface .history-item p { margin: 0 0 .6em; }
+.history-surface .history-item p:last-child { margin-bottom: 0; }
 /* The person who made the suggestion is the point of the entry */
 .history-surface .history-who {
   font-weight: 600;
@@ -65,66 +52,42 @@
 /* ---------- a year's corrections ---------- */
 
 .history-surface .history-fix {
-  padding: 18px 22px;
+  padding: 16px 20px;
   border: 1px solid var(--lq-line);
-  border-radius: 13px;
+  border-radius: 12px;
   background: var(--lq-paper-soft);
 }
-.history-surface .history-fix > p { max-width: 66ch; margin: 0 0 10px; }
-.history-surface .history-fix > p:last-child { margin-bottom: 0; }
+.history-surface .history-fix p { margin: 0 0 .6em; }
+.history-surface .history-fix p:last-child { margin-bottom: 0; }
 
-.history-surface .history-count {
-  display: flex;
-  align-items: baseline;
-  gap: 9px;
-}
 .history-surface .history-number {
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  margin-right: 6px;
+  font-family: 'EB Garamond', Garamond, 'Times New Roman', serif;
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--lq-sapphire);
   font-variant-numeric: tabular-nums;
 }
-.history-surface .history-names { color: var(--lq-ink-soft); }
+.history-surface .history-names { color: #334155; }
 .history-surface .history-names b { font-weight: 600; color: var(--lq-ink); }
 
 /* ---------- the 2016-2021 tally ---------- */
 
-/* Names and counts, so it is a table. Three columns of it would not survive
-   a screen reader, so it stays one table and the rows are set close. */
-.history-surface .tally-table {
-  width: auto;
-  min-width: min(340px, 100%);
-  max-width: 420px;
-  margin: 14px 0 0;
-  font-size: .93rem;
-  --bs-table-bg: transparent;
+/* Names and counts read down, three columns at a time */
+.history-surface .tally-list {
+  columns: 3;
+  column-gap: 24px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
 }
-.history-surface .tally-table th,
-.history-surface .tally-table td {
-  padding: 5px 0;
-  border-bottom-color: var(--lq-line);
-}
-.history-surface .tally-table thead th {
-  border-bottom-width: 1px;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--lq-ink-soft);
-}
-.history-surface .tally-table tbody th {
-  font-weight: 400;
-  color: var(--lq-ink);
-}
-.history-surface .tally-table td {
-  padding-left: 18px;
-  text-align: right;
-  font-weight: 700;
-  color: var(--lq-sapphire);
-  font-variant-numeric: tabular-nums;
+.history-surface .tally-list li {
+  break-inside: avoid;
+  padding: 2px 0;
 }
 
 @media (max-width: 575px) {
   .history-surface .history-item { grid-template-columns: 1fr; gap: 3px; }
+  .history-surface .tally-list { columns: 1; }
 }

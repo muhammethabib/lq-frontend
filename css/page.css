@@ -155,6 +155,32 @@
 }
 .page-surface .page-content h2:first-child { margin-top: 0; }
 
+/* A standfirst directly under the page title: the same face, a step down,
+   and no bar above it. */
+.page-surface .page-content h2.lead {
+  margin: 0 0 1.1em;
+  padding-top: 0;
+  font-size: 2.05rem;
+  line-height: 1.3;
+}
+
+/* A section heading, marked by a short bar that runs from claret to gold. */
+.page-surface .page-content h2.section-heading {
+  position: relative;
+  margin: 58px 0 10px;
+  padding-top: 20px;
+}
+.page-surface .page-content h2.section-heading::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--lq-claret), var(--lq-gold));
+}
+
 .page-surface .page-content h3 {
   margin: 2.35rem 0 .75rem;
   font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
@@ -293,7 +319,6 @@
   border-radius: 0 14px 14px 0;
   background: #eff5ff;
 }
-.page-surface .callout p:last-child { margin-bottom: 0; }
 
 /* ---------- cards ---------- */
 

@@ -13,7 +13,7 @@
 // What the box asks for, under each of the three answers.
 const PROMPTS = {
   correct: { key: "rmOkPh", text: "Anything to add? (optional)" },
-  incorrect: { key: "rmWhy", text: "Please explain why this reading is incorrect. If you know the correct form, you may include it as well." },
+  incorrect: { key: "rmWhy", text: "Please explain why this pronunciation is incorrect. If you know the correct form, you may include it as well." },
   comment: { key: "rmNotePh", text: "Share your thoughts about this reading" }
 };
 
@@ -98,6 +98,14 @@ class ReadingReportController extends Stimulus.Controller {
     // The button that was pressed has just been hidden, so the focus would
     // otherwise fall out of the window and Escape would stop closing it.
     thanks.querySelector("button").focus();
+  }
+
+  // The tick turns into a face on the way out, so the window is seen to be
+  // pleased rather than just closing.
+  close() {
+    const icon = this.element.querySelector(".report-window-icon");
+    if (icon) icon.classList.add("is-face");
+    setTimeout(() => this.modal.hide(), 800);
   }
 }
 

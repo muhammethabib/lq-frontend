@@ -1103,7 +1103,7 @@ class HomeController extends Stimulus.Controller {
                   data-cite-ottoman="${this.escape(row.headwordOttoman)}"
                   data-cite-dictionary="${this.escape(row.dictionary)}"
                   data-cite-page="${this.escape(row.page)}"
-                  title="${this.escape(this.translate("cite", "Cite"))}"
+                  data-tooltip="${this.escape(this.translate("cite", "Cite"))}"
                   aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
             ${window.LQ.citeIcon()}
           </button>

@@ -1,0 +1,8 @@
+/* =========================================================
+   A word on a scan that is read wrongly
+   The report card (css/report-window.css) as the scan window
+   opens it. It stands over the scan, so it takes a step up
+   in the stack and nothing else of its own.
+   ========================================================= */
+
+.typo-report-surface .report-window-word { margin-bottom: 16px; }

@@ -11,8 +11,8 @@
 // badges or other children.
 //
 // Attribute keys are handled too: data-i18n-title, data-i18n-aria,
-// data-i18n-alt, data-i18n-src and data-i18n-placeholder set title,
-// aria-label, alt, src and placeholder. data-i18n-src is for a screenshot of
+// data-i18n-alt, data-i18n-src, data-i18n-placeholder and data-i18n-tooltip
+// set title, aria-label, alt, src, placeholder and data-tooltip. data-i18n-src is for a screenshot of
 // the interface, which differs by language.
 // Elements carrying data-i18n-html have their markup replaced instead of
 // their text, for copy that contains tags.
@@ -109,6 +109,7 @@ class LanguageController extends Stimulus.Controller {
     this.translateAttribute(root, dictionary, "i18nAlt", "alt");
     this.translateAttribute(root, dictionary, "i18nSrc", "src");
     this.translateAttribute(root, dictionary, "i18nPlaceholder", "placeholder");
+    this.translateAttribute(root, dictionary, "i18nTooltip", "data-tooltip");
   }
 
   translateText(root, dictionary) {

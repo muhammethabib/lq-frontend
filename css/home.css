@@ -249,6 +249,41 @@
 }
 .home-surface .source-option[data-source="ottoman"].active { background: var(--lq-claret); color: #fff; }
 .home-surface .source-option[data-source="english"].active { background: var(--lq-sapphire); color: #fff; }
+.home-surface .source-option.active { cursor: default; }
+
+/* What the English source does, said in a sentence rather than a word. It is
+   drawn here rather than left to the browser's own tip, so it reads the same
+   everywhere and has room for the whole line. */
+.home-surface .source-option { position: relative; }
+.home-surface .source-tip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  z-index: 40;
+  min-width: 180px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #1e293b;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  white-space: normal;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition: all .15s;
+}
+.home-surface .source-option:hover .source-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
 
 /* Not a .form-control: the visible border, radius and focus ring belong to
    .script-input-wrapper, which also holds the source switch and the two

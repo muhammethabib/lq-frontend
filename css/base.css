@@ -130,6 +130,77 @@ body {
    page and the screens read as a reader sees them. Set data-admin-hints on
    the document to bring them out, outlined, while working on them. */
 .admin-only[hidden] { display: none; }
+
+/* The page behind a window. It is the reference's own ground: slate rather
+   than black, and blurred, so the window reads as held over the page. A scan
+   is the exception -- it is the page, so the ground behind it stays plain. */
+.modal-backdrop {
+  --bs-backdrop-bg: #0f172a;
+  --bs-backdrop-opacity: .55;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop.backdrop-report { --bs-backdrop-opacity: .6; }
+.modal-backdrop.backdrop-plain {
+  --bs-backdrop-bg: #000;
+  --bs-backdrop-opacity: .4;
+  backdrop-filter: none;
+}
+
+/* Every hint inside a field is the same grey, the reference's own: Bootstrap
+   sets a near-ink one, which reads as typed text rather than as a prompt. */
+::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* A word about a control, said where it sits. Two kinds, both the
+   reference's: one drawn from an attribute, for controls that carry their
+   own, and Bootstrap's, dressed to match it. */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  z-index: 40;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #1e293b;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition: all .15s;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltip {
+  --bs-tooltip-bg: #1e293b;
+  --bs-tooltip-color: #fff;
+  --bs-tooltip-opacity: 1;
+  --bs-tooltip-border-radius: 8px;
+  --bs-tooltip-font-size: 11px;
+  --bs-tooltip-padding-x: 10px;
+  --bs-tooltip-padding-y: 6px;
+}
+.tooltip .tooltip-inner {
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .3);
+}
+.tooltip .tooltip-arrow { display: none; }
 [data-admin-hints] .admin-only[hidden] {
   /* The attribute's own rule carries !important, so bringing the control
      back has to as well. */

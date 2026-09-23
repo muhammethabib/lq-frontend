@@ -28,7 +28,9 @@
   <link rel="stylesheet" href="../css/cognates.css">
   <link rel="stylesheet" href="../css/word-menu.css">
   <link rel="stylesheet" href="../css/reading-card.css">
+  <link rel="stylesheet" href="../css/report-window.css">
   <link rel="stylesheet" href="../css/reading-report.css">
+  <link rel="stylesheet" href="../css/typo-report.css">
   <link rel="stylesheet" href="../css/innovations.css">
 
   <!-- Libraries (local copies in vendor/, same versions as the CDN builds) -->
@@ -69,6 +71,7 @@
   <script src="../js/controllers/word_menu_controller.js" defer></script>
   <script src="../js/controllers/reading_card_controller.js" defer></script>
   <script src="../js/controllers/reading_report_controller.js" defer></script>
+  <script src="../js/controllers/typo_report_controller.js" defer></script>
   <script src="../js/controllers/innovations_controller.js" defer></script>
 </head>
 <body>
@@ -285,17 +288,20 @@
                           data-i18n="sourceOttoman">OTT</button>
                   <button type="button" class="btn source-option" data-source="english"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
-                          title="Search English definitions in Redhouse" data-i18n-title="sourceEnglishTitle"
-                          ><span data-i18n="sourceEnglish">ENG</span></button>
+                          ><span data-i18n="sourceEnglish">ENG</span>
+                    <!-- Drawn rather than left to the browser, so it reads the
+                         same on every machine and can hold a whole sentence. -->
+                    <span class="source-tip" data-i18n="sourceEnglishTitle">Search English definitions in Redhouse</span>
+                  </button>
                 </div>
 
                 <div class="placeholder-layer" aria-hidden="true">
                   <span data-home-target="placeholderLatin"
-                        data-i18n="placeholderLatin">Search using Latin letters&hellip;</span>
+                        data-i18n="placeholderLatin">Search using Latin letters...</span>
                   <span data-home-target="placeholderEnglish" hidden
-                        data-i18n="placeholderEnglish">Search English definitions in Redhouse&hellip;</span>
+                        data-i18n="placeholderEnglish">Search English words in Redhouse...</span>
                   <span class="placeholder-ottoman" data-home-target="placeholderOttoman"
-                        data-direction="rtl" data-i18n="placeholderOttoman">عثمانلى حرفلريله آره...</span>
+                        data-direction="rtl" data-i18n="placeholderOttoman">عثمانلی حرفلریلە آرە...</span>
                 </div>
 
                 <input type="text" class="script-input" id="homeSearchInput"
@@ -1426,6 +1432,7 @@
 
   <!-- The original dictionary page window, opened from a result row. -->
   <div class="modal fade dictionary-page-modal" id="dictionaryPageModal" tabindex="-1" aria-hidden="true"
+       data-backdrop="plain"
        data-controller="dictionary-page"
        data-dictionary-page-template-value="dictionaryPageTemplate"
        data-dictionary-page-endpoint-value="/dictionary_page/entry"></div>
@@ -1473,9 +1480,8 @@
                     <span class="scan-card-report-wrap">
                       <button type="button" class="btn scan-card-report"
                               data-action="click->dictionary-page#report"
-                              aria-label="Report an error" data-i18n-aria="scanReport"
-                              data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Report an error" data-i18n-title="scanReport">
+                              aria-label="Report Typo" data-i18n-aria="scanReport"
+                              data-tooltip="Report Typo" data-i18n-tooltip="scanReport">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                       </button>
                     </span>
@@ -1489,9 +1495,8 @@
                     <span class="scan-card-report-wrap">
                       <button type="button" class="btn scan-card-report"
                               data-action="click->dictionary-page#report"
-                              aria-label="Report an error" data-i18n-aria="scanReport"
-                              data-bs-toggle="tooltip" data-bs-placement="top"
-                              title="Report an error" data-i18n-title="scanReport">
+                              aria-label="Report Typo" data-i18n-aria="scanReport"
+                              data-tooltip="Report Typo" data-i18n-tooltip="scanReport">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                       </button>
                       <!-- Staff only: correcting the stored value, as opposed to
@@ -1517,34 +1522,6 @@
               </button>
             </div>
           </div>
-
-          <!-- Reporting an error takes over the window rather than stacking a
-               second one on top of it -->
-          <div class="scan-report" data-scan-report hidden>
-            <h2 class="scan-report-title" data-i18n="scanReportTitle">Report an error</h2>
-            <p class="scan-report-word">
-              <span data-direction="rtl" data-scan-report-ottoman></span>
-              <span class="scan-report-divider" aria-hidden="true"></span>
-              <span data-scan-report-latin></span>
-            </p>
-            <form data-scan-report-form data-action="submit->dictionary-page#sendReport">
-              <label class="visually-hidden" for="scanReportText" data-i18n="scanReportLabel">Describe the error</label>
-              <textarea id="scanReportText" class="form-control" rows="4"
-                        data-i18n-title="scanReportLabel"></textarea>
-              <div class="scan-report-actions">
-                <button type="button" class="btn scan-report-cancel"
-                        data-action="click->dictionary-page#closeReport" data-i18n="cancel">Cancel</button>
-                <button type="submit" class="btn scan-report-send" data-i18n="submit">Submit</button>
-              </div>
-            </form>
-            <div class="scan-report-thanks" data-scan-report-thanks hidden>
-              <i data-feather="check-circle" aria-hidden="true"></i>
-              <p data-i18n="scanReportThanks">Thank you. Our editors will look at it.</p>
-              <button type="button" class="btn scan-report-cancel"
-                      data-action="click->dictionary-page#closeReport" data-i18n="close">Close</button>
-            </div>
-          </div>
-        </div>
 
         <div class="modal-footer">
           <div class="scan-views" role="group" aria-label="View" data-i18n-aria="scanViewLabel">
@@ -1779,15 +1756,16 @@
 
   <!-- What is wrong with a reading, opened from the card beside it. -->
   <div class="modal fade reading-report-modal" id="readingReportModal" tabindex="-1" aria-hidden="true"
+       data-backdrop="report"
        data-controller="reading-report"
        data-reading-report-template-value="readingReportTemplate"
        data-reading-report-endpoint-value="/reading_reports/create"></div>
 
   <template id="readingReportTemplate">
-    <div class="modal-dialog modal-dialog-centered reading-report-dialog">
-      <div class="modal-content reading-report-surface">
+    <div class="modal-dialog modal-dialog-centered report-window-dialog">
+      <div class="modal-content report-window reading-report-surface">
         <div data-reading-report-form>
-          <h2 class="reading-report-title">
+          <h2 class="report-window-title">
             <span class="reading-report-ottoman" data-direction="rtl" data-reading-report-ottoman></span>
             <span class="reading-report-divider" aria-hidden="true"></span>
             <span class="reading-report-latin" data-reading-report-latin></span>
@@ -1819,17 +1797,59 @@
                       data-reading-report-text
                       placeholder="Share your thoughts about this reading"
                       data-i18n-placeholder="rmNotePh"></textarea>
-            <button type="submit" class="btn reading-report-send" data-i18n="rmSubmit">Submit</button>
-            <button type="button" class="btn reading-report-cancel" data-bs-dismiss="modal"
+            <button type="submit" class="btn report-window-send" data-i18n="rmSubmit">Submit</button>
+            <button type="button" class="btn report-window-cancel" data-bs-dismiss="modal"
                     data-i18n="rmCancel">Cancel</button>
           </form>
         </div>
 
-        <div class="reading-report-thanks" data-reading-report-thanks hidden>
-          <i data-feather="check-circle" aria-hidden="true"></i>
-          <p data-i18n="rmThanks">Thank You!</p>
-          <button type="button" class="btn reading-report-send" data-bs-dismiss="modal"
-                  data-i18n="rmClose">Close</button>
+        <div class="report-window-thanks" data-reading-report-thanks hidden>
+          <svg class="report-window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline class="tick-mark" points="8 12 11 15 16 9"></polyline><path class="smile-path" d="M 8 14.5 Q 12 18 16 14.5"></path><circle class="eye-dot eye-l" cx="9" cy="10.5" r="1.1" fill="currentColor" stroke="none"></circle><circle class="eye-dot eye-r" cx="15" cy="10.5" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+          <p class="report-window-title" data-i18n="rmThanks">Thank You!</p>
+          <button type="button" class="btn report-window-okay"
+                  data-action="click->reading-report#close" data-i18n="rmClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- A word on a scan that is read wrongly. Opened from the flag beside it,
+       and standing over the scan rather than in its place. -->
+  <div class="modal fade typo-report-modal" id="typoReportModal" tabindex="-1" aria-hidden="true"
+       data-backdrop="report"
+       data-controller="typo-report"
+       data-typo-report-template-value="typoReportTemplate"
+       data-typo-report-endpoint-value="/typo_reports/create"></div>
+
+  <template id="typoReportTemplate">
+    <div class="modal-dialog modal-dialog-centered report-window-dialog">
+      <div class="modal-content report-window typo-report-surface">
+        <div data-typo-report-form>
+          <h2 class="report-window-title" data-i18n="typoReportTitle">Report a Typo</h2>
+          <p class="report-window-word">
+            <span class="report-window-ottoman" data-direction="rtl" data-typo-report-ottoman></span>
+            <span class="report-window-divider" aria-hidden="true"></span>
+            <span class="report-window-latin" data-typo-report-latin></span>
+          </p>
+          <form data-action="submit->typo-report#send">
+            <label class="visually-hidden" for="typoReportText"
+                   data-i18n="typoReportLabel">Please describe the error...</label>
+            <textarea id="typoReportText" class="form-control" rows="4"
+                      data-typo-report-text
+                      placeholder="Please describe the error..."
+                      data-i18n-placeholder="typoReportLabel"></textarea>
+            <button type="submit" class="btn report-window-send" data-i18n="rmSubmit">Submit</button>
+            <button type="button" class="btn report-window-cancel" data-bs-dismiss="modal"
+                    data-i18n="rmCancel">Cancel</button>
+          </form>
+        </div>
+
+        <div class="report-window-thanks" data-typo-report-thanks hidden>
+          <svg class="report-window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline class="tick-mark" points="8 12 11 15 16 9"></polyline><path class="smile-path" d="M 8 14.5 Q 12 18 16 14.5"></path><circle class="eye-dot eye-l" cx="9" cy="10.5" r="1.1" fill="currentColor" stroke="none"></circle><circle class="eye-dot eye-r" cx="15" cy="10.5" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+          <p class="report-window-title" data-i18n="rmThanks">Thank You!</p>
+          <button type="button" class="btn report-window-okay"
+                  data-action="click->typo-report#close" data-i18n="rmClose">Close</button>
         </div>
       </div>
     </div>

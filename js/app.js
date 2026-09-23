@@ -144,15 +144,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener("show.bs.modal", (event) => {
     const open = [...document.querySelectorAll(".modal.show")];
-    if (!open.length) return;
     const lift = open.length * STEP;
-    event.target.style.zIndex = 1055 + lift;
-    open.forEach((element) => trap(element, false));
-    // The backdrop is added after this event, so it is lifted once it exists.
+    if (open.length) {
+      event.target.style.zIndex = 1055 + lift;
+      open.forEach((element) => trap(element, false));
+    }
+    // Windows darken the page differently -- a scan is held up to the light,
+    // a report is read on a stilled page -- and the backdrop is added after
+    // this event, so it is marked and lifted once it exists.
+    const kind = event.target.dataset.backdrop;
     requestAnimationFrame(() => {
       const backdrops = document.querySelectorAll(".modal-backdrop");
       const backdrop = backdrops[backdrops.length - 1];
-      if (backdrop) backdrop.style.zIndex = 1050 + lift;
+      if (!backdrop) return;
+      if (kind) backdrop.classList.add(`backdrop-${kind}`);
+      if (lift) backdrop.style.zIndex = 1050 + lift;
     });
   });
 

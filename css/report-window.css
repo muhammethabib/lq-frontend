@@ -1,0 +1,165 @@
+/* =========================================================
+   A report card
+   The small white card that asks what is wrong with a word:
+   the word itself, room to say it, and a thank-you when it
+   has been said. Two windows are built on it -- a reading
+   the reader disagrees with, and a word the scan shows
+   printed differently -- so the shell lives here and each
+   adds only what is its own.
+   ========================================================= */
+
+.report-window-dialog { max-width: 340px; }
+
+.report-window {
+  padding: 24px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--lq-paper);
+  box-shadow: 0 20px 40px -5px rgba(15, 23, 42, .2);
+  text-align: center;
+}
+
+.report-window .report-window-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1e293b;
+}
+
+/* The word in both scripts, boxed, so it is plain which word is being
+   spoken about before anything is said about it. */
+.report-window .report-window-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 8px;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: var(--lq-paper-soft);
+}
+.report-window .report-window-ottoman {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1e293b;
+}
+.report-window .report-window-latin {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lq-muted);
+}
+.report-window .report-window-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--lq-line-strong);
+}
+
+.report-window textarea {
+  /* Inline, as the reference has it: the line it sits on leaves a little
+     room under it, which is the gap before the button. */
+  display: inline-block;
+  vertical-align: baseline;
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border: 1px solid var(--lq-line-strong);
+  border-radius: 12px;
+  background: var(--lq-paper);
+  font-size: 13px;
+  color: #334155;
+  resize: none;
+}
+.report-window textarea:focus {
+  border-color: var(--lq-sapphire);
+  box-shadow: none;
+}
+
+.report-window .report-window-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--lq-sapphire);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.report-window .report-window-send:hover { background: #1e3a6e; color: #fff; }
+
+.report-window .report-window-cancel {
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--lq-muted);
+}
+.report-window .report-window-cancel:hover { color: #475569; }
+
+/* ---------- once it has been said ---------- */
+
+.report-window .report-window-thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The tick turns into a face as the card is closed: the stroke is drawn out
+   of the tick and into the mouth, and the eyes arrive after it. */
+.report-window .report-window-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 12px;
+  color: #22c55e;
+}
+.report-window .report-window-icon .tick-mark {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset .32s cubic-bezier(.4, 0, 1, 1);
+}
+.report-window .report-window-icon.is-face .tick-mark { stroke-dashoffset: -22; }
+.report-window .report-window-icon .smile-path {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  transition: stroke-dashoffset .32s cubic-bezier(0, 0, .2, 1) .18s;
+}
+.report-window .report-window-icon.is-face .smile-path { stroke-dashoffset: 0; }
+.report-window .report-window-icon .eye-dot {
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .3s cubic-bezier(.34, 1.8, .64, 1);
+}
+.report-window .report-window-icon.is-face .eye-l { transform: scale(1); transition-delay: .38s; }
+.report-window .report-window-icon.is-face .eye-r { transform: scale(1); transition-delay: .44s; }
+
+.report-window .report-window-okay {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: #f1f5f9;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  transition: all .1s;
+}
+.report-window .report-window-okay:hover { background: var(--lq-line); }
+.report-window .report-window-okay:active { background: var(--lq-line-strong); transform: scale(.96); }
+
+@media (prefers-reduced-motion: reduce) {
+  .report-window .report-window-icon :is(.tick-mark, .smile-path, .eye-dot) { transition: none; }
+}

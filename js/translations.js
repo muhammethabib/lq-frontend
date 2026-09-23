@@ -50,7 +50,7 @@ window.LQ_TRANSLATIONS = {
     ariaMainSearch: "Aranacak kelime",
     placeholderLatin: "Latin harfleriyle ara...",
     placeholderEnglish: "İngilizce tanımları arayın...",
-    placeholderOttoman: "عثمانلى حرفلريله آره...",
+    placeholderOttoman: "عثمانلی حرفلریلە آرە...",
     librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",
 
     // --- filters ---
@@ -158,6 +158,8 @@ window.LQ_TRANSLATIONS = {
     rmOkPh: "Eklemek istediğiniz bir şey var mı? (isteğe bağlı)",
     rmWhy: "Bu okunuşun neden yanlış olduğunu lütfen açıklayınız. Doğrusunu biliyorsanız ekleyebilirsiniz.",
     rmNotePh: "Bu okunuş hakkında görüşünüzü yazınız",
+    typoReportTitle: "Hata Bildir",
+    typoReportLabel: "Lütfen hatayı açıklayın...",
     rmSubmit: "Gönder",
     rmCancel: "İptal",
     rmThanks: "Teşekkürler!",
@@ -497,10 +499,7 @@ window.LQ_TRANSLATIONS = {
     scanSlice: "Dilim",
     scanColumn: "Sütun",
     scanPage: "Sayfa",
-    scanReport: "Hata bildir",
-    scanReportTitle: "Hata bildir",
-    scanReportLabel: "Hatayı açıklayın",
-    scanReportThanks: "Teşekkür ederiz. Editörlerimiz bildiriminizi inceleyecek.",
+    scanReport: "Hata Bildir",
     cancel: "İptal",
     submit: "Gönder",
 

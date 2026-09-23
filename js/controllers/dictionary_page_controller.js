@@ -64,7 +64,6 @@ class DictionaryPageController extends Stimulus.Controller {
     this.entry = this.entries[this.index] || null;
     this.view = "slice";
     this.request = request;
-    this.reporting = null;
 
     this.render();
     this.modal = bootstrap.Modal.getOrCreateInstance(this.element);
@@ -307,35 +306,18 @@ class DictionaryPageController extends Stimulus.Controller {
 
   // ==================== reporting an error ====================
 
+  // The card that asks what is wrong opens over the scan rather than in its
+  // place, so the page the word was read from is still there afterwards.
   report(event) {
     const card = event.currentTarget.closest("[data-scan-card]");
-    this.reporting = {
-      ottoman: card.querySelector("[data-scan-word-ottoman]").textContent,
-      latin: card.querySelector("[data-scan-word-latin]").textContent
-    };
-    const report = this.element.querySelector("[data-scan-report]");
-    report.querySelector("[data-scan-report-ottoman]").textContent = this.reporting.ottoman;
-    report.querySelector("[data-scan-report-latin]").textContent = this.reporting.latin;
-    report.querySelector("[data-scan-report-form]").hidden = false;
-    report.querySelector("[data-scan-report-thanks]").hidden = true;
-    report.querySelector("textarea").value = "";
-    this.element.querySelector("[data-scan-card]").hidden = true;
-    this.element.querySelector("[data-scan-view-body]").hidden = true;
-    report.hidden = false;
-  }
-
-  sendReport(event) {
-    event.preventDefault();
-    // Nothing is submitted anywhere yet; the form stands for the screen the
-    // backend will render.
-    const report = this.element.querySelector("[data-scan-report]");
-    report.querySelector("[data-scan-report-form]").hidden = true;
-    report.querySelector("[data-scan-report-thanks]").hidden = false;
-  }
-
-  closeReport() {
-    this.element.querySelector("[data-scan-report]").hidden = true;
-    this.element.querySelector("[data-scan-view-body]").hidden = false;
+    document.dispatchEvent(new CustomEvent("typo:report", {
+      detail: {
+        ottoman: card.querySelector("[data-scan-word-ottoman]").textContent,
+        latin: card.querySelector("[data-scan-word-latin]").textContent,
+        dictionary: this.entry ? this.entry.dictionary : "",
+        page: this.entry ? this.entry.page : ""
+      }
+    }));
   }
 }
 

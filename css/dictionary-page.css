@@ -319,83 +319,26 @@
   box-shadow: 0 6px 15px rgba(190, 18, 60, .25);
 }
 .dictionary-page-modal .scan-card-report:hover svg { transform: rotate(15deg); }
+/* The flag hangs beside the card, so what it says hangs beside the flag
+   rather than over it. */
+.dictionary-page-modal .scan-card-report::after {
+  bottom: 80%;
+  left: 90%;
+  margin: 0 0 4px 2px;
+  padding: 6px 12px;
+  font-size: 10px;
+  transform: translateY(4px);
+}
+.dictionary-page-modal .scan-card-report:hover::after,
+.dictionary-page-modal .scan-card-report:focus-visible::after { transform: translateY(0); }
+.dictionary-page-modal .scan-card.is-flipped .scan-card-report::after {
+  left: auto;
+  right: 90%;
+  margin-left: 0;
+  margin-right: 2px;
+}
 .dictionary-page-modal .scan-card-edit { color: var(--lq-muted); }
 .dictionary-page-modal .scan-card-edit svg { width: 13px; height: 13px; }
-
-/* ---------- reporting an error ---------- */
-
-.dictionary-page-modal .scan-report {
-  max-width: 520px;
-  margin: 10px auto;
-  text-align: center;
-}
-.dictionary-page-modal .scan-report-title {
-  margin: 0 0 12px;
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--lq-sapphire);
-}
-.dictionary-page-modal .scan-report-word {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 0 0 16px;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--lq-lat-bg);
-  font-weight: 600;
-  color: var(--lq-sapphire);
-}
-.dictionary-page-modal .scan-report-word [data-direction="rtl"] {
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.4rem;
-  color: var(--lq-red);
-}
-.dictionary-page-modal .scan-report-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--lq-lat-border);
-}
-.dictionary-page-modal .scan-report textarea {
-  border: 1px solid var(--lq-line);
-  border-radius: 10px;
-}
-.dictionary-page-modal .scan-report-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 12px;
-}
-.dictionary-page-modal .scan-report-cancel {
-  padding: 9px 16px;
-  border: 1px solid var(--lq-line);
-  border-radius: 9px;
-  background: var(--lq-paper);
-  font-weight: 600;
-  color: var(--lq-ink-soft);
-}
-.dictionary-page-modal .scan-report-send {
-  padding: 9px 18px;
-  border: 1px solid var(--lq-claret);
-  border-radius: 9px;
-  background: var(--lq-claret);
-  font-weight: 600;
-  color: #fff;
-}
-.dictionary-page-modal .scan-report-send:hover {
-  background: var(--lq-claret-hover);
-  border-color: var(--lq-claret-hover);
-  color: #fff;
-}
-.dictionary-page-modal .scan-report-thanks { display: grid; gap: 12px; justify-items: center; }
-.dictionary-page-modal .scan-report-thanks svg {
-  width: 34px;
-  height: 34px;
-  color: var(--lq-entry-text);
-}
-.dictionary-page-modal .scan-report-thanks p { margin: 0; color: var(--lq-ink-soft); }
 
 /* ---------- the three views, and the citation ---------- */
 

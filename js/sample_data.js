@@ -124,6 +124,7 @@ window.LQ_SAMPLE_RESULTS = {
         { category: "RELATED", resultLatin: "nazar", resultOttoman: "نظر", headwordLatin: "nezaret", headwordOttoman: "نظارت", dictionary: "Bianchi", page: "1045", readingVerified: false }
       ]
     },
+    ,
     {
       key: "inflected",
       count: 6,
@@ -137,6 +138,7 @@ window.LQ_SAMPLE_RESULTS = {
         { category: "RELATED", resultLatin: "nazarla", resultOttoman: "نظرله", headwordLatin: "nazar boncuğu", headwordOttoman: "نظر بونجغی", dictionary: "Lehçe-i Osmani", page: "901", readingVerified: true }
       ]
     },
+    ,
     {
       key: "lexicalizedInflected",
       count: 1,
@@ -144,6 +146,20 @@ window.LQ_SAMPLE_RESULTS = {
         { category: "SUBENTRY", resultLatin: "nazarında", resultOttoman: "نظرنده", headwordLatin: "nazar", headwordOttoman: "نظر", dictionary: "Kamus-ı Türki", page: "1452", readingVerified: true }
       ]
     },
+    ,
+    {
+      key: "partial",
+      count: 6,
+      rows: [
+        { category: "ENTRY", resultLatin: "nazarsem etmek", resultOttoman: "نظرسم ايتمك", headwordLatin: "nazarsem", headwordOttoman: "نظرسم", dictionary: "Kamus-ı Türki", page: "888", readingVerified: false },
+        { category: "ENTRY", resultLatin: "kenazar", resultOttoman: "كنظر", headwordLatin: "kenazar", headwordOttoman: "كنظر", dictionary: "Kamus-ı Türki", page: "888", readingVerified: true },
+        { category: "SUBENTRY", resultLatin: "nazarşe", resultOttoman: "نظرشه", headwordLatin: "nazarşe", headwordOttoman: "نظرشه", dictionary: "Vankulu", page: "601", readingVerified: true },
+        { category: "SUBENTRY", resultLatin: "anazarlanmak", resultOttoman: "آنظرلانمق", headwordLatin: "ana", headwordOttoman: "آنا", dictionary: "Lugat-ı Ebuzziya", page: "551", readingVerified: false },
+        { category: "RELATED", resultLatin: "tınazar", resultOttoman: "طينظر", headwordLatin: "tın", headwordOttoman: "طين", dictionary: "Redhouse", page: "1905", readingVerified: false },
+        { category: "RELATED", resultLatin: "venazar", resultOttoman: "ونظر", headwordLatin: "ve", headwordOttoman: "و", dictionary: "Ahteri-i Kebir", page: "330", readingVerified: true }
+      ]
+    },
+    ,
     {
       key: "derived",
       count: 6,
@@ -157,6 +173,16 @@ window.LQ_SAMPLE_RESULTS = {
           misspelling: { crop: "manzara.jpg" } }
       ]
     },
+    ,
+    {
+      key: "compounds",
+      count: 2,
+      rows: [
+        { category: "ENTRY", resultLatin: "kem-nazar", resultOttoman: "كم نظر", headwordLatin: "kem-nazar", headwordOttoman: "كم نظر", dictionary: "Lehçe-i Osmani", page: "442", readingVerified: true },
+        { category: "ENTRY", resultLatin: "nazargâh", resultOttoman: "نظرگاه", headwordLatin: "nazargâh", headwordOttoman: "نظرگاه", dictionary: "Redhouse", page: "2081", readingVerified: true }
+      ]
+    },
+    ,
     {
       key: "phrases",
       count: 5,
@@ -166,26 +192,6 @@ window.LQ_SAMPLE_RESULTS = {
         { category: "SUBENTRY", resultLatin: "nazar-ı âmmi", resultOttoman: "نظر عامی", headwordLatin: "nazar", headwordOttoman: "نظر", dictionary: "Redhouse", page: "2022", readingVerified: true },
         { category: "RELATED", resultLatin: "nazar değmek", resultOttoman: "نظر دكمك", headwordLatin: "nazar", headwordOttoman: "نظر", dictionary: "Kamus-ı Fransevi", page: "1100", readingVerified: false },
         { category: "RELATED", resultLatin: "ilm-i nazar", resultOttoman: "علم نظر", headwordLatin: "ilm", headwordOttoman: "علم", dictionary: "Kamus-ı Alam", page: "310", readingVerified: false }
-      ]
-    },
-    {
-      key: "compounds",
-      count: 2,
-      rows: [
-        { category: "ENTRY", resultLatin: "kem-nazar", resultOttoman: "كم نظر", headwordLatin: "kem-nazar", headwordOttoman: "كم نظر", dictionary: "Lehçe-i Osmani", page: "442", readingVerified: true },
-        { category: "ENTRY", resultLatin: "nazargâh", resultOttoman: "نظرگاه", headwordLatin: "nazargâh", headwordOttoman: "نظرگاه", dictionary: "Redhouse", page: "2081", readingVerified: true }
-      ]
-    },
-    {
-      key: "partial",
-      count: 6,
-      rows: [
-        { category: "ENTRY", resultLatin: "nazarsem etmek", resultOttoman: "نظرسم ايتمك", headwordLatin: "nazarsem", headwordOttoman: "نظرسم", dictionary: "Kamus-ı Türki", page: "888", readingVerified: false },
-        { category: "ENTRY", resultLatin: "kenazar", resultOttoman: "كنظر", headwordLatin: "kenazar", headwordOttoman: "كنظر", dictionary: "Kamus-ı Türki", page: "888", readingVerified: true },
-        { category: "SUBENTRY", resultLatin: "nazarşe", resultOttoman: "نظرشه", headwordLatin: "nazarşe", headwordOttoman: "نظرشه", dictionary: "Vankulu", page: "601", readingVerified: true },
-        { category: "SUBENTRY", resultLatin: "anazarlanmak", resultOttoman: "آنظرلانمق", headwordLatin: "ana", headwordOttoman: "آنا", dictionary: "Lugat-ı Ebuzziya", page: "551", readingVerified: false },
-        { category: "RELATED", resultLatin: "tınazar", resultOttoman: "طينظر", headwordLatin: "tın", headwordOttoman: "طين", dictionary: "Redhouse", page: "1905", readingVerified: false },
-        { category: "RELATED", resultLatin: "venazar", resultOttoman: "ونظر", headwordLatin: "ve", headwordOttoman: "و", dictionary: "Ahteri-i Kebir", page: "330", readingVerified: true }
       ]
     }
   ]

@@ -382,19 +382,19 @@
                              data-action="change->home#applyFilters" id="filterLexicalized">
                       <span class="form-check-label" data-i18n="filterLexicalizedInflected">Lexicalized Inflected Forms</span>
                     </label>
+                    <label class="filter-check form-check" data-filter-desc="filterPartialDesc"
+                           data-filter-desc-text="Results written with a spelling close to the search term.">
+                      <input class="form-check-input" type="checkbox" checked value="partial"
+                             data-filter-kind="group" data-home-target="filter"
+                             data-action="change->home#applyFilters" id="filterPartial">
+                      <span class="form-check-label" data-i18n="filterPartial">Similar Spellings</span>
+                    </label>
                     <label class="filter-check form-check" data-filter-desc="filterDerivedDesc"
                            data-filter-desc-text="Words derived from the searched word.">
                       <input class="form-check-input" type="checkbox" checked value="derived"
                              data-filter-kind="group" data-home-target="filter"
                              data-action="change->home#applyFilters" id="filterDerived">
                       <span class="form-check-label" data-i18n="filterDerived">Derived Forms</span>
-                    </label>
-                    <label class="filter-check form-check" data-filter-desc="filterPhrasesDesc"
-                           data-filter-desc-text="Phrases containing the search term as a component.">
-                      <input class="form-check-input" type="checkbox" checked value="phrases"
-                             data-filter-kind="group" data-home-target="filter"
-                             data-action="change->home#applyFilters" id="filterPhrases">
-                      <span class="form-check-label" data-i18n="filterPhrases">Phrases</span>
                     </label>
                     <label class="filter-check form-check" data-filter-desc="filterCompoundsDesc"
                            data-filter-desc-text="Compounds containing the search term as a component.">
@@ -403,12 +403,12 @@
                              data-action="change->home#applyFilters" id="filterCompounds">
                       <span class="form-check-label" data-i18n="filterCompounds">Compounds</span>
                     </label>
-                    <label class="filter-check form-check" data-filter-desc="filterPartialDesc"
-                           data-filter-desc-text="Results written with a spelling close to the search term.">
-                      <input class="form-check-input" type="checkbox" checked value="partial"
+                    <label class="filter-check form-check" data-filter-desc="filterPhrasesDesc"
+                           data-filter-desc-text="Phrases containing the search term as a component.">
+                      <input class="form-check-input" type="checkbox" checked value="phrases"
                              data-filter-kind="group" data-home-target="filter"
-                             data-action="change->home#applyFilters" id="filterPartial">
-                      <span class="form-check-label" data-i18n="filterPartial">Similar Spellings</span>
+                             data-action="change->home#applyFilters" id="filterPhrases">
+                      <span class="form-check-label" data-i18n="filterPhrases">Phrases</span>
                     </label>
                   </div>
                 </div>
@@ -785,7 +785,7 @@
       <div class="abstract-bg-ui ui-table-left">
         <div class="ui-block highlight"></div><div class="ui-block"></div><div class="ui-block"></div>
       </div>
-      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTop">
+      <button type="button" class="page-nav-arrow pna-top" data-action="click->innovations#goTop" aria-label="Previous screen" data-i18n-aria="innovationsBack">
         <div class="arrow-shape"></div>
       </button>
       <svg class="connection-layer connection-layer-fill">
@@ -818,7 +818,7 @@
           </div>
         </div>
       </div>
-      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-library">
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click->innovations#goTo" data-innovations-screen="innovations-library" aria-label="Next screen" data-i18n-aria="innovationsOn">
         <div class="arrow-shape"></div>
       </button>
     </div>
@@ -1048,10 +1048,10 @@
           </div>
         </div>
       </div>
-      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-programme">
+      <button type="button" class="page-nav-arrow pna-top" data-action="click->innovations#goTo" data-innovations-screen="innovations-programme" aria-label="Previous screen" data-i18n-aria="innovationsBack">
         <div class="arrow-shape"></div>
       </button>
-      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-flow">
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click->innovations#goTo" data-innovations-screen="innovations-flow" aria-label="Next screen" data-i18n-aria="innovationsOn">
         <div class="arrow-shape"></div>
       </button>
     </div>
@@ -1151,10 +1151,10 @@
         </div>
         <div class="transfer-orb" id="innovations-orb"></div>
       </div>
-      <button type="button" class="page-nav-arrow pna-top above-all" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-library">
+      <button type="button" class="page-nav-arrow pna-top above-all" data-action="click->innovations#goTo" data-innovations-screen="innovations-library" aria-label="Previous screen" data-i18n-aria="innovationsBack">
         <div class="arrow-shape"></div>
       </button>
-      <button type="button" class="page-nav-arrow pna-bottom above-all" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-interface">
+      <button type="button" class="page-nav-arrow pna-bottom above-all" data-action="click->innovations#goTo" data-innovations-screen="innovations-interface" aria-label="Next screen" data-i18n-aria="innovationsOn">
         <div class="arrow-shape"></div>
       </button>
     </div>
@@ -1212,10 +1212,10 @@
           </div>
         </div>
       </div>
-      <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-flow">
+      <button type="button" class="page-nav-arrow pna-top" data-action="click->innovations#goTo" data-innovations-screen="innovations-flow" aria-label="Previous screen" data-i18n-aria="innovationsBack">
         <div class="arrow-shape arrow-shape-light"></div>
       </button>
-      <button type="button" class="page-nav-arrow pna-bottom" data-action="click- aria-label="Next screen" data-i18n-aria="innovationsOn">innovations#goTo" data-innovations-screen="innovations-future">
+      <button type="button" class="page-nav-arrow pna-bottom" data-action="click->innovations#goTo" data-innovations-screen="innovations-future" aria-label="Next screen" data-i18n-aria="innovationsOn">
         <div class="arrow-shape arrow-shape-light"></div>
       </button>
     </div>
@@ -1228,7 +1228,7 @@
           You will now be able to follow a word's historical journey and the expansion of its meaning on a single screen, in a seamless discovery experience.</div>
           <div class="brand-footer" data-i18n="story57">MUCH MORE COMING SOON.</div>
         </div>
-        <button type="button" class="page-nav-arrow pna-top" data-action="click- aria-label="Previous screen" data-i18n-aria="innovationsBack">innovations#goTo" data-innovations-screen="innovations-interface">
+        <button type="button" class="page-nav-arrow pna-top" data-action="click->innovations#goTo" data-innovations-screen="innovations-interface" aria-label="Previous screen" data-i18n-aria="innovationsBack">
           <div class="arrow-shape arrow-shape-light"></div>
         </button>
       </div>
@@ -1533,7 +1533,7 @@
             </button>
           </div>
           <button type="button" class="btn scan-cite" data-action="click->dictionary-page#cite">
-            <i data-feather="clipboard" aria-hidden="true"></i>
+            <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
             <span data-i18n="cite">Cite</span>
           </button>
         </div>
@@ -1843,7 +1843,7 @@
           <div class="entry-cite-group">
             <button type="button" class="btn entry-cite-open" aria-expanded="false"
                     data-action="click->entry-window#toggleCite">
-              <i data-feather="clipboard" aria-hidden="true"></i>
+              <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
               <span data-i18n="cite">Cite</span>
             </button>
             <div class="entry-cite-pop" data-entry-cite-pop hidden>

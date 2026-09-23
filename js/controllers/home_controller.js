@@ -111,8 +111,10 @@ class HomeController extends Stimulus.Controller {
   showViewState(state) {
     if (state === "results" || state === "no-results") {
       this.sideValue = "ottoman";
-      this.applySide();
+      // The term goes in first: the prompts are dropped by there being text,
+      // so they have to be settled after the bar has it.
       this.inputTarget.value = "نظر";
+      this.applySide();
       this.receive(state === "results" ? this.sample() : this.emptySample());
       return;
     }
@@ -1056,7 +1058,7 @@ class HomeController extends Stimulus.Controller {
                   data-cite-page="${this.escape(row.page)}"
                   title="${this.escape(this.translate("cite", "Cite"))}"
                   aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
-            <i data-feather="clipboard"></i>
+            ${window.LQ.citeIcon()}
           </button>
           <!-- Staff only: editing a stored reading, as opposed to a reader
                suggesting a correction. Restrict this when permissions land. -->

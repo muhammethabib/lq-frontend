@@ -167,8 +167,9 @@ class PageNavigationController extends Stimulus.Controller {
     let waiting = false;
     const update = () => {
       waiting = false;
-      const long = document.documentElement.scrollHeight > window.innerHeight * 2;
-      const wanted = long && window.scrollY > window.innerHeight * 1.5;
+      // One screen past the top, as the reference has it: by then the way
+      // back is out of reach and worth offering.
+      const wanted = window.scrollY > window.innerHeight;
       if (wanted === shown) return;
       shown = wanted;
       button.classList.toggle("is-shown", shown);

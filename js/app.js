@@ -93,6 +93,13 @@ window.LQ = {
     document.body.style.removeProperty("--lq-panel-room");
   },
 
+  // The mark on every button that opens the citation window. It is a pair of
+  // quotation marks, which Feather has no icon for, so it is drawn here once
+  // rather than pasted into each of the four places that cite.
+  citeIcon() {
+    return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
+  },
+
   // A dictionary is shown with its publication year where one is known.
   dictionaryLabel(name) {
     const record = (window.LQ_DICTIONARIES || {})[name];

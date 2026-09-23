@@ -865,7 +865,7 @@ class WordDecoderController extends Stimulus.Controller {
                     data-cite-dictionary="${this.escape(row.dictionary)}"
                     data-cite-page="${this.escape(row.page)}"
                     aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
-              <i data-feather="clipboard"></i>
+              ${window.LQ.citeIcon()}
             </button>
             <!-- Staff only: editing a stored reading, as opposed to a reader
                  suggesting a correction. Restrict this when permissions land. -->

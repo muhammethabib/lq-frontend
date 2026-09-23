@@ -283,7 +283,24 @@
 .home-surface .filter-trigger:hover,
 .home-surface .dictionary-trigger:hover { border-color: #c9d1e2; }
 .home-surface .filter-trigger[aria-expanded="true"] { border-color: var(--lq-claret-deep); background: #fdf1f4; }
-.home-surface .dictionary-trigger { width: 280px; height: 52px; justify-content: space-between; }
+
+/* Feather draws at 24px unless told otherwise; the two marks in the trigger
+   are small beside the word. */
+.home-surface .filter-trigger svg { width: 13px; height: 13px; flex: none; }
+.home-surface .filter-trigger svg:last-child { width: 11px; height: 11px; }
+
+/* The dictionary picker is the taller of the two controls, as the reference
+   has it: it carries a name rather than a word and a count. */
+.home-surface .dictionary-trigger {
+  width: 280px;
+  height: 56px;
+  padding: 0 16px;
+  border-color: #cbd5e1;
+  border-radius: 12px;
+  justify-content: space-between;
+}
+.home-surface .dictionary-trigger > span { font-size: 14px; }
+.home-surface .dictionary-trigger svg { width: 16px; height: 16px; flex: none; }
 .home-surface .dictionary-trigger[aria-expanded="true"] {
   border-color: var(--lq-sapphire);
   box-shadow: 0 0 0 4px rgba(8, 37, 103, .1);
@@ -806,7 +823,7 @@
 .home-surface .result-row > td {
   background: var(--lq-paper);
   border-bottom: 1px solid var(--lq-body-bg);
-  padding: 14px 8px;
+  padding: 17px 8px;
   vertical-align: middle;
 }
 .home-surface .result-row:hover > td { background: #fcfdff; }
@@ -860,7 +877,7 @@
 
 .home-surface .latin-box {
   font-size: 15px;
-  color: var(--lq-ink);
+  color: #334155;
   background: var(--lq-paper-soft);
   border-color: var(--lq-line);
 }
@@ -917,6 +934,7 @@
    result column stays the primary reading. */
 .home-surface .headword-cell .word-pair { margin-inline: auto; }
 .home-surface .headword-cell .word-box {
+  padding: 5px 14px;
   background: transparent;
   border-color: transparent;
   min-width: 82px;
@@ -1325,8 +1343,24 @@
 
 /* With nothing to list, the column headings and the alternative spellings
    would be headings over an empty table. */
+/* Nothing matched, so the heading over the list, the term repeated above it
+   and the two counts have nothing to describe: the surface says so once, in
+   the line below, exactly as the reference does. */
 .home-surface.state-no-matches .results-table-scroll,
-.home-surface.state-no-matches .results-header-side { display: none; }
+.home-surface.state-no-matches .results-header { display: none; }
+
+/* With no list to sit under, the question moves to the foot of the answer
+   and stands alone, as the reference has it. */
+.home-surface.state-no-matches .fuzzy-row {
+  order: 2;
+  margin-top: 28px;
+  padding-top: 0;
+}
+.home-surface.state-no-matches .fuzzy-row::before { display: none; }
+.home-surface.state-no-matches .fuzzy-button { display: none; }
+.home-surface.state-no-matches .fuzzy-row .library-button { position: static; transform: none; }
+.home-surface.state-no-matches .results-surface { display: flex; flex-direction: column; }
+.home-surface.state-no-matches .no-matches { order: 1; }
 
 /* ---------------------------------------------------------------
    The way around a long result list

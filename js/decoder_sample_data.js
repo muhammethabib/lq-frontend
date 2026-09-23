@@ -48,6 +48,7 @@ window.LQ_DECODER_RESULTS = {
         { category: "ENTRY", candidateOttoman: "حاجر", candidateLatin: "hâcir", headwordOttoman: "حاجر", headwordLatin: "hâcir", dictionary: "Lugat-ı Naci", page: "413" }
       ]
     },
+    ,
     {
       key: "inflected",
       rows: [
@@ -56,11 +57,23 @@ window.LQ_DECODER_RESULTS = {
         { category: "SUBENTRY", candidateOttoman: "حاضره", candidateLatin: "hâzıra", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Lugat-ı Naci", page: "412" }
       ]
     },
+    ,
     {
       // Empty on purpose: a section with no candidates says so rather than vanishing
       key: "lexicalizedInflected",
       rows: []
     },
+    ,
+    {
+      key: "partial",
+      rows: [
+        { category: "ENTRY", candidateOttoman: "محاضره", candidateLatin: "muhâzara", headwordOttoman: "محاضره", headwordLatin: "muhâzara", dictionary: "Kamus-ı Türki", page: "1310" },
+        { category: "ENTRY", candidateOttoman: "محاضره", candidateLatin: "muhâzara", headwordOttoman: "محاضره", headwordLatin: "muhâzara", dictionary: "Lexicon", page: "88" },
+        { category: "RELATED", candidateOttoman: "استحضار", candidateLatin: "istihzâr", headwordOttoman: "حضور", headwordLatin: "huzûr", dictionary: "Ahteri-i Kebir", page: "151" },
+        { category: "ENTRY", candidateOttoman: "محاضرات", candidateLatin: "muhâzarât", headwordOttoman: "محاضرات", headwordLatin: "muhâzarât", dictionary: "Kamusu'l-A'lam", page: "202" }
+      ]
+    },
+    ,
     {
       key: "derived",
       rows: [
@@ -69,26 +82,19 @@ window.LQ_DECODER_RESULTS = {
         { category: "RELATED", candidateOttoman: "حاضرجه", candidateLatin: "hâzırca", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Lugat-ı Ebuzziya", page: "233" }
       ]
     },
-    {
-      key: "phrases",
-      rows: [
-        { category: "SUBENTRY", candidateOttoman: "حاضر اولمق", candidateLatin: "hâzır olmak", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Kamus-ı Türki", page: "522" },
-        { category: "SUBENTRY", candidateOttoman: "حاضر اولمق", candidateLatin: "hâzır olmak", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Türkçeden Almancaya Lügat Kitabı", page: "340" }
-      ]
-    },
+    ,
     {
       key: "compounds",
       rows: [
         { category: "SUBENTRY", candidateOttoman: "حاضر جواب", candidateLatin: "hâzır-cevâb", headwordOttoman: "جواب", headwordLatin: "cevâb", dictionary: "Lugat-ı Naci", page: "414" }
       ]
     },
+    ,
     {
-      key: "partial",
+      key: "phrases",
       rows: [
-        { category: "ENTRY", candidateOttoman: "محاضره", candidateLatin: "muhâzara", headwordOttoman: "محاضره", headwordLatin: "muhâzara", dictionary: "Kamus-ı Türki", page: "1310" },
-        { category: "ENTRY", candidateOttoman: "محاضره", candidateLatin: "muhâzara", headwordOttoman: "محاضره", headwordLatin: "muhâzara", dictionary: "Lexicon", page: "88" },
-        { category: "RELATED", candidateOttoman: "استحضار", candidateLatin: "istihzâr", headwordOttoman: "حضور", headwordLatin: "huzûr", dictionary: "Ahteri-i Kebir", page: "151" },
-        { category: "ENTRY", candidateOttoman: "محاضرات", candidateLatin: "muhâzarât", headwordOttoman: "محاضرات", headwordLatin: "muhâzarât", dictionary: "Kamusu'l-A'lam", page: "202" }
+        { category: "SUBENTRY", candidateOttoman: "حاضر اولمق", candidateLatin: "hâzır olmak", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Kamus-ı Türki", page: "522" },
+        { category: "SUBENTRY", candidateOttoman: "حاضر اولمق", candidateLatin: "hâzır olmak", headwordOttoman: "حاضر", headwordLatin: "hâzır", dictionary: "Türkçeden Almancaya Lügat Kitabı", page: "340" }
       ]
     }
   ]

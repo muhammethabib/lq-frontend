@@ -884,6 +884,11 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  /* The arrows are buttons here rather than the reference's plain boxes, so
+     the browser's own button frame has to be taken off. */
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
   z-index: 100;
   width: 50px;
@@ -3306,7 +3311,8 @@ body.story-open .page-top-row { opacity: 0; pointer-events: none; transition: op
 /* The story has its own way around, so the page's way back to the top stays
    out of it. While the story is only parked the page cannot scroll at all,
    so the button never comes up by itself. */
-body.story-open .back-to-top { display: none; }
+/* The way back to the top is offered inside the story too, as the reference
+   does: the story is where a reader is furthest from it. */
 
 /* ---------- the prompt at the foot of the main page ---------- */
 

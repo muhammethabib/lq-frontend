@@ -9,161 +9,159 @@
 /* The figures come first because every feature below rests on them. The two
    headline figures sit apart from the three category counts, which share a
    row and are colour-coded like the result rows they describe. */
-.v3-surface .v3-figures {
-  display: grid;
-  gap: 12px;
-  margin: 28px 0 8px;
-}
+/* The title breaks where the reference breaks it */
+.v3-surface .page-hero h1 { max-width: 760px; }
+
+.v3-surface .page-content > .v3-intro { margin: 0 0 30px; }
+
+.v3-surface .v3-figures { margin: 0 0 44px; }
 
 .v3-surface .v3-headline {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 14px;
 }
 .v3-surface .v3-split {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 
 .v3-surface .v3-figure {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 18px 22px;
-  border: 1px solid var(--lq-line);
+  padding: 22px 24px;
+  border: 1px solid #e8edf4;
   border-radius: 14px;
-  background: var(--lq-body-bg);
+  background: linear-gradient(180deg, #f8fafc, var(--lq-paper));
 }
 .v3-surface .v3-number {
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.15;
+  display: block;
+  font: 600 2.6rem/1 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  letter-spacing: -.5px;
   color: var(--lq-sapphire);
-  font-variant-numeric: tabular-nums;
 }
 .v3-surface .v3-label {
-  font-size: .9rem;
-  line-height: 1.5;
-  color: var(--lq-ink-soft);
+  display: block;
+  margin-top: 6px;
+  font: 600 14px/1.5 'Inter', sans-serif;
+  color: #475569;
 }
 
 /* The three categories carry the same colours the results list uses, on the
-   left edge as the reference has it rather than as a wash over the whole
-   card, so the three read as one row with three marks rather than three
-   differently coloured panels. */
+   left edge rather than as a wash over the whole card, so the three read as
+   one row with three marks rather than three differently coloured panels. */
 .v3-surface .v3-split .v3-figure {
-  gap: 2px;
-  padding-left: 20px;
-  border-left: 4px solid var(--lq-line);
-  background: var(--lq-paper);
+  padding: 18px 20px;
+  border-left-width: 5px;
+  background: none;
 }
+.v3-surface .v3-split .v3-number { font-size: 1.9rem; letter-spacing: normal; }
 .v3-surface .v3-split .v3-label {
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .07em;
+  font: 800 10.5px/1.4 'Inter', sans-serif;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: #5d6b80;
+  color: var(--lq-muted);
 }
-.v3-surface .v3-split .v3-number { color: var(--lq-ink-navy); }
 
-.v3-surface .v3-split .v3-entry { border-left-color: var(--lq-entry-text); }
-.v3-surface .v3-split .v3-sub { border-left-color: var(--lq-sub-text); }
-.v3-surface .v3-split .v3-related { border-left-color: var(--lq-related-text); }
+.v3-surface .v3-split .v3-entry { border-left-color: #0f766e; }
+.v3-surface .v3-split .v3-sub { border-left-color: #d97706; }
+.v3-surface .v3-split .v3-related { border-left-color: #1d4ed8; }
 
 /* ---------- one screen's worth of features ---------- */
 
-.v3-surface .v3-block { margin-top: 12px; }
+.v3-surface .v3-block { margin-bottom: 46px; }
 
-.v3-surface .v3-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 40px 0 16px;
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
-  font-size: 1.7rem;
-  font-weight: 600;
+.v3-surface .page-content h2.v3-section {
+  margin: 0 0 20px;
+  padding: 0;
+  font: 600 2rem/1.2 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  letter-spacing: 0;
   color: var(--lq-sapphire);
 }
-/* The second word is set in italic, the way the section titles read in the
-   reference: "Results list", "Dictionary page". */
-.v3-surface .v3-section em {
-  font-style: italic;
-  font-weight: 400;
-  color: var(--lq-claret);
-}
-.v3-surface .v3-section::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--lq-line);
-}
+/* The second word is set apart in the reference by italic markup that the
+   page then keeps upright, so the title reads as one line. */
+.v3-surface .v3-section em { font-style: normal; color: inherit; }
 
 .v3-surface .v3-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 14px;
 }
 
 .v3-surface .v3-feature {
-  display: flex;
-  flex-direction: column;
-  padding: 20px 22px;
-  border: 1px solid var(--lq-line);
-  border-radius: 14px;
+  padding: 20px 24px;
+  border: 1px solid #e8edf4;
+  border-radius: 12px;
   background: var(--lq-paper);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  transition: box-shadow .15s, border-color .15s;
 }
-.v3-surface .v3-feature h3 {
+.v3-surface .v3-feature:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 3px 12px rgba(8, 37, 103, .07);
+}
+.v3-surface .page-content .v3-feature h3 {
   display: flex;
   align-items: center;
-  gap: 11px;
-  margin: 0 0 10px;
-  font-size: 1.02rem;
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--lq-ink-navy);
+  gap: 10px;
+  margin: 0 0 9px;
+  font: 700 16px/1.35 'Inter', ui-sans-serif, system-ui, sans-serif;
+  color: var(--lq-ink);
 }
-.v3-surface .v3-feature p {
-  flex: 1;
+.v3-surface .page-content .v3-feature p {
   margin: 0;
-  font-size: .93rem;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--lq-muted);
 }
+.v3-surface .v3-feature p b { color: #334155; font-weight: 700; }
 
+/* Each note wears a mark in the colour of the screen it belongs to */
 .v3-surface .v3-icon {
-  display: grid;
-  place-items: center;
   flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: var(--lq-lat-bg);
-  color: var(--lq-sapphire);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
 }
-.v3-surface .v3-icon svg { width: 16px; height: 16px; }
+.v3-surface .v3-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.v3-surface .v3-icon-b { color: #2563eb; background: #eff6ff; }
+.v3-surface .v3-icon-o { color: #d97706; background: #fffbeb; }
+.v3-surface .v3-icon-p { color: #db2777; background: #fdf2f8; }
+.v3-surface .v3-icon-r { color: #dc2626; background: #fef2f2; }
+.v3-surface .v3-icon-t { color: #0d9488; background: #ecfdf5; }
 
 /* ---------- the link into the user guide ---------- */
 
-.v3-surface .v3-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  font-size: .84rem;
-  font-weight: 600;
-  color: var(--lq-claret);
+.v3-surface .page-content a.v3-more {
+  display: inline-block;
+  margin-top: 10px;
+  font: 600 13px 'Inter', ui-sans-serif, system-ui, sans-serif;
+  color: var(--lq-sapphire);
   text-decoration: none;
 }
-.v3-surface .v3-more:hover { color: var(--lq-claret-hover); }
-.v3-surface .v3-more svg {
-  width: 13px;
-  height: 13px;
-  transition: transform .15s;
-}
-.v3-surface .v3-more:hover svg { transform: translateX(3px); }
+.v3-surface .page-content a.v3-more:hover { color: var(--lq-claret); }
 
-@media (prefers-reduced-motion: reduce) {
-  .v3-surface .v3-more svg { transition: none; }
+@media (max-width: 760px) {
+  .v3-surface .v3-headline,
+  .v3-surface .v3-split { grid-template-columns: 1fr; }
+}
+
+/* It opens in a tab of its own, and says so */
+.v3-surface .v3-more::after {
+  content: "\2197";
+  display: inline-block;
+  margin-left: 3px;
+  font-size: .85em;
+  text-decoration: none;
+  color: #8a5200;
 }

@@ -86,7 +86,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     if (!this.hasRowsTarget) return;
     const layout = this.layout();
     const rows = this.orderValue === "alphabetical"
-      ? this.alphabet().map((row) => row.map(([letter, latin]) => this.letterKeyHtml(letter, latin)))
+      ? this.alphabet().map((row) => row.map((letter) => this.letterKeyHtml(letter, layout)))
       : (layout.rows || []).map((row) => row.map((key) => this.keyHtml(key, layout)));
     this.rowsTarget.innerHTML = rows.map((cells) => `
       <div class="search-key-row">
@@ -100,17 +100,36 @@ class SearchKeyboardController extends Stimulus.Controller {
     return (layouts.alphabetical || {}).rows || [];
   }
 
-  // A key of the alphabetical order: the letter, with its transliteration
-  // where the other order shows the key's name.
-  letterKeyHtml(letter, latin) {
+  // A key of the alphabetical order: the letter, with the physical key that
+  // writes it where the other order shows the key's name.
+  letterKeyHtml(letter, layout) {
     const safe = window.LQ.escape;
-    const isMark = /^[\u02BF\u02BE]$/.test(latin);   // ʿ and ʾ, too faint at label size
     return `
       <button type="button" class="btn search-key" data-search-char="${safe(letter)}"
               data-action="pointerdown->search-keyboard#press">
-        <span class="search-key-latin${isMark ? " search-key-latin-mark" : ""}">${safe(latin)}</span>
+        <span class="search-key-latin">${safe(this.physicalLabel(letter, layout))}</span>
         <span class="search-key-ottoman">${safe(this.face(letter))}</span>
       </button>`;
+  }
+
+  // The label of the physical key that writes a letter, as the keyboard order
+  // prints it. A plain key comes first (و is w, u, o and v; the first of them),
+  // then a split key's Shift or Alt label, then a letter reached only through
+  // an upper-case key. A letter the layout cannot write (ە on the English
+  // layout) is left unlabelled.
+  physicalLabel(letter, layout) {
+    const map = layout.map || {};
+    const dual = layout.dual || {};
+    const language = document.documentElement.lang || "en";
+    const plain = Object.keys(map).find((key) => map[key] === letter && key === key.toLowerCase());
+    if (plain) return plain.toLocaleUpperCase(language);
+    for (const key of Object.keys(dual)) {
+      const [, shift, shiftLabel, alt, altLabel] = dual[key];
+      if (shift === letter) return shiftLabel;
+      if (alt === letter) return altLabel;
+    }
+    const upper = Object.keys(map).find((key) => map[key] === letter);
+    return upper ? `SHF+${upper.toLocaleUpperCase(language)}` : "";
   }
 
   // ==================== the order of the keys ====================

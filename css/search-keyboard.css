@@ -142,12 +142,9 @@
 .search-keyboard.is-alphabetical .search-keyboard-order-latin { display: inline; }
 
 /* The alphabetical order: rows read from the right, as the alphabet is
-   recited, and the small Latin label is a transliteration rather than a key
-   name, so it keeps its case and its diacritics. */
+   recited. The label over each key is the physical key that writes it, set
+   as the keyboard order sets it. */
 .search-keyboard.is-alphabetical .search-key-row { direction: rtl; }
-.search-keyboard.is-alphabetical .search-key-latin { text-transform: none; font-size: 10px; letter-spacing: 0; }
-/* ʿ (ayn) and ʾ (hemze) are modifier letters and would be too faint at 10px */
-.search-keyboard.is-alphabetical .search-key-latin-mark { font-size: 15px; line-height: 9px; color: var(--lq-muted); }
 
 /* ---------------------------------------------------- the keys */
 

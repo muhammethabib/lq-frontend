@@ -21,17 +21,18 @@
 //
 // The `alphabetical` layout is the second order the same keyboard can take:
 // the Ottoman alphabet as it is recited, elif, be, pe, te..., three rows read
-// from the right, independent of any physical keyboard. Each key is
-// [letter, Latin transliteration]; the transliteration is the one the results
-// use. It covers every letter the two keyboard layouts can write, so nothing
-// becomes untypeable by switching. Physical typing still follows `map`.
+// from the right. Each key shows, as the keyboard order does, the physical key
+// that writes its letter; the controller reads that off the language's `map`
+// and `dual`, so it changes with the layout. The set covers every letter the
+// two layouts can write, so nothing becomes untypeable by switching. Physical
+// typing still follows `map`.
 
 window.LQ_SEARCH_KEYBOARD = {
   alphabetical: {
     rows: [
-      [["ا", "a"], ["ب", "b"], ["پ", "p"], ["ت", "t"], ["ث", "s\u0331"], ["ج", "c"], ["چ", "ç"], ["ح", "ḥ"], ["خ", "ḫ"], ["د", "d"], ["ذ", "ẕ"], ["ر", "r"]],
-      [["ز", "z"], ["ژ", "j"], ["س", "s"], ["ش", "ş"], ["ص", "ṣ"], ["ض", "ż"], ["ط", "ṭ"], ["ظ", "ẓ"], ["ع", "ʿ"], ["غ", "ġ"], ["ف", "f"], ["ق", "ḳ"]],
-      [["ك", "k"], ["گ", "g"], ["ڭ", "ñ"], ["ل", "l"], ["م", "m"], ["ن", "n"], ["و", "v"], ["ه", "h"], ["ە", "e"], ["_ye_", "y"], ["ء", "ʾ"], ["ة", "t"]]
+      ["ا", "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ", "ر"],
+      ["ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق"],
+      ["ك", "گ", "ڭ", "ل", "م", "ن", "و", "ه", "ە", "_ye_", "ء", "ة"]
     ]
   },
 

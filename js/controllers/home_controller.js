@@ -1276,9 +1276,14 @@ class HomeController extends Stimulus.Controller {
     if (at === -1) return this.escape(text);
     const before = text.slice(0, at);
     const after = text.slice(at + term.length);
-    return (before ? `<span class="affix">${this.escape(before)}</span>` : "")
+    // The marked word is kept in one wrapper so it stays a single run of
+    // text: an Ottoman letter must still join to the affix picked out beside
+    // it, which it cannot do across two boxes of a flex row.
+    return `<span class="wb-word">`
+      + (before ? `<span class="affix">${this.escape(before)}</span>` : "")
       + this.escape(term)
-      + (after ? `<span class="affix">${this.escape(after)}</span>` : "");
+      + (after ? `<span class="affix">${this.escape(after)}</span>` : "")
+      + `</span>`;
   }
 
   // Each column is marked against the term in its own script: the active

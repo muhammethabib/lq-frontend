@@ -6,19 +6,24 @@
 
 .announcement-modal .modal-dialog { max-width: 560px; }
 
+/* The notice is read from top to bottom like a page, not laid out as a
+   column of panels, and it gives itself a scrollbar rather than growing
+   past the window. */
 .announcement-modal .modal-content {
   position: relative;
+  display: block;
+  max-width: 100%;
+  max-height: 900px;
+  overflow: auto;
   padding: 34px 38px 28px;
   border: 0;
   border-radius: 20px;
   box-shadow: 0 40px 90px -30px rgba(15, 23, 42, .55);
 }
 
-/* The card is a flex column, so a badge left to itself would stretch across
-   it; it is a label on the notice, not a bar. */
+/* A label on the notice, not a bar across it. */
 .announcement-modal .announcement-badge {
   display: inline-block;
-  align-self: flex-start;
   margin: 0 0 14px;
   padding: 4px 11px;
   border: 1px solid #f6dde2;
@@ -66,18 +71,26 @@
 .announcement-modal .announcement-card.is-off { border-color: #dbe4f5; background: #f4f7fd; }
 .announcement-modal .announcement-card.is-on { border-color: #f2dde4; background: #fdf5f8; }
 
+/* The heading is a row holding a mark and a name; the name is what is set,
+   not the row, so the row is as tall as the line it holds. */
 .announcement-modal .announcement-card h3 {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 0 0 7px;
+  font: inherit;
+  color: inherit;
+}
+.announcement-modal .announcement-card h3 span {
   font-size: 13px;
   font-weight: 800;
   letter-spacing: -.1px;
 }
 .announcement-modal .announcement-card h3 svg { width: 17px; height: 17px; }
-.announcement-modal .announcement-card.is-off h3 { color: #123a8c; }
-.announcement-modal .announcement-card.is-on h3 { color: var(--lq-claret); }
+.announcement-modal .announcement-card.is-off h3 svg { stroke: #123a8c; }
+.announcement-modal .announcement-card.is-on h3 svg { stroke: var(--lq-claret); }
+.announcement-modal .announcement-card.is-off h3 span { color: #123a8c; }
+.announcement-modal .announcement-card.is-on h3 span { color: var(--lq-claret); }
 
 /* The university mark carries a lock on its corner, so it needs room of its
    own rather than sitting in the line like the other icon. */
@@ -134,7 +147,6 @@
 
 .announcement-modal .announcement-actions {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
 }
@@ -165,6 +177,7 @@
 .announcement-modal .announcement-later {
   padding: 6px;
   border: 0;
+  border-radius: 0;
   background: none;
   font-size: 13px;
   font-weight: 600;

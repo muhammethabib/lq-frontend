@@ -837,7 +837,6 @@
   font-weight: 800;
   letter-spacing: -.3px;
   color: #334155;
-  font-variant-numeric: tabular-nums;
 }
 .home-surface .results-stats p:last-child { color: #5d718c; }
 .home-surface .results-stats p:last-child b { color: #94a3b8; }
@@ -947,6 +946,9 @@
 .home-surface .results-table {
   margin: 0;
   --bs-table-bg: transparent;
+  /* Bootstrap sets a table's ink to its emphasis colour, which is black; the
+     rows are read in the page's own ink like everything else. */
+  --bs-table-color: var(--bs-body-color);
   /* The columns are set from the head, not measured from the rows: the
      reference draws its head and its rows on the same twelve-column grid,
      and a long reading in one row must not widen a column under it. */
@@ -1053,7 +1055,6 @@
   border-radius: 6px;
   font-size: 10px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
 .home-surface .group-note {
   display: inline-flex;
@@ -1197,7 +1198,17 @@
   overflow-wrap: break-word;
   transition: background .2s, color .2s, border-color .2s, transform .2s;
 }
-.home-surface .word-box:hover { transform: translateY(-2px); }
+/* Lifted and grown a shade under the cursor, so the word being pointed at
+   stands off the row and over its neighbours. */
+/* The word inside the box is one run of text, not a row of boxes: an affix
+   picked out inside it must still join to the letters it follows. */
+.home-surface .wb-word { display: block; }
+
+.home-surface .word-box:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+  z-index: 500;
+}
 
 .home-surface .ottoman-box {
   font-family: 'Noto Naskh Arabic', serif;
@@ -1586,13 +1597,16 @@
 .home-surface .no-matches-line {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  width: 100%;
   margin-bottom: 22px;
   font-size: 15px;
   font-weight: 600;
   color: var(--lq-muted);
-  text-align: center;
 }
+/* The words before the term stand off it rather than the line spacing them
+   both, so a line with nothing before the term is not left with a gap. */
+.home-surface .no-matches-line > span:not(:empty) { margin-right: 8px; }
 
 .home-surface .no-matches-term {
   position: relative;
@@ -1642,7 +1656,6 @@
   transform: translateY(-50%);
   font-size: 12px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
   color: #5d718c;
 }
 
@@ -1674,6 +1687,7 @@
 
 .home-surface .suggestion-ottoman {
   justify-self: end;
+  min-width: 88px;
   padding: 5px 16px 8px;
   border-color: var(--lq-osm-border);
   background: var(--lq-osm-bg);
@@ -1681,6 +1695,8 @@
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 1.25rem;
   font-weight: 700;
+  direction: rtl;
+  text-align: right;
 }
 
 .home-surface .suggestion-ottoman:hover { background: #ffe4e6; color: var(--lq-red); border-color: #fecdd3; }
@@ -1688,6 +1704,7 @@
 .home-surface .suggestion-latin {
   justify-self: start;
   min-width: 74px;
+  text-align: left;
   padding: 8px 14px;
   border-color: var(--lq-line);
   background: var(--lq-paper-soft);

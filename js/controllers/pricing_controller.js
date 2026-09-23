@@ -61,9 +61,9 @@ class PricingController extends Stimulus.Controller {
       if (!slot) return;
       const quoted = (this.prices.standard || {})[button.dataset.term];
       const saving = quoted && quoted.saving;
-      slot.textContent = saving
-        ? window.LQ.translate("planSaving", "Save {n}%").replace("{n}", saving)
-        : "";
+      // On the button the saving is the short form - %33 - because the term
+      // it belongs to is already named beside it.
+      slot.textContent = saving ? `%${saving}` : "";
     });
 
     // Only the paid plans have a period that moves with the term. Free is
@@ -87,12 +87,11 @@ class PricingController extends Stimulus.Controller {
     });
   }
 
-  // A price is grouped the way the reader's language groups thousands, so
-  // 8.400 TL in Turkish is 8,400 TL in English. The currency comes with the
-  // prices rather than being written in here.
+  // The price is in lira, so it is grouped the way lira are written -
+  // 8.400 TL - whichever language the page is read in. The currency comes
+  // with the prices rather than being written in here.
   money(total) {
-    const language = document.documentElement.lang === "tr" ? "tr-TR" : "en-GB";
-    return `${total.toLocaleString(language)} ${this.currency}`;
+    return `${total.toLocaleString("tr-TR")} ${this.currency}`;
   }
 
   // "/ month", "/ 3 months", "/ year" - the three shapes the period takes.

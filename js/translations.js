@@ -354,7 +354,6 @@ window.LQ_TRANSLATIONS = {
     featureContainingEntries: "Sonucu içeren maddeler",
     featureSimilarShape: "Benzer şekilli harfleri içeren sonuçlar",
     featureSimilarSound: "Benzer sesli harfleri içeren sonuçlar",
-    pricingInstitutional: "Üniversite ve kütüphaneler farklı koşullarla abone olur. Bkz. <a href=\"institutional.html\">Kurumsal Üyeler</a>.",
 
     // --- LexiQamus 1.0 ---
     lq1Eyebrow: "Arşiv · 2016",

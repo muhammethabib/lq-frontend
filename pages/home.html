@@ -436,152 +436,155 @@
                   <span class="form-check-label fw-bold" data-i18n="selectAll">Select All</span>
                 </label>
                 <hr class="my-2">
-                <!-- One row per digitised dictionary. Rails will render these from
-                     the dictionary table; here they are written out so the
-                     checkboxes are real markup rather than generated on load. -->
+                <!-- One row per digitised dictionary, named without its year:
+                     the picker is a list to choose from, and every result row
+                     already carries the year beside the name. Rails will render
+                     these from the dictionary table; here they are written out
+                     so the checkboxes are real markup rather than generated on
+                     load. -->
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Ahteri-i Kebir"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary0">
-                  <span class="form-check-label">Ahteri-i Kebir, 1826</span>
+                  <span class="form-check-label">Ahteri-i Kebir</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Bianchi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary1">
-                  <span class="form-check-label">Bianchi, 1846</span>
+                  <span class="form-check-label">Bianchi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Burhan-ı Katı"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary2">
-                  <span class="form-check-label">Burhan-ı Katı, 1797</span>
+                  <span class="form-check-label">Burhan-ı Katı</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Hindoglu"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary3">
-                  <span class="form-check-label">Hindoglu, 1838</span>
+                  <span class="form-check-label">Hindoglu</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Kamus-ı Alam"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary4">
-                  <span class="form-check-label">Kamus-ı Alam, 1889</span>
+                  <span class="form-check-label">Kamus-ı Alam</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Kamus-ı Ebüssürur"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary5">
-                  <span class="form-check-label">Kamus-ı Ebüssürur, 1884</span>
+                  <span class="form-check-label">Kamus-ı Ebüssürur</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Kamus-ı Fransevi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary6">
-                  <span class="form-check-label">Kamus-ı Fransevi, 1882</span>
+                  <span class="form-check-label">Kamus-ı Fransevi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Kamus-ı Osmani"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary7">
-                  <span class="form-check-label">Kamus-ı Osmani, 1896</span>
+                  <span class="form-check-label">Kamus-ı Osmani</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Kamus-ı Türki"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary8">
-                  <span class="form-check-label">Kamus-ı Türki, 1899</span>
+                  <span class="form-check-label">Kamus-ı Türki</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lehçe-i Osmani"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary9">
-                  <span class="form-check-label">Lehçe-i Osmani, 1888</span>
+                  <span class="form-check-label">Lehçe-i Osmani</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lehçetü'l-Lügat"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary10">
-                  <span class="form-check-label">Lehçetü'l-Lügat, 1802</span>
+                  <span class="form-check-label">Lehçetü'l-Lügat</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lugat-ı Cudi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary11">
-                  <span class="form-check-label">Lugat-ı Cudi, 1913</span>
+                  <span class="form-check-label">Lugat-ı Cudi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lugat-ı Ebuzziya"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary12">
-                  <span class="form-check-label">Lugat-ı Ebuzziya, 1888</span>
+                  <span class="form-check-label">Lugat-ı Ebuzziya</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lugat-ı Naci"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary13">
-                  <span class="form-check-label">Lugat-ı Naci, 1901</span>
+                  <span class="form-check-label">Lugat-ı Naci</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Lügat-ı Remzi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary14">
-                  <span class="form-check-label">Lügat-ı Remzi, 1888</span>
+                  <span class="form-check-label">Lügat-ı Remzi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Meninski"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary15">
-                  <span class="form-check-label">Meninski, 1680</span>
+                  <span class="form-check-label">Meninski</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Müntahabat-ı Lügat-ı Osmaniye"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary16">
-                  <span class="form-check-label">Müntahabat-ı Lügat-ı Osmaniye, 1852</span>
+                  <span class="form-check-label">Müntahabat-ı Lügat-ı Osmaniye</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Mütercim Asım"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary17">
-                  <span class="form-check-label">Mütercim Asım, 1817</span>
+                  <span class="form-check-label">Mütercim Asım</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Redhouse"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary18">
-                  <span class="form-check-label">Redhouse, 1890</span>
+                  <span class="form-check-label">Redhouse</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Resimli Kamus-ı Osmani"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary19">
-                  <span class="form-check-label">Resimli Kamus-ı Osmani, 1911</span>
+                  <span class="form-check-label">Resimli Kamus-ı Osmani</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Tuhfe-i Vehbi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary20">
-                  <span class="form-check-label">Tuhfe-i Vehbi, 1798</span>
+                  <span class="form-check-label">Tuhfe-i Vehbi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Tuhfe-i Şahidi"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary21">
-                  <span class="form-check-label">Tuhfe-i Şahidi, 1515</span>
+                  <span class="form-check-label">Tuhfe-i Şahidi</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Vankulu"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary22">
-                  <span class="form-check-label">Vankulu, 1729</span>
+                  <span class="form-check-label">Vankulu</span>
                 </label>
                 <label class="form-check">
                   <input class="form-check-input" type="checkbox" checked value="Şemseddin Sami"
                          data-home-target="dictionary" data-action="change->home#applyDictionaries"
                          id="dictionary23">
-                  <span class="form-check-label">Şemseddin Sami, 1899</span>
+                  <span class="form-check-label">Şemseddin Sami</span>
                 </label>
               </div>
             </div>

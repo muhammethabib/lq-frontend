@@ -88,21 +88,56 @@
   color: var(--lq-claret);
 }
 
+/* The account card's own close: the reference draws this one as a quiet
+   square rather than the ringed circle its reading windows carry. */
+.auth-modal .window-close {
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--lq-muted);
+  transition: all .15s;
+}
+.auth-modal .window-close svg { width: 17px; height: 17px; stroke-width: 2.2; }
+.auth-modal .window-close:hover {
+  border-color: var(--lq-line);
+  background: #f1f5f9;
+  color: var(--lq-ink);
+}
+
 .auth-modal .auth-check {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: 10px;
   margin: 0;
   padding: 0;
 }
+/* The box itself, not a drawn stand-in: the reference leaves it to the
+   platform and only tells it which colour to fill with. */
 .auth-modal .auth-check .form-check-input {
   flex: none;
-  margin: 2px 0 0;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  appearance: auto;
+  accent-color: var(--lq-sapphire);
 }
 .auth-modal .auth-check .form-check-label {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--lq-ink-soft);
+  color: var(--lq-muted);
+}
+.auth-modal .auth-check .form-check-label a {
+  color: var(--lq-sapphire);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* The challenge the backend will run, shown as it will appear once it does */
@@ -119,14 +154,14 @@
   font-weight: 600;
   color: #334155;
 }
-.auth-modal .auth-verified svg { width: 19px; height: 19px; color: var(--lq-entry-text); }
+.auth-modal .auth-verified svg { width: 19px; height: 19px; flex: none; color: var(--lq-entry-text); }
 .auth-modal .auth-vendor {
   margin-left: auto;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .6px;
   text-transform: uppercase;
-  color: var(--lq-ink-soft);
+  color: var(--lq-muted);
 }
 
 .auth-modal .auth-submit {

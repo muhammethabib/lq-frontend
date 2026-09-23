@@ -121,7 +121,7 @@
   line-height: 1.25;
   font-weight: 700;
   letter-spacing: .03em;
-  color: var(--lq-ink-soft);
+  color: var(--lq-muted);
 }
 .citation-modal .citation-tabs .cite-tab:hover,
 .citation-modal .citation-tabs .cite-tab.active {

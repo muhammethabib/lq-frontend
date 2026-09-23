@@ -682,21 +682,22 @@
 
 /* ---------------------------------------------------- the footer */
 
+/* The three views hold the middle of the bar; Cite sits out at the edge, so
+   it is taken out of the flow rather than pushing them off-centre. */
 .entry-surface .entry-footer {
   position: relative;
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  min-height: 60px;
-  padding: 8px 16px;
+  height: 60px;
+  padding: 0;
   border-top: 1px solid #e4e4e7;
   background: var(--lq-paper);
 }
 
 .entry-surface .entry-views {
+  position: relative;
   display: flex;
   width: min(340px, 100%);
   height: 36px;
@@ -704,58 +705,90 @@
   border-radius: 11px;
   background: #f4f4f5;
 }
+.entry-surface .entry-view-indicator {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  z-index: 1;
+  width: var(--entry-indicator-width, 0);
+  border-radius: 9px;
+  background: var(--lq-paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+  transform: translateX(var(--entry-indicator-x, 0));
+  transition: width .3s cubic-bezier(.4, 0, .2, 1), transform .3s cubic-bezier(.4, 0, .2, 1);
+}
 
 .entry-surface .entry-view {
+  position: relative;
+  z-index: 2;
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  padding: 0;
   border: 0;
   border-radius: 9px;
   background: transparent;
+  transition: all .2s;
 }
 
 .entry-surface .entry-view:hover { background: rgba(0, 0, 0, 0.04); }
 
 .entry-surface .entry-view.active {
-  background: var(--lq-paper);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  transform: scale(.97);
+  cursor: default;
 }
+.entry-surface .entry-view.active:hover { background: transparent; }
 
 .entry-surface .entry-view-label {
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.5;
   color: #71717a;
+  transition: color .2s;
 }
 
-.entry-surface .entry-view.active .entry-view-label { color: var(--lq-ink); }
+.entry-surface .entry-view.active .entry-view-label { color: #18181b; }
 
 .entry-surface .entry-view-divider {
   width: 1px;
   height: 10px;
+  margin: 0 6px;
   background: #d4d4d8;
 }
 
-.entry-surface .entry-view-count { font-size: 12px; color: #a1a1aa; }
+.entry-surface .entry-view-count { font-size: 12px; font-weight: 400; line-height: 1.5; color: #a1a1aa; }
+.entry-surface .entry-view.active .entry-view-count { font-weight: 500; color: #52525b; }
 
-.entry-surface .entry-cite-group { position: relative; }
+.entry-surface .entry-cite-group {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+}
 
 .entry-surface .entry-cite-open {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
-  border: 1px solid var(--lq-line);
-  border-radius: 9px;
-  background: var(--lq-paper-soft);
-  font-size: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--lq-line-strong);
+  border-radius: 8px;
+  background: var(--lq-paper);
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--lq-muted);
+  color: #334155;
 }
 
-.entry-surface .entry-cite-open:hover { background: #f1f5f9; color: var(--lq-ink); }
-.entry-surface .entry-cite-open svg { width: 15px; height: 15px; }
+.entry-surface .entry-cite-open:hover {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: var(--lq-sapphire);
+}
+.entry-surface .entry-cite-open svg { width: 15px; height: 15px; flex: none; }
 
 .entry-surface .entry-cite-pop {
   position: absolute;

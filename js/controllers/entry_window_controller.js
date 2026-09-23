@@ -81,7 +81,10 @@ class EntryWindowController extends Stimulus.Controller {
     this.view = (record.views && record.views[0] && record.views[0].id) || "slice";
     this.render();
     this.modal = bootstrap.Modal.getOrCreateInstance(this.element);
-    this.element.addEventListener("shown.bs.modal", () => this.focus(), { once: true });
+    this.element.addEventListener("shown.bs.modal", () => {
+      this.focus();
+      this.placeIndicator();
+    }, { once: true });
     this.modal.show();
   }
 
@@ -139,7 +142,11 @@ class EntryWindowController extends Stimulus.Controller {
     this.find("[data-entry-sections]").innerHTML =
       (record.sections || []).map((section) => this.sectionHtml(section, language)).join("");
 
-    this.find("[data-entry-views]").innerHTML = (record.views || []).map((view) => `
+    // The white pane behind the three slides to the one in hand, so the
+    // switch reads as one control rather than three buttons.
+    this.find("[data-entry-views]").innerHTML =
+      '<span class="entry-view-indicator" data-entry-indicator aria-hidden="true"></span>' +
+      (record.views || []).map((view) => `
       <button type="button" class="btn entry-view${view.id === this.view ? " active" : ""}"
               data-entry-view="${safe(view.id)}" aria-pressed="${view.id === this.view}"
               data-action="click->entry-window#selectView">
@@ -147,6 +154,20 @@ class EntryWindowController extends Stimulus.Controller {
         <span class="entry-view-divider" aria-hidden="true"></span>
         <span class="entry-view-count">${safe(view.count)}</span>
       </button>`).join("");
+  }
+
+  // The pane has no width until the window is on screen, so it is placed
+  // once it is and again whenever the view changes.
+  placeIndicator() {
+    const views = this.element.querySelector(".entry-views");
+    const indicator = this.element.querySelector("[data-entry-indicator]");
+    if (!views || !indicator) return;
+    const buttons = [...views.querySelectorAll(".entry-view")];
+    if (!buttons.length) return;
+    const width = (views.offsetWidth - 4) / buttons.length;
+    const at = buttons.findIndex((button) => button.classList.contains("active"));
+    indicator.style.setProperty("--entry-indicator-width", `${width}px`);
+    indicator.style.setProperty("--entry-indicator-x", `${Math.max(0, at) * width}px`);
   }
 
   sectionHtml(section, language) {
@@ -379,6 +400,7 @@ class EntryWindowController extends Stimulus.Controller {
       button.classList.toggle("active", active);
       button.setAttribute("aria-pressed", String(active));
     });
+    this.placeIndicator();
     // The endpoint returns one image per view; the sample carries the slice.
   }
 

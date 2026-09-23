@@ -276,7 +276,7 @@ window.LQ_PAGE_CHROME = `
 
               <!-- Stands in for the challenge the backend will run -->
               <p class="auth-verified">
-                <i data-feather="check-circle" aria-hidden="true"></i>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M7.6 12.4l2.9 2.9 5.9-5.9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 <span data-i18n="authVerified">Verified</span>
                 <span class="auth-vendor">Cloudflare</span>
               </p>

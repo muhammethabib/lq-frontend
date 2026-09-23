@@ -96,7 +96,7 @@
 
 .page-surface .page-hero h1 {
   margin: 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: clamp(2.2rem, 5vw, 3.1rem);
   font-weight: 600;
   letter-spacing: -.01em;
@@ -137,7 +137,7 @@
 .page-surface .page-content > h2 {
   max-width: 62ch;
   margin: 40px 0 14px;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: 1.7rem;
   font-weight: 600;
   color: var(--lq-sapphire);
@@ -244,7 +244,7 @@
 }
 .page-surface .page-card h3 {
   margin: 0 0 4px;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--lq-sapphire);

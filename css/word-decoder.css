@@ -125,14 +125,14 @@
 }
 .word-decoder-surface .slot-mark[data-wildcard="any"],
 .word-decoder-surface .slot-mark[data-wildcard="many"] {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 22px;
 }
 
 /* The asterisk on a skeleton key sits where the missing dots would be */
 .word-decoder-surface .slot-mark .dot-mark {
   position: absolute;
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px;
   line-height: 1;
   color: var(--lq-sapphire);
@@ -376,7 +376,7 @@
 }
 .word-decoder-surface .pattern-slot[data-kind="any"],
 .word-decoder-surface .pattern-slot[data-kind="many"] {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 26px;
   color: var(--lq-claret);
 }
@@ -406,14 +406,15 @@
 .word-decoder-surface .expansion-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
-  padding: 5px 8px 5px 20px;
+  padding: 5px 8px 5px 24px;
   border: 1px solid var(--lq-line);
   border-radius: 99px;
   background: var(--lq-paper-soft);
 }
 .word-decoder-surface .expansion-label {
+  margin-right: 8px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .8px;
@@ -425,19 +426,37 @@
   align-items: center;
   gap: 8px;
   padding: 7px 16px;
-  border: 1px solid var(--lq-line);
+  border: 1px solid #cbd5e1;
   border-radius: 20px;
   background: var(--lq-paper);
   font-size: 12px;
   font-weight: 600;
   color: #475569;
 }
+/* The widest of the three widenings is set in capitals, as the reference has
+   it, so it reads as the headline offer of the row. */
+.word-decoder-surface .expansion-chip[data-expansion="pronunciation"] { text-transform: uppercase; }
+
 .word-decoder-surface .expansion-chip:hover:not(.active) { background: var(--lq-lat-border); color: var(--lq-ink); }
 .word-decoder-surface .expansion-chip.active {
   background: var(--lq-sapphire);
   border-color: var(--lq-sapphire);
   color: #fff;
+  box-shadow: 0 4px 10px rgba(8, 37, 103, .2);
 }
+.word-decoder-surface .expansion-chip.active .expansion-plus { color: #fff; }
+
+/* The plus reads as "and also these", so it keeps the brand blue while the
+   name beside it stays in the chip's quieter ink. */
+.word-decoder-surface .expansion-plus {
+  color: var(--lq-sapphire);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+.word-decoder-surface .expansion-icon { width: 16px; height: 16px; flex: none; opacity: .8; }
+.word-decoder-surface .expansion-icon.is-ear { width: 20px; height: 20px; opacity: 1; }
+.word-decoder-surface .expansion-icon.is-large { width: 18px; height: 18px; transform: scale(1.5); }
 .word-decoder-surface .expansion-count {
   min-width: 22px;
   padding: 0 6px;
@@ -521,6 +540,58 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+/* The same note the search results carry, on the same groups */
+.word-decoder-surface .group-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--lq-body-bg);
+  color: var(--lq-ink-soft);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+/* The description is worth reading once, not on every visit. Put away, the
+   pill shrinks to the mark that brings it back. */
+.word-decoder-surface .group-note:not(.is-open) .group-note-text { display: none; }
+.word-decoder-surface .group-note:not(.is-open) { padding: 4px; }
+
+.word-decoder-surface .group-note-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #94a3b8;
+}
+
+.word-decoder-surface .group-note-toggle:hover { color: var(--lq-sapphire); }
+.word-decoder-surface .group-note-toggle svg { width: 12px; height: 12px; }
+
+/* Open, the mark is a cross that closes it; closed, it is the info mark. */
+.word-decoder-surface .group-note.is-open .group-note-toggle svg { display: none; }
+.word-decoder-surface .group-note:not(.is-open) .group-note-close { display: none; }
+
+.word-decoder-surface .group-note-close {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+.word-decoder-surface .group-note b { color: var(--lq-ink); font-weight: 700; }
+
+/* The worked example stands a little apart from the sentence it illustrates */
+.word-decoder-surface .group-note-example { margin-left: 10px; color: #5d718c; }
+.word-decoder-surface .group-note-ex-label { color: var(--lq-ink-soft); }
+/* Hide the note before the table gets narrow enough for it to squeeze the columns */
+@media (max-width: 1200px) { .word-decoder-surface .group-note { display: none; } }
+
 .word-decoder-surface .result-group.is-collapsed .candidate-header,
 .word-decoder-surface .result-group.is-collapsed .result-row { display: none; }
 

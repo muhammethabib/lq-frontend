@@ -27,7 +27,7 @@
 
 .team-surface .person-name {
   margin: 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--lq-sapphire);

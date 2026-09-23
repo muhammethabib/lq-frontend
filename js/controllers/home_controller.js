@@ -781,7 +781,7 @@ class HomeController extends Stimulus.Controller {
             </button>
             ${note ? `
               <span class="group-note is-open">
-                <span class="group-note-text">${note}${example ? ` &middot; ${example}` : ""}</span>
+                <span class="group-note-text">${note}${example ? `<span class="group-note-example"><span class="group-note-ex-label">${this.escape(this.translate("groupExampleLabel", "Ex:"))}</span> ${example}</span>` : ""}</span>
                 <button type="button" class="btn group-note-toggle" aria-expanded="true"
                         data-action="click->home#toggleNote"
                         aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">

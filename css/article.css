@@ -104,7 +104,7 @@
 .article-surface .article-h2 {
   max-width: 62ch;
   margin: 44px 0 14px;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: 1.72rem;
   font-weight: 600;
   line-height: 1.2;
@@ -185,7 +185,7 @@
 
 .article-surface .article-signature {
   margin: 0;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
   font-size: 1.05rem;
   color: var(--lq-ink-navy);
 }

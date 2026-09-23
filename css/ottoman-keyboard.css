@@ -147,7 +147,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 10px;
   line-height: 1;
   color: var(--lq-sapphire);
@@ -160,7 +160,7 @@
 /* The zero-width space key shows a bracket pair, which is read left to right
    whatever the surrounding direction. */
 .ottoman-keyboard .key[data-kind="joiner"] {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px;
   direction: ltr;
   unicode-bidi: isolate;

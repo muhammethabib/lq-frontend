@@ -16,7 +16,7 @@
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
     "strip", "clear", "rowHint", "results", "resultsTable", "pattern",
-    "recordCount", "dictionaryCount", "expansionRow", "emptyState", "error", "groupCopy"
+    "recordCount", "dictionaryCount", "expansionRow", "error", "groupCopy"
   ]
 
   static values = {
@@ -80,16 +80,26 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   // The reference mock fills the row with the guide's worked example whenever
-  // the page is shown in a searched state, and empties it otherwise.
+  // the page is shown in a searched state, and empties it otherwise. The row
+  // holds exactly the four letters of that example there, with no spare box
+  // trailing it, and the search has already been run: the reader arriving in
+  // that state sees what the description found.
   showViewState(state) {
     if (state === "results" || state === "no-results") {
+      const described = [{ char: "ح" }, { char: "ا" }, { wildcard: "any" }, { char: "ر" }];
+      this.buildStrip(described.length);
       const cells = Array.from(this.stripTarget.querySelectorAll(".slot-cell"));
-      [{ char: "ح" }, { char: "ا" }, { wildcard: "any" }, { char: "ر" }]
-        .forEach((content, index) => {
-          if (cells[index]) this.writeCell(cells[index], content);
-        });
+      described.forEach((content, index) => {
+        if (cells[index]) this.writeCell(cells[index], content);
+      });
+      this.lastPattern = this.readPattern();
+      this.runSearch(null);
     } else {
       this.clearStrip();
+      this.results = null;
+      this.lastPattern = null;
+      this.resultsTarget.hidden = true;
+      this.errorTarget.hidden = true;
     }
     this.refreshClear();
   }
@@ -135,11 +145,11 @@ class WordDecoderController extends Stimulus.Controller {
 
   // ==================== building the strip ====================
 
-  buildStrip() {
+  buildStrip(count = this.slotsValue) {
     const parts = [this.gapHtml(false)];
-    for (let index = 0; index < this.slotsValue; index += 1) {
+    for (let index = 0; index < count; index += 1) {
       parts.push(this.slotHtml());
-      parts.push(this.gapHtml(index < this.slotsValue - 1));
+      parts.push(this.gapHtml(index < count - 1));
     }
     this.stripTarget.innerHTML = parts.join("");
     this.refreshGaps();
@@ -639,7 +649,6 @@ class WordDecoderController extends Stimulus.Controller {
   receive(results, expansion) {
     this.results = results;
     this.activeExpansion = expansion || null;
-    this.emptyStateTarget.hidden = true;
     this.errorTarget.hidden = true;
     this.resultsTarget.hidden = false;
 
@@ -656,7 +665,6 @@ class WordDecoderController extends Stimulus.Controller {
   // language sweep rewrites the empty-state copy.
   showError() {
     this.errorTarget.hidden = false;
-    this.emptyStateTarget.hidden = true;
     this.resultsTarget.hidden = true;
   }
 
@@ -679,12 +687,28 @@ class WordDecoderController extends Stimulus.Controller {
       }).join("");
   }
 
+  // The pronunciation chip carries an ear, the two script chips a stroke of
+  // the hand they are named after: the mark says what the widening reaches
+  // for faster than the name does.
+  expansionMark(key) {
+    if (key === "pronunciation") {
+      return `<svg class="expansion-icon is-ear" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C7.03 2 3 6.03 3 11v4c0 1.1.9 2 2 2h2v-6H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-2v6h2c1.1 0 2-.9 2-2v-4c0-4.97-4.03-9-9-9z"></path></svg>`;
+    }
+    if (key === "rika") {
+      return `<svg class="expansion-icon" viewBox="0 0 130 130" aria-hidden="true"><path transform="translate(-10, 12)" d="M19.732,74.393c-0.607,0.406 -0.849,1.04 -0.81,1.85c0.408,0.793 1.107,1.172 2.082,1.157c12.974,-1.2 26.354,-0.762 28.682,-0.754c35.572,0.121 61.243,-13.199 75.535,-37.442c2.94,-4.988 8.93,-14.323 10.564,-20.721c0,0 0.196,-0.929 0.173,-1.221c0.05,-0.465 0.007,-2.148 -0.594,-3.091c-0.583,-0.476 -1.558,-0.295 -1.83,0.197c-5.327,9.436 -13.871,16.548 -24.75,21.974c-21.059,11.957 -42.589,22.7 -64.881,30.648c-7.737,3.091 -15.817,4.927 -24.171,7.402Z" fill="currentColor"></path></svg>`;
+    }
+    if (key === "divani") {
+      return `<svg class="expansion-icon is-large" viewBox="0 -15 40 70" aria-hidden="true"><path transform="translate(0, -5)" d="M26.641,35.701c-0.01,-1.282 -2.556,-3.149 -6.225,-5.275c-1.924,-1.03 -3.034,-2.874 -2.849,-6.014c0.534,-6.47 2.385,-11.677 6.436,-14.771c2.889,-2.451 5.411,-2.033 7.597,1.002c4.058,4.675 3.321,16.873 1.952,20.679c-5.085,14.136 -12.208,20.328 -29.014,20.178c8.985,-2.513 16.214,-6.956 22.104,-15.8Zm-0.791,-9.628c2.441,1.021 2.87,3.568 2.638,6.7c4.269,-7.004 5.493,-12.335 1.794,-15.404c-2.89,-2.474 -6.382,-2.51 -9.337,2.479c-1.396,1.559 -0.267,3.164 1.475,3.966l3.431,2.259Z" fill="currentColor" stroke="currentColor" stroke-width="0.8"></path></svg>`;
+    }
+    return "";
+  }
+
   renderExpansions() {
     const expansions = (this.results && this.results.expansions) || [];
     const labels = {
-      pronunciation: this.translate("expandPronunciation", "Similar pronunciation"),
-      rika: this.translate("expandRika", "Rika script"),
-      divani: this.translate("expandDivani", "Divani script")
+      pronunciation: this.translate("soundsLike", "Similar pronunciation"),
+      rika: "Rika",
+      divani: "Divani"
     };
     this.expansionRowTarget.innerHTML =
       `<span class="expansion-label" data-i18n="expandLabel">${this.escape(this.translate("expandLabel", "Expand search"))}</span>` +
@@ -695,8 +719,10 @@ class WordDecoderController extends Stimulus.Controller {
                 data-bs-toggle="tooltip" data-bs-html="true"
                 data-bs-title="${this.escape(this.expansionNote(expansion.key))}"
                 data-action="click->word-decoder#toggleExpansion">
+          ${expansion.key === "pronunciation" ? this.expansionMark(expansion.key) : `<span class="expansion-plus" aria-hidden="true">+</span>`}
           ${this.escape(labels[expansion.key] || expansion.key)}
-          ${expansion.count ? `<span class="expansion-count">+${this.escape(expansion.count)}</span>` : ""}
+          ${expansion.key === "pronunciation" ? "" : this.expansionMark(expansion.key)}
+          ${expansion.count ? `<span class="expansion-count">${this.escape(expansion.count)}</span>` : ""}
         </button>`).join("");
     // The chips are written here rather than in the page, so their tooltips
     // and icons have to be started by hand.
@@ -750,6 +776,15 @@ class WordDecoderController extends Stimulus.Controller {
     this.runSearch(wasActive ? null : chip.dataset.expansion);
   }
 
+  // The description of a group says what belongs in it, which is worth
+  // reading once and not on every visit; the toggle beside it puts it away.
+  toggleNote(event) {
+    const button = event.currentTarget;
+    const note = button.closest(".group-note");
+    const open = note.classList.toggle("is-open");
+    button.setAttribute("aria-expanded", String(open));
+  }
+
   renderResults() {
     if (!this.results) return;
     const table = this.resultsTableTarget;
@@ -765,7 +800,13 @@ class WordDecoderController extends Stimulus.Controller {
     // safe to put inside a selector.
     const copy = Array.from(this.groupCopyTarget.children)
       .find((element) => element.dataset.group === group.key);
-    const title = copy ? copy.textContent.trim() : group.key;
+    const read = (part) => {
+      const element = copy && copy.querySelector(`[data-copy="${part}"]`);
+      return element ? element.innerHTML.trim() : "";
+    };
+    const title = read("title") || group.key;
+    const note = read("note");
+    const example = read("example");
     const bodyId = `decoder-group-${this.escape(group.key)}`;
     const candidates = this.groupByCandidate(group.rows);
 
@@ -780,9 +821,19 @@ class WordDecoderController extends Stimulus.Controller {
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->word-decoder#toggleGroup">
               <span class="group-chevron"><i data-feather="chevron-down"></i></span>
-              <span class="group-title">${this.escape(title)}</span>
+              <span class="group-title">${title}</span>
               <span class="group-count">${group.rows.length}</span>
             </button>
+            ${note ? `
+              <span class="group-note is-open">
+                <span class="group-note-text">${note}${example ? `<span class="group-note-example"><span class="group-note-ex-label">${this.escape(this.translate("groupExampleLabel", "Ex:"))}</span> ${example}</span>` : ""}</span>
+                <button type="button" class="btn group-note-toggle" aria-expanded="true"
+                        data-action="click->word-decoder#toggleNote"
+                        aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">
+                  <i data-feather="info" aria-hidden="true"></i>
+                  <span class="group-note-close" aria-hidden="true">&times;</span>
+                </button>
+              </span>` : ""}
           </th>
         </tr>
         ${body}

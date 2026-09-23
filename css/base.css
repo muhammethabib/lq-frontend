@@ -52,7 +52,7 @@
   --bs-primary-rgb: 8, 37, 103;
   --bs-body-color: #0f172a;
   --bs-body-bg: #eef2f7;
-  --bs-body-font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --bs-body-font-family: 'Inter', sans-serif;
 }
 
 body {

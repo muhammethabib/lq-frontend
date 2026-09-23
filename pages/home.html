@@ -153,23 +153,48 @@
               <span data-i18n="decoderOwnKeyboard">You can type with your own keyboard</span>
             </p>
           </div>
-
-          <p class="decoder-hint" data-i18n="decoderHint">
-            Type the letters you can read, and leave a wildcard for the ones you cannot.
-            The ring between two letters records whether they are written joined.
-          </p>
         </div>
 
-        <!-- Result-group names, kept in the markup so the English text sits
-             with the page and the language sweep translates it. -->
+        <!-- Result-group names and descriptions, kept in the markup so the
+             English text sits with the page and the language sweep translates
+             it. The decoder groups its readings the same way the search
+             groups its matches, so it says the same about each group. -->
         <div hidden data-word-decoder-target="groupCopy">
-          <span data-group="lemma" data-i18n="groupLemma">Lemma</span>
-          <span data-group="inflected" data-i18n="groupInflected">Inflected Forms</span>
-          <span data-group="lexicalizedInflected" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
-          <span data-group="derived" data-i18n="groupDerived">Derived Forms</span>
-          <span data-group="phrases" data-i18n="groupPhrases">Phrases</span>
-          <span data-group="compounds" data-i18n="groupCompounds">Compounds</span>
-          <span data-group="partial" data-i18n="groupPartial">Similar Spellings</span>
+          <div data-group="lemma">
+            <span data-copy="title" data-i18n="groupLemma">Lemma</span>
+            <span data-copy="note" data-i18n="groupLemmaNote">Results without an affix, including the base or singular form of a value</span>
+            <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1"><b>kalem</b>, <b>dost</b></span>
+          </div>
+          <div data-group="inflected">
+            <span data-copy="title" data-i18n="groupInflected">Inflected Forms</span>
+            <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflected forms of the search term</span>
+            <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e</span>
+          </div>
+          <div data-group="lexicalizedInflected">
+            <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
+            <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms that carry their own dictionary meaning</span>
+            <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1"><b>civar</b> &rarr; <b>civarında</b></span>
+          </div>
+          <div data-group="partial">
+            <span data-copy="title" data-i18n="groupPartial">Similar Spellings</span>
+            <span data-copy="note" data-i18n="groupPartialNote">Results whose spelling is close to the search term</span>
+            <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazir</b></span>
+          </div>
+          <div data-group="derived">
+            <span data-copy="title" data-i18n="groupDerived">Derived Forms</span>
+            <span data-copy="note" data-i18n="groupDerivedNote">Words built with derivational affixes</span>
+            <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
+          </div>
+          <div data-group="compounds">
+            <span data-copy="title" data-i18n="groupCompounds">Compounds</span>
+            <span data-copy="note" data-i18n="groupCompoundsNote">Words formed by joining two words</span>
+            <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1"><b>kalem</b>tıraş</span>
+          </div>
+          <div data-group="phrases">
+            <span data-copy="title" data-i18n="groupPhrases">Phrases</span>
+            <span data-copy="note" data-i18n="groupPhrasesNote">Set phrases and idioms containing the search term</span>
+            <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1"><b>kalem</b> oynatmak</span>
+          </div>
         </div>
 
         <section class="decoder-results" data-word-decoder-target="results" hidden
@@ -185,8 +210,8 @@
                 <span class="results-label" data-i18n="basedOnClues">Based on clues</span>
                 <div class="decoder-stats mt-1">
                   <div>
-                    <p><b data-word-decoder-target="recordCount">0</b> <span data-i18n="recordsFound">Records Found.</span></p>
-                    <p><b data-word-decoder-target="dictionaryCount">0</b> <span data-i18n="dictsScanned">Dictionaries (17 Volumes) Scanned.</span></p>
+                    <p><b data-word-decoder-target="recordCount">0</b> <span data-i18n="kcRecordsFound">Records Found</span></p>
+                    <p><b data-word-decoder-target="dictionaryCount">0</b> <span data-i18n="kcDictsScanned">Dictionaries (17 Volumes) Scanned</span></p>
                   </div>
                 </div>
               </div>
@@ -199,7 +224,7 @@
             <table class="table results-table align-middle" data-word-decoder-target="resultsTable">
               <thead>
                 <tr>
-                  <th scope="col" class="col-result" data-i18n="colCandidate">Candidate reading</th>
+                  <th scope="col" class="col-result" data-i18n="colResult">Result</th>
                   <th scope="col" class="col-category" data-i18n="colCategory">Category</th>
                   <th scope="col" class="col-arrow"><span class="visually-hidden" data-i18n="colLeadsTo">Leads to</span></th>
                   <th scope="col" class="col-headword" data-i18n="colEntry">Headword</th>
@@ -235,9 +260,6 @@
           </div>
         </section>
 
-        <p class="decoder-hint" data-word-decoder-target="emptyState" data-i18n="decoderEmptyState">
-          Describe the word above and press Search.
-        </p>
         <p class="decoder-hint" data-word-decoder-target="error" hidden data-i18n="searchFailed">
           The search could not be completed. Please try again.
         </p>
@@ -315,10 +337,12 @@
             <div class="dropdown">
               <button type="button" class="btn filter-trigger" data-bs-toggle="dropdown"
                       data-bs-auto-close="outside" aria-expanded="false">
-                <i data-feather="sliders"></i>
+                <svg class="filter-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16M7 12h10M10 19h4"></path></svg>
                 <span class="filter-label" data-i18n="filtersLabel">Filters</span>
                 <span class="filter-count" data-home-target="filterCount">10</span>
-                <i data-feather="chevron-down"></i>
+                <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
               </button>
 
               <div class="dropdown-menu filter-panel"

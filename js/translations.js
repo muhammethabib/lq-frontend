@@ -87,8 +87,6 @@ window.LQ_TRANSLATIONS = {
 
     // --- word decoder ---
     clearBtn: "Temizle",
-    decoderHint: "Okuyabildiğiniz harfleri yazın, okuyamadıklarınız için joker bırakın. İki harf arasındaki halka, harflerin bitişik yazılıp yazılmadığını kaydeder.",
-    decoderEmptyState: "Yukarıda kelimeyi tarif edip Ara düğmesine basın.",
     decoderLetter: "Harf",
     decoderLetters: "Harfler",
     decoderInsertSlot: "Buraya harf ekle",
@@ -99,13 +97,10 @@ window.LQ_TRANSLATIONS = {
     joinConnected: "Harfler bitişik yazılmış",
     joinUncertain: "Ayırt edemiyorum",
     basedOnClues: "Verilen ipuçlarına göre",
-    colCandidate: "Aday Okunuş",
     decoderRecords: "Sonuç",
     decoderDictionaries: "Sözlük",
     decoderEmptyGroup: "Bu bölümde aday okunuş yok.",
-    expandPronunciation: "Benzer okunuş",
-    expandRika: "Rika yazısı",
-    expandDivani: "Divani yazısı",
+    soundsLike: "Benzer okunuş",
     // The tooltip on the results page carries its example inside it, so the
     // whole line is one string.
     expandPronunciationTip: "Arama terimindeki harflere ses olarak benzer harflerle genişlet<span class=\"expansion-example\">Ör. ث ≈ س, ت ≈ ط</span>",
@@ -130,6 +125,9 @@ window.LQ_TRANSLATIONS = {
     // --- results header ---
     searchResultsLabel: "Arama Sonuçları",
     recordsFound: "Sonuç Bulundu.",
+    /* The decoder counts what the clues reached, so it says it in its own words */
+    kcRecordsFound: "Sonuç Bulundu.",
+    kcDictsScanned: "Sözlük (17 Cilt) Tarandı.",
     dictsScanned: "Sözlük (17 Cilt) Tarandı.",
     spellingLabel: "YAZILIŞA GÖRE ARA",
     expandLabel: "ARAMAYI GENİŞLET",
@@ -182,6 +180,7 @@ window.LQ_TRANSLATIONS = {
 
     // --- result groups: <key>, <key>Note, <key>Example ---
     groupLemma: "Lemma",
+    groupExampleLabel: "Örnekler:",
     groupLemmaNote: "Ek almamış sonuçlar; bir değerin temel veya tekil biçimi",
     groupLemmaExample: "<b>kalem</b>, <b>dost</b>",
 

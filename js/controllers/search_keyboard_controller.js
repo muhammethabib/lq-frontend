@@ -15,10 +15,27 @@
 //
 // The header is also the handle: the panel can be dragged out of the way and
 // springs back if it is let go near where it started.
+//
+// The keys can take a second order: the alphabet's, elif, be, pe, te..., for a
+// reader who does not know the keyboard's, or wants a letter where the
+// alphabet puts it. The order is a value, remembered in localStorage, and the
+// button in the header switches it. Physical typing is unaffected: it follows
+// the layout's map whichever order the keys are shown in.
+
+const SEARCH_KEYBOARD_ORDER_KEY = "lq-search-keyboard-order";
 
 class SearchKeyboardController extends Stimulus.Controller {
-  static targets = ["rows", "hint"]
-  static values = { open: { type: Boolean, default: false } }
+  static targets = ["rows", "hint", "orderButton"]
+  static values = {
+    open: { type: Boolean, default: false },
+    order: { type: String, default: "keyboard" }   // "keyboard" | "alphabetical"
+  }
+
+  // The remembered order is read before the first render, and before the
+  // value's own first callback, which would otherwise write the default over it.
+  initialize() {
+    this.orderValue = this.rememberedOrder() || "keyboard";
+  }
 
   connect() {
     this.render();
@@ -33,7 +50,7 @@ class SearchKeyboardController extends Stimulus.Controller {
 
     // The keys carry the layout of the reader's own keyboard, which is the
     // one the interface language implies.
-    this.onLanguageChange = () => this.render();
+    this.onLanguageChange = () => { this.labelOrderButton(); this.render(); };
     document.addEventListener("language:changed", this.onLanguageChange);
 
     this.onReposition = () => { if (this.openValue && !this.moved) this.place(); };
@@ -66,12 +83,83 @@ class SearchKeyboardController extends Stimulus.Controller {
   // ==================== the keys ====================
 
   render() {
+    if (!this.hasRowsTarget) return;
     const layout = this.layout();
-    this.rowsTarget.innerHTML = (layout.rows || []).map((row) => `
+    const rows = this.orderValue === "alphabetical"
+      ? this.alphabet().map((row) => row.map(([letter, latin]) => this.letterKeyHtml(letter, latin)))
+      : (layout.rows || []).map((row) => row.map((key) => this.keyHtml(key, layout)));
+    this.rowsTarget.innerHTML = rows.map((cells) => `
       <div class="search-key-row">
-        ${row.map((key) => this.keyHtml(key, layout)).join("")}
+        ${cells.join("")}
       </div>`).join("");
     window.LQ.refreshDynamicContent(this.element);
+  }
+
+  alphabet() {
+    const layouts = window.LQ_SEARCH_KEYBOARD || {};
+    return (layouts.alphabetical || {}).rows || [];
+  }
+
+  // A key of the alphabetical order: the letter, with its transliteration
+  // where the other order shows the key's name.
+  letterKeyHtml(letter, latin) {
+    const safe = window.LQ.escape;
+    const isMark = /^[\u02BF\u02BE]$/.test(latin);   // ʿ and ʾ, too faint at label size
+    return `
+      <button type="button" class="btn search-key" data-search-char="${safe(letter)}"
+              data-action="pointerdown->search-keyboard#press">
+        <span class="search-key-latin${isMark ? " search-key-latin-mark" : ""}">${safe(latin)}</span>
+        <span class="search-key-ottoman">${safe(this.face(letter))}</span>
+      </button>`;
+  }
+
+  // ==================== the order of the keys ====================
+
+  toggleOrder(event) {
+    // Like a key press, it must not take focus away from the bar.
+    event.preventDefault();
+    this.orderValue = this.orderValue === "alphabetical" ? "keyboard" : "alphabetical";
+  }
+
+  orderValueChanged(order, previous) {
+    const alphabetical = order === "alphabetical";
+    this.element.classList.toggle("is-alphabetical", alphabetical);
+    if (previous !== undefined) this.rememberOrder();   // a change, not the first reading
+    this.labelOrderButton();
+    this.render();
+  }
+
+  // The button's title says where a press leads, in the interface language.
+  // It is set here rather than left to the translation sweep, because the key
+  // it carries changes with the order and the sweep keeps the first title it
+  // saw as the English one.
+  labelOrderButton() {
+    if (!this.hasOrderButtonTarget) return;
+    const alphabetical = this.orderValue === "alphabetical";
+    const key = alphabetical ? "keyboardOrderKeyboard" : "keyboardOrderAlphabetical";
+    const english = alphabetical ? "Back to keyboard layout" : "Alphabetical order (elif, be, te\u2026)";
+    const language = document.documentElement.lang === "tr" ? "tr" : "en";
+    const dictionary = (window.LQ_TRANSLATIONS || {})[language] || {};
+    const text = dictionary[key] || english;
+    const button = this.orderButtonTarget;
+    button.dataset.i18nTitle = key;
+    button.dataset.i18nAria = key;
+    button.setAttribute("title", text);
+    button.setAttribute("aria-label", text);
+    button.setAttribute("aria-pressed", String(alphabetical));
+    // The tooltip took its text when it was built; it is built again.
+    window.LQ.refreshDynamicContent(button.parentElement);
+  }
+
+  rememberedOrder() {
+    try {
+      const order = localStorage.getItem(SEARCH_KEYBOARD_ORDER_KEY);
+      return order === "alphabetical" || order === "keyboard" ? order : null;
+    } catch (error) { return null; }
+  }
+
+  rememberOrder() {
+    try { localStorage.setItem(SEARCH_KEYBOARD_ORDER_KEY, this.orderValue); } catch (error) { /* private mode */ }
   }
 
   keyHtml(key, layout) {

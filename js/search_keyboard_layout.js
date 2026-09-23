@@ -18,8 +18,23 @@
 // "_ye_" is not a letter but a decision: a ye is written without its dots
 // until a letter follows it, and js/controllers/home_controller.js settles
 // which of the two it ends up as.
+//
+// The `alphabetical` layout is the second order the same keyboard can take:
+// the Ottoman alphabet as it is recited, elif, be, pe, te..., three rows read
+// from the right, independent of any physical keyboard. Each key is
+// [letter, Latin transliteration]; the transliteration is the one the results
+// use. It covers every letter the two keyboard layouts can write, so nothing
+// becomes untypeable by switching. Physical typing still follows `map`.
 
 window.LQ_SEARCH_KEYBOARD = {
+  alphabetical: {
+    rows: [
+      [["ا", "a"], ["ب", "b"], ["پ", "p"], ["ت", "t"], ["ث", "s\u0331"], ["ج", "c"], ["چ", "ç"], ["ح", "ḥ"], ["خ", "ḫ"], ["د", "d"], ["ذ", "ẕ"], ["ر", "r"]],
+      [["ز", "z"], ["ژ", "j"], ["س", "s"], ["ش", "ş"], ["ص", "ṣ"], ["ض", "ż"], ["ط", "ṭ"], ["ظ", "ẓ"], ["ع", "ʿ"], ["غ", "ġ"], ["ف", "f"], ["ق", "ḳ"]],
+      [["ك", "k"], ["گ", "g"], ["ڭ", "ñ"], ["ل", "l"], ["م", "m"], ["ن", "n"], ["و", "v"], ["ه", "h"], ["ە", "e"], ["_ye_", "y"], ["ء", "ʾ"], ["ة", "t"]]
+    ]
+  },
+
   en: {
     map: {
       q: "ق", w: "و", e: "ع", r: "ر", t: "ت", y: "_ye_",

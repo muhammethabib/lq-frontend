@@ -17,6 +17,7 @@
      ground; the reading column inside it is what is held narrow. */
   min-height: 100vh;
   background: var(--lq-paper);
+  font: 16.5px/1.78 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 .page-surface .page-body { width: 100%; }
@@ -30,6 +31,14 @@
   background: var(--lq-paper);
 }
 
+/* The language switch sits tighter in a reading page's bar than it does on
+   the main page, where it has a band of its own to float in. */
+.page-surface .page-top-row .language-option {
+  min-width: 34px;
+  padding: 5px 9px;
+  line-height: 1;
+}
+
 /* ---------- hero ---------- */
 
 /* A navy band across the whole window, the same height on every page, with
@@ -39,11 +48,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 340px;
   height: 340px;
   /* Always the reading column, even where the text under it runs wider, so
      every page's title begins in the same place. */
   padding-inline: max(22px, calc((100% - 860px) / 2));
-  background: linear-gradient(135deg, var(--page-hero-from), var(--page-hero-via) 55%, var(--page-hero-to));
+  background: linear-gradient(135deg, var(--page-hero-from) 0%, var(--page-hero-via) 52%, var(--page-hero-to) 100%);
   color: #fff;
   overflow: hidden;
 }
@@ -54,11 +64,11 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: 5%;
-  width: 360px;
-  height: 384px;
+  right: -3%;
+  width: clamp(180px, 26vw, 330px);
+  height: 120%;
   transform: translateY(-50%);
-  background: url("../assets/q-watermark.svg") center/contain no-repeat;
+  background: url("../assets/q-watermark.svg") right center/contain no-repeat;
   opacity: .07;
   pointer-events: none;
 }
@@ -80,7 +90,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0 0 14px;
+  margin: 0 0 18px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: .17em;
@@ -96,20 +106,19 @@
 
 .page-surface .page-hero h1 {
   margin: 0;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: clamp(2.2rem, 5vw, 3.1rem);
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.1rem, 4.6vw, 3.5rem);
   font-weight: 600;
-  letter-spacing: -.01em;
-  line-height: 1.15;
-  text-wrap: balance;
+  letter-spacing: -.005em;
+  line-height: 1.05;
 }
 
 .page-surface .page-lede {
-  max-width: 62ch;
-  margin: 16px 0 0;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, .84);
+  max-width: 60ch;
+  margin: 20px 0 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: #c4d3ee;
 }
 
 /* ---------- content panel ---------- */
@@ -118,42 +127,44 @@
   width: min(var(--page-width), 100% - 44px);
   margin-inline: auto;
   padding-block: clamp(36px, 5vw, 58px) clamp(56px, 7vw, 88px);
-  font-size: 1.02rem;
-  line-height: 1.78;
-  color: #3b4957;
+  color: var(--lq-ink);
 }
 
 /* These rules use the child combinator on purpose: they style the running
    text of a page, and a heading inside a card, a person or a dictionary entry
    is that component's own, styled by that component's file. */
 
-/* Running text stays near 65 characters wide, whatever the panel does */
-.page-surface .page-content > p,
-.page-surface .page-content > ul,
-.page-surface .page-content > ol {
-  max-width: 68ch;
+/* An opening section, and a standfirst under a heading, are held to a
+   reading measure; ordinary running text takes the panel's full width. */
+.page-surface .page-intro { max-width: 74ch; }
+.page-surface .page-content .section-intro {
+  max-width: 74ch;
+  color: var(--lq-muted);
 }
 
-.page-surface .page-content > h2 {
-  max-width: 62ch;
-  margin: 40px 0 14px;
+/* One heading scale for every reading page: a section heading at 2.4rem and
+   a sub-heading at 1.3rem, both in the serif face and the brand navy. */
+.page-surface .page-content h2 {
+  margin: 3.1rem 0 1.05rem;
+  padding-top: .25rem;
   font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: 1.7rem;
+  font-size: 2.4rem;
   font-weight: 600;
+  line-height: 1.18;
   color: var(--lq-sapphire);
-  text-wrap: balance;
 }
-.page-surface .page-content > h2:first-child { margin-top: 0; }
+.page-surface .page-content h2:first-child { margin-top: 0; }
 
-.page-surface .page-content > h3 {
-  max-width: 62ch;
-  margin: 28px 0 10px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--lq-ink);
+.page-surface .page-content h3 {
+  margin: 2.35rem 0 .75rem;
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lq-sapphire);
 }
 
-.page-surface .page-content p { margin: 0 0 18px; }
+.page-surface .page-content p { margin: 0 0 1.15em; }
 /* A link in running text is claret. A link dressed as a button, and the
    lists that are a page's own furniture, set their colour in their own file
    at a weight that beats this one. */
@@ -168,7 +179,7 @@
   display: grid;
   gap: 12px;
   max-width: 74ch;
-  margin: 22px 0 26px 28px;
+  margin: 26px 0 30px 28px;
   padding: 0;
   list-style: none;
 }
@@ -177,17 +188,44 @@
   padding: 15px 18px 15px 46px;
   border: 1px solid var(--lq-line);
   border-radius: 12px;
-  background: var(--lq-body-bg);
+  background: #f5f8fb;
+  color: #3b4957;
 }
 .page-surface .point-list li::before {
   content: "";
   position: absolute;
-  left: 20px;
-  top: 25px;
+  left: 19px;
+  top: 22px;
   width: 9px;
   height: 9px;
-  border-radius: 3px;
+  border-radius: 2px;
   background: linear-gradient(135deg, var(--lq-claret), var(--lq-gold));
+}
+
+/* ---------- a plain bulleted list ---------- */
+
+/* Where the points run on rather than standing apart, they keep a bullet:
+   a claret dot with a soft ring, level with the first line. */
+.page-surface .bullet-list {
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.page-surface .bullet-list li {
+  position: relative;
+  margin: 0 0 12px;
+  padding: 0 0 0 28px;
+}
+.page-surface .bullet-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .72em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--lq-claret);
+  box-shadow: 0 0 0 4px rgba(157, 28, 81, .12);
 }
 
 /* A plainer list, for names and short items */
@@ -219,12 +257,11 @@
 /* Set apart by a bar rather than a box, so it reads as an aside to the text
    rather than a separate thing. */
 .page-surface .callout {
-  max-width: 72ch;
   margin: 32px 0;
   padding: 22px 26px;
   border-left: 4px solid var(--lq-sapphire);
   border-radius: 0 14px 14px 0;
-  background: var(--lq-lat-bg);
+  background: #eff5ff;
 }
 .page-surface .callout p:last-child { margin-bottom: 0; }
 

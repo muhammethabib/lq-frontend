@@ -118,9 +118,9 @@ body {
 
 .page-top-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   min-height: 38px;
 }
 
@@ -131,12 +131,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
   border: 1px solid var(--lq-line);
   border-radius: 10px;
   background: var(--lq-paper);
   color: #475569;
   transition: background .15s, border-color .15s, color .2s;
 }
+.page-top-row .menu-button svg { width: 21px; height: 21px; }
 .page-top-row .menu-button:hover {
   background: var(--lq-body-bg);
   border-color: var(--lq-line);
@@ -418,13 +420,13 @@ body.has-panel-room::after {
   display: inline-flex;
   align-items: center;
   margin-right: auto;
-  padding: 4px 8px;
+  padding: 0;
   border-radius: 10px;
   transition: background 0.15s ease;
 }
 
 .top-row-logo:hover { background: rgba(8, 37, 103, 0.06); }
-.top-row-logo img { display: block; height: 28px; width: auto; }
+.top-row-logo img { display: block; height: 37px; width: auto; }
 
 /* =========================================================
    Moving around a page

@@ -13,9 +13,6 @@
 }
 /* The opening line runs across both columns; below it the contents list
    holds the left column and the guide itself the right one. */
-.guide-surface .page-content[data-controller="guide"] > .guide-lead {
-  grid-column: 1 / -1;
-}
 
 /* ---------- contents ---------- */
 
@@ -118,12 +115,6 @@
 
 /* ---------- the reading column ---------- */
 
-.guide-surface .guide-lead {
-  max-width: 62ch;
-  margin: 0 0 8px;
-  font-size: 1.05rem;
-  color: var(--lq-ink-soft);
-}
 
 .guide-surface .guide-section { scroll-margin-top: 20px; }
 
@@ -246,16 +237,16 @@
 .guide-surface .guide-key {
   display: inline-grid;
   place-items: center;
-  min-width: 24px;
-  height: 24px;
-  padding: 0 5px;
-  border: 1px solid #86efac;
-  border-radius: 7px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1.5px #86efac;
   background: #f0fdf4;
-  font-size: .95rem;
+  font-size: 1.18rem;
+  font-weight: 600;
   line-height: 1;
-  color: #15803d;
-  vertical-align: -6px;
+  color: #16a34a;
+  vertical-align: -8px;
 }
 
 .guide-surface .guide-chip {
@@ -541,4 +532,17 @@
   .guide-surface .guide-pin::before { width: 6px; height: 6px; margin-left: -3px; }
   .guide-surface .guide-map-bands { --band: 0px; padding: 0; }
   .guide-surface .guide-map-bands .guide-pin { display: none; }
+}
+
+/* The two wildcard keys wear the same marks as the keyboard itself: a drawn
+   asterisk for one unreadable letter, and infinity for a run of them. */
+.guide-surface .guide-key .wildcard-star {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.guide-surface .guide-key-inf {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.375rem;
+  font-weight: 400;
 }

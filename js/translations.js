@@ -457,13 +457,13 @@ window.LQ_TRANSLATIONS = {
 
     // --- Citation window ---
     citeTitle: "Künye Bilgileri",
-    citeSource: "Kaynak bilgileri",
-    citeBookTitle: "Eser adı",
-    citeAuthor: "Yazar",
-    citeYear: "Yıl",
-    citeVolume: "Cilt",
-    citePage: "Sayfa",
-    citeFormats: "Atıf biçimleri",
+    citeSource: "Kaynak Bilgisi",
+    citeBookTitle: "Eser Adı:",
+    citeAuthor: "Yazar(lar):",
+    citeYear: "Yıl:",
+    citeVolume: "Cilt:",
+    citePage: "Sayfa:",
+    citeFormats: "Künye Formatları",
     citeCopy: "Künyeyi kopyala",
     citeCopied: "Kopyalandı",
     citeVolumeShort: "c.",
@@ -561,8 +561,8 @@ window.LQ_TRANSLATIONS = {
     backToTop: "Başa dön",
 
     // --- How a word is built ---
-    morphTitle: "Yapısal Çözümleme",
-    morphHint: "Okunuşunu görmek için bir parçanın üzerine gelin.",
+    morphTitle: "Morfolojik Analiz",
+    morphHint: "Ayrıntıları görmek için kelimelerin üzerine gelin.",
     morphArabic: "Arapça",
     morphPersian: "Farsça",
     morphTurkish: "Türkçe",
@@ -575,7 +575,7 @@ window.LQ_TRANSLATIONS = {
     // --- The little menu over a word ---
     wbSearchTab: "Yeni sekmede ara",
     wbSameRoot: "Aynı kökten kelimeler",
-    wbMorph: "Yapısal çözümleme",
+    wbMorph: "Morfolojik analiz",
 
     // --- Words from the same root ---
     cogTitle: "Aynı Kök",

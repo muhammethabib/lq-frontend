@@ -31,24 +31,8 @@
 
 .redhouse-modal .modal-dialog { max-width: 1180px; }
 
-.redhouse-surface .redhouse-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  z-index: 30;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--lq-line);
-  border-radius: 50%;
-  background-color: var(--lq-paper);
-  opacity: 1;
-}
-
-.redhouse-surface .redhouse-close:hover {
-  background-color: var(--lq-red);
-  border-color: var(--lq-red);
-  filter: invert(1) grayscale(1);
-}
+/* The shared ring; it only needs to clear the window's own layers here. */
+.redhouse-surface .redhouse-close { top: 14px; right: 16px; z-index: 30; }
 
 /* ---------------------------------------------------- the header */
 

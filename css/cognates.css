@@ -22,12 +22,7 @@
   overflow: hidden;
 }
 
-.cognates-surface .btn-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  z-index: 10;
-}
+.cognates-surface .window-close { z-index: 10; }
 
 /* ---------------------------- the head ---------------------------- */
 
@@ -48,29 +43,6 @@
 }
 
 /* Which word the family belongs to, in both scripts. */
-.cognates-surface .cognates-anchor {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 0 48px 14px;
-  font-size: 15px;
-  color: var(--lq-muted);
-}
-
-.cognates-surface .cognates-anchor-ottoman {
-  font-family: "Noto Naskh Arabic", serif;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--lq-red);
-}
-
-.cognates-surface .cognates-anchor-latin {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--lq-sapphire);
-}
 
 .cognates-surface .cognates-tabs {
   display: grid;

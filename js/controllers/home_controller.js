@@ -1199,7 +1199,7 @@ class HomeController extends Stimulus.Controller {
               data-action="click->home#openAnalysis:stop"
               data-analysis-ottoman="${this.escape(ottoman)}"
               data-analysis-latin="${this.escape(latin)}"
-              aria-label="${this.escape(this.translate("morphTitle", "Morphological analysis"))}">
+              aria-label="${this.escape(this.translate("morphTitle", "Morphological Analysis"))}">
         <i data-feather="git-merge" aria-hidden="true"></i>
       </button>`;
   }

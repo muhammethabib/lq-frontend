@@ -129,8 +129,6 @@ class CognatesController extends Stimulus.Controller {
     }
     this.element.innerHTML = template.innerHTML;
 
-    this.element.querySelector("[data-cognates-ottoman]").textContent = this.record.anchorOttoman;
-    this.element.querySelector("[data-cognates-latin]").textContent = this.record.anchorLatin;
     this.element.querySelector("[data-cognates-body]").innerHTML = this.sectionsHtml();
 
     // Generated markup is not covered by the data-i18n sweep of the page, so

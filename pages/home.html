@@ -1352,10 +1352,16 @@
   <template id="citationTemplate">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
+        <!-- The close sits in the corner of the card rather than in a bar of
+             its own, so the title can hold the middle. -->
+        <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
         <div class="modal-header">
           <h2 class="modal-title" data-i18n="citeTitle">Bibliographic Information</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close" data-i18n-aria="close"></button>
         </div>
 
         <div class="modal-body">
@@ -1366,21 +1372,21 @@
             <span class="citation-reading" data-citation-field="reading"></span>
           </p>
 
-          <h3 class="citation-heading" data-i18n="citeSource">Source information</h3>
+          <h3 class="citation-heading" data-i18n="citeSource">Source Information</h3>
           <dl class="citation-grid">
-            <dt data-i18n="citeBookTitle">Book title</dt>
+            <dt data-i18n="citeBookTitle">Book Title:</dt>
             <dd data-citation-field="title"></dd>
-            <dt data-i18n="citeAuthor">Author</dt>
+            <dt data-i18n="citeAuthor">Author(s):</dt>
             <dd data-citation-field="author"></dd>
-            <dt data-i18n="citeYear">Year</dt>
+            <dt data-i18n="citeYear">Year:</dt>
             <dd data-citation-field="year"></dd>
-            <dt data-i18n="citeVolume">Volume</dt>
+            <dt data-i18n="citeVolume">Volume:</dt>
             <dd data-citation-field="volume"></dd>
-            <dt data-i18n="citePage">Page</dt>
+            <dt data-i18n="citePage">Page:</dt>
             <dd data-citation-field="page"></dd>
           </dl>
 
-          <h3 class="citation-heading" data-i18n="citeFormats">Reference formats</h3>
+          <h3 class="citation-heading" data-i18n="citeFormats">Reference Formats</h3>
           <ul class="nav nav-tabs citation-tabs" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="citeApaTab" data-bs-toggle="tab"
@@ -1409,9 +1415,7 @@
               <p class="citation-reference" data-citation-style="harvard"></p>
             </div>
           </div>
-        </div>
 
-        <div class="modal-footer">
           <button type="button" class="btn citation-copy" data-action="click->citation#copy">
             <i data-feather="copy" aria-hidden="true"></i>
             <span data-citation-label data-i18n="citeCopy">Copy reference</span>
@@ -1439,8 +1443,11 @@
               <span data-scan-headword-latin></span>
             </span>
           </p>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close" data-i18n-aria="close"></button>
+          <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                  aria-label="Close" data-i18n-aria="close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
 
         <div class="modal-body">
@@ -1560,8 +1567,8 @@
             </button>
           </div>
           <button type="button" class="btn scan-cite" data-action="click->dictionary-page#cite">
-            <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
             <span data-i18n="cite">Cite</span>
+            <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
           </button>
         </div>
       </div>
@@ -1577,25 +1584,38 @@
   <template id="announcementTemplate">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                aria-label="Close" data-i18n-aria="close"></button>
+        <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
 
         <p class="announcement-badge" data-i18n="ekualBadge">TÜBİTAK ULAKBİM · EKUAL</p>
         <h2 class="announcement-title" data-i18n="ekualTitle">Great News: Full Access for All Universities in Türkiye and TRNC!</h2>
         <p class="announcement-body" data-i18n="ekualBody" data-i18n-html="1">LexiQamus has been open to all universities in Türkiye and the TRNC since the beginning of 2026, under the <b>TÜBİTAK ULAKBİM EKUAL Project</b>. From deciphering hard-to-read words to their meanings across different dictionaries, you have unlimited access to all content.</p>
 
         <div class="announcement-cards">
-          <article class="announcement-card">
+          <article class="announcement-card is-off">
             <span class="announcement-pill" data-i18n="ekualPill">No VPN or proxy</span>
             <h3>
-              <i data-feather="log-in" aria-hidden="true"></i>
+              <!-- A university with a lock on it: the one reading that covers
+                   both halves of the offer, access and who it is for. -->
+              <span class="announcement-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 21V10"></path><path d="M10 21V10"></path><path d="M14 21V10"></path><path d="M18 21V10"></path><polygon points="12 3 21 8 3 8"></polygon></svg>
+                <span class="announcement-lock">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="12" width="15" height="10" rx="2.5"></rect><path d="M8 12V7.6a4.3 4.3 0 0 1 8.4-1.3"></path><circle cx="12" cy="17" r="1.35" fill="currentColor" stroke="none"></circle></svg>
+                </span>
+              </span>
               <span data-i18n="ekualOffTitle">Off campus</span>
             </h3>
             <p data-i18n="ekualOffText" data-i18n-html="1">Sign up once with your <b>.edu.tr</b> e-mail, no institutional authorization needed.</p>
           </article>
-          <article class="announcement-card">
+          <article class="announcement-card is-on">
             <h3>
-              <i data-feather="wifi" aria-hidden="true"></i>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 21V10"></path><path d="M10 21V10"></path><path d="M14 21V10"></path><path d="M18 21V10"></path><polygon points="12 3 21 8 3 8"></polygon></svg>
               <span data-i18n="ekualOnTitle">On campus</span>
             </h3>
             <p data-i18n="ekualOnText">On the campus network you can reach everything directly, without even creating an account.</p>
@@ -1604,7 +1624,10 @@
 
         <div class="announcement-actions">
           <button type="button" class="btn announcement-cta" data-action="click->announcement#signUp">
-            <i data-feather="user-plus" aria-hidden="true"></i>
+            <span class="announcement-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </span>
             <span data-i18n="ekualCta">Create your account</span>
           </button>
           <button type="button" class="btn announcement-later" data-bs-dismiss="modal"
@@ -1624,14 +1647,17 @@
   <template id="morphologyTemplate">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable morphology-dialog">
       <div class="modal-content morphology-surface">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                aria-label="Close" data-i18n-aria="close"></button>
+        <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
 
-        <h2 class="morphology-title" data-i18n="morphTitle">Morphological analysis</h2>
+        <h2 class="morphology-title" data-i18n="morphTitle">Morphological Analysis</h2>
 
         <div class="morphology-tree" data-morphology-tree></div>
 
-        <p class="morphology-hint" data-i18n="morphHint">Hover a piece to see its reading.</p>
+        <p class="morphology-hint" data-i18n="morphHint">Hover over nodes to see details.</p>
 
         <!-- Saying a piece is wrong takes over the window rather than
              stacking a second one on top of it -->
@@ -1680,15 +1706,14 @@
   <template id="cognatesTemplate">
     <div class="modal-dialog modal-dialog-centered cognates-dialog">
       <div class="modal-content cognates-surface">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                aria-label="Close" data-i18n-aria="close"></button>
+        <button type="button" class="btn window-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
 
         <div class="cognates-toolbar">
           <h2 class="cognates-title" data-i18n="cogTitle">Same Root</h2>
-          <p class="cognates-anchor">
-            <span class="cognates-anchor-ottoman" data-direction="rtl" data-cognates-ottoman></span>
-            <span class="cognates-anchor-latin" data-cognates-latin></span>
-          </p>
 
           <!-- A tab both says which part is being read and jumps to it. -->
           <div class="cognates-tabs" role="tablist">
@@ -1714,9 +1739,9 @@
 
           <div class="cognates-actions">
             <button type="button" class="btn cognates-action" data-action="click->cognates#openAll"
-                    data-i18n="cogExpandAll">Expand all</button>
+                    data-i18n="cogExpandAll">Expand All</button>
             <button type="button" class="btn cognates-action" data-action="click->cognates#closeAll"
-                    data-i18n="cogCollapseAll">Collapse all</button>
+                    data-i18n="cogCollapseAll">Collapse All</button>
           </div>
         </div>
 
@@ -1819,7 +1844,15 @@
       </button>
       <span class="word-menu-divider" aria-hidden="true"></span>
       <button type="button" class="btn word-menu-item" data-action="click->word-menu#analysis">
-        <i data-feather="git-merge" aria-hidden="true"></i>
+        <!-- One word splitting into its parts: Feather has no such mark, so
+             the little tree is drawn here. -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="7" r="2.5" fill="currentColor"></circle>
+          <path d="M12 7 6 17" stroke-width="1.5"></path>
+          <path d="M12 7 18 17" stroke-width="1.5"></path>
+          <circle cx="6" cy="17" r="2" fill="currentColor"></circle>
+          <circle cx="18" cy="17" r="2" fill="currentColor"></circle>
+        </svg>
         <span data-i18n="wbMorph">Morphological analysis</span>
       </button>
     </div>
@@ -1835,8 +1868,11 @@
   <template id="entryWindowTemplate">
     <div class="modal-dialog modal-dialog-centered entry-dialog">
       <div class="modal-content entry-surface">
-        <button type="button" class="btn-close entry-close" data-bs-dismiss="modal"
-                aria-label="Close" data-i18n-aria="close"></button>
+        <button type="button" class="btn window-close entry-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
 
         <header class="entry-header">
           <div class="entry-header-top">
@@ -1870,8 +1906,8 @@
           <div class="entry-cite-group">
             <button type="button" class="btn entry-cite-open" aria-expanded="false"
                     data-action="click->entry-window#toggleCite">
-              <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
               <span data-i18n="cite">Cite</span>
+              <svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
             </button>
             <div class="entry-cite-pop" data-entry-cite-pop hidden>
               <button type="button" class="btn" data-action="click->entry-window#cite">Chicago</button>
@@ -1984,8 +2020,11 @@
   <template id="redhouseTemplate">
     <div class="modal-dialog modal-dialog-centered redhouse-dialog">
       <div class="modal-content redhouse-surface">
-        <button type="button" class="btn-close redhouse-close" data-bs-dismiss="modal"
-                aria-label="Close" data-i18n-aria="close"></button>
+        <button type="button" class="btn window-close redhouse-close" data-bs-dismiss="modal"
+                aria-label="Close" data-i18n-aria="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
 
         <header class="redhouse-header">
           <div class="redhouse-header-top">

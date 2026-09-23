@@ -324,10 +324,9 @@
   text-align: center;
 }
 
-/* Bootstrap draws a dropdown on the body colour with a hairline border. Both
-   panels here are cards standing off the page, so they get their own ground. */
+/* Bootstrap draws a dropdown with a hairline border; both panels here are
+   cards standing off the page, so they get a softer line and a real shadow. */
 .home-surface .dropdown-menu {
-  background: var(--lq-paper);
   border: 1px solid #dde2ec;
   border-radius: 12px;
   box-shadow: 0 12px 28px rgba(28, 42, 78, .16);

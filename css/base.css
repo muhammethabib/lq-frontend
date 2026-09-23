@@ -52,11 +52,43 @@
   --bs-primary-rgb: 8, 37, 103;
   --bs-body-color: #0f172a;
   --bs-body-bg: #eef2f7;
+  /* Bootstrap draws modals and dropdowns on the body colour; here that is the
+     page grey, and every window would take it. Both are cards on the page. */
+  --bs-modal-bg: #ffffff;
+  --bs-dropdown-bg: #ffffff;
   --bs-body-font-family: 'Inter', sans-serif;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+/* The mark that closes a window. Every window on this page wears the same
+   one: a ring in the top corner of the card, which turns claret under the
+   pointer. Bootstrap's own .btn-close is a bare glyph, so it is replaced
+   rather than tuned. */
+.window-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background: var(--lq-paper);
+  color: var(--lq-ink-soft);
+  transition: background .2s, border-color .2s, color .2s;
+}
+.window-close svg { width: 16px; height: 16px; }
+.window-close:hover {
+  border-color: var(--lq-red);
+  background: var(--lq-red);
+  color: #fff;
 }
 
 /* Ottoman text: font and size are driven by data-direction, never by a hardcoded class */

@@ -8,86 +8,125 @@
 
 .announcement-modal .modal-content {
   position: relative;
-  padding: 30px 32px 26px;
+  padding: 34px 38px 28px;
   border: 0;
-  border-radius: 18px;
-  box-shadow: var(--lq-shadow);
-}
-.announcement-modal .btn-close {
-  position: absolute;
-  top: 16px;
-  right: 18px;
+  border-radius: 20px;
+  box-shadow: 0 40px 90px -30px rgba(15, 23, 42, .55);
 }
 
+/* The card is a flex column, so a badge left to itself would stretch across
+   it; it is a label on the notice, not a bar. */
 .announcement-modal .announcement-badge {
+  display: inline-block;
+  align-self: flex-start;
   margin: 0 0 14px;
-  font-size: .68rem;
+  padding: 4px 11px;
+  border: 1px solid #f6dde2;
+  border-radius: 999px;
+  background: #fdf2f4;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: .14em;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--lq-claret);
+  color: #671615;
 }
 
 .announcement-modal .announcement-title {
-  margin: 0 0 12px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.22;
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  line-height: 1.25;
   color: var(--lq-sapphire);
-  text-wrap: balance;
 }
 
 .announcement-modal .announcement-body {
   margin: 0 0 20px;
-  font-size: .97rem;
+  font-size: 15px;
   line-height: 1.65;
-  color: var(--lq-ink-soft);
+  color: #334155;
 }
+.announcement-modal .announcement-body b { color: var(--lq-ink); font-weight: 700; }
 
 /* ---------- the two ways in ---------- */
 
+/* Off campus and on campus are two different answers, not two of a kind, so
+   each card takes the colour of the half of the site it belongs to. */
 .announcement-modal .announcement-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-bottom: 22px;
 }
 .announcement-modal .announcement-card {
-  position: relative;
-  padding: 16px 18px;
-  border: 1px solid var(--lq-line);
-  border-radius: 13px;
-  background: var(--lq-body-bg);
+  padding: 14px 16px;
+  border: 1px solid;
+  border-radius: 14px;
 }
+.announcement-modal .announcement-card.is-off { border-color: #dbe4f5; background: #f4f7fd; }
+.announcement-modal .announcement-card.is-on { border-color: #f2dde4; background: #fdf5f8; }
+
 .announcement-modal .announcement-card h3 {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 6px;
-  font-size: .95rem;
-  font-weight: 700;
-  color: var(--lq-ink-navy);
+  margin: 0 0 7px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.1px;
 }
-.announcement-modal .announcement-card h3 svg { width: 15px; height: 15px; color: var(--lq-sapphire); }
+.announcement-modal .announcement-card h3 svg { width: 17px; height: 17px; }
+.announcement-modal .announcement-card.is-off h3 { color: #123a8c; }
+.announcement-modal .announcement-card.is-on h3 { color: var(--lq-claret); }
+
+/* The university mark carries a lock on its corner, so it needs room of its
+   own rather than sitting in the line like the other icon. */
+.announcement-modal .announcement-mark {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 20px;
+  margin-right: 6px;
+}
+.announcement-modal .announcement-mark > svg { width: 20px; height: 20px; }
+.announcement-modal .announcement-lock {
+  position: absolute;
+  right: -9px;
+  bottom: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border: 2px solid #f4f7fd;
+  border-radius: 50%;
+  background: var(--lq-entry-text);
+  color: #fff;
+}
+.announcement-modal .announcement-lock svg { width: 11px; height: 11px; }
+
 .announcement-modal .announcement-card p {
   margin: 0;
-  font-size: .86rem;
+  font-size: 13px;
   line-height: 1.55;
-  color: var(--lq-ink-soft);
+  color: #475569;
 }
+.announcement-modal .announcement-card p b { color: var(--lq-ink); font-weight: 700; }
 
 /* The one thing a reader off campus most needs to know */
 .announcement-modal .announcement-pill {
-  position: absolute;
-  top: -9px;
-  right: 14px;
-  padding: 3px 10px;
+  display: inline-block;
+  margin-bottom: 9px;
+  padding: 3px 8px;
   border-radius: 999px;
-  background: var(--lq-entry-text);
-  font-size: .66rem;
+  background: #123a8c;
+  font-size: 9px;
   font-weight: 800;
-  letter-spacing: .04em;
+  letter-spacing: .6px;
+  text-transform: uppercase;
   color: #fff;
 }
 
@@ -102,31 +141,38 @@
 .announcement-modal .announcement-cta {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 11px 20px;
-  border: 1px solid var(--lq-claret);
-  border-radius: 10px;
-  background: var(--lq-claret);
-  font-weight: 600;
+  gap: 10px;
+  padding: 12px 22px 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #123a8c;
+  font-size: 14px;
+  font-weight: 700;
   color: #fff;
 }
-.announcement-modal .announcement-cta:hover {
-  background: var(--lq-claret-hover);
-  border-color: var(--lq-claret-hover);
-  color: #fff;
+.announcement-modal .announcement-cta:hover { background: #164aad; color: #fff; }
+.announcement-modal .announcement-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
 }
 .announcement-modal .announcement-cta svg { width: 16px; height: 16px; }
 
 .announcement-modal .announcement-later {
-  padding: 11px 16px;
+  padding: 6px;
   border: 0;
   background: none;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--lq-muted);
+  color: #5d718c;
 }
-.announcement-modal .announcement-later:hover { color: var(--lq-ink-navy); }
+.announcement-modal .announcement-later:hover { color: #475569; }
 
-@media (max-width: 575px) {
-  .announcement-modal .modal-content { padding: 24px 20px 20px; }
-  .announcement-modal .announcement-title { font-size: 1.3rem; }
+@media (max-width: 620px) {
+  .announcement-modal .modal-content { padding: 28px 22px 22px; }
+  .announcement-modal .announcement-cards { grid-template-columns: 1fr; }
 }

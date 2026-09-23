@@ -8,26 +8,29 @@
    the class sits on.
    ========================================================= */
 
+.citation-modal .modal-dialog { max-width: 620px; }
+
 .citation-modal .modal-content {
-  border: 0;
-  border-radius: 16px;
-  box-shadow: var(--lq-shadow);
+  border: 1px solid var(--lq-line);
+  border-radius: 20px;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, .3);
 }
 
 .citation-modal .modal-header {
-  align-items: flex-start;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--lq-line);
+  justify-content: center;
+  padding: 36px 40px 0;
+  border-bottom: 0;
 }
 .citation-modal .modal-title {
   margin: 0;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: 1.32rem;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: .02em;
   color: var(--lq-sapphire);
+  text-align: center;
 }
 
-.citation-modal .modal-body { padding: 20px 24px 22px; }
+.citation-modal .modal-body { padding: 24px 40px 26px; }
 
 /* ---------- the word the reference is for ---------- */
 
@@ -35,27 +38,31 @@
    them, so the reader recognises the record they pressed Cite on. */
 .citation-modal .citation-word {
   display: flex;
+  width: max-content;
+  min-width: 260px;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin: 0 0 22px;
-  padding: 14px 18px;
+  gap: 10px;
+  margin: 0 auto 24px;
+  padding: 9px 30px;
+  border: 1px solid var(--lq-line);
   border-radius: 12px;
-  background: var(--lq-lat-bg);
+  background: var(--lq-paper-soft);
 }
 .citation-modal .citation-word [data-direction="rtl"] {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.6rem;
+  font-size: 24px;
   line-height: 1.6;
+  font-weight: 700;
   color: var(--lq-red);
 }
 .citation-modal .citation-divider {
   width: 1px;
-  height: 24px;
-  background: var(--lq-lat-border);
+  height: 22px;
+  background: #cbd5e1;
 }
 .citation-modal .citation-reading {
-  font-size: 1.1rem;
+  font-size: 15.5px;
   font-weight: 600;
   color: var(--lq-sapphire);
 }
@@ -63,98 +70,108 @@
 /* ---------- source information ---------- */
 
 .citation-modal .citation-heading {
-  margin: 0 0 10px;
-  font-size: .7rem;
+  margin: 0 0 12px;
+  font-size: 10.5px;
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--lq-claret);
+  color: #94a3b8;
 }
 
+/* Label and value, with nothing ruled between them: the two columns are
+   already far enough apart to read as a pair. */
 .citation-modal .citation-grid {
   display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
-  gap: 2px 16px;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 9px 12px;
   margin: 0 0 24px;
-  font-size: .93rem;
+  font-size: 13.5px;
 }
 .citation-modal .citation-grid dt {
-  padding: 6px 0;
-  font-weight: 500;
-  color: var(--lq-ink-soft);
+  font-weight: 700;
+  color: #334155;
 }
 .citation-modal .citation-grid dd {
   margin: 0;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--lq-line);
-  color: var(--lq-ink);
+  color: #475569;
 }
-.citation-modal .citation-grid dt { border-bottom: 1px solid var(--lq-line); }
-.citation-modal .citation-grid dt:last-of-type,
-.citation-modal .citation-grid dd:last-of-type { border-bottom: 0; }
 
 /* ---------- the three formats ---------- */
 
+/* Three formats of one thing, so they are a segmented control rather than a
+   row of tabs: the choice is between equals. */
 .citation-modal .citation-tabs {
-  gap: 4px;
-  border-bottom: 1px solid var(--lq-line);
-}
-.citation-modal .citation-tabs .nav-link {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-bottom: 12px;
+  padding: 4px;
   border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  padding: 8px 14px;
-  font-size: .88rem;
-  font-weight: 600;
+  border-radius: 11px;
+  background: #f1f5f9;
+}
+.citation-modal .citation-tabs .nav-item { display: contents; }
+.citation-modal .citation-tabs .nav-link {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 6px;
+  background: transparent;
+  font-size: 11.5px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: .03em;
   color: var(--lq-ink-soft);
 }
-.citation-modal .citation-tabs .nav-link:hover { color: var(--lq-sapphire); }
+.citation-modal .citation-tabs .nav-link:hover,
 .citation-modal .citation-tabs .nav-link.active {
-  border-bottom-color: var(--lq-claret);
-  background: none;
-  color: var(--lq-claret);
+  background: var(--lq-paper);
+  color: var(--lq-sapphire);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, .1);
 }
 
-.citation-modal .citation-panes { padding-top: 14px; }
 /* The reference itself: set to be read and copied, not skimmed */
 .citation-modal .citation-reference {
   margin: 0;
-  padding: 14px 16px;
+  min-height: 46px;
+  padding: 13px 16px;
   border: 1px solid var(--lq-line);
   border-radius: 10px;
   background: var(--lq-paper-soft);
-  font-size: .93rem;
+  font-size: 13.5px;
   line-height: 1.6;
-  color: var(--lq-ink);
+  color: #334155;
 }
 
 /* ---------- copy ---------- */
 
-.citation-modal .modal-footer {
-  padding: 14px 24px 18px;
-  border-top: 1px solid var(--lq-line);
-}
 .citation-modal .citation-copy {
-  display: inline-flex;
+  display: flex;
+  width: max-content;
   align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  border: 1px solid var(--lq-sapphire);
-  border-radius: 10px;
-  background: var(--lq-sapphire);
-  font-weight: 600;
-  color: #fff;
+  gap: 7px;
+  margin: 12px auto 0;
+  padding: 8px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: var(--lq-paper);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
 }
-.citation-modal .citation-copy:hover { background: #061d50; border-color: #061d50; color: #fff; }
-.citation-modal .citation-copy svg { width: 15px; height: 15px; }
+.citation-modal .citation-copy:hover { background: #dbeafe; border-color: #bfdbfe; color: var(--lq-sapphire); }
+.citation-modal .citation-copy svg { width: 14px; height: 14px; }
 /* Confirmation is the button itself, so the reader's eye does not have to
    leave what they just pressed. */
 .citation-modal .citation-copy.is-copied {
-  background: var(--lq-entry-text);
-  border-color: var(--lq-entry-text);
+  border-color: #6ee7b7;
+  background: #ecfdf5;
+  color: #059669;
 }
 
 @media (max-width: 575px) {
+  .citation-modal .modal-header { padding: 30px 22px 0; }
+  .citation-modal .modal-body { padding: 20px 22px 24px; }
   .citation-modal .citation-grid { grid-template-columns: 96px minmax(0, 1fr); }
   .citation-modal .citation-word { flex-direction: column; gap: 6px; }
   .citation-modal .citation-divider { width: 32px; height: 1px; }

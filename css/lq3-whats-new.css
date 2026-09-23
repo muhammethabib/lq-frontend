@@ -36,7 +36,7 @@
   background: var(--lq-body-bg);
 }
 .v3-surface .v3-number {
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.15;
@@ -81,7 +81,7 @@
   align-items: center;
   gap: 16px;
   margin: 40px 0 16px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.7rem;
   font-weight: 600;
   color: var(--lq-sapphire);

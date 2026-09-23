@@ -147,7 +147,7 @@
 .page-surface .page-content h2 {
   margin: 3.1rem 0 1.05rem;
   padding-top: .25rem;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 1.18;
@@ -157,7 +157,7 @@
 
 .page-surface .page-content h3 {
   margin: 2.35rem 0 .75rem;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.35;
@@ -170,6 +170,35 @@
    at a weight that beats this one. */
 .page-surface .page-content a { color: var(--lq-claret); text-underline-offset: 3px; }
 .page-surface .page-content a:hover { color: var(--lq-claret-hover); }
+
+/* A link that leads to another page of the site, opened in a tab of its
+   own: navy and underlined, with a mark that says where it goes. */
+.page-surface .page-content a.xlink {
+  color: var(--lq-sapphire);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(8, 37, 103, .35);
+  text-underline-offset: 3px;
+}
+.page-surface .page-content a.xlink:hover {
+  color: var(--lq-claret);
+  text-decoration-color: currentColor;
+}
+.page-surface .page-content a.xlink::after {
+  content: "\2197";
+  display: inline-block;
+  margin-left: 3px;
+  font-size: .85em;
+  text-decoration: none;
+  color: #8a5200;
+}
+
+/* The longer pages sit in a frame of their own, which keeps a band of air
+   above and below the reading column on top of the panel's own. */
+.page-surface .page-content.is-framed {
+  padding-block: calc(2 * clamp(36px, 5vw, 58px)) calc(2 * clamp(56px, 7vw, 88px));
+}
 
 /* ---------- a list of points ---------- */
 
@@ -239,13 +268,14 @@
 .page-surface .plain-list li {
   position: relative;
   padding-left: 20px;
-  font-size: .97rem;
+  font-size: 1rem;
+  color: #3b4957;
 }
 .page-surface .plain-list li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: .62em;
+  top: 10px;
   width: 7px;
   height: 7px;
   border-radius: 2px;
@@ -269,21 +299,25 @@
 
 .page-surface .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin: 30px 0 0;
+}
+@media (max-width: 760px) {
+  .page-surface .card-grid { grid-template-columns: 1fr; }
 }
 .page-surface .page-card {
   padding: 22px 24px;
   border: 1px solid var(--lq-line);
   border-radius: 14px;
-  background: var(--lq-body-bg);
+  background: var(--lq-soft);
 }
 .page-surface .page-card h3 {
-  margin: 0 0 4px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
-  font-size: 1.25rem;
+  margin: 0 0 6px;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
   font-weight: 600;
+  line-height: 1.35;
   color: var(--lq-sapphire);
 }
 .page-surface .card-note {
@@ -291,13 +325,14 @@
   font-size: .88rem;
   color: var(--lq-ink-soft);
 }
-.page-surface .page-card p:last-child { margin-bottom: 0; }
 
 /* ---------- Ottoman text in running copy ---------- */
 
 .page-surface [data-direction="rtl"] {
   font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.15em;
+  font-size: 1.2em;
+  line-height: 1;
+  unicode-bidi: isolate;
   color: var(--lq-sapphire);
 }
 
@@ -321,11 +356,12 @@
 /* Screenshots of old interfaces are the point of the archive pages, so they
    sit full width inside the panel rather than beside the text. */
 .page-surface .page-figure {
-  margin: 28px 0;
-  padding: 14px;
+  margin: 28px 0 38px;
+  padding: 13px;
   border: 1px solid var(--lq-line);
   border-radius: 14px;
-  background: var(--lq-body-bg);
+  background: var(--lq-paper);
+  box-shadow: 0 12px 32px rgba(23, 33, 43, .08);
 }
 .page-surface .page-figure img {
   display: block;

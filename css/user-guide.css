@@ -132,7 +132,7 @@
   align-items: center;
   gap: 14px;
   margin: 46px 0 6px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.9rem;
   font-weight: 600;
   color: var(--lq-sapphire);
@@ -162,7 +162,7 @@
   align-items: baseline;
   gap: 11px;
   margin: 0 0 10px;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.32rem;
   font-weight: 600;
   color: var(--lq-ink-navy);
@@ -204,7 +204,7 @@
   color: var(--lq-sapphire);
 }
 .guide-surface .guide-sub b {
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.16rem;
   font-weight: 600;
   color: var(--lq-ink-navy);

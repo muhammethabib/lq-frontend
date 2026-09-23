@@ -1,0 +1,20 @@
+/* =========================================================
+   LexiQamus 1.0 — the archive page
+   A record of the first version, so it keeps the wider title
+   and the narrow screenshot of the original interface.
+   ========================================================= */
+
+/* The title breaks after "The First", the way it did on the archived page */
+.lq1-surface .page-hero h1 { max-width: 760px; }
+
+/* The opening heading sits straight on top of the text it introduces */
+.lq1-surface .page-content h2:first-child {
+  padding-top: 0;
+  margin-bottom: .6rem;
+}
+
+/* The screenshot is a small interface, shown at its own size */
+.lq1-surface .page-figure { max-width: 440px; }
+
+/* The opening passage is set a shade larger than the rest of the page */
+.lq1-surface .lq1-intro { font-size: 1.08rem; }

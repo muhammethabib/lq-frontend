@@ -361,7 +361,7 @@ window.LQ_TRANSLATIONS = {
     lq1Title: "LexiQamus 1.0: İlk Sürüm",
     lq1Lede: "Osmanlıca metinlerde okunamayan kelimeleri çözmek için geliştirilen ilk dijital araç, 7 Haziran 2016’da yayına çıktı.",
     lq1WhyHeading: "Neden geliştirildi",
-    lq1Why: "Geleneksel sözlükler, kelimenin başındaki ya da ortasındaki harfler okunamadığında büyük ölçüde işlevsiz kalır: madde başını bilmeden arama yapılamaz. LexiQamus bu sorunu çözmek için geliştirildi; ayrıntısı için <a href=\"what-is-lexiqamus.html\">LexiQamus Nedir?</a> sayfasına bakabilirsiniz.",
+    lq1Why: "Geleneksel sözlükler, kelimenin başındaki ya da ortasındaki harfler okunamadığında büyük ölçüde işlevsiz kalır: madde başını bilmeden arama yapılamaz. LexiQamus bu sorunu çözmek için geliştirildi; ayrıntısı için <a class=\"xlink\" href=\"what-is-lexiqamus.html\" target=\"_blank\" rel=\"noopener\">LexiQamus Nedir?</a> sayfasına bakabilirsiniz.",
     lq1First: "Alanında bir ilkti: o güne kadar okunamayan kelimeleri dijital yolla çözen başka bir araç yoktu. İlk sürüm tek bir araçtan, <strong>Kelime Çözücü</strong>’den oluşuyordu.",
     lq1Reception: "Kelimenin yalnızca birkaç harfini okuyabilen araştırmacıya, kapsamlı sözlükler içinde aranarak bulunması günler sürebilecek bir kelimeyi neredeyse anında gösteren LexiQamus, kısa süre içinde Türkiye’den ve dünyadan pek çok saygıdeğer kurumun teveccühüne mazhar oldu.",
     lq1DecoderHeading: "Kelime Çözücü",

@@ -25,18 +25,19 @@
   box-shadow: 0 0 0 3px var(--lq-paper), 0 0 0 4px var(--lq-line);
 }
 
-.team-surface .person-name {
-  margin: 0;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+.team-surface .page-content .person-name {
+  margin: 4px 0;
+  padding-top: 0;
+  line-height: 1.35;
+  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--lq-sapphire);
 }
 
-.team-surface .person-role {
-  margin: 2px 0 12px;
-  font-size: 11px;
-  font-weight: 800;
+.team-surface .page-content .person-role {
+  margin: 0 0 14px;
+  font: 800 11px/1 'Inter', sans-serif;
   letter-spacing: .17em;
   text-transform: uppercase;
   color: var(--lq-claret);
@@ -44,7 +45,6 @@
 
 /* A bio is running text like any other, so it keeps the same measure as the
    page's own paragraphs even though it sits beside a photo. */
-.team-surface .person-text p { max-width: 68ch; }
 .team-surface .person-text p:last-child { margin-bottom: 0; }
 
 @media (max-width: 640px) {

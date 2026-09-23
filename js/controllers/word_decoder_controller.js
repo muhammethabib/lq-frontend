@@ -69,8 +69,22 @@ class WordDecoderController extends Stimulus.Controller {
     };
     this.onKeyboardClosed = () => {
       this.keyboardOpen = false;
+      // The press that closed the keyboard is still on its way to whatever it
+      // was aimed at. Letting the row's Clear back in now would move the row
+      // out from under the cursor and the press would land on nothing, so the
+      // row is left as it is until the finger comes up.
+      if (this.pointerDown) { this.clearPending = true; return; }
       this.refreshClear();
     };
+    this.onPointerDown = () => { this.pointerDown = true; };
+    this.onPointerUp = () => {
+      this.pointerDown = false;
+      if (!this.clearPending) return;
+      this.clearPending = false;
+      this.refreshClear();
+    };
+    document.addEventListener("pointerdown", this.onPointerDown, true);
+    document.addEventListener("pointerup", this.onPointerUp, true);
     document.addEventListener("ottoman-keyboard:request", this.onKeyboardOpen);
     document.addEventListener("ottoman-keyboard:closed", this.onKeyboardClosed);
     // The search bar has a keyboard of its own; the row's hint stays away
@@ -110,6 +124,8 @@ class WordDecoderController extends Stimulus.Controller {
     document.removeEventListener("ottoman-keyboard:closed", this.onKeyboardClosed);
     document.removeEventListener("search-keyboard:request", this.onOtherKeyboard);
     document.removeEventListener("pointerdown", this.onOutside);
+    document.removeEventListener("pointerdown", this.onPointerDown, true);
+    document.removeEventListener("pointerup", this.onPointerUp, true);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("view-state:change", this.onViewState);
     window.LQ.disposeTooltips(this.element);
@@ -195,7 +211,7 @@ class WordDecoderController extends Stimulus.Controller {
       <div class="gap">
         <button type="button" class="btn gap-insert" data-action="click->word-decoder#insertSlot"
                 data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}"
-                aria-label="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}">+</button>
+                aria-label="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}"><span class="gap-plus">+</span></button>
         ${withJoin ? this.joinHtml() : ""}
       </div>`;
   }

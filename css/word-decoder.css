@@ -23,14 +23,29 @@
    would tie the two together. */
 .word-decoder-surface .decoder-card {
   width: min(100% - 48px, 1300px);
+  min-height: 140px;
   margin-inline: auto;
-  padding: 24px 40px;
-  border: 1px solid var(--lq-line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 40px;
+  border: 1px solid var(--lq-line-strong);
   border-radius: 20px;
   background: var(--lq-paper);
-  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06);
+  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06), 0 0 1px rgba(0, 0, 0, .05);
   position: relative;
   z-index: 5;
+}
+/* The card holds the strip at a fixed height, so the room above and below
+   the strip belongs to the strip's own block rather than to the card: the
+   card keeps that height when the strip grows a second row. */
+.word-decoder-surface .decoder-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 20px 0;
 }
 
 /* ---------- the strip of letter slots ---------- */
@@ -57,6 +72,14 @@
   min-width: 0;
 }
 .word-decoder-surface .slot-strip[data-direction="rtl"] > * { direction: ltr; }
+/* The attribute is here to turn the strip around, not to set it in the
+   Ottoman face: the boxes, their separators and the marks on them are all
+   drawn in the page's own type. */
+.word-decoder-surface .slot-strip[data-direction="rtl"] {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
 
 /* ---------- one letter slot ---------- */
 
@@ -98,13 +121,18 @@
 .word-decoder-surface .slot-input {
   width: 100%;
   height: 100%;
+  padding: 0;
   border: 0;
   outline: 0;
   background: transparent;
   text-align: center;
-  font-family: 'Noto Naskh Arabic', serif;
+  /* The letter is set in the page's own face, which hands the Ottoman
+     characters to the system's Arabic type exactly as the rest of the
+     interface does. */
+  font-family: inherit;
   font-size: 24px;
   font-weight: 700;
+  line-height: inherit;
   color: var(--lq-claret);
   cursor: inherit;
 }
@@ -224,13 +252,22 @@
   border: 0;
   border-radius: 3px;
   background: var(--decoder-gap-fill);
+  color: inherit;
+  transition: background .2s;
+}
+/* The mark sits a hair above the middle of its pill, where the eye reads it
+   as centred, and grows under the cursor without taking the pill with it. */
+.word-decoder-surface .gap-plus {
+  display: block;
   color: #94a3b8;
   font-size: 16px;
   font-weight: 900;
   line-height: 1;
-  transition: background .2s;
+  transform: translateY(-1px);
+  transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), color .3s;
 }
-.word-decoder-surface .gap-insert:hover { background: var(--decoder-gap-fill-hover); color: var(--lq-sapphire); }
+.word-decoder-surface .gap-insert:hover { background: var(--decoder-gap-fill-hover); }
+.word-decoder-surface .gap-insert:hover .gap-plus { transform: scale(1.4); color: var(--lq-sapphire); }
 
 /* The join marker says whether the two neighbouring letters are written
    joined, apart, or the reader cannot tell. Two rings and a connecting line. */
@@ -307,6 +344,8 @@
   height: 52px;
   width: 88px;
   margin-top: 2px;
+  margin-left: 8px;
+  padding: 0;
   flex: none;
   border: 0;
   border-radius: 10px;
@@ -915,6 +954,5 @@
    to the left of the boxes would push them sideways, and a row that moves
    under the cursor loses the press that was meant for it. */
 .word-decoder-surface .decoder-clear.is-hidden {
-  visibility: hidden;
-  pointer-events: none;
+  display: none;
 }

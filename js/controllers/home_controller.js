@@ -27,7 +27,7 @@ const VISITED_FADE_MS = 600;
 
 class HomeController extends Stimulus.Controller {
   static targets = [
-    "logo", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
+    "logo", "logoRow", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "sourceOption", "submit", "scriptHint", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
@@ -863,35 +863,44 @@ class HomeController extends Stimulus.Controller {
   // landing screen and the results.
   fitTagline() {
     const line = this.taglineTarget;
-    const target = this.logoTarget.getBoundingClientRect().width;
-    const text = line.textContent.trim();
+    const row = this.logoRowTarget;
     line.style.letterSpacing = "";
-    line.style.marginRight = "";
     line.style.width = "";
-    line.style.textAlign = "";
-    line.style.whiteSpace = "";
-    if (!target || text.length < 2) return;
+    line.style.marginRight = "";
+    // Only the landing screen locks the line to the wordmark; everywhere else
+    // it keeps the centred line the stylesheet gives it.
+    if (!this.element.classList.contains("state-landing")) {
+      line.style.display = "";
+      line.style.textAlign = "";
+      return;
+    }
+    const rowWidth = row.getBoundingClientRect().width;
+    if (!rowWidth) return;
+    // The wordmark's letters stop at 95.3% of its box: the S ends there and
+    // the rest is the room the L and the Q are drawn into.
+    const target = rowWidth * 0.953;
+    line.style.display = "block";
+    line.style.width = `${rowWidth}px`;
+    line.style.textAlign = "left";
+    line.style.letterSpacing = "0px";
 
     // Measured with no spacing of its own, in a copy that is not shown.
     const probe = document.createElement("span");
     probe.style.cssText =
       "visibility:hidden;position:absolute;white-space:nowrap;font:inherit;letter-spacing:0;";
-    probe.textContent = text;
+    probe.textContent = line.textContent;
     line.appendChild(probe);
     const natural = probe.getBoundingClientRect().width;
     probe.remove();
-    if (!natural || natural > target) return;
 
-    // Spacing is added after every letter, the last one included, so the
-    // trailing gap is taken back off the end.
-    const spacing = (target - natural) / (text.length - 1);
-    line.style.width = `${target}px`;
-    line.style.textAlign = "left";
-    // Set to the wordmark's width to the pixel, it must not be allowed to
-    // fall onto a second line over a rounding error.
-    line.style.whiteSpace = "nowrap";
-    line.style.letterSpacing = `${spacing}px`;
-    line.style.marginRight = `${-spacing}px`;
+    const length = line.textContent.trim().length;
+    if (!natural || length < 2) {
+      line.style.width = "";
+      line.style.textAlign = "";
+      line.style.letterSpacing = "";
+      return;
+    }
+    line.style.letterSpacing = `${(target - natural) / (length - 1)}px`;
   }
 
   watchTagline() {

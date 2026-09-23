@@ -6,6 +6,16 @@
    when it is open, and every rule here is scoped to it.
    ========================================================= */
 
+/* The story is built on the reference's reset, where a heading carries no
+   size, weight, line or margin of its own: each one takes those from the
+   rule that dresses it. Bootstrap gives headings 1.2 and 500 instead, which
+   set every title in here a line short and a shade heavy. */
+.innovations :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: inherit;
+  line-height: inherit;
+  margin: 0;
+}
+
 .innovations {
   /* the story's own palette */
   --sapphire: #082567;
@@ -3336,6 +3346,8 @@ body.story-open .page-top-row { opacity: 0; pointer-events: none; transition: op
   padding: 0;
   border: 0;
   background: none;
+  color: inherit;
+  text-align: start;
   transition: transform 0.3s;
 }
 

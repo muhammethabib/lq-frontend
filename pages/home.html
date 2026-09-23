@@ -90,7 +90,7 @@
 
   <!-- ============================== branding ============================= -->
   <div class="branding">
-    <div class="logo-row">
+    <div class="logo-row" data-home-target="logoRow">
       <a class="logo-link" href="home.html" data-home-target="logo"
          aria-label="LexiQamus home" data-i18n-aria="ariaHome">
         <img src="../assets/lexiqamus-wordmark.svg" alt="LexiQamus">
@@ -102,18 +102,14 @@
   </div>
 
   <!-- ================================ tabs =============================== -->
-  <ul class="nav nav-tabs search-tabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="decoderTab" data-bs-toggle="tab" data-bs-target="#decoderPane"
-              type="button" role="tab" aria-controls="decoderPane" aria-selected="false"
-              data-i18n="tabDecoder">Word Decoder</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="searchTab" data-bs-toggle="tab" data-bs-target="#searchPane"
-              type="button" role="tab" aria-controls="searchPane" aria-selected="true"
-              data-i18n="tabSearch">Search</button>
-    </li>
-  </ul>
+  <div class="search-tabs" role="tablist">
+    <button class="tab" id="decoderTab" data-bs-toggle="tab" data-bs-target="#decoderPane"
+            type="button" role="tab" aria-controls="decoderPane" aria-selected="false"
+            data-i18n="tabDecoder">Word Decoder</button>
+    <button class="tab active" id="searchTab" data-bs-toggle="tab" data-bs-target="#searchPane"
+            type="button" role="tab" aria-controls="searchPane" aria-selected="true"
+            data-i18n="tabSearch">Search</button>
+  </div>
 
   <!-- ============================= search card =========================== -->
   <div class="tab-content">
@@ -126,6 +122,7 @@
            data-word-decoder-endpoint-value="/word_decoder/results">
 
         <div class="decoder-card">
+         <div class="decoder-mode">
           <div class="decoder-row"
                data-action="mouseenter->word-decoder#showRowHint mouseleave->word-decoder#hideRowHint">
             <button type="button" class="btn decoder-clear is-hidden" data-word-decoder-target="clear"
@@ -153,6 +150,7 @@
               <span data-i18n="decoderOwnKeyboard">You can type with your own keyboard</span>
             </p>
           </div>
+         </div>
         </div>
 
         <!-- Result-group names and descriptions, kept in the markup so the
@@ -288,7 +286,7 @@
                   <button type="button" class="btn source-option" data-source="english"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
                           title="Search English definitions in Redhouse" data-i18n-title="sourceEnglishTitle"
-                          data-i18n="sourceEnglish">ENG</button>
+                          ><span data-i18n="sourceEnglish">ENG</span></button>
                 </div>
 
                 <div class="placeholder-layer" aria-hidden="true">
@@ -740,7 +738,7 @@
   <!-- The same question on the landing screen, where there is no list for it
        to sit under. The results surface carries its own, so this one steps
        out of the way as soon as a search has been run. -->
-  <div class="text-center mt-4 library-row">
+  <div class="library-row">
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
   </div>
 

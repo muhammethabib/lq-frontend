@@ -35,7 +35,7 @@
 
 /* The landing screen gives the wordmark a little more air above it than the
    searched screens do, which is what the reference does as well. */
-.home-surface.state-landing .branding { margin-top: 14px; }
+.home-surface.state-landing .branding { transform: translateY(14px); }
 
 .home-surface .branding {
   display: flex;
@@ -48,9 +48,10 @@
    underneath has the wordmark's own width to measure itself against. */
 .home-surface .logo-row {
   position: relative;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 /* The wordmark's box is drawn tighter than the letters it holds: the L drops
    below it and the Q's glass rides above, so nothing here may clip. */
@@ -81,6 +82,10 @@
 
 .home-surface .tagline {
   margin: 0;
+  /* The slogan is locked to the wordmark above it rather than to the box the
+     wordmark is drawn in: that box is taller than the letters, so the line is
+     pulled back up until it sits under the descender of the Q. */
+  transform: translateY(-5px);
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -99,10 +104,13 @@
   font-size: 10px;
   padding: 3px 8px;
 }
-.home-surface.state-landing .tagline { font-size: 11.5px; font-weight: 600; letter-spacing: 3.2px; }
-/* 16vh, less the 14px the reference's branding block sits below its own
-   layout box, so the tabs land where they land there. */
-.home-surface.state-landing .search-tabs { margin-top: calc(16vh - 14px); }
+.home-surface.state-landing .tagline {
+  transform: translateY(-13px);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 3.2px;
+}
+.home-surface.state-landing .search-tabs { margin-top: 16vh; }
 
 /* ---------- tabs ---------- */
 
@@ -110,31 +118,45 @@
   display: flex;
   justify-content: center;
   border: 0;
-  gap: 8px;
   position: relative;
   z-index: 10;
 }
-.home-surface .search-tabs .nav-link {
+.home-surface .search-tabs .tab {
   width: 160px;
+  margin: 0 4px;
   padding: 12px 0;
   border: 1px solid transparent;
-  border-bottom: 0;
+  border-bottom: none;
   border-radius: 12px 12px 0 0;
   background: rgba(233, 239, 245, .6);
-  color: var(--lq-muted);
+  color: var(--lq-ink-soft);
   font-size: 15px;
   font-weight: 600;
   text-align: center;
+  transition: background .2s, color .2s;
 }
-.home-surface .search-tabs .nav-link:hover:not(.active) { background: var(--lq-line); }
-.home-surface .search-tabs .nav-link.active {
+.home-surface .search-tabs .tab:hover:not(.active) { background: var(--lq-line); }
+.home-surface .search-tabs .tab.active {
+  position: relative;
   background: var(--lq-paper);
-  border-color: var(--lq-line);
+  border-color: var(--lq-line-strong);
   color: var(--lq-sapphire);
   font-weight: 700;
-  /* Sits 1px over the card below so the tab and the card read as one shape */
-  margin-bottom: -1px;
-  padding-bottom: 13px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, .03);
+  /* The shadow is wanted above and beside the tab but not under it, where it
+     would draw a line across the card the tab opens onto. */
+  clip-path: inset(-14px -14px -1px -14px);
+}
+/* The card's own top edge runs under the open tab; this covers the 1px of it
+   that would otherwise cut the tab off from the card. */
+.home-surface .search-tabs .tab.active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  background: var(--lq-paper);
 }
 
 /* ---------- search card ---------- */
@@ -149,9 +171,9 @@
   width: var(--home-card-width);
   margin-inline: auto;
   background: var(--lq-paper);
-  border: 1px solid var(--lq-line);
+  border: 1px solid var(--lq-line-strong);
   border-radius: var(--home-radius);
-  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06);
+  box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06), 0 0 1px rgba(0, 0, 0, .05);
   padding: 24px 40px;
   position: relative;
   z-index: 5;
@@ -221,7 +243,8 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .3px;
-  color: var(--lq-muted);
+  text-align: start;
+  color: var(--lq-ink-soft);
   transition: background .2s, color .2s;
 }
 .home-surface .source-option[data-source="ottoman"].active { background: var(--lq-claret); color: #fff; }
@@ -309,16 +332,21 @@
 .home-surface .dictionary-trigger {
   display: flex;
   align-items: center;
-  gap: 8px;
   border: 1px solid #dde2ec;
   border-radius: 9px;
   padding: 10px 13px;
   background: var(--lq-paper);
+  color: var(--lq-ink-navy);
+}
+/* The filter button carries its own label rather than a nested one, so the
+   type is set on the button itself. */
+.home-surface .filter-trigger {
+  gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--lq-ink-navy);
   white-space: nowrap;
 }
+.home-surface .dictionary-trigger { text-align: start; }
 .home-surface .filter-trigger:hover,
 .home-surface .dictionary-trigger:hover { border-color: #c9d1e2; }
 .home-surface .filter-trigger[aria-expanded="true"] { border-color: var(--lq-claret-deep); background: #fdf1f4; }
@@ -348,6 +376,8 @@
 .home-surface .dictionary-trigger:hover { border-color: #94a3b8; }
 .home-surface .dictionary-trigger > span {
   font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -627,13 +657,18 @@
   .home-surface .fuzzy-row .library-button { position: static; transform: none; }
 }
 
+/* The row is only there to put the button in the middle of the page. */
+.home-surface .library-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+}
 .home-surface.state-results .library-row { display: none; }
 
 .home-surface .library-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   border: 1.5px solid var(--lq-claret);
   border-radius: 10px;
   background: #f9eff3;
@@ -1226,7 +1261,7 @@
 
 @media (max-width: 560px) {
   /* Two 160px tabs plus the gap overflow a 375px viewport, so they share the row */
-  .home-surface .search-tabs .nav-link {
+  .home-surface .search-tabs .tab {
     width: auto;
     flex: 1 1 0;
     min-width: 0;

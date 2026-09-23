@@ -108,10 +108,14 @@ class CitationController extends Stimulus.Controller {
     const volume = safe(window.LQ.translate("citeVolumeShort", "vol."));
     const page = safe(window.LQ.translate("citePageShort", "p."));
     if (style === "chicago") {
-      return `${author}. ${title}. ${volume} ${volumeNumber}. ${place}, ${year}, ${page} ${pageNumber}.`;
+      return `${author}. ${title}. ${volume} ${volumeNumber}, ${place}, ${year}, ${page} ${pageNumber}.`;
     }
+    // Harvard names the publisher before the place, and neither is bound to
+    // the other, so this one style does not use the place pair above.
     if (style === "harvard") {
-      return `${author} ${year}, ${title}, ${volume} ${volumeNumber}, ${page} ${pageNumber}, ${place}.`;
+      const publisher = safe(source.publisher || "—");
+      const city = safe(this.city(source));
+      return `${author} ${year}, ${title}, ${volume} ${volumeNumber}, ${page} ${pageNumber}, ${publisher}, ${city}.`;
     }
     return `${author} (${year}). ${title} (${volume} ${volumeNumber}, ${page} ${pageNumber}). ${place}.`;
   }

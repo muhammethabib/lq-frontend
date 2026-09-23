@@ -272,8 +272,26 @@
 .entry-surface .entry-section.is-collapsed .entry-chevron { transform: rotate(-90deg); }
 .entry-surface .entry-section.is-collapsed .entry-section-body { display: none; }
 
-.entry-surface .entry-section-body { padding: 0 24px 32px; }
-.entry-surface #entry-original .entry-section-body { padding: 8px 16px 32px; }
+/* A reading section is held to a little over half the window and scrolls
+   inside it, so the window does not grow with the longest translation. */
+.entry-surface .entry-section-body {
+  padding: 0 48px 32px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+/* The page image keeps that height whatever its own is, so the window does
+   not jump as the reader steps from slice to slice. */
+.entry-surface #entry-original .entry-section-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+  min-height: 55vh;
+  max-height: none;
+  overflow: visible;
+  padding: 8px 16px 32px;
+}
 
 .entry-surface .entry-panel {
   display: flex;
@@ -476,9 +494,12 @@
 
 .entry-surface .entry-scan-viewport {
   flex: 1;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
   min-width: 0;
 }
 
@@ -494,8 +515,10 @@
 .entry-surface .entry-scan-image {
   display: block;
   max-width: 100%;
-  max-height: 60vh;
+  max-height: 70vh;
   width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* The places the entry occupies on the page, drawn over the scan. */

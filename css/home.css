@@ -654,6 +654,7 @@
 /* ---------- results surface ---------- */
 
 .home-surface .results-surface {
+  position: relative;
   width: var(--home-card-width);
   margin-inline: auto;
   margin-top: 32px;
@@ -663,8 +664,17 @@
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
   overflow: hidden;
 }
-/* 4px bar across the top, coloured by the script of the active spelling */
-.home-surface .results-accent { height: 4px; background: var(--lq-red); }
+/* 4px bar across the top, coloured by the script of the active spelling. It
+   lies over the panel's edge rather than above its content, so the heading
+   starts where the panel starts. */
+.home-surface .results-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--lq-red);
+}
 .home-surface .results-accent[data-script="latin"] { background: var(--lq-sapphire); }
 
 .home-surface .results-header {
@@ -681,6 +691,7 @@
    reads as a heading, so it keeps its weight. */
 .home-surface .results-label {
   display: block;
+  width: fit-content;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;

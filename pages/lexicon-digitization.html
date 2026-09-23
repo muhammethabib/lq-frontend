@@ -43,13 +43,15 @@
       <p class="page-lede" data-i18n="storyLede">The methodology, seven-stage workflow, statistics, and people behind the complete digitization of James Redhouse’s 1890 A Turkish and English Lexicon.</p>
     </header>
 
-    <main class="page-content" data-controller="article">
+    <main class="page-content" data-controller="article" data-article-mode-value="plain">
       <nav class="article-toc" data-article-target="toc" aria-labelledby="storyTocTitle">
         <button type="button" class="btn article-toc-toggle" data-action="click->article#toggle"
                 aria-expanded="false" aria-controls="storyTocList">
-          <span id="storyTocTitle" data-i18n="storyOnThisPage">On this page</span>
+          <span class="article-toc-title" data-i18n="storyOnThisPage">On this page</span>
+          <span class="article-toc-now" data-article-target="now"></span>
           <i data-feather="chevron-down" aria-hidden="true"></i>
         </button>
+        <p class="article-toc-title" id="storyTocTitle" data-i18n="storyOnThisPage">On this page</p>
         <ol class="article-toc-list" id="storyTocList" data-article-target="list"></ol>
       </nav>
 
@@ -582,7 +584,7 @@ continue to provide novel services and support to researchers.</p>
         <p class="article-bibliography">Redhouse, James. 1890. <em>A Turkish and English Lexicon</em>.
 Constantinople: Printed for the American mission.</p>
         <section class="article-notes" id="notes">
-          <h2 class="article-h2" data-i18n="storyNotes">Notes</h2>
+          <h2 class="article-h2 visually-hidden" data-i18n="storyNotes">Notes</h2>
           <ol class="article-notelist">
             <li id="fn1">“It was computed that the work would contain about
 100,000 Turkish words of Turkish, Arabic, Persian, and European origin,

@@ -226,6 +226,17 @@
   padding-block: calc(2 * clamp(36px, 5vw, 58px)) calc(2 * clamp(56px, 7vw, 88px));
 }
 
+/* An italic term inside a heading keeps the heading's own face, a shade
+   larger and a touch more open: the italic runs narrow at heading size. */
+.page-surface h1 em { font-family: inherit; }
+.page-surface h2 em,
+.page-surface h3 em,
+.page-surface h4 em {
+  font-family: inherit;
+  font-size: 1.06em;
+  letter-spacing: .02em;
+}
+
 /* ---------- a list of points ---------- */
 
 /* Each point is its own panel rather than a bullet, because these are
@@ -261,17 +272,17 @@
 
 /* Where the points run on rather than standing apart, they keep a bullet:
    a claret dot with a soft ring, level with the first line. */
-.page-surface .bullet-list {
+.page-surface .page-content .bullet-list {
   margin: 1.2rem 0 0;
   padding: 0;
   list-style: none;
 }
-.page-surface .bullet-list li {
+.page-surface .page-content .bullet-list li {
   position: relative;
   margin: 0 0 12px;
   padding: 0 0 0 28px;
 }
-.page-surface .bullet-list li::before {
+.page-surface .page-content .bullet-list li::before {
   content: "";
   position: absolute;
   left: 2px;

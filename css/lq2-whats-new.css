@@ -2,108 +2,158 @@
    LexiQamus 2.0: What's New
    Scoped under .v2-surface. An archived announcement, read
    straight through, with a dated log of what followed it.
+   The page shares the article layout and its contents list.
    ========================================================= */
 
-.v2-surface .v2-kicker {
-  margin: 0 0 14px;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--lq-claret);
-}
+/* The title breaks where the reference breaks it */
+.v2-surface .page-hero h1 { max-width: 760px; }
 
-.v2-surface .page-content p { max-width: 68ch; }
+/* The opening passage is set a shade larger than the rest of the page */
+.v2-surface .v2-intro { font-size: 1.08rem; }
 
-.v2-surface .v2-h2 {
-  margin: 44px 0 14px;
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
-  font-size: 1.72rem;
-  font-weight: 600;
+/* The name of the version opens the page in place of a heading of its own */
+.v2-surface .page-content .article-body .v2-intro h2.v2-kicker {
+  margin: 0 0 .6rem;
+  padding-top: 0;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--lq-sapphire);
 }
-.v2-surface .v2-h3 {
-  margin: 30px 0 10px;
-  font-size: 1.14rem;
-  font-weight: 700;
-  color: var(--lq-ink-navy);
+
+/* ---------- the lettered sections ---------- */
+
+.v2-surface .page-content .article-body h2.v2-h2,
+.v2-surface .page-content .article-body h2.v2-h2:first-of-type {
+  margin: 3.1rem 0 1.05rem;
+  padding-top: .25rem;
+}
+.v2-surface .v2-h2.has-letter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+/* The letter is written in by the controller, not by the markup */
+.v2-surface .v2-h2.has-letter::before {
+  content: attr(data-code);
+  flex: none;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 46px;
+  height: 46px;
+  padding-bottom: 3px;
+  border-radius: 12px;
+  background: var(--lq-sapphire);
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* A sub-topic is a card with its code on a pill, so a cross-reference from
+   the text or a screenshot can name it. */
+.v2-surface .page-content .article-body h3.v2-h3 {
+  position: relative;
+  margin: 2.4rem 0 1rem;
+  padding: 15px 22px 15px 86px;
+  border: 1px solid #f0dae4;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #fdf2f6, var(--lq-paper));
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--lq-sapphire);
+}
+.v2-surface .v2-h3::before {
+  content: attr(data-code);
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 40px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 16px;
+  background: var(--lq-claret);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: .86rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+  line-height: 1.3;
 }
 /* The tab names are set in italic in the announcement, so the emphasis is
    kept rather than flattened into the heading. */
-.v2-surface .v2-h3 em {
-  font-style: italic;
-  font-weight: 600;
-  color: var(--lq-claret);
-}
+.v2-surface .v2-h3 em { font-style: normal; }
 
 /* ---------- the note that this is an archive ---------- */
 
 .v2-surface .v2-archive-note {
-  max-width: 72ch;
-  margin: 26px 0;
-  padding: 18px 22px;
-  border: 1px solid var(--lq-sub-border);
-  border-radius: 13px;
-  background: var(--lq-sub-bg);
+  margin: 30px 0 34px;
+  padding: 20px 22px 19px;
+  border: 1px solid #ecd99f;
+  border-left: 5px solid #d6a83e;
+  border-radius: 10px;
+  background: #fff8e7;
 }
 .v2-surface .v2-archive-title {
-  margin: 0 0 8px;
+  display: block;
+  margin: 0 0 5px;
   font-weight: 700;
-  color: var(--lq-sub-text);
+  color: #614b16;
 }
-.v2-surface .v2-archive-note p:last-child { margin-bottom: 0; }
+.v2-surface .v2-archive-note p { margin: 0; color: #5e5338; }
 
 /* The offer the note supersedes, set back so it reads as a record */
-.v2-surface .v2-offer {
+.v2-surface .page-content .article-body .v2-offer {
+  margin: 28px 0 12px;
+  padding: 18px 20px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-soft);
+  color: #4b5661;
+}
+.v2-surface .v2-offer::before {
+  content: "Original 2020 announcement";
+  display: block;
+  margin-bottom: 7px;
   color: var(--lq-muted);
-  font-size: .95rem;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
-/* ---------- lists and figures ---------- */
-
-.v2-surface .v2-list {
-  display: grid;
-  gap: 10px;
-  max-width: 72ch;
-  margin: 16px 0 24px;
-  padding: 0;
-  list-style: none;
-}
-.v2-surface .v2-list li {
-  position: relative;
-  padding-left: 22px;
-  line-height: 1.65;
-}
-.v2-surface .v2-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: .66em;
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  background: var(--lq-claret);
-}
+/* ---------- figures ---------- */
 
 .v2-surface .v2-figure {
-  margin: 18px 0 26px;
-  padding: 10px;
+  margin: 28px 0 38px;
+  padding: 13px;
   border: 1px solid var(--lq-line);
-  border-radius: 13px;
+  border-radius: 14px;
   background: var(--lq-paper);
-  box-shadow: 0 10px 28px rgba(23, 33, 43, .06);
+  box-shadow: 0 12px 32px rgba(23, 33, 43, .08);
 }
 .v2-surface .v2-figure img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
-.v2-surface .v2-published {
-  margin-top: 30px;
-  font-size: .92rem;
-  color: var(--lq-ink-soft);
+/* ---------- when it was published ---------- */
+
+.v2-surface .page-content .article-body .v2-published {
+  margin: 54px 0 1.25em;
+  padding-top: 22px;
+  border-top: 1px solid var(--lq-line);
+  font-size: .88rem;
+  color: var(--lq-muted);
 }
 
 /* ---------- what came after the announcement ---------- */
@@ -134,4 +184,26 @@
 
 @media (max-width: 575px) {
   .v2-surface .v2-later-item { grid-template-columns: 1fr; gap: 3px; }
+}
+
+/* The announcement is not one of the long scholarly articles, so an italic
+   term in its running text stays in the page's own face. */
+.v2-surface .article-body em { font-family: inherit; }
+
+@media (max-width: 900px) {
+  .v2-surface .v2-h2.has-letter { gap: 12px; }
+  .v2-surface .v2-h2.has-letter::before {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 1.45rem;
+  }
+}
+
+@media (max-width: 420px) {
+  /* A long section name has to be allowed to break: the badge beside it
+     leaves little room at this width. */
+  .v2-surface .v2-h2.has-letter { word-break: break-word; overflow-wrap: anywhere; }
+  .v2-surface .page-content .article-body h3.v2-h3 { padding-left: 70px; word-break: break-word; }
+  .v2-surface .v2-h3::before { left: 12px; min-width: 34px; }
 }

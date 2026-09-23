@@ -43,13 +43,15 @@
       <p class="page-lede" data-i18n="dmLede">From source images to analytical and searchable dictionary data: a stage-by-stage account of the method we developed in BuildLQ.</p>
     </header>
 
-    <main class="page-content" data-controller="article">
+    <main class="page-content" data-controller="article" data-article-mode-value="decimal">
       <nav class="article-toc" data-article-target="toc" aria-labelledby="dmTocTitle">
         <button type="button" class="btn article-toc-toggle" data-action="click->article#toggle"
                 aria-expanded="false" aria-controls="dmTocList">
-          <span id="dmTocTitle" data-i18n="dmOnThisPage">On this page</span>
+          <span class="article-toc-title" data-i18n="dmOnThisPage">On this page</span>
+          <span class="article-toc-now" data-article-target="now"></span>
           <i data-feather="chevron-down" aria-hidden="true"></i>
         </button>
+        <p class="article-toc-title" id="dmTocTitle" data-i18n="dmOnThisPage">On this page</p>
         <ol class="article-toc-list" id="dmTocList" data-article-target="list"></ol>
       </nav>
 
@@ -345,7 +347,7 @@
         </figure>
         <p data-i18n="dmT119" data-i18n-html="1">Through the molecule icon that becomes active on cards selected as the <strong>Primary Value</strong>, we link that value to the relevant headword or headwords. We also establish linguistic links between headwords and the components of selected compound words and word groups within definitions. A point worth emphasizing is that we do not merely record that two concepts are ‘related’. We go further and specify the type of relationship. Even the direction of a relationship can change its type.</p>
         <p data-i18n="dmT120" data-i18n-html="1">We use the following relationship categories:</p>
-        <ul class="article-terms">
+        <ul>
           <li data-i18n="dmT121" data-i18n-html="1">Root</li>
           <li data-i18n="dmT122" data-i18n-html="1">Singular</li>
           <li data-i18n="dmT123" data-i18n-html="1">Same</li>
@@ -539,7 +541,7 @@
         <p class="article-bibliography" data-i18n="dmT238" data-i18n-html="1">Oja, Vilja, and Iris Metsmägi. “From a Dialect Dictionary to an Etymological One.” <em>Proceedings of the XVI EURALEX International Congress</em> (2014).</p>
         <p class="article-bibliography" data-i18n="dmT239" data-i18n-html="1">Şemseddin Sami. <em>Kâmûs-ı Türkî</em>. Vol. 1. Istanbul: İkdam Matbaası, 1899.</p>
         <section class="article-notes" id="notes">
-          <h2 class="article-h2" data-i18n="dmNotes">Notes</h2>
+          <h2 class="article-h2 visually-hidden" data-i18n="dmNotes">Notes</h2>
           <ol class="article-notelist">
             <li id="fn1" data-i18n="dmT240" data-i18n-html="1">On inflected forms becoming lexicalized and functioning as independent lexical items or headwords, see Nóra Ittzés, A magyar nyelv nagyszótárának lexikográfiai koncepciója, különös tekintettel a szemantika és a grammatika összefüggésére a szótárírásban [The Lexicographical Concept of the Comprehensive Dictionary of Hungarian, with Special Reference to the Interrelatedness of Semantics and Grammar in Lexicography] (PhD diss., University of Szeged, 2011), 52–53. For the lexicographical use of the term lexicalized inflected forms, see also Vilja Oja and Iris Metsmägi, “From a Dialect Dictionary to an Etymological One,” Proceedings of the XVI EURALEX International Congress (2014), 205.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
             <li id="fn2" data-i18n="dmT241" data-i18n-html="1">We generally classify the plural forms of Turkish words as <em>inherent inflection</em>. By contrast, we usually treat words borrowed from Arabic and Persian as <em>derivational</em>, even when they represent plural or otherwise inflected forms in their source languages. This is because many originally plural forms, such as <em>evliya</em> <strong><span data-direction="rtl">اولیا</span></strong><em>, evrak</em> <strong><span data-direction="rtl">اوراق</span></strong><em>,</em> and <em>evlat</em> <strong><span data-direction="rtl">اولاد</span></strong>, have acquired singular or more specialized meanings in Turkish and have moved away from the form–meaning relationship they had in the source language. We therefore base our classification not solely on a word’s morphological structure in the source language, but primarily on its established meaning and usage in Turkish.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>

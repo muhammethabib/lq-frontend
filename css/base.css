@@ -337,11 +337,17 @@ body {
 }
 
 .side-menu .side-menu-head {
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  padding: 16px;
+  padding: 16px 16px 14px;
   background: var(--lq-paper);
   border-bottom: 1px solid var(--lq-line);
 }
+/* The switch in the menu is the same control as the one in the top bar, but
+   it sits in a row of its own rather than in a strip, so it keeps the
+   reference's own line height there. */
+.side-menu .side-menu-head .language-option { line-height: normal; }
 .side-menu .side-menu-logo { display: block; min-width: 0; }
 .side-menu .side-menu-logo img { height: 45px; width: auto; display: block; }
 
@@ -397,10 +403,22 @@ body {
 .side-menu .side-link:hover,
 .side-menu .side-link[aria-expanded="true"] {
   background: var(--lq-paper);
-  border-color: var(--lq-line);
+  border-color: var(--lq-line-strong);
+  font-weight: 700;
   color: var(--lq-sapphire);
   box-shadow: 0 1px 4px rgba(8, 37, 103, .08);
 }
+/* The page being read is named in the menu, so the reader can see where they
+   are: its entry is lifted onto white and its mark is filled solid. */
+.side-menu .side-link.active {
+  background: var(--lq-paper);
+  border-color: var(--lq-line-strong);
+  font-weight: 700;
+  color: var(--lq-sapphire);
+  box-shadow: 0 1px 3px rgba(8, 37, 103, .06);
+}
+.side-menu .side-link:hover .side-year,
+.side-menu .side-link.active .side-year { color: #334155; font-weight: 500; }
 
 /* The marks are drawn solid: the body takes currentColor and the details
    inside them are knocked out in whatever the mark is sitting on, which is
@@ -420,12 +438,18 @@ body {
   transition: background .12s, color .12s, border-color .12s;
 }
 .side-menu .side-link:hover .side-icon,
-.side-menu .side-link.active .side-icon,
 .side-menu .side-link[aria-expanded="true"] .side-icon {
   --lq-cut: #eff6ff;
-  border-color: #cbd5e1;
+  border-color: var(--lq-line-strong);
   background: #eff6ff;
   color: var(--lq-sapphire);
+}
+.side-menu .side-link.active .side-icon {
+  --lq-cut: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  background: var(--lq-sapphire);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(8, 37, 103, .28);
 }
 
 .side-menu .side-year {

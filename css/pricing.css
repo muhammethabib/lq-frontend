@@ -6,6 +6,9 @@
 
 /* ---------- term switch ---------- */
 
+/* The plans stand a little clear of the opening, as the reference's do. */
+.pricing-surface .page-content > [data-controller="pricing"] { margin-top: 34px; }
+
 /* A segmented control rather than four separate buttons: the four terms are
    one choice, and the pressed one is the state of that choice. */
 .pricing-surface .term-switch {

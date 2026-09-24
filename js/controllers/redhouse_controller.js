@@ -100,6 +100,7 @@ class RedhouseController extends Stimulus.Controller {
     this.fill();
     this.markShared();
     this.markReadings();
+    this.markFallback();
     this.watchSections();
     // The sections are written here rather than in the template, so the
     // sweep comes after them; otherwise their own keys are never seen.
@@ -551,6 +552,75 @@ class RedhouseController extends Stimulus.Controller {
     });
   }
 
+  // ==================== the words the alignment has not reached ====================
+
+  // Beyond the words that were aligned by hand, every other word is still a
+  // way across: the cards say the same things in the same order, so the word
+  // in one card's line answers the word in the same place in another's. The
+  // backend's alignment will replace this; until it does the reader can look
+  // anywhere rather than only at the handful of words that were matched.
+  markFallback() {
+    (this.record.languages || []).forEach((one) => {
+      const card = this.element.querySelector(`[data-redhouse-card="${CSS.escape(one.id)}"]`);
+      if (!card) return;
+      this.slotsOf(card).forEach(([slot, root]) => this.wrapWords(root, slot, one.id));
+    });
+  }
+
+  // The lines of a card, named so the same line can be found in every card
+  slotsOf(card) {
+    const slots = [];
+    const named = { "[data-redhouse-shared]": "meta-0", "[data-redhouse-reading]": "meta-1",
+      "[data-redhouse-grammar]": "grammar" };
+    Object.keys(named).forEach((selector) => {
+      const one = card.querySelector(selector);
+      if (one) slots.push([named[selector], one]);
+    });
+    card.querySelectorAll("[data-redhouse-senses] > li").forEach((one, index) => {
+      slots.push([`def-${index}`, one]);
+    });
+    card.querySelectorAll("[data-redhouse-expressions] .redhouse-expression")
+      .forEach((block, outer) => {
+        block.querySelectorAll(".redhouse-meaning, .redhouse-subsenses li")
+          .forEach((one, inner) => slots.push([`exp-${outer}-${inner}`, one]));
+      });
+    return slots;
+  }
+
+  wrapWords(root, slot, language) {
+    const WORD = /[\p{L}\p{M}\u2018\u2019'\u02BF]+/gu;
+    const texts = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (!node.parentElement.closest(".redhouse-link, .redhouse-search")) texts.push(node);
+    }
+
+    let index = 0;
+    texts.forEach((text) => {
+      const value = text.nodeValue;
+      const fragment = document.createDocumentFragment();
+      let at = 0;
+      let match;
+      WORD.lastIndex = 0;
+      while ((match = WORD.exec(value))) {
+        if (match.index > at) fragment.appendChild(document.createTextNode(value.slice(at, match.index)));
+        const link = document.createElement("span");
+        link.className = "redhouse-link";
+        link.dataset.redhouseSlot = slot;
+        link.dataset.redhouseIndex = String(index);
+        link.dataset.redhouseLanguage = language;
+        link.textContent = match[0];
+        fragment.appendChild(link);
+        index += 1;
+        at = match.index + match[0].length;
+      }
+      if (!fragment.childNodes.length) return;
+      if (at < value.length) fragment.appendChild(document.createTextNode(value.slice(at)));
+      text.parentNode.replaceChild(fragment, text);
+    });
+  }
+
   bodyClick(event) {
     const link = event.target.closest(".redhouse-link");
     if (link && !link.closest(".is-editing")) {
@@ -561,26 +631,29 @@ class RedhouseController extends Stimulus.Controller {
     const row = event.target.closest("[data-redhouse-row]");
     if (row) {
       event.stopPropagation();
-      this.followRow(row.dataset.redhouseRowLanguage, row.dataset.redhouseRowConcept);
+      this.followRow(row.dataset.redhouseRowLanguage, row.dataset.redhouseRowConcept,
+        row.dataset.redhouseRowSlot, row.dataset.redhouseRowIndex);
       return;
     }
     this.closeEquivalents();
   }
 
   openEquivalents(link) {
-    const concept = (this.record.concepts || []).find((one) => one.key === link.dataset.redhouseConcept);
-    if (!concept) return;
+    const rows = link.dataset.redhouseConcept ? this.conceptRows(link) : this.slotRows(link);
+    if (!rows) return;
     const safe = window.LQ.escape;
     const here = link.dataset.redhouseLanguage;
     this.element.querySelectorAll(".redhouse-link").forEach((one) => one.classList.remove("is-open"));
     link.classList.add("is-open");
-    this.find("[data-redhouse-equivalents-rows]").innerHTML = (this.record.languages || []).map((one) => `
-      <button type="button" class="btn redhouse-equivalent${one.id === here ? " is-current" : ""}"
-              data-redhouse-row data-redhouse-row-language="${safe(one.id)}"
-              data-redhouse-row-concept="${safe(concept.key)}">
-        <span class="language-flag" data-flag="${safe(one.flag)}" aria-hidden="true"></span>
-        <span class="redhouse-equivalent-language">${safe(one.name)}</span>
-        <span class="redhouse-equivalent-value"${one.rtl ? ' data-direction="rtl"' : ""}>${safe((concept.values || {})[one.id] || "")}</span>
+    this.find("[data-redhouse-equivalents-rows]").innerHTML = rows.map((row) => `
+      <button type="button" class="btn redhouse-equivalent${row.id === here ? " is-current" : ""}"
+              data-redhouse-row data-redhouse-row-language="${safe(row.id)}"
+              data-redhouse-row-concept="${safe(row.concept)}"
+              data-redhouse-row-slot="${safe(row.slot)}"
+              data-redhouse-row-index="${safe(row.index)}">
+        <span class="language-flag" data-flag="${safe(row.flag)}" aria-hidden="true"></span>
+        <span class="redhouse-equivalent-language">${safe(row.name)}</span>
+        <span class="redhouse-equivalent-value"${row.rtl ? ' data-direction="rtl"' : ""}>${safe(row.value)}</span>
       </button>`).join("");
 
     const panel = this.find("[data-redhouse-equivalents]");
@@ -595,17 +668,46 @@ class RedhouseController extends Stimulus.Controller {
     window.LQ.refreshDynamicContent(panel);
   }
 
+  // A word that was aligned by hand: every language's own word for it
+  conceptRows(link) {
+    const concept = (this.record.concepts || []).find((one) => one.key === link.dataset.redhouseConcept);
+    if (!concept) return null;
+    return (this.record.languages || []).map((one) => ({
+      id: one.id, name: one.name, flag: one.flag, rtl: one.rtl,
+      value: (concept.values || {})[one.id] || "", concept: concept.key, slot: "", index: ""
+    }));
+  }
+
+  // A word that was not: the word standing in the same place in each card
+  slotRows(link) {
+    const slot = link.dataset.redhouseSlot;
+    const index = link.dataset.redhouseIndex;
+    if (!slot) return null;
+    return (this.record.languages || []).map((one) => {
+      const word = this.element.querySelector(
+        `[data-redhouse-card="${CSS.escape(one.id)}"] ` +
+        `[data-redhouse-slot="${CSS.escape(slot)}"][data-redhouse-index="${CSS.escape(index)}"]`);
+      return {
+        id: one.id, name: one.name, flag: one.flag, rtl: one.rtl,
+        value: word ? word.textContent : "", concept: "", slot, index
+      };
+    });
+  }
+
   closeEquivalents() {
     const panel = this.find("[data-redhouse-equivalents]");
     if (panel) panel.hidden = true;
     this.element.querySelectorAll(".redhouse-link").forEach((one) => one.classList.remove("is-open"));
   }
 
-  followRow(language, concept) {
+  followRow(language, concept, slot, index) {
     this.closeEquivalents();
     const section = this.openSection(language);
     if (!section) return;
-    const target = section.querySelector(`[data-redhouse-concept="${CSS.escape(concept)}"]`);
+    const target = slot
+      ? section.querySelector(
+        `[data-redhouse-slot="${CSS.escape(slot)}"][data-redhouse-index="${CSS.escape(index)}"]`)
+      : section.querySelector(`[data-redhouse-concept="${CSS.escape(concept)}"]`);
     if (!target) return;
     target.scrollIntoView({ behavior: "smooth", block: "center" });
     target.classList.add("is-found");

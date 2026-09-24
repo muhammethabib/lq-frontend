@@ -215,10 +215,10 @@
 .ottoman-keyboard .key[data-kind="joiner"] {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
   direction: ltr;
-  unicode-bidi: isolate;
-  background: var(--special-face);
-  border-color: var(--special-edge);
+  unicode-bidi: bidi-override;
 }
 
 /* The one key on the board that is not a letter: it leads to the other
@@ -308,29 +308,48 @@
 .tooltip .switch-tip-name { display: block; white-space: nowrap; }
 
 /* What a skeleton key stands for, shown as the letters themselves. */
-.tooltip .key-matches-label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  opacity: 0.7;
+/* The letters a skeleton answers for, shown as themselves: the label over a
+   row of round pills, in the reference's own measure. */
+.tooltip .tooltip-inner:has(.key-matches) {
+  /* The letters stand in one row however many they are, so the width a
+     tooltip is normally held to is lifted here. */
+  max-width: none;
+  padding: 6px 8px 5px;
+  border-radius: 7px;
 }
 
+.tooltip .key-matches-label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .3px;
+  color: rgba(255, 255, 255, .8);
+}
+
+/* The letters read right to left, as they are recited */
 .tooltip .key-matches {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  align-items: center;
   justify-content: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .tooltip .key-match {
-  min-width: 22px;
-  padding: 2px 5px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 9px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .15);
   font-family: "Noto Naskh Arabic", serif;
-  font-size: 15px;
-  line-height: 1.2;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #fff;
 }

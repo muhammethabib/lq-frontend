@@ -90,7 +90,8 @@ window.LQ_TRANSLATIONS = {
     decoderLetter: "Harf",
     decoderLetters: "Harfler",
     decoderInsertSlot: "Buraya harf ekle",
-    decoderRemoveSlot: "Bu harfi kaldır",
+    decoderRemoveSlot: "Kutuyu sil",
+    decoderRemoveSlotAll: "Tüm kutuları sil",
     decoderAddAlternative: "Şu harf de olabilir",
     decoderRemoveAlternative: "Bu seçeneği kaldır",
     joinSeparate: "Harfler ayrı yazılmış",
@@ -124,7 +125,7 @@ window.LQ_TRANSLATIONS = {
     keyMatches: "Karşılıkları",
     wildcardAny: "Bu harfi okuyamıyorum",
     wildcardMany: "Kaç harf var bilmiyorum",
-    zeroWidthSpace: "Ayrı görünen ama aynı kelimeye ait harfler",
+    zeroWidthSpace: "Birleşmesi gereken harfler arasında<br>boşluk var, ama aynı kelime",
 
     // --- results header ---
     searchResultsLabel: "Arama Sonuçları",

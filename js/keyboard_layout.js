@@ -23,7 +23,7 @@ window.LQ_KEYBOARD_LAYOUT = {
     // on the key, in the slot and in the pattern pill, drawn rather than typed
     // because no font has this star at this weight.
     any: { symbol: "٭", labelKey: "wildcardAny", label: "Unknown letter", mark: '<svg class="wildcard-star" viewBox="17.5 17.5 11 11" aria-hidden="true"><g transform="matrix(0.54,0,0,0.4398,-65.821,-15.934)"><path fill="currentColor" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round" d="M168.073,76.772L170.466,78.58L166.877,86.716L174.055,86.716L174.055,90.332L166.877,90.332L170.466,98.468L168.073,100.276L164.484,92.14L160.895,100.276L158.502,98.468L162.091,90.332L154.913,90.332L154.913,86.716L162.091,86.716L158.502,78.58L160.895,76.772L164.484,84.908L168.073,76.772Z"/></g></svg>' },
-    many: { symbol: "∞", labelKey: "wildcardMany", label: "Unknown number of letters" }
+    many: { symbol: "∞", labelKey: "wildcardMany", label: "Unknown number<br>of letters" }
   },
 
   basic: [
@@ -162,7 +162,8 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ى" },
       { type: "letter", char: "ئ" },
       // Zero-width space: the strokes look separated, but it is one word
-      { type: "joiner", char: "​", face: "][", labelKey: "zeroWidthSpace" }
+      { type: "joiner", char: "​", face: "][", labelKey: "zeroWidthSpace",
+        label: "Letters that should connect have<br>a space between them, but same word" }
     ]
   ]
 };

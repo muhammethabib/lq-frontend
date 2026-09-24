@@ -102,10 +102,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.wildcardRowTarget.innerHTML = Object.keys(wildcards).map((name) => {
       const wildcard = wildcards[name];
       const label = this.translate(wildcard.labelKey, wildcard.label || name);
+      // The label may break itself over two lines; the reader who hears it
+      // rather than sees it gets the line as one sentence.
+      const spoken = label.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
       return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
         data-action="pointerdown->ottoman-keyboard#pressWildcard"
-        data-bs-toggle="tooltip" data-bs-title="${this.escape(label)}"
-        aria-label="${this.escape(label)}">${wildcard.mark || this.escape(wildcard.symbol)}</button>`;
+        data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(label)}"
+        aria-label="${this.escape(spoken)}">${wildcard.mark || this.escape(wildcard.symbol)}</button>`;
     }).join("");
   }
 
@@ -150,7 +153,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       ? `<span class="key-matches-label">${this.escape(this.translate("keyMatches", "Matches"))}</span>` +
         `<span class="key-matches">${key.matches.map((letter) =>
           `<span class="key-match">${this.escape(letter)}</span>`).join("")}</span>`
-      : (key.labelKey ? this.escape(this.translate(key.labelKey, key.face || key.char)) : "");
+      : (key.labelKey ? this.escape(this.translate(key.labelKey, key.label || key.face || key.char)) : "");
 
     return `<button type="button" class="btn key"
       data-kind="${key.type}"${key.dots ? ` data-dots="${key.dots}"` : ""}

@@ -135,7 +135,6 @@ class WordDecoderController extends Stimulus.Controller {
   // rather than rebuilding the strip and losing what the reader has entered.
   relabelStrip() {
     const labels = [
-      [".slot-remove", "decoderRemoveSlot", "Remove this letter"],
       [".cell-add", "decoderAddAlternative", "It could also be this letter"],
       [".cell-remove", "decoderRemoveAlternative", "Remove this alternative"],
       [".gap-insert", "decoderInsertSlot", "Insert a letter here"]
@@ -148,6 +147,7 @@ class WordDecoderController extends Stimulus.Controller {
     this.stripTarget.querySelectorAll(".gap-join").forEach((join) => {
       this.setTooltip(join, this.joinLabel(join.dataset.join));
     });
+    this.stripTarget.querySelectorAll(".slot").forEach((slot) => this.relabelSlotRemove(slot));
   }
 
   // A Bootstrap tooltip is not read out, so the same words are also the
@@ -178,8 +178,8 @@ class WordDecoderController extends Stimulus.Controller {
       <div class="slot">
         <div class="slot-frame">${this.cellHtml(char)}</div>
         <button type="button" class="btn slot-remove" data-action="click->word-decoder#removeSlot"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveSlot", "Remove this letter"))}"
-                aria-label="${this.escape(this.translate("decoderRemoveSlot", "Remove this letter"))}">
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.slotRemoveLabel(1))}"
+                aria-label="${this.escape(this.slotRemoveLabel(1))}">
           <i data-feather="trash-2"></i>
         </button>
       </div>`;
@@ -267,10 +267,25 @@ class WordDecoderController extends Stimulus.Controller {
     this.refreshClear();
   }
 
+  // The button under a box takes the whole box away, and a box that has been
+  // given alternatives takes all of them, so it says which it is.
+  slotRemoveLabel(count) {
+    return count > 1
+      ? this.translate("decoderRemoveSlotAll", "Delete all boxes")
+      : this.translate("decoderRemoveSlot", "Delete box");
+  }
+
+  relabelSlotRemove(slot) {
+    const button = slot.querySelector(".slot-remove");
+    if (!button) return;
+    this.setTooltip(button, this.slotRemoveLabel(slot.querySelectorAll(".slot-cell").length));
+  }
+
   addAlternative(event) {
     const frame = event.currentTarget.closest(".slot-frame");
     frame.insertAdjacentHTML("beforeend", this.cellHtml());
     window.LQ.refreshDynamicContent(frame);
+    this.relabelSlotRemove(frame.closest(".slot"));
     const cells = frame.querySelectorAll(".slot-input");
     cells[cells.length - 1].focus();
   }
@@ -280,6 +295,7 @@ class WordDecoderController extends Stimulus.Controller {
     const frame = cell.closest(".slot-frame");
     window.LQ.disposeTooltips(cell);
     cell.remove();
+    this.relabelSlotRemove(frame.closest(".slot"));
     // A slot with no cells left is no longer a letter position
     if (!frame.querySelector(".slot-cell")) {
       const slot = frame.closest(".slot");

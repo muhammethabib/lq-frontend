@@ -493,6 +493,11 @@
    same grey. The pill then reads as the strip above it. */
 .word-decoder-surface .pattern-slot[data-kind="alternatives"] {
   align-items: stretch;
+  /* The pill runs right to left, but a box's own fields run the other way --
+     the strip lays them out left to right -- and the chip stands for that
+     box, so it keeps the box's order and the letters appear in it exactly
+     where they appear up there. */
+  direction: ltr;
   margin: 0 3px;
   border: 1px solid #f0b6c6;
   border-radius: 10px;

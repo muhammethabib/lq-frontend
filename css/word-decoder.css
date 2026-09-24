@@ -487,15 +487,24 @@
   font-size: 27px;
   color: var(--lq-claret);
 }
-/* Two letters offered for one position stand at the size of every other
-   letter in the pill; the stroke between them is thin, light and set in the
-   interface face, so it parts them without reading as a letter itself. */
-.word-decoder-surface .pattern-alt-sep {
-  font-family: 'Inter', sans-serif;
-  font-size: 23px;
-  font-weight: 300;
-  color: #d8a5bb;
-  margin: 0 2px;
+/* A box that offers several letters for one position is drawn in the pill as
+   that box: a chip the height of the letters, its letters at full size, with
+   a hairline between them. The pill then reads as the strip above it. */
+.word-decoder-surface .pattern-slot[data-kind="alternatives"] {
+  align-items: stretch;
+  margin: 0 3px;
+  border: 1px solid #f0b6c6;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+.word-decoder-surface .pattern-slot[data-kind="alternatives"] > span {
+  display: flex;
+  align-items: center;
+  padding: 0 7px;
+}
+.word-decoder-surface .pattern-slot[data-kind="alternatives"] > span + span {
+  border-right: 1px solid #f7d3dd;
 }
 .word-decoder-surface .pattern-slot .wildcard-star {
   /* 9.6 of box over the eleven units that hold the arms gives 9.03 of arm,

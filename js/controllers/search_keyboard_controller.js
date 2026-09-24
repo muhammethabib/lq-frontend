@@ -31,13 +31,16 @@ class SearchKeyboardController extends Stimulus.Controller {
   static targets = ["rows", "hint", "orderButton"]
   static values = {
     open: { type: Boolean, default: false },
-    order: { type: String, default: "keyboard" }   // "keyboard" | "alphabetical"
+    order: { type: String, default: "alphabetical" }   // "alphabetical" | "keyboard"
   }
 
-  // The remembered order is read before the first render, and before the
-  // value's own first callback, which would otherwise write the default over it.
+  // The board opens in the alphabet's own order, elif be te, because that is
+  // the order a reader of Ottoman looks for a letter in. A reader who asks for
+  // their own keyboard's order keeps it: the remembered order is read before
+  // the first render, and before the value's own first callback, which would
+  // otherwise write the default over it.
   initialize() {
-    this.orderValue = this.rememberedOrder() || "keyboard";
+    this.orderValue = this.rememberedOrder() || "alphabetical";
   }
 
   connect() {

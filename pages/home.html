@@ -1358,7 +1358,7 @@
 
   <!-- The search bar's own Ottoman keyboard: laid out like the keyboard in
        front of the reader, so its keys and theirs agree. -->
-  <div class="search-keyboard" data-controller="search-keyboard" hidden
+  <div class="search-keyboard is-alphabetical" data-controller="search-keyboard" hidden
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
     <div class="search-keyboard-bar"
          data-search-keyboard-target="hint"
@@ -1383,10 +1383,10 @@
         <button type="button" class="btn search-keyboard-button search-keyboard-order"
                 data-search-keyboard-target="orderButton"
                 data-action="pointerdown->search-keyboard#toggleOrder"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardOrderAlphabetical"
-                title="Alphabetical order (elif, be, te…)"
-                aria-label="Alphabetical order (elif, be, te…)" data-i18n-aria="keyboardOrderAlphabetical"
-                aria-pressed="false">
+                data-bs-toggle="tooltip" data-i18n-title="keyboardOrderKeyboard"
+                title="Back to keyboard layout"
+                aria-label="Back to keyboard layout" data-i18n-aria="keyboardOrderKeyboard"
+                aria-pressed="true">
           <span class="search-keyboard-order-face">
             <span class="search-keyboard-order-ottoman" aria-hidden="true">ا ب ت</span>
             <span class="search-keyboard-order-latin" aria-hidden="true">Q W E</span>

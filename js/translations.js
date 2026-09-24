@@ -1422,6 +1422,7 @@ window.LQ_TRANSLATIONS = {
     ekualOnTitle: "Kampüs ağından",
     ekualOnText: "Kampüs ağı üzerinden bağlandığınızda hesap dahi açmadan tüm içeriklere doğrudan erişebilirsiniz.",
     ekualCta: "Hesabınızı Oluşturun",
-    ekualLater: "Daha sonra"
+    ekualLater: "Daha sonra",
+    ekualNever: "Bir daha gösterme"
   }
 };

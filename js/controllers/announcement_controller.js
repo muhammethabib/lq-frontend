@@ -7,13 +7,24 @@
 //
 // It follows the modal rule: an empty container on the page, the markup in a
 // template, filled in before Bootstrap shows it.
+//
+// A reader who has read it can say so: "Don't show again" remembers the
+// choice, and the announcement opens no more. The New Visitor screen of the
+// switcher overrides that, because it is there to be looked at.
+
+// Where the reader's choice is kept until the integration puts it on the
+// account. It is only a preference, so a browser that refuses storage simply
+// shows the announcement again.
+const ANNOUNCEMENT_DISMISSED_KEY = "lq-announcement-dismissed";
 
 class AnnouncementController extends Stimulus.Controller {
   static values = { template: String }
 
   connect() {
     this.onViewState = (event) => {
-      if (event.detail.state === "new-visitor") this.open();
+      // The switcher asks for it to be looked at, so it opens whatever the
+      // reader has said before.
+      if (event.detail.state === "new-visitor") this.open({ force: true });
       else this.close();
     };
     document.addEventListener("view-state:change", this.onViewState);
@@ -29,7 +40,8 @@ class AnnouncementController extends Stimulus.Controller {
 
   isOpen() { return this.element.classList.contains("show"); }
 
-  open() {
+  open({ force = false } = {}) {
+    if (!force && this.dismissed()) return;
     this.render();
     this.modal = bootstrap.Modal.getOrCreateInstance(this.element);
     // The reference lets the page settle before the announcement arrives, so
@@ -60,6 +72,22 @@ class AnnouncementController extends Stimulus.Controller {
     this.element.innerHTML = template.innerHTML;
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(this.element);
     window.LQ.refreshDynamicContent(this.element);
+  }
+
+  // The reader has read it and does not want it again.
+  dismissForever() {
+    try {
+      localStorage.setItem(ANNOUNCEMENT_DISMISSED_KEY, "1");
+    } catch (error) {
+      // Storage can be refused; the choice then lasts for this visit only
+    }
+    this.close();
+  }
+
+  dismissed() {
+    try {
+      return localStorage.getItem(ANNOUNCEMENT_DISMISSED_KEY) === "1";
+    } catch (error) { return false; }
   }
 
   // Creating an account is the point of the announcement, so it hands over to

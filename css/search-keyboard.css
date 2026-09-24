@@ -187,7 +187,9 @@
 .search-keyboard .search-key[data-family="ayn"] { --family-face: #fffaf0; --family-edge: #f4e5c4; --family-hover: #fdf4e1; }
 .search-keyboard .search-key[data-family="fe"] { --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; }
 .search-keyboard .search-key[data-family="kef"] { --family-face: #fbf3e0; --family-edge: #ecd9a8; --family-hover: #f8ebd0; }
-.search-keyboard .search-key[data-family="he"] { --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; }
+.search-keyboard .search-key[data-family="vav"] { --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; }
+.search-keyboard .search-key[data-family="he"] { --family-face: #f9efd9; --family-edge: #e8d49c; --family-hover: #f5e6c6; }
+.search-keyboard .search-key[data-family="ye"] { --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; }
 
 /* ---------------------------------------------------- the keys */
 

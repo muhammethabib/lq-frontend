@@ -148,6 +148,7 @@
 .announcement-modal .announcement-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
 }
 .announcement-modal .announcement-cta {
@@ -184,6 +185,33 @@
   color: #5d718c;
 }
 .announcement-modal .announcement-later:hover { color: #475569; }
+
+/* Quieter than the two answers to the offer, and at the far corner, so it is
+   there for the reader who wants it and out of the way of the one who does
+   not. */
+.announcement-modal .announcement-never {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+.announcement-modal .announcement-never:hover {
+  border-color: var(--lq-line);
+  background: var(--lq-paper-soft);
+  color: #5d718c;
+}
+.announcement-modal .announcement-never svg { width: 14px; height: 14px; }
+
+@media (max-width: 620px) {
+  .announcement-modal .announcement-never { margin-left: 0; }
+}
 
 @media (max-width: 620px) {
   .announcement-modal .modal-content { padding: 28px 22px 22px; }

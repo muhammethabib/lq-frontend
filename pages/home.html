@@ -1663,6 +1663,14 @@
           </button>
           <button type="button" class="btn announcement-later" data-bs-dismiss="modal"
                   data-i18n="ekualLater">Later</button>
+
+          <!-- The reader who has read it and does not want it again. It sits
+               apart from the two answers to the offer, at the far corner. -->
+          <button type="button" class="btn announcement-never"
+                  data-action="click->announcement#dismissForever">
+            <i data-feather="eye-off" aria-hidden="true"></i>
+            <span data-i18n="ekualNever">Don't show again</span>
+          </button>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@
   <!-- Stylesheets: fonts, Bootstrap, shared tokens, then this feature -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600;1,700&family=Inter+Tight:wght@600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600;1,700&family=Inter+Tight:wght@600&display=swap">
   <link rel="stylesheet" href="../vendor/bootstrap.min.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/account-window.css">
@@ -1312,7 +1312,8 @@
       <span class="keyboard-bar-left">
         <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
                 data-action="pointerdown->ottoman-keyboard#clearAll"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardClearAll" title="Clear all boxes"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardClearAll" title="Clear all boxes"
                 aria-label="Clear all boxes" data-i18n-aria="keyboardClearAll">
           <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
         </button>
@@ -1327,18 +1328,22 @@
       <span class="keyboard-bar-right">
         <button type="button" class="btn keyboard-backspace"
                 data-action="pointerdown->ottoman-keyboard#backspace"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete character"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip keyboard-tip-nowrap"
+                data-i18n-title="keyboardBackspace" title="Delete character"
                 aria-label="Delete character" data-i18n-aria="keyboardBackspace">&#x2326;</button>
         <button type="button" class="btn keyboard-close"
                 data-action="pointerdown->ottoman-keyboard#close"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardClose" title="Close"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardClose" title="Close"
                 aria-label="Close" data-i18n-aria="keyboardClose">&#x2715;</button>
       </span>
     </div>
 
     <!-- Both panels are written by the controller from js/keyboard_layout.js -->
-    <div class="keyboard-panel is-active" data-ottoman-keyboard-target="basicPanel"></div>
-    <div class="keyboard-panel" data-ottoman-keyboard-target="advancedPanel"></div>
+    <div class="keyboard-panel is-active" data-panel="basic"
+         data-ottoman-keyboard-target="basicPanel"></div>
+    <div class="keyboard-panel" data-panel="advanced"
+         data-ottoman-keyboard-target="advancedPanel"></div>
   </div>
 
 

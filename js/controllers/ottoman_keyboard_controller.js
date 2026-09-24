@@ -108,6 +108,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
         data-action="pointerdown->ottoman-keyboard#pressWildcard"
         data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(label)}"
+        data-bs-custom-class="keyboard-tip keyboard-tip-nowrap"
         aria-label="${this.escape(spoken)}">${wildcard.mark || this.escape(wildcard.symbol)}</button>`;
     }).join("");
   }
@@ -192,7 +193,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const arrow = advanced ? ARROW_LEFT : ARROW_RIGHT;
     return `<button type="button" class="btn panel-switch" data-panel="${target}"
       data-action="pointerdown->ottoman-keyboard#switchPanel"
-      data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(title)}">
+      data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="keyboard-tip"
+      data-bs-title="${this.escape(title)}">
       <span class="panel-switch-face" aria-hidden="true">${KEYBOARD_GLYPH}</span>
       <span class="panel-switch-label">${advanced ? arrow : ""}${this.escape(label)}${advanced ? "" : arrow}</span>
     </button>`;

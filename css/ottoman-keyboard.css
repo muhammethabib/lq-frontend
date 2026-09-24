@@ -247,14 +247,17 @@
 }
 .ottoman-keyboard .key[data-kind="rasm"]:not([data-family]):hover { background: var(--lq-lat-border); }
 
-/* A letter that stands for more than one spelling and belongs to no family */
-.ottoman-keyboard .key[data-kind="letter"][data-matches]:not([data-family]) {
-  background: var(--special-face);
-  border-color: #bfdbfe;
-}
-.ottoman-keyboard .key[data-kind="letter"][data-matches]:not([data-family]):hover {
-  background: var(--lq-lat-border);
-  border-color: var(--special-edge);
+/* A letter outside every family keeps the plain ground, even when it
+   answers for more than one spelling.
+   The elif is a family only where its family is: the basic board carries
+   one elif key and the advanced board carries all four spellings, so on the
+   basic board the elif takes the plain ground of the hemze standing beside
+   it, and the two read alike. */
+.ottoman-keyboard .keyboard-panel[data-panel="basic"] .key[data-family="elif"] {
+  --family-face: var(--key-face);
+  --family-edge: var(--key-edge);
+  --family-hover: var(--key-hover);
+  --family-edge-firm: var(--key-hover-edge);
 }
 
 
@@ -333,14 +336,25 @@
 
 /* Where the key that leads to the other keyboard leads: the lead-in above,
    the name of the keyboard below. */
+/* The keyboard's own controls take the tooltip the old site gives them: as
+   narrow as its longest word, up to three hundred pixels, so a short label
+   comes up as a small block rather than a long strip. The three labels the
+   old site marks nowrap -- the two wildcards and the erase key -- stay on
+   one line, and then the same rule makes the tooltip exactly as wide as
+   the words. */
+.tooltip.keyboard-tip .tooltip-inner { width: min-content; }
+.tooltip.keyboard-tip-nowrap .tooltip-inner { white-space: nowrap; }
+
 .tooltip .switch-tip-lead {
   display: block;
   margin-bottom: 2px;
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: .1em;
+  /* The lead sits on the tooltip's own line height rather than the text's */
+  line-height: 1.4;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  opacity: .7;
+  color: #94a3b8;
 }
 .tooltip .switch-tip-name { display: block; white-space: nowrap; }
 

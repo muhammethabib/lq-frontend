@@ -126,10 +126,13 @@
   outline: 0;
   background: transparent;
   text-align: center;
-  /* The letter is set in the page's own face, which hands the Ottoman
-     characters to the system's Arabic type exactly as the rest of the
-     interface does. */
-  font-family: inherit;
+  /* The letter a key writes lands in the box wearing the face the key wore.
+     The old site leaves the box on the interface's own face, where the
+     system's Arabic type answers for the letter and it changes shape
+     between the key pressed and the box it lands in; here the Ottoman face
+     carries it the whole way. */
+  font-family: 'Noto Naskh Arabic', serif;
+  direction: ltr;
   font-size: 24px;
   font-weight: 700;
   line-height: inherit;

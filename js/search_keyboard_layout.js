@@ -25,9 +25,9 @@
 // elif, be, pe, te..., three rows read from the right. It is the alphabet, so
 // it holds each letter once: the detached he, which a Turkish keyboard still
 // writes on its E key, would be a second guzel he standing beside the first.
-// After the alphabet come the two letters that carry a hemze -- vav and ye --
-// each standing beside the letter it is carried on, and written with the
-// Shift of that letter's key.
+// After the alphabet come the three letters that carry a hemze -- vav, he and
+// ye -- each standing beside the letter it is carried on, and written with
+// the Shift of that letter's key.
 
 window.LQ_SEARCH_KEYBOARD = {
   // Which letters share a skeleton. In the alphabet's order the families fall
@@ -48,15 +48,15 @@ window.LQ_SEARCH_KEYBOARD = {
     "ف": "fe", "ق": "fe",
     "ك": "kef", "گ": "kef", "ڭ": "kef",
     "و": "vav", "ؤ": "vav",
-    "ه": "he", "ة": "he",
+    "ه": "he", "ة": "he", "ۀ": "he",
     "ى": "ye", "_ye_": "ye", "ئ": "ye"
   },
 
   alphabetical: {
     rows: [
       ["ا", "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ", "ر", "ز"],
-      ["ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك"],
-      ["گ", "ڭ", "ل", "م", "ن", "و", "ؤ", "ه", "ة", "_ye_", "ئ", "ء"]
+      ["ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "گ"],
+      ["ڭ", "ل", "م", "ن", "و", "ؤ", "ه", "ة", "ۀ", "_ye_", "ئ", "ء"]
     ]
   },
 
@@ -69,7 +69,7 @@ window.LQ_SEARCH_KEYBOARD = {
       z: "ز", x: "خ", c: "چ", v: "و", b: "ب", n: "ن", m: "م",
       A: "ء", T: "ط", G: "غ", S: "ش", D: "ض", H: "ح",
       K: "گ", N: "ڭ", Z: "ظ",
-      W: "ؤ", Y: "ئ"
+      W: "ؤ", Y: "ئ", E: "ۀ"
     },
     rows: [
       ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -98,7 +98,7 @@ window.LQ_SEARCH_KEYBOARD = {
       z: "ز", x: "خ", c: "ج", v: "و", b: "ب",
       n: "ن", m: "م", "ç": "چ", "ö": "و",
       T: "ط", A: "ء", N: "ڭ", S: "ص", H: "ح", D: "ض", Z: "ظ",
-      W: "ؤ", Y: "ئ"
+      W: "ؤ", Y: "ئ", E: "ۀ"
     },
     rows: [
       ["q", "w", "e", "r", "t", "y", "u", "ı", "o", "p", "ğ", "ü"],

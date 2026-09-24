@@ -60,6 +60,11 @@
   --lq-paper-soft: #f8fafc;
   --lq-focus-latin: #1c449c;
 
+  /* The open and closed hands the reference mock moves its floating panels
+     with. Both keyboards use them, so they are drawn once here. */
+  --lq-cursor-grab: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2222%22 height=%2222%22 viewBox=%220 0 180 180%22><path d=%22M69.21,105.048C69.21,105.048 69.327,26.892 69.372,25.83C70.047,12.078 88.335,11.7 89.37,26.838C89.424,27.576 89.478,28.575 89.442,29.385L89.442,83.313L89.361,21.501C89.649,7.137 107.541,6.165 109.215,21.537L109.179,83.385L109.206,30.951C108.441,17.019 127.503,16.641 128.538,30.159C128.61,31.095 128.763,83.115 128.763,83.115L128.727,51.795C128.835,37.683 147.681,36.342 148.428,51.795L148.689,114.984C148.689,114.984 148.599,118.116 148.284,121.311C148.014,123.957 147.546,126.612 147.249,127.773C138.141,164.196 99.0,172.584 74.889,150.741C73.539,149.517 68.679,144.828 67.743,143.658C55.584,128.475 47.151,114.282 39.753,100.359C33.075,89.208 44.685,78.507 55.206,89.226L69.21,105.048Z%22 fill=%22white%22 stroke=%22black%22 stroke-width=%225%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>') 11 21, grab;
+  --lq-cursor-grabbing: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2222%22 height=%2222%22 viewBox=%220 0 180 180%22><path d=%22M69.39,96.012L69.363,70.128C69.093,57.879 89.19,57.015 89.424,70.2L89.442,83.313L89.424,70.2C89.334,69.03 89.415,67.995 89.397,66.888C89.118,50.139 109.152,48.24 109.188,67.023L109.179,83.385L109.188,69.822C108.414,55.89 127.71,55.089 128.745,68.607C128.817,69.543 128.763,83.115 128.763,83.115L128.781,76.554C128.889,64.458 148.212,63.099 148.959,76.284L148.689,114.984C148.689,114.984 148.599,118.116 148.284,121.311C148.014,123.957 147.546,126.612 147.249,127.773C138.141,164.196 99.0,172.584 74.889,150.741C73.539,149.517 68.76,144.756 67.743,143.658C54.981,129.96 49.797,117.54 47.52,104.265C45.702,93.636 57.168,67.824 69.327,78.714L69.39,96.012Z%22 fill=%22white%22 stroke=%22black%22 stroke-width=%225%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>') 11 21, grabbing;
+
   --lq-shadow: 0 22px 60px -30px rgba(8, 37, 103, 0.35);
   --lq-max-width: 1440px;
 
@@ -754,4 +759,120 @@ body.has-panel-room::after {
   max-height: 100%;
   border-radius: 10px;
   background: var(--lq-paper);
+}
+
+/* =========================================================
+   Where the reader put a keyboard
+   Both keyboards float, both are dragged by their top bar and
+   both offer to keep the place they were left in. The controls
+   that do it are the same on either, so they are drawn once
+   here rather than twice in the two keyboard stylesheets.
+   ========================================================= */
+
+/* The pin sits in the bar beside the delete and close keys and wears their
+   chrome. It appears only once the panel has been moved: a keyboard nobody
+   has touched has nothing to keep. */
+.keyboard-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 6px;
+  background: var(--lq-paper-soft);
+  color: #94a3b8;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.keyboard-pin svg { width: 12px; height: 12px; }
+/* The attribute has to be spelled out: the browser's own [hidden] rule loses
+   to any author rule that sets display, and both of these set one. */
+.keyboard-pin[hidden],
+.keyboard-recall[hidden] { display: none; }
+.keyboard-pin:hover {
+  background: var(--lq-osm-bg);
+  border-color: #fda4af;
+  color: var(--lq-claret);
+}
+/* Kept: the panel opens here every visit until the reader says otherwise, so
+   the control reads as on rather than as one more grey key. */
+.keyboard-pin.is-kept {
+  border-color: var(--lq-claret);
+  background: var(--lq-claret);
+  color: var(--lq-paper);
+}
+.keyboard-pin.is-kept:hover { background: var(--lq-claret-hover); border-color: var(--lq-claret-hover); }
+
+/* The offer. It hangs off the panel rather than sitting inside it, so the
+   keys keep their room and the panel keeps its size. */
+.keyboard-recall {
+  position: absolute;
+  top: calc(100% + 10px);
+  /* Under the pin rather than under the middle of the panel: the card is
+     about that control, and the reader's eye goes to one from the other. */
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: min(430px, calc(100vw - 24px));
+  padding: 8px 10px 8px 12px;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: var(--lq-paper);
+  box-shadow: 0 12px 30px -12px rgba(8, 37, 103, .35);
+  animation: keyboard-recall-in .22s ease-out both;
+}
+/* Over the panel instead, when under it would be off the bottom of the window */
+.keyboard-recall.is-above { top: auto; bottom: calc(100% + 10px); }
+
+.keyboard-recall-mark { display: inline-flex; color: var(--lq-claret); }
+.keyboard-recall-mark svg { width: 14px; height: 14px; }
+
+.keyboard-recall-text {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--lq-ink);
+}
+
+.keyboard-recall-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+
+.keyboard-recall-keep,
+.keyboard-recall-skip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.keyboard-recall-keep {
+  border: 1px solid var(--lq-claret);
+  background: var(--lq-claret);
+  color: var(--lq-paper);
+}
+.keyboard-recall-keep:hover { background: var(--lq-claret-hover); border-color: var(--lq-claret-hover); color: var(--lq-paper); }
+.keyboard-recall-skip {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--lq-muted);
+}
+.keyboard-recall-skip:hover { background: var(--lq-soft); color: var(--lq-ink); }
+
+@keyframes keyboard-recall-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-recall { animation: none; }
+}
+
+/* On a narrow screen both keyboards are pinned to the foot of the window and
+   there is nowhere to move them to, so neither control has anything to say. */
+@media (max-width: 767.98px) {
+  .keyboard-pin,
+  .keyboard-recall { display: none; }
 }

@@ -14,7 +14,9 @@
 // decides what to do with it.
 //
 // The header is also the handle: the panel can be dragged out of the way and
-// springs back if it is let go near where it started.
+// springs back if it is let go near where it started. Anywhere else it is let
+// go is where it stays -- for the session, and across visits if the reader
+// asks for that. js/keyboard_placement.js holds the decision.
 //
 // The keys stand in the alphabet's own order, elif, be, pe, te..., because
 // that is the order a reader of Ottoman looks for a letter in. Each key still
@@ -24,8 +26,20 @@
 // How long a key stays down after the reader's own key wrote its letter.
 const SEARCH_ECHO_MS = 170;
 
+// Let go this near the place the page picked and the panel is going back
+// there, not being placed somewhere new.
+const SEARCH_SNAP_PX = 40;
+
+// The name this panel's place is held under, and the width below which the
+// stylesheet docks it to the foot of the screen instead.
+const SEARCH_KEYBOARD_PLACE = "search";
+const SEARCH_KEYBOARD_DOCK_QUERY = "(max-width: 767.98px)";
+
+// The room the card that offers to keep a place needs below the panel.
+const SEARCH_RECALL_ROOM_PX = 86;
+
 class SearchKeyboardController extends Stimulus.Controller {
-  static targets = ["rows", "hint"]
+  static targets = ["rows", "hint", "pin", "recall"]
   static values = {
     open: { type: Boolean, default: false }
   }
@@ -48,10 +62,12 @@ class SearchKeyboardController extends Stimulus.Controller {
 
     // The keys carry the layout of the reader's own keyboard, which is the
     // one the interface language implies.
-    this.onLanguageChange = () => this.render();
+    // The pin's label says which of its two states it is in, so it is written
+    // again rather than left with the one the markup carries.
+    this.onLanguageChange = () => { this.render(); this.refreshPin(); };
     document.addEventListener("language:changed", this.onLanguageChange);
 
-    this.onReposition = () => { if (this.openValue && !this.moved) this.place(); };
+    this.onReposition = () => { if (this.openValue) this.place(); };
     window.addEventListener("resize", this.onReposition);
 
     // Pressing anywhere but the bar and the keyboard closes it.
@@ -183,10 +199,10 @@ class SearchKeyboardController extends Stimulus.Controller {
   open(request) {
     this.anchor = request.anchor || null;
     this.openValue = true;
-    this.moved = false;
     this.element.hidden = false;
     this.element.classList.add("is-open");
     this.place();
+    this.refreshPin();
     window.LQ.makeRoomFor(this.element);
   }
 
@@ -196,6 +212,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.openValue = false;
     this.element.classList.remove("is-open");
     this.element.hidden = true;
+    this.hideRecall();
     this.anchor = null;
     window.LQ.releaseRoom();
     document.dispatchEvent(new CustomEvent("search-keyboard:closed"));
@@ -203,17 +220,40 @@ class SearchKeyboardController extends Stimulus.Controller {
 
   // It opens under the caret rather than under the middle of the bar: on the
   // Ottoman side the caret sits at the right-hand edge of the field.
-  place() {
-    if (!this.anchor || !this.anchor.isConnected) return;
+  homeSpot() {
+    if (!this.anchor || !this.anchor.isConnected) return null;
     const bounds = this.anchor.getBoundingClientRect();
     const width = this.element.offsetWidth || 700;
     const height = this.element.offsetHeight || 260;
     const caret = bounds.right - 20;
     const left = Math.max(8, Math.min(caret - width / 2, window.innerWidth - width - 8));
     const top = Math.min(bounds.bottom + 10, Math.max(8, window.innerHeight - height - 8));
-    this.home = { left: Math.round(left), top: Math.round(top) };
-    this.element.style.left = `${this.home.left}px`;
-    this.element.style.top = `${this.home.top}px`;
+    return { left: Math.round(left), top: Math.round(top) };
+  }
+
+  // The page's own place is worked out every time, because the spring-back and
+  // the pin both need to know where it is -- but it is only used while the
+  // reader has not placed the panel themselves.
+  place() {
+    if (this.drag) return;
+    const home = this.homeSpot();
+    if (home) this.home = home;
+    const own = this.placedSpot();
+    if (own) { this.moveTo(window.LQ_PLACEMENT.clamp(own, this.element.offsetWidth, this.element.offsetHeight)); return; }
+    if (home) this.moveTo(home);
+  }
+
+  // Below the width at which the stylesheet pins the panel to the foot of the
+  // screen there is nowhere to move it to, so a place found on a wide screen
+  // is neither used nor overwritten there.
+  placedSpot() {
+    if (window.matchMedia(SEARCH_KEYBOARD_DOCK_QUERY).matches) return null;
+    return window.LQ_PLACEMENT.spot(SEARCH_KEYBOARD_PLACE);
+  }
+
+  moveTo(spot) {
+    this.element.style.left = `${spot.left}px`;
+    this.element.style.top = `${spot.top}px`;
   }
 
   // ==================== moving it out of the way ====================
@@ -224,32 +264,104 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.hintTarget.setPointerCapture(event.pointerId);
     const bounds = this.element.getBoundingClientRect();
     this.drag = { x: event.clientX, y: event.clientY, left: bounds.left, top: bounds.top };
+    // A spring still easing back would make the panel lag behind the pointer.
+    this.element.classList.remove("is-springing");
     this.element.classList.add("is-dragging");
+    this.hideRecall();
   }
 
   moveDrag(event) {
     if (!this.drag) return;
-    this.moved = true;
-    this.element.style.left = `${this.drag.left + event.clientX - this.drag.x}px`;
-    this.element.style.top = `${this.drag.top + event.clientY - this.drag.y}px`;
+    this.moveTo({ left: this.drag.left + event.clientX - this.drag.x,
+                  top: this.drag.top + event.clientY - this.drag.y });
   }
 
   // Let go near where it started and it goes back: the reader was putting it
-  // back rather than placing it somewhere new.
+  // back rather than placing it somewhere new. Anywhere else, the panel has
+  // been placed, and nothing the page does moves it again.
   endDrag(event) {
     if (!this.drag) return;
-    const left = this.drag.left + event.clientX - this.drag.x;
-    const top = this.drag.top + event.clientY - this.drag.y;
+    const spot = { left: this.drag.left + event.clientX - this.drag.x,
+                   top: this.drag.top + event.clientY - this.drag.y };
     this.drag = null;
     this.element.classList.remove("is-dragging");
-    if (!this.home) return;
-    if (Math.hypot(left - this.home.left, top - this.home.top) < 40) {
-      this.element.classList.add("is-springing");
-      this.element.style.left = `${this.home.left}px`;
-      this.element.style.top = `${this.home.top}px`;
-      this.moved = false;
-      setTimeout(() => this.element.classList.remove("is-springing"), 400);
+    if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < SEARCH_SNAP_PX) {
+      this.goHome();
+      return;
     }
+    window.LQ_PLACEMENT.hold(SEARCH_KEYBOARD_PLACE, spot);
+    this.refreshPin();
+    this.offerRecall();
+  }
+
+  // Back to the place the page picked, with the decision dropped: the panel
+  // follows the bar again from here.
+  goHome() {
+    window.LQ_PLACEMENT.release(SEARCH_KEYBOARD_PLACE);
+    this.hideRecall();
+    this.refreshPin();
+    if (!this.home) return;
+    this.element.classList.add("is-springing");
+    this.moveTo(this.home);
+    setTimeout(() => this.element.classList.remove("is-springing"), 400);
+  }
+
+  // ==================== keeping the place ====================
+
+  // The pin only appears once there is a place to keep, so a panel the reader
+  // has not touched looks exactly as it did.
+  refreshPin() {
+    if (!this.hasPinTarget) return;
+    const placed = !!this.placedSpot();
+    const kept = window.LQ_PLACEMENT.kept(SEARCH_KEYBOARD_PLACE);
+    this.pinTarget.hidden = !placed;
+    this.pinTarget.classList.toggle("is-kept", kept);
+    this.pinTarget.setAttribute("aria-pressed", kept ? "true" : "false");
+    const label = kept
+      ? window.LQ.translate("keyboardPinKept", "Position saved \u2014 put it back")
+      : window.LQ.translate("keyboardPinKeep", "Always open it here");
+    window.LQ.retitle(this.pinTarget, label);
+    this.pinTarget.setAttribute("aria-label", label);
+  }
+
+  togglePin(event) {
+    event.preventDefault();
+    if (window.LQ_PLACEMENT.kept(SEARCH_KEYBOARD_PLACE)) { this.goHome(); return; }
+    const spot = this.placedSpot();
+    if (spot) window.LQ_PLACEMENT.keep(SEARCH_KEYBOARD_PLACE, spot);
+    this.hideRecall();
+    this.refreshPin();
+  }
+
+  // Offered once, the first time the panel is put somewhere of the reader's
+  // own choosing. Answered either way, it does not come back.
+  offerRecall() {
+    if (!this.hasRecallTarget) return;
+    if (!window.LQ_PLACEMENT.mayOffer(SEARCH_KEYBOARD_PLACE)) return;
+    window.LQ_PLACEMENT.offered(SEARCH_KEYBOARD_PLACE);
+    // It sits under the panel, or over it when the panel is low enough that
+    // under would be off the bottom of the window.
+    const room = window.innerHeight - this.element.getBoundingClientRect().bottom;
+    this.recallTarget.classList.toggle("is-above", room < SEARCH_RECALL_ROOM_PX);
+    this.recallTarget.hidden = false;
+  }
+
+  hideRecall() {
+    if (this.hasRecallTarget) this.recallTarget.hidden = true;
+  }
+
+  keepSpot(event) {
+    event.preventDefault();
+    const spot = this.placedSpot();
+    if (spot) window.LQ_PLACEMENT.keep(SEARCH_KEYBOARD_PLACE, spot);
+    this.hideRecall();
+    this.refreshPin();
+  }
+
+  refuseSpot(event) {
+    event.preventDefault();
+    window.LQ_PLACEMENT.answered(SEARCH_KEYBOARD_PLACE);
+    this.hideRecall();
   }
 }
 

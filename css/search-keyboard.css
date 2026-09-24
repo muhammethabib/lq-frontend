@@ -34,11 +34,14 @@
   padding-bottom: 6px;
   font-size: 11px;
   color: #94a3b8;
-  cursor: grab;
+  cursor: var(--lq-cursor-grab);
   user-select: none;
 }
 
-.search-keyboard.is-dragging .search-keyboard-bar { cursor: grabbing; }
+.search-keyboard.is-dragging .search-keyboard-bar { cursor: var(--lq-cursor-grabbing); }
+
+/* The controls in the bar are pressed, not dragged. */
+.search-keyboard-bar button { cursor: pointer; }
 
 /* The line keeps clear of both corners, so it is centred on the panel and
    never runs under the keys standing in them. */
@@ -277,6 +280,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .search-keyboard .search-key.is-echo { animation: none; }
+  .search-keyboard.is-springing { transition: none; }
 }
 
 /* ---------------------------------------------------- narrow screens */

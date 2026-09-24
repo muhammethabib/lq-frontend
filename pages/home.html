@@ -51,6 +51,7 @@
   <script src="../js/keyboard_marks.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/search_keyboard_layout.js" defer></script>
+  <script src="../js/keyboard_placement.js" defer></script>
   <script src="../js/view_states.js" defer></script>
   <script src="../js/page_chrome.js" defer></script>
   <script src="../js/app.js" defer></script>
@@ -1308,7 +1309,13 @@
        the rows twice and leave them reading the wrong way. -->
   <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
-    <div class="keyboard-bar">
+    <!-- The bar is the handle wherever it is not a control: the stretch
+         between Clear and the wildcards, and the one after them. -->
+    <div class="keyboard-bar" data-ottoman-keyboard-target="bar"
+         data-action="pointerdown->ottoman-keyboard#startDrag
+                      pointermove->ottoman-keyboard#moveDrag
+                      pointerup->ottoman-keyboard#endDrag
+                      pointercancel->ottoman-keyboard#endDrag">
       <span class="keyboard-bar-left">
         <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
                 data-action="pointerdown->ottoman-keyboard#clearAll"
@@ -1326,6 +1333,15 @@
       <span class="wildcard-row" data-ottoman-keyboard-target="wildcardRow"></span>
 
       <span class="keyboard-bar-right">
+        <!-- Feather has no pushpin, so it is drawn here, as the cite mark is
+             drawn in js/app.js. It appears only once the panel has been
+             moved: a keyboard nobody has touched has no place to keep. -->
+        <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
+                data-action="pointerdown->ottoman-keyboard#togglePin"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardPinKeep" title="Always open it here"
+                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
+                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
         <button type="button" class="btn keyboard-backspace"
                 data-action="pointerdown->ottoman-keyboard#backspace"
                 data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip keyboard-tip-nowrap"
@@ -1344,6 +1360,21 @@
          data-ottoman-keyboard-target="basicPanel"></div>
     <div class="keyboard-panel" data-panel="advanced"
          data-ottoman-keyboard-target="advancedPanel"></div>
+
+    <!-- Offered once, after the reader has put the panel somewhere of their
+         own choosing. Answered either way, it does not ask again. -->
+    <div class="keyboard-recall" data-ottoman-keyboard-target="recall" role="status" hidden>
+      <span class="keyboard-recall-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></span>
+      <span class="keyboard-recall-text" data-i18n="keyboardRecall">Open the keyboard here from now on?</span>
+      <span class="keyboard-recall-actions">
+        <button type="button" class="btn keyboard-recall-keep"
+                data-action="pointerdown->ottoman-keyboard#keepSpot"
+                data-i18n="keyboardRecallKeep">Remember</button>
+        <button type="button" class="btn keyboard-recall-skip"
+                data-action="pointerdown->ottoman-keyboard#refuseSpot"
+                data-i18n="keyboardRecallSkip">Not now</button>
+      </span>
+    </div>
   </div>
 
 
@@ -1369,6 +1400,13 @@
         </span>
       </span>
       <span class="search-keyboard-buttons">
+        <!-- Feather has no pushpin; see the note on the decoder's own pin -->
+        <button type="button" class="btn keyboard-pin" data-search-keyboard-target="pin"
+                data-action="pointerdown->search-keyboard#togglePin"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardPinKeep" title="Always open it here"
+                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
+                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
         <button type="button" class="btn search-keyboard-button search-keyboard-backspace"
                 data-action="pointerdown->search-keyboard#backspace"
                 data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete character"
@@ -1382,6 +1420,21 @@
 
     <!-- Written by the controller from js/search_keyboard_layout.js -->
     <div class="search-keyboard-rows" data-search-keyboard-target="rows"></div>
+
+    <!-- Offered once, after the reader has put the panel somewhere of their
+         own choosing. Answered either way, it does not ask again. -->
+    <div class="keyboard-recall" data-search-keyboard-target="recall" role="status" hidden>
+      <span class="keyboard-recall-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></span>
+      <span class="keyboard-recall-text" data-i18n="keyboardRecall">Open the keyboard here from now on?</span>
+      <span class="keyboard-recall-actions">
+        <button type="button" class="btn keyboard-recall-keep"
+                data-action="pointerdown->search-keyboard#keepSpot"
+                data-i18n="keyboardRecallKeep">Remember</button>
+        <button type="button" class="btn keyboard-recall-skip"
+                data-action="pointerdown->search-keyboard#refuseSpot"
+                data-i18n="keyboardRecallSkip">Not now</button>
+      </span>
+    </div>
   </div>
 
 

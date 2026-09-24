@@ -210,16 +210,6 @@
   border-color: var(--special-edge);
 }
 
-/* The zero-width space key shows a bracket pair, which is read left to right
-   whatever the surrounding direction. */
-.ottoman-keyboard .key[data-kind="joiner"] {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0;
-  direction: ltr;
-  unicode-bidi: bidi-override;
-}
 
 /* The one key on the board that is not a letter: it leads to the other
    keyboard. It is drawn as a keyboard rather than as a letter, stands apart

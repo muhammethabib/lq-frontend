@@ -135,9 +135,9 @@ class WordDecoderController extends Stimulus.Controller {
   // rather than rebuilding the strip and losing what the reader has entered.
   relabelStrip() {
     const labels = [
-      [".cell-add", "decoderAddAlternative", "It could also be this letter"],
-      [".cell-remove", "decoderRemoveAlternative", "Remove this alternative"],
-      [".gap-insert", "decoderInsertSlot", "Insert a letter here"]
+      [".cell-add", "decoderAddAlternative", "Alternative letter"],
+      [".cell-remove", "decoderRemoveAlternative", "Delete only this box"],
+      [".gap-insert", "decoderInsertSlot", "Add new box"]
     ];
     labels.forEach(([selector, key, fallback]) => {
       this.stripTarget.querySelectorAll(selector).forEach((element) => {
@@ -154,7 +154,7 @@ class WordDecoderController extends Stimulus.Controller {
   // control's accessible name.
   setTooltip(element, text) {
     element.setAttribute("data-bs-title", text);
-    element.setAttribute("aria-label", text);
+    element.setAttribute("aria-label", text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim());
     const tooltip = bootstrap.Tooltip.getInstance(element);
     if (tooltip) tooltip.setContent({ ".tooltip-inner": text });
   }
@@ -180,7 +180,7 @@ class WordDecoderController extends Stimulus.Controller {
         <button type="button" class="btn slot-remove" data-action="click->word-decoder#removeSlot"
                 data-bs-toggle="tooltip" data-bs-title="${this.escape(this.slotRemoveLabel(1))}"
                 aria-label="${this.escape(this.slotRemoveLabel(1))}">
-          <i data-feather="trash-2"></i>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg>
         </button>
       </div>`;
   }
@@ -189,14 +189,14 @@ class WordDecoderController extends Stimulus.Controller {
     return `
       <div class="slot-cell">
         <button type="button" class="btn cell-action cell-add" data-action="click->word-decoder#addAlternative"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderAddAlternative", "It could also be this letter"))}"
-                aria-label="${this.escape(this.translate("decoderAddAlternative", "It could also be this letter"))}">
-          <i data-feather="plus"></i>
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderAddAlternative", "Alternative letter"))}"
+                aria-label="${this.escape(this.translate("decoderAddAlternative", "Alternative letter"))}">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><line x1="5" y1="1" x2="5" y2="9" stroke="white" stroke-width="2.5" stroke-linecap="round"></line><line x1="1" y1="5" x2="9" y2="5" stroke="white" stroke-width="2.5" stroke-linecap="round"></line></svg>
         </button>
         <button type="button" class="btn cell-action cell-remove" data-action="click->word-decoder#removeAlternative"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveAlternative", "Remove this alternative"))}"
-                aria-label="${this.escape(this.translate("decoderRemoveAlternative", "Remove this alternative"))}">
-          <i data-feather="x"></i>
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderRemoveAlternative", "Delete only this box"))}"
+                aria-label="${this.escape(this.translate("decoderRemoveAlternative", "Delete only this box"))}">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="8" y2="8" stroke="white" stroke-width="2.5" stroke-linecap="round"></line><line x1="8" y1="2" x2="2" y2="8" stroke="white" stroke-width="2.5" stroke-linecap="round"></line></svg>
         </button>
         <input type="text" class="slot-input" maxlength="1" spellcheck="false" value="${this.escape(char)}"
                data-direction="rtl" aria-label="${this.escape(this.translate("decoderLetter", "Letter"))}"
@@ -210,19 +210,20 @@ class WordDecoderController extends Stimulus.Controller {
     return `
       <div class="gap">
         <button type="button" class="btn gap-insert" data-action="click->word-decoder#insertSlot"
-                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}"
-                aria-label="${this.escape(this.translate("decoderInsertSlot", "Insert a letter here"))}"><span class="gap-plus">+</span></button>
+                data-bs-toggle="tooltip" data-bs-title="${this.escape(this.translate("decoderInsertSlot", "Add new box"))}"
+                aria-label="${this.escape(this.translate("decoderInsertSlot", "Add new box"))}"><span class="gap-plus">+</span></button>
         ${withJoin ? this.joinHtml() : ""}
       </div>`;
   }
 
   joinHtml() {
     return `
-      <button type="button" class="btn gap-join" data-join="separate"
-              data-action="pointerdown->word-decoder#cycleJoin"
-              data-bs-toggle="tooltip" data-bs-placement="bottom"
+      <button type="button" class="btn gap-join can-hover" data-join="separate"
+              data-action="pointerdown->word-decoder#cycleJoin
+                           pointerleave->word-decoder#restoreJoinHover"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
               data-bs-title="${this.escape(this.joinLabel("separate"))}"
-              aria-label="${this.escape(this.joinLabel("separate"))}">
+              aria-label="${this.escape(this.joinSpoken("separate"))}">
         <span class="query" aria-hidden="true">?</span>
         <svg viewBox="0 0 60 40" width="34" height="17" aria-hidden="true">
           <rect class="ring ring-start" x="4" y="11" width="22" height="14" rx="7" ry="7"></rect>
@@ -317,18 +318,33 @@ class WordDecoderController extends Stimulus.Controller {
     const order = ["separate", "connected", "uncertain"];
     const next = order[(order.indexOf(button.dataset.join) + 1) % order.length];
     button.dataset.join = next;
+    // The rings have just been set; the hover preview would argue with them
+    // while the hand is still there, so it waits until the hand has left.
+    button.classList.remove("can-hover");
 
     this.setTooltip(button, this.joinLabel(next));
   }
 
+  restoreJoinHover(event) {
+    event.currentTarget.classList.add("can-hover");
+  }
+
+  // What the rings say now, and under it, in small type, that a press changes
+  // it -- as the reference words it.
   joinLabel(state) {
     const labels = {
-      separate: ["joinSeparate", "Letters written apart"],
-      connected: ["joinConnected", "Letters written joined"],
-      uncertain: ["joinUncertain", "Cannot tell"]
+      separate: ["joinSeparate", "Letters separate"],
+      connected: ["joinConnected", "Letters connected"],
+      uncertain: ["joinUncertain", "Uncertain"]
     };
     const [key, fallback] = labels[state] || labels.separate;
-    return this.translate(key, fallback);
+    return `${this.escape(this.translate(key, fallback))}` +
+      `<span class="join-tip-change">${this.escape(this.translate("joinChange", "Click to change"))}</span>`;
+  }
+
+  // The tooltip carries two lines; a reader who hears it gets the first.
+  joinSpoken(state) {
+    return this.joinLabel(state).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   }
 
   // Both Clear buttons do the same work; they differ in what is left behind.
@@ -365,7 +381,10 @@ class WordDecoderController extends Stimulus.Controller {
       if (this.cellIsFilled(input.closest(".slot-cell"))) {
         this.clearCell(input.closest(".slot-cell"));
       } else {
-        const step = event.key === "Backspace" ? 1 : -1;
+        // Backspace reaches back over the empty boxes to the last letter
+        // written; Delete reaches forward. The strip is read right to left,
+        // so "back" is the box before this one in the row's own order.
+        const step = event.key === "Backspace" ? -1 : 1;
         const target = this.nextFilled(input, step);
         if (target) { this.clearCell(target.closest(".slot-cell")); target.focus(); }
       }
@@ -465,7 +484,9 @@ class WordDecoderController extends Stimulus.Controller {
       if (this.cellIsFilled(this.activeCell)) {
         this.clearCell(this.activeCell);
       } else {
-        const target = this.nextFilled(input, 1);
+        // The box under the caret is empty, so the key takes the last letter
+        // written rather than doing nothing.
+        const target = this.nextFilled(input, -1);
         if (target) { this.clearCell(target.closest(".slot-cell")); target.focus(); this.activeCell = target.closest(".slot-cell"); }
       }
       this.refreshClear();

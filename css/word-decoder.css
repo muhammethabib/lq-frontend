@@ -309,6 +309,59 @@
 .word-decoder-surface .gap-join[data-join="uncertain"] .ring-end { transform: translateX(2px); }
 .word-decoder-surface .gap-join[data-join="uncertain"] .query { opacity: 1; transform: translateY(-2px); }
 
+/* Hovering shows what a press would do: the rings from where they are to
+   where they would go. It waits until the hand has left after a press, so
+   the preview does not argue with the choice just made. */
+.word-decoder-surface .gap-join.can-hover[data-join="separate"]:hover .ring-start {
+  transform: translateX(3px);
+  stroke: var(--lq-sapphire);
+}
+.word-decoder-surface .gap-join.can-hover[data-join="separate"]:hover .ring-end {
+  transform: translateX(-3px);
+  stroke: var(--lq-sapphire);
+}
+.word-decoder-surface .gap-join.can-hover[data-join="separate"]:hover .bar {
+  opacity: 1;
+  transform: scaleX(.7);
+}
+
+.word-decoder-surface .gap-join.can-hover[data-join="connected"]:hover .bar { opacity: 0; }
+.word-decoder-surface .gap-join.can-hover[data-join="connected"]:hover .query {
+  opacity: .6;
+  transform: translateY(-2px);
+}
+.word-decoder-surface .gap-join.can-hover[data-join="connected"]:hover .ring-start {
+  transform: translateX(-4px);
+  stroke: var(--decoder-join-grey);
+}
+.word-decoder-surface .gap-join.can-hover[data-join="connected"]:hover .ring-end {
+  transform: translateX(4px);
+  stroke: var(--decoder-join-grey);
+}
+
+.word-decoder-surface .gap-join.can-hover[data-join="uncertain"]:hover .query {
+  opacity: 0;
+  transform: translateY(8px) scale(.8);
+}
+.word-decoder-surface .gap-join.can-hover[data-join="uncertain"]:hover .ring-start { transform: translateX(-6px); }
+.word-decoder-surface .gap-join.can-hover[data-join="uncertain"]:hover .ring-end { transform: translateX(6px); }
+
+/* The three drawn controls answer a hand over them */
+.word-decoder-surface .cell-action svg,
+.word-decoder-surface .slot-remove svg { transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.word-decoder-surface .cell-action:hover svg,
+.word-decoder-surface .slot-remove:hover svg { transform: scale(1.15); }
+
+/* The second line of the rings' tooltip: what a press would do */
+.tooltip .join-tip-change {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .3px;
+  color: #94a3b8;
+}
+
 /* ---------- row buttons ---------- */
 
 .word-decoder-surface .decoder-clear {

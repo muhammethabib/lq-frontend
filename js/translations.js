@@ -89,14 +89,15 @@ window.LQ_TRANSLATIONS = {
     clearBtn: "Temizle",
     decoderLetter: "Harf",
     decoderLetters: "Harfler",
-    decoderInsertSlot: "Buraya harf ekle",
+    decoderInsertSlot: "Yeni kutu ekle",
     decoderRemoveSlot: "Kutuyu sil",
     decoderRemoveSlotAll: "Tüm kutuları sil",
     decoderAddAlternative: "Şu harf de olabilir",
-    decoderRemoveAlternative: "Bu seçeneği kaldır",
-    joinSeparate: "Harfler ayrı yazılmış",
-    joinConnected: "Harfler bitişik yazılmış",
-    joinUncertain: "Ayırt edemiyorum",
+    decoderRemoveAlternative: "Sadece bu kutuyu sil",
+    joinSeparate: "Harfler ayrı",
+    joinConnected: "Harfler birleşik",
+    joinUncertain: "Emin değilim",
+    joinChange: "Değiştirmek için tıkla",
     basedOnClues: "Verilen ipuçlarına göre",
     decoderRecords: "Sonuç",
     decoderDictionaries: "Sözlük",
@@ -125,7 +126,6 @@ window.LQ_TRANSLATIONS = {
     keyMatches: "Karşılıkları",
     wildcardAny: "Bu harfi okuyamıyorum",
     wildcardMany: "Kaç harf var bilmiyorum",
-    zeroWidthSpace: "Birleşmesi gereken harfler arasında<br>boşluk var, ama aynı kelime",
 
     // --- results header ---
     searchResultsLabel: "Arama Sonuçları",
@@ -559,7 +559,7 @@ window.LQ_TRANSLATIONS = {
     scriptWarningSub: "Kendi klavyenizde aşağıdaki harflere karşılık gelen tuşlara basın",
     keyboardTeach: "Kendi klavyenizden yazabilirsiniz",
     keyboardTeachRest: "veya aşağıdaki tuşlara tıklayın",
-    decoderOwnKeyboard: "Kendi klavyenizle yazabilirsiniz",
+    decoderOwnKeyboard: "Kendi klavyenizle de yazabilirsiniz",
 
     // --- Moving around a page ---
     wayBack: "Geri",

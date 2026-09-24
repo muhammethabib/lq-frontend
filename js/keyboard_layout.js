@@ -160,10 +160,7 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ۀ" },
       { type: "letter", char: "ة" },
       { type: "letter", char: "ى" },
-      { type: "letter", char: "ئ" },
-      // Zero-width space: the strokes look separated, but it is one word
-      { type: "joiner", char: "​", face: "][", labelKey: "zeroWidthSpace",
-        label: "Letters that should connect have<br>a space between them, but same word" }
+      { type: "letter", char: "ئ" }
     ]
   ]
 };

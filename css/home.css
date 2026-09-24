@@ -9,7 +9,7 @@
   --home-card-width: min(100% - 48px, 1300px);
   /* Bootstrap's p-4 utility carries !important, so the page's own padding is
      written here rather than fought with there. */
-  padding: 32px 24px 24px;
+  padding: 32px 24px;
   --home-radius: 20px;
   --home-surface-radius: 24px;
   max-width: var(--lq-max-width);
@@ -611,15 +611,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-  padding-top: 32px;
+  margin: 20px 20px 32px;
+  /* 32px above the rule, the rule, and 28px under it, as the reference has it */
+  padding-top: 61px;
   padding-bottom: 8px;
 }
 
 .home-surface .fuzzy-row::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 32px;
   left: 0;
   width: 100%;
   height: 1px;
@@ -631,7 +632,9 @@
 .home-surface .fuzzy-row .library-button {
   position: absolute;
   right: 0;
-  top: 50%;
+  /* Level with the press in the middle: under the row's top padding, at
+     half the press's height. */
+  top: calc(61px + 30px);
   transform: translateY(-50%);
 }
 
@@ -728,6 +731,7 @@
   width: var(--home-card-width);
   margin-inline: auto;
   margin-top: 32px;
+  margin-bottom: 60px;
   background: var(--lq-paper);
   border: 1px solid var(--lq-line);
   border-radius: var(--home-surface-radius);
@@ -1045,9 +1049,9 @@
 .home-surface .group-header th {
   background: var(--lq-paper);
   border-bottom: 0;
-  /* The table's own 4px between rows stands in for the last of the
-     reference's 12px under the group's name. */
-  padding: 20px 24px 8px;
+  /* The reference gives a group's name 8px above and 20px of padding; the
+     table's own 4px between rows stands in for the last of its 12px under. */
+  padding: 28px 24px 8px;
 }
 /* The name and its note are laid out as a row rather than as words on a
    line, so the cell is as tall as they are and no taller. */

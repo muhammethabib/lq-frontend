@@ -191,21 +191,68 @@
   .ottoman-keyboard .key.is-echo { animation: none; }
 }
 
-/* A skeleton key: the shape without its dots, with an asterisk where the
-   dots would go. Picking it means "this shape, dots unclear". */
-.ottoman-keyboard .key[data-kind="rasm"] {
+/* ---------------------------------------------------------------
+   The letter families
+   The board puts the letters that share a skeleton in one run --
+   be, pe, te, se; cim, çim, ha, hı -- and a reader looking for one
+   of them is looking at the shape, not at the dots. Each family
+   takes a ground of its own: the same two colours and three tones
+   as the search bar's board, dealt in the alphabet's order, so the
+   two boards read as one pair. A skeleton key sits on its family's
+   ground with a firmer edge, and keeps its drawn asterisk.
+   --------------------------------------------------------------- */
+
+.ottoman-keyboard .key[data-family] {
+  background: var(--family-face);
+  border-color: var(--family-edge);
+}
+.ottoman-keyboard .key[data-family]:hover {
+  background: var(--family-hover);
+  border-color: var(--family-edge-firm);
+}
+.ottoman-keyboard .key[data-kind="rasm"][data-family] { border-color: var(--family-edge-firm); }
+
+.ottoman-keyboard .key[data-family="be"],
+.ottoman-keyboard .key[data-family="ti"] {
+  --family-face: #f2f7fe; --family-edge: #d8e6fa; --family-hover: #e7f0fd; --family-edge-firm: #93c5fd;
+}
+.ottoman-keyboard .key[data-family="cim"],
+.ottoman-keyboard .key[data-family="ayn"] {
+  --family-face: #fffaf0; --family-edge: #f4e5c4; --family-hover: #fdf4e1; --family-edge-firm: #e8c77f;
+}
+.ottoman-keyboard .key[data-family="dal"],
+.ottoman-keyboard .key[data-family="fe"],
+.ottoman-keyboard .key[data-family="ye"] {
+  --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; --family-edge-firm: #7fb3f0;
+}
+.ottoman-keyboard .key[data-family="re"],
+.ottoman-keyboard .key[data-family="kef"] {
+  --family-face: #fbf3e0; --family-edge: #ecd9a8; --family-hover: #f8ebd0; --family-edge-firm: #dfb96a;
+}
+.ottoman-keyboard .key[data-family="sin"],
+.ottoman-keyboard .key[data-family="vav"] {
+  --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; --family-edge-firm: #6ea7ea;
+}
+.ottoman-keyboard .key[data-family="sad"],
+.ottoman-keyboard .key[data-family="he"],
+.ottoman-keyboard .key[data-family="elif"] {
+  --family-face: #f9efd9; --family-edge: #e8d49c; --family-hover: #f5e6c6; --family-edge-firm: #d8ae57;
+}
+
+/* A skeleton outside every family -- a shape no other letter shares --
+   keeps the plain blue of the interface. */
+.ottoman-keyboard .key[data-kind="rasm"]:not([data-family]) {
   background: var(--special-face);
   border-color: var(--special-edge);
 }
-.ottoman-keyboard .key[data-kind="rasm"]:hover { background: var(--lq-lat-border); }
+.ottoman-keyboard .key[data-kind="rasm"]:not([data-family]):hover { background: var(--lq-lat-border); }
 
-/* A letter that stands for more than one spelling carries the same ground as
-   a skeleton, in a lighter edge: it is a letter, but it answers for others. */
-.ottoman-keyboard .key[data-kind="letter"][data-matches] {
+/* A letter that stands for more than one spelling and belongs to no family */
+.ottoman-keyboard .key[data-kind="letter"][data-matches]:not([data-family]) {
   background: var(--special-face);
   border-color: #bfdbfe;
 }
-.ottoman-keyboard .key[data-kind="letter"][data-matches]:hover {
+.ottoman-keyboard .key[data-kind="letter"][data-matches]:not([data-family]):hover {
   background: var(--lq-lat-border);
   border-color: var(--special-edge);
 }

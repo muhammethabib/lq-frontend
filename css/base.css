@@ -246,10 +246,17 @@ html {
   color: var(--lq-sapphire);
 }
 
+/* Both controls hang from one top line, four pixels under the menu
+   button's: the old site pins them to the top of the page container, the
+   classic-version pill 88px in from the right edge and the switch at the
+   edge itself, which leaves 10.44px between them. The row takes the pill's
+   height so that line stays where it is whatever the switch measures, and
+   the switch is free to hang below it. */
 .page-top-row .top-row-right {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  height: 30px;
+  gap: 10.44px;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
@@ -540,6 +547,29 @@ html {
   padding: 1px 7px;
 }
 .side-sublink.is-unavailable { display: flex; align-items: center; gap: 8px; }
+
+/* The old site parks its closed drawer just outside the left edge of the
+   window, and the drawer's shadow still falls on the page: a soft grey
+   falloff down the whole left edge, some forty pixels wide, over whatever
+   sits under it. Ours takes the drawer out of the painting the moment it
+   closes, so the falloff is cast here instead -- from the same place, with
+   the same measures, so the fade is the same one. It steps aside while the
+   drawer is open, which is when the old site's shadow follows the drawer
+   inward. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -292px;
+  width: 292px;
+  box-shadow: rgba(15, 23, 42, .35) 18px 0 50px -30px;
+  pointer-events: none;
+  /* The old site's drawer sits over everything the page can put under it,
+     and so does the shadow it casts. */
+  z-index: 1095;
+}
+body:has(.offcanvas.show)::before { box-shadow: none; }
 
 /* A panel fixed to the window — either on-screen keyboard — can open below
    the fold, and a fixed panel cannot be scrolled to unless the page has

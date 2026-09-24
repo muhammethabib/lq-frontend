@@ -17,6 +17,29 @@
 // dotless forms already exist in Unicode and render in Noto Naskh Arabic.
 
 window.LQ_KEYBOARD_LAYOUT = {
+  // Which letters share a skeleton. The board already puts a family together
+  // in a row; a ground of its own makes the block visible, and a reader
+  // looking for a letter is looking at the shape before the dots. The same
+  // two colours and the same three tones as the search bar's board, dealt in
+  // the alphabet's order, so the two boards read as one pair.
+  // A skeleton key carries its family's ground too, with a firmer edge.
+  families: {
+    "\u0627": "elif", "\u0622": "elif", "\u0623": "elif", "\u0625": "elif",
+    "\u066e": "be", "\u0628": "be", "\u067e": "be", "\u062a": "be", "\u062b": "be",
+    "\u062c": "cim", "\u0686": "cim", "\u062d": "cim", "\u062e": "cim",
+    "\u062f": "dal", "\u0630": "dal",
+    "\u0631": "re", "\u0632": "re", "\u0698": "re",
+    "\u0633": "sin", "\u0634": "sin",
+    "\u0635": "sad", "\u0636": "sad",
+    "\u0637": "ti", "\u0638": "ti",
+    "\u0639": "ayn", "\u063a": "ayn",
+    "\u0641": "fe", "\u0642": "fe", "\u06a1": "fe",
+    "\u0643": "kef", "\u06af": "kef", "\u06ad": "kef",
+    "\u0648": "vav", "\u0624": "vav",
+    "\u0647": "he", "\u0629": "he", "\u06c0": "he", "\u06be": "he", "\u06d5": "he",
+    "\u0649": "ye", "\u0626": "ye"
+  },
+
   // Written into the pattern for the two wildcards
   wildcards: {
     // symbol is what the pattern carries in writing; mark is the face it wears

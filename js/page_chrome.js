@@ -180,7 +180,7 @@ window.LQ_PAGE_CHROME = `
       <a class="classic-link" href="https://www.lexiqamus.com/" target="_blank" rel="noopener"
          title="Open the previous stable version" data-i18n-title="legacyTitle">
         <span data-i18n="legacyLink">Classic version</span>
-        <i data-feather="external-link"></i>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
       </a>
 
       <div class="language-switch" role="group" aria-label="Language" data-i18n-aria="ariaLanguage">

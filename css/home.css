@@ -56,7 +56,9 @@
 /* The wordmark's box is drawn tighter than the letters it holds: the L drops
    below it and the Q's glass rides above, so nothing here may clip. */
 .home-surface .logo-link { display: block; width: 220px; max-width: 100%; overflow: visible; }
-.home-surface .logo-link img { width: 100%; height: auto; display: block; overflow: visible; }
+.home-surface .logo-link :is(img, .wordmark) { width: 100%; height: auto; display: block; overflow: visible; }
+/* The letters throw a shadow, and it falls outside the mark's own box. */
+.home-surface .wordmark .vector-shadow { filter: drop-shadow(4px 20px 40px rgba(0, 0, 0, .25)); }
 
 .home-surface .version-badge {
   position: absolute;
@@ -604,26 +606,35 @@
 
 /* ---------- library button ---------- */
 
-/* The foot of the list: the widening press and the library question, over a
-   rule that fades out at both ends. */
+/* The foot of the list: the widening press and the library question, under a
+   rule that fades out at both ends. The rule is a line of its own rather than
+   a mark on the row's edge, so the air under it is its own. */
+.home-surface .fuzzy-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  /* The foot is held the same gutter in from the card's edges as the list. */
+  padding: 32px 20px 8px;
+}
+
+.home-surface .fuzzy-container::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-bottom: 28px;
+  background: linear-gradient(to right, transparent, #cbd5e1 20%, #cbd5e1 80%, transparent);
+}
+
 .home-surface .fuzzy-row {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-  padding-top: 32px;
-  padding-bottom: 8px;
-}
-
-.home-surface .fuzzy-row::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #cbd5e1 20%, #cbd5e1 80%, transparent);
 }
 
 /* The library question sits at the right end of the row, on the same line as
@@ -699,6 +710,9 @@
   margin-top: 34px;
 }
 .home-surface.state-results .library-row { display: none; }
+/* The list keeps the reference's 32px under its foot. With nothing listed,
+   the answer carries its own room instead. */
+.home-surface.state-results:not(.state-no-matches) .results-surface { padding-bottom: 32px; }
 
 .home-surface .library-button {
   display: flex;
@@ -725,12 +739,26 @@
 
 .home-surface .results-surface {
   position: relative;
+  z-index: 0;
   width: var(--home-card-width);
   margin-inline: auto;
   margin-top: 32px;
-  background: var(--lq-paper);
+  margin-bottom: 60px;
+  border-radius: var(--home-surface-radius);
+  overflow: visible;
+}
+
+/* The panel's own face, laid behind its content. A row that lifts on hover, or
+   the card a typo mark opens, reaches past the panel's edge; were the face and
+   the content the same box, clipping it to the rounded corners would cut them
+   off. */
+.home-surface .results-backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
   border: 1px solid var(--lq-line);
   border-radius: var(--home-surface-radius);
+  background: var(--lq-paper);
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
   overflow: hidden;
 }
@@ -946,7 +974,7 @@
   text-transform: uppercase;
   color: #475569;
 }
-.home-surface .pronunciation-icon { width: 20px; height: 20px; flex: none; }
+.home-surface .pronunciation-icon { width: 15px; height: 15px; flex: none; }
 .home-surface .pronunciation-button:hover { border-color: var(--lq-sapphire); color: var(--lq-sapphire); }
 .home-surface .pronunciation-button.active { background: var(--lq-sapphire); border-color: var(--lq-sapphire); color: #fff; }
 .home-surface .pronunciation-count {
@@ -989,6 +1017,13 @@
      and a long reading in one row must not widen a column under it. */
   table-layout: fixed;
   width: 100%;
+  border-spacing: 0 4px;
+  /* The separate-borders model puts that 4px above the head and below the
+     last row as well as between the rows; the reference's band sits against
+     the header and its list ends on its last row, so both are taken back
+     off here. */
+  margin-top: -4px;
+  margin-bottom: -4px;
   /* Below this the columns squeeze the two scripts into unreadable stacks, so
      the table keeps its width and this container scrolls instead. */
   min-width: 880px;
@@ -1000,7 +1035,10 @@
    their own padding, so the band runs to the card's edges. */
 .home-surface .results-table > thead th {
   background: var(--lq-paper-soft);
+  /* The band is ruled off above and below, as the reference rules it. */
   border: 0;
+  border-top: 1px solid var(--lq-line);
+  border-bottom: 1px solid var(--lq-line);
   padding: 10px 8px;
   font-size: 10px;
   font-weight: 800;
@@ -1019,19 +1057,22 @@
   box-shadow: -20px 0 0 var(--lq-lat-bg);
 }
 .home-surface .results-table > thead th.col-category {
-  width: 100px;
+  /* The five widths below are the reference's own: its rows are laid on a
+     twelve-column grid over the card's inner width, and these are the tracks
+     that grid hands each column at the card's full 1300px. */
+  width: 98.6px;
   border-left: 1px solid var(--lq-line);
   border-right: 1px solid var(--lq-line);
 }
-.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 73px; }
-.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 439px; }
+.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 73.21px; }
+.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 439.26px; }
 .home-surface .results-table > thead th.col-dictionary {
-  width: 150px;
+  width: 157.63px;
   text-align: right;
   border-left: 1px solid var(--lq-line);
 }
 .home-surface .results-table > thead th.col-actions {
-  width: 70px;
+  width: 63px;
   box-shadow: 20px 0 0 var(--lq-paper-soft);
 }
 
@@ -1039,9 +1080,10 @@
 .home-surface .group-header th {
   background: var(--lq-paper);
   border-bottom: 0;
-  /* The table's own 4px between rows stands in for the last of the
-     reference's 12px under the group's name. */
-  padding: 20px 24px 8px;
+  /* The table's own 4px above this cell stands with these 24px for the 8px
+     margin and 20px of padding the reference puts above a group's name; the
+     4px below it stands with these 8px for the reference's 12px. */
+  padding: 24px 24px 8px;
 }
 /* The name and its note are laid out as a row rather than as words on a
    line, so the cell is as tall as they are and no taller. */
@@ -1052,7 +1094,6 @@
 .home-surface .group-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   border: 0;
   background: transparent;
   border-radius: 8px;
@@ -1069,11 +1110,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 8px;
   border-radius: 50%;
   background: var(--lq-body-bg);
   color: var(--lq-sapphire);
   transition: transform .3s ease;
 }
+.home-surface .group-toggle:hover .group-chevron { background: var(--lq-line); }
 .home-surface .group-toggle[aria-expanded="false"] .group-chevron { transform: rotate(-90deg); }
 .home-surface .group-title {
   margin-right: 10px;
@@ -1094,51 +1137,68 @@
 .home-surface .group-note {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-left: 4px;
-  padding: 5px 12px;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: 14px;
   border-radius: 999px;
   background: var(--lq-body-bg);
-  color: var(--lq-ink-soft);
+}
+
+.home-surface .group-note-text {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 4px 5px 12px;
   font-size: 11.5px;
   font-weight: 500;
+  color: var(--lq-ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* The description is worth reading once, not on every visit. Put away, the
    pill shrinks to the mark that brings it back. */
 .home-surface .group-note:not(.is-open) .group-note-text { display: none; }
-.home-surface .group-note:not(.is-open) { padding: 4px; }
 
 .home-surface .group-note-toggle {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  gap: 4px;
+  width: 22px;
+  height: 22px;
+  margin: 3px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: none;
-  color: #94a3b8;
+  border-radius: 999px;
+  background: transparent;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: all .15s ease;
 }
 
-.home-surface .group-note-toggle:hover { color: var(--lq-sapphire); }
-.home-surface .group-note-toggle svg { width: 12px; height: 12px; }
+.home-surface .group-note.is-open .group-note-toggle { background: rgba(15, 23, 42, .08); color: #334155; }
+.home-surface .group-note-toggle:hover { background: rgba(15, 23, 42, .1); color: #1e293b; }
+.home-surface .group-note.is-open .group-note-toggle:hover { background: rgba(15, 23, 42, .14); color: #0f172a; }
+.home-surface .group-note-toggle svg { flex-shrink: 0; width: 12px; height: 12px; }
 
 /* Open, the mark is a cross that closes it; closed, it is the info mark. */
 .home-surface .group-note.is-open .group-note-toggle svg { display: none; }
 .home-surface .group-note:not(.is-open) .group-note-close { display: none; }
 
-.home-surface .group-note-close {
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-}
+.home-surface .group-note-close { line-height: 1; }
 .home-surface .group-note b { color: #334155; font-weight: 700; }
 
 /* The worked example stands a little apart from the sentence it illustrates */
-.home-surface .group-note-example { margin-left: 8px; color: #5d718c; }
-.home-surface .group-note-ex-label { color: var(--lq-ink-soft); }
+.home-surface .group-note-example { color: #5d718c; }
 /* Hide the note before the table gets narrow enough for it to squeeze the columns */
 @media (max-width: 1200px) { .home-surface .group-note { display: none; } }
 
@@ -1149,12 +1209,35 @@
 .home-surface .result-row.is-held { display: none; }
 
 .home-surface .show-more-row td {
-  padding: 8px 0 4px;
+  padding: 4px 0 0;
   border: 0;
   text-align: center;
 }
+/* The two presses stand side by side with the reference's 10px between. */
+.home-surface .show-more-row td > * { vertical-align: top; }
+.home-surface .show-more-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
 .home-surface .result-group.is-collapsed .show-more-row { display: none; }
+
+/* The reference's last card in a list drops its hairline, so the group ends
+   on air rather than on a rule. Ours is the row the tail follows, which is
+   the last row only where no press stands in its way. */
+.home-surface .result-row:has(+ .group-tail) > td { border-bottom-width: 0; }
+
+/* The empty row every group closes on. */
+.home-surface .group-tail td {
+  height: 4px;
+  padding: 0;
+  border: 0;
+  font-size: 0;
+  line-height: 0;
+}
+.home-surface .result-group.is-collapsed .group-tail { display: none; }
 
 .home-surface .show-more {
   margin: 0;
@@ -1179,12 +1262,10 @@
 
 /* Each row is a card with a little air under it, so the stripe down its left
    edge reads as one mark per row rather than a rule down the whole list. */
-.home-surface .results-table {
-  border-collapse: separate;
-  border-spacing: 0 4px;
-}
+.home-surface .results-table { border-collapse: separate; }
 .home-surface .result-row > td {
   background: var(--lq-paper);
+  border-top: 1px solid transparent;
   border-bottom: 1px solid #f1f5f9;
   padding: 16px 8px;
   vertical-align: middle;
@@ -1199,16 +1280,27 @@
   box-shadow: 0 0 0 1px var(--lq-line-strong), 0 8px 20px -8px rgba(0, 0, 0, .08);
 }
 .home-surface .result-row > td:last-child {
+  /* The reference's card is bordered on all four sides; only the foot is
+     drawn. The right one is held here so the columns end where its do. */
+  border-right: 1px solid transparent;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  padding-right: 14px;
 }
 .home-surface .result-row > td:first-child {
   padding-right: 0;
-  padding-left: 23px;
+  padding-left: 24px;
   border-left: 4px solid transparent;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
+/* The reference's result half is a hair narrower than its headword half:
+   its column overflows by 4px and the pair gives that back. */
+.home-surface .result-row > td:first-child .word-pair { max-width: 396px; }
+/* The category stands in the middle of its own column, with no cell padding
+   of its own to push it off centre. */
+.home-surface .result-row > td:has(> .category-badge) { padding-right: 0; padding-left: 0; }
+
 .home-surface .result-row[data-category="ENTRY"] > td:first-child { border-left-color: #0d9488; }
 .home-surface .result-row[data-category="SUBENTRY"] > td:first-child { border-left-color: #d97706; }
 .home-surface .result-row[data-category="RELATED"] > td:first-child { border-left-color: #2563eb; }
@@ -1325,6 +1417,8 @@
 /* The arrow belongs to the headword half and answers only to it: it points
    the way a press on that half would take the reader. */
 .home-surface .row-arrow {
+  width: 22px;
+  height: 22px;
   color: #94a3b8;
   opacity: .35;
   transform: translateX(0) scale(1);
@@ -1354,6 +1448,9 @@
 
 /* The longest real name ("Müntahabat-ı Lügat-ı Osmaniye, 1852") wraps here
    rather than pushing the table wider. */
+/* The name is given the reference's own room: 16px in from the column's
+   start and flush with its end, so a long title breaks in the same place. */
+.home-surface .result-row > td.dictionary-cell { padding-right: 0; padding-left: 16px; }
 .home-surface .dictionary-cell { text-align: right; max-width: 22ch; }
 .home-surface .dictionary-name { overflow-wrap: break-word; }
 .home-surface .dictionary-name { font-size: 13px; font-weight: 700; color: #334155; line-height: 1.25; }
@@ -1367,7 +1464,7 @@
 }
 
 /* Row actions sit side by side in their own column */
-.home-surface .row-actions { display: flex; gap: 4px; justify-content: center; }
+.home-surface .row-actions { display: flex; gap: 4px; justify-content: flex-end; }
 
 .home-surface .cite-button {
   display: inline-flex;
@@ -1831,16 +1928,16 @@
 
 /* With no list to sit under, the question moves to the foot of the answer
    and stands alone, as the reference has it. */
-.home-surface.state-no-matches .fuzzy-row {
+.home-surface.state-no-matches .fuzzy-container {
   order: 2;
   margin-top: 28px;
-  padding-top: 0;
+  padding: 0 32px 32px;
 }
-.home-surface.state-no-matches .fuzzy-row::before { display: none; }
+.home-surface.state-no-matches .fuzzy-container::before { display: none; }
 .home-surface.state-no-matches .fuzzy-button { display: none; }
 .home-surface.state-no-matches .fuzzy-row .library-button { position: static; transform: none; }
 .home-surface.state-no-matches .results-surface { display: flex; flex-direction: column; }
-.home-surface.state-no-matches .no-matches { order: 1; }
+.home-surface.state-no-matches .no-matches { order: 1; padding-bottom: 0; }
 
 /* ---------------------------------------------------------------
    The way around a long result list

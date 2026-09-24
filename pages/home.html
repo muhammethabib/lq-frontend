@@ -96,7 +96,24 @@
     <div class="logo-row" data-home-target="logoRow">
       <a class="logo-link" href="home.html" data-home-target="logo"
          aria-label="LexiQamus home" data-i18n-aria="ariaHome">
-        <img src="../assets/lexiqamus-wordmark.svg" alt="LexiQamus">
+        <!-- Drawn into the page rather than loaded as a picture: the mark
+             carries a drop shadow that has to fall outside its own box,
+             which a picture would cut off. -->
+        <svg class="wordmark" role="img" aria-label="LexiQamus" version="1.1" viewBox="200 300 10400 1600" xmlns="http://www.w3.org/2000/svg">
+        <g class="vector-shadow">
+        <path d="M5222.374,1570.61c-113.564,75.906 -249.281,119.653 -398.76,120.598c-413.121,2.626 -748.536,-364.106 -748.536,-812.579c0,-448.478 335.48,-805.436 748.536,-812.583c426.224,-7.372 753.184,356.733 748.541,812.583c-2.343,229.954 -83.895,434.136 -219.211,580.305l309.115,402.246l-134.451,105.769l-305.234,-396.337l0,-0.002Zm22.696,-252.051c93.849,-115.546 149.229,-271.135 148.966,-442.195c-0.547,-352.422 -248.109,-641.466 -567.402,-645.488c-313.129,-3.946 -567.402,289.233 -567.402,645.488c0,356.255 254.247,645.488 567.402,645.488c108.369,0 207.271,-31.745 291.067,-87.155l-170.74,-221.697l132.525,-109.911l165.584,215.471l0,-0.001Z" style="fill:#172762;"></path>
+        <g><path d="M6877.671,1561.476l0,-1200.82l234.729,0l293.113,877.181l293.012,-877.181l230.579,0l0,1200.82l-149.933,0l0,-1032.734l-292.883,901.492l-157.042,0.152l-310.321,-894.939l13.758,1026.029l-155.012,0Z" style="fill:#1b1f42;"></path></g>
+        <g><path d="M1754.171,1561.476l0,-1200.82l637.817,0l-21.188,131.086l-454.104,0l0,389.221l399.808,0l0,118.619l-399.75,0l0,430.508l478.862,0l8.346,131l-649.792,0.385l0.001,0.001Z" style="fill:#1b1f42;"></path></g>
+        <g opacity="0.99"><path d="M3662.638,360.656l157.683,0l0,1200.82l-157.775,0l0,-1200.82" style="fill:#1b1f42;"></path></g>
+        <g><path d="M2573.896,360.656l174.004,0l239.167,432.508l241.629,-432.508l178.062,0l-314.354,565.369l352.829,635.451l-178.475,0l-281.579,-521.16l-266.096,521.16l-181.9,0l352.213,-635.898l-315.5,-564.922Z" style="fill:#1b1f42;"></path></g>
+        <g><path d="M5735.142,1561.476l380.454,-1200.82l194.025,0l385.071,1200.82l-173.938,0l-95.388,-312.607l-427.054,0l-99.008,312.607l-164.163,0l0.001,0Zm479.775,-1041.988l-176.067,598.607l346.271,0l-170.204,-598.607Z" style="fill:#1b1f42;"></path></g>
+        <g>
+        <path d="M10073.708,491.353l-98.942,92.742c-76.282,-74.073 -182.448,-113.631 -245.554,-113.992c-108.85,2.633 -197.2,61.719 -213.308,166.045c-4.375,91.783 41.462,148.529 121.692,181.283l276.404,112.057c114.679,55.971 183.95,149.713 194.229,281.517c-2.712,174.992 -76.233,275.697 -194.229,329.734c-119.913,61.939 -275.254,56.008 -376.321,22.738c-88.508,-29.139 -171.504,-73.771 -234.808,-150.787l90.6,-94.971c108.462,102.299 203.425,123.447 279.283,128.377c71.85,4.668 200.775,-8.066 251.463,-120.684c32.579,-100.795 12.817,-176.258 -51.442,-230.185c-53.317,-39.057 -113.996,-70.869 -183.05,-94.447l-150.725,-56.848c-54,-26.398 -102.367,-59.336 -139.454,-105.389c-40.65,-50.996 -56.954,-119.951 -48.417,-207.23c14.35,-101.553 62.692,-177.012 140.067,-230.189c61.637,-39.553 149.062,-61.803 231.721,-62.648c126.821,-3.84 270.146,56.615 350.792,152.877l-0.001,-0Z" style="fill:#1b1f42;"></path>
+        <path d="M8719.754,1580.186c-6.173,0.823 -27.066,2.004 -48.324,2.316c-22.996,0.338 -46.384,-0.247 -50.997,-0.774c-215.062,-24.559 -338.178,-142.132 -354.842,-369.738l-0.205,-5.01l-1.027,-846.325l154.437,0l0,684.576c-3.659,164.352 12.15,262.355 52.27,316.081c61.494,82.347 143.602,81.077 192.79,81.303c49.188,-0.226 131.296,1.044 192.79,-81.303c40.12,-53.725 55.929,-151.729 52.27,-316.081l0,-684.576l154.437,0l-1.027,846.325l-0.205,5.01c-16.339,223.168 -135.02,340.553 -342.368,368.195" style="fill:#1b1f42;fill-opacity:0.97;stroke:#000;stroke-opacity:0.97;stroke-width:1px;"></path>
+        <path d="M10073.708,491.353l-98.942,92.742c-76.282,-74.073 -182.448,-113.631 -245.554,-113.992c-108.85,2.633 -197.2,61.719 -213.308,166.045c-4.375,91.783 41.462,148.529 121.692,181.283l276.404,112.057c114.679,55.971 183.95,149.713 194.229,281.517c-2.712,174.992 -76.233,275.697 -194.229,329.734c-119.913,61.939 -275.254,56.008 -376.321,22.738c-88.508,-29.139 -171.504,-73.771 -234.808,-150.787l90.6,-94.971c108.462,102.299 203.425,123.447 279.283,128.377c71.85,4.668 200.775,-8.066 251.463,-120.684c32.579,-100.795 12.817,-176.258 -51.442,-230.185c-53.317,-39.057 -113.996,-70.869 -183.05,-94.447l-150.725,-56.848c-54,-26.398 -102.367,-59.336 -139.454,-105.389c-40.65,-50.996 -56.954,-119.951 -48.417,-207.23c14.35,-101.553 62.692,-177.012 140.067,-230.189c61.637,-39.553 149.062,-61.803 231.721,-62.648c126.821,-3.84 270.146,56.615 350.792,152.877l-0.001,-0Z" style="fill:#1b1f42;"></path>
+        <path d="M4806.242,424.045c4.671,13.746 43.071,38.73 107.846,72.5c186.812,86.172 304.617,240.414 344.692,470.918c4.263,6.434 8.129,6.898 11.954,0c34.346,-269.853 -138.404,-556.984 -451.883,-551.263c0,0 -10.133,1.127 -11.062,2.57c-0.912,1.418 -1.546,5.275 -1.546,5.275l-0.001,0Z" style="fill:#172762;"></path>
+        </g>
+        <g><path d="M593.583,1856.443l-295.652,0.001c0,0 -8.456,-0.407 -10.148,-0.624c-46.547,-5.974 -82.42,-18.946 -100.597,-47.491c-9.392,-19.877 -9.9,-40.22 -2.722,-61.764c0.357,-1.07 1.851,-5.214 2.34,-6.387c6.246,-14.984 34.02,-31.831 54.585,-39.064c24.434,-8.593 66.004,-12.909 66.15,-55.732l2.278,-1308.908l0,-40.152c-1.384,-27.418 -14.507,-45.16 -38.441,-53.996c-56.189,-15.016 -95.92,-39.164 -101.87,-82.053c-0.483,-2.932 -0.714,-5.796 -0.714,-8.59c0,-46.496 64.144,-73.596 102.951,-73.205l321.84,-0.001l321.84,-0c38.807,-0.39 102.951,26.709 102.951,73.205c-0,2.794 -0.232,5.658 -0.714,8.59c-5.95,42.889 -45.682,67.037 -101.87,82.053c-23.934,8.836 -37.057,26.578 -38.441,53.996l0,40.152l2.26,1298.169l0,221.8l-286.025,0Z" style="fill:#671615;stroke:#000;stroke-width:1px;stroke-linecap:butt;stroke-miterlimit:2;"></path></g><g><path d="M973.644,1856.443l498.889,0l0,-552.795c0.467,-34.574 -5.541,-61.735 -24.612,-79.096c-21.382,-21.667 -62.382,-26.092 -85.465,-16.357c-26.054,11.107 -45.402,49.656 -56.881,108.992c-29.285,342.836 -320.602,377.391 -322.381,378.555c-24.757,16.206 -9.155,150.642 -9.55,160.701Z" style="fill:#6a1413;stroke:#000;stroke-width:1px;stroke-linecap:butt;stroke-miterlimit:2;"></path></g><g><path d="M4806.242,424.045c4.671,13.746 43.071,38.73 107.846,72.5c186.812,86.172 304.617,240.414 344.692,470.918c4.263,6.434 8.129,6.898 11.954,0c34.346,-269.853 -138.404,-556.984 -451.883,-551.263c0,0 -10.133,1.127 -11.062,2.57c-0.912,1.418 -1.546,5.275 -1.546,5.275l-0.001,0Z" style="fill:#172762;"></path></g></g></svg>
       </a>
       <span class="version-badge">3.0<small>beta</small></span>
     </div>
@@ -164,37 +181,37 @@
           <div data-group="lemma">
             <span data-copy="title" data-i18n="groupLemma">Lemma</span>
             <span data-copy="note" data-i18n="groupLemmaNote">Results without an affix, including the base or singular form of a value</span>
-            <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1"><b>kalem</b>, <b>dost</b></span>
+            <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1">Ex: <b>kalem</b>, <b>dost</b></span>
           </div>
           <div data-group="inflected">
             <span data-copy="title" data-i18n="groupInflected">Inflected Forms</span>
-            <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflected forms of the search term</span>
-            <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e</span>
+            <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflectional forms of the search term</span>
+            <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1">Ex: <b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e, <b>kalem</b>de</span>
           </div>
           <div data-group="lexicalizedInflected">
             <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
-            <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms that carry their own dictionary meaning</span>
-            <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1"><b>civar</b> &rarr; <b>civarında</b></span>
+            <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms given a distinct meaning of their own in the dictionary</span>
+            <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1">Ex: <b>civar</b> &rarr; <b>civarında</b></span>
           </div>
           <div data-group="partial">
             <span data-copy="title" data-i18n="groupPartial">Similar Spellings</span>
-            <span data-copy="note" data-i18n="groupPartialNote">Results whose spelling is close to the search term</span>
-            <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazir</b></span>
+            <span data-copy="note" data-i18n="groupPartialNote">Results written with a spelling close to the search term</span>
+            <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"></span>
           </div>
           <div data-group="derived">
             <span data-copy="title" data-i18n="groupDerived">Derived Forms</span>
-            <span data-copy="note" data-i18n="groupDerivedNote">Words built with derivational affixes</span>
-            <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
+            <span data-copy="note" data-i18n="groupDerivedNote">Results showing words formed with derivational suffixes</span>
+            <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1">Ex: <b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
           </div>
           <div data-group="compounds">
             <span data-copy="title" data-i18n="groupCompounds">Compounds</span>
-            <span data-copy="note" data-i18n="groupCompoundsNote">Words formed by joining two words</span>
-            <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1"><b>kalem</b>tıraş</span>
+            <span data-copy="note" data-i18n="groupCompoundsNote">Compounds containing the search term as a component</span>
+            <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1">Ex: <b>nazar</b> &rarr; <b>nazar</b>gâh</span>
           </div>
           <div data-group="phrases">
             <span data-copy="title" data-i18n="groupPhrases">Phrases</span>
-            <span data-copy="note" data-i18n="groupPhrasesNote">Set phrases and idioms containing the search term</span>
-            <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1"><b>kalem</b> oynatmak</span>
+            <span data-copy="note" data-i18n="groupPhrasesNote">Phrases containing the search term as a component</span>
+            <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1">Ex: <b>nazar</b> &rarr; <b>nazar</b> değmek</span>
           </div>
         </div>
 
@@ -240,24 +257,26 @@
           <!-- The same foot the search results carry: one press widens the
                reading to letters that look or sound close to the ones given,
                and the library question sits beside it. -->
-          <div class="fuzzy-row">
-            <button type="button" class="btn fuzzy-button" data-action="click->word-decoder#scanSimilar">
-              <span class="fuzzy-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
-                </svg>
-              </span>
-              <span class="fuzzy-divider" aria-hidden="true"></span>
-              <span class="fuzzy-text">
-                <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
-                <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
-              </span>
-            </button>
-            <button type="button" class="btn library-button"
-                    data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+          <div class="fuzzy-container">
+            <div class="fuzzy-row">
+              <button type="button" class="btn fuzzy-button" data-action="click->word-decoder#scanSimilar">
+                <span class="fuzzy-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
+                  </svg>
+                </span>
+                <span class="fuzzy-divider" aria-hidden="true"></span>
+                <span class="fuzzy-text">
+                  <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
+                  <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
+                </span>
+              </button>
+              <button type="button" class="btn library-button"
+                      data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+            </div>
           </div>
         </section>
 
@@ -633,7 +652,9 @@
     <!-- ============================== results ============================== -->
     <section class="results-surface" data-home-target="resultsSurface" hidden
              aria-labelledby="resultsHeading">
-      <div class="results-accent" data-home-target="resultsAccent" data-script="ottoman"></div>
+      <div class="results-backdrop" aria-hidden="true">
+        <div class="results-accent" data-home-target="resultsAccent" data-script="ottoman"></div>
+      </div>
 
       <div class="results-header">
         <div class="results-header-main">
@@ -694,31 +715,33 @@
       <!-- At the foot of the list, for a reader who has read it and not found
            what they came for: one press widens the search to spellings near
            the one they tried, and the library question sits beside it. -->
-      <div class="fuzzy-row">
-        <button type="button" class="btn fuzzy-button" data-action="click->home#scanSimilar">
-          <span class="fuzzy-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
-            </svg>
-          </span>
-          <span class="fuzzy-divider" aria-hidden="true"></span>
-          <!-- The same press means something a little different when the list
-               is empty, so it is worded for that case too and the surface
-               chooses between the two. -->
-          <span class="fuzzy-text fuzzy-text-found">
-            <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
-            <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
-          </span>
-          <span class="fuzzy-text fuzzy-text-empty">
-            <span class="fuzzy-hint" data-i18n="nrFuzzyHint">Still can&rsquo;t find it?</span>
-            <span class="fuzzy-main" data-i18n="nrFuzzyMain">Widen the Search Further</span>
-          </span>
-        </button>
-        <button type="button" class="btn library-button"
-                data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+      <div class="fuzzy-container">
+        <div class="fuzzy-row">
+          <button type="button" class="btn fuzzy-button" data-action="click->home#scanSimilar">
+            <span class="fuzzy-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <path d="M11 8a3 3 0 0 0-3 3" stroke-opacity="0.5"></path>
+              </svg>
+            </span>
+            <span class="fuzzy-divider" aria-hidden="true"></span>
+            <!-- The same press means something a little different when the list
+                 is empty, so it is worded for that case too and the surface
+                 chooses between the two. -->
+            <span class="fuzzy-text fuzzy-text-found">
+              <span class="fuzzy-hint" data-i18n="fuzzyHint">Can&rsquo;t find what you&rsquo;re looking for?</span>
+              <span class="fuzzy-main" data-i18n="fuzzyMain">Scan for Similar Matches</span>
+            </span>
+            <span class="fuzzy-text fuzzy-text-empty">
+              <span class="fuzzy-hint" data-i18n="nrFuzzyHint">Still can&rsquo;t find it?</span>
+              <span class="fuzzy-main" data-i18n="nrFuzzyMain">Widen the Search Further</span>
+            </span>
+          </button>
+          <button type="button" class="btn library-button"
+                  data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+        </div>
       </div>
 
       <!-- Nothing matched. The word that was looked for is said back, and the
@@ -768,37 +791,37 @@
     <div data-group="lemma">
       <span data-copy="title" data-i18n="groupLemma">Lemma</span>
       <span data-copy="note" data-i18n="groupLemmaNote">Results without an affix, including the base or singular form of a value</span>
-      <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1"><b>kalem</b>, <b>dost</b></span>
+      <span data-copy="example" data-i18n="groupLemmaExample" data-i18n-html="1">Ex: <b>kalem</b>, <b>dost</b></span>
     </div>
     <div data-group="inflected">
       <span data-copy="title" data-i18n="groupInflected">Inflected Forms</span>
-      <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflected forms of the search term</span>
-      <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e</span>
+      <span data-copy="note" data-i18n="groupInflectedNote">Results showing inflectional forms of the search term</span>
+      <span data-copy="example" data-i18n="groupInflectedExample" data-i18n-html="1">Ex: <b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e, <b>kalem</b>de</span>
     </div>
     <div data-group="lexicalizedInflected">
       <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
-      <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms that carry their own dictionary meaning</span>
-      <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1"><b>civar</b> &rarr; <b>civarında</b></span>
-    </div>
-    <div data-group="derived">
-      <span data-copy="title" data-i18n="groupDerived">Derived Forms</span>
-      <span data-copy="note" data-i18n="groupDerivedNote">Words built with derivational affixes</span>
-      <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1"><b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
-    </div>
-    <div data-group="phrases">
-      <span data-copy="title" data-i18n="groupPhrases">Phrases</span>
-      <span data-copy="note" data-i18n="groupPhrasesNote">Phrases containing the search term</span>
-      <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazar</b> değmek</span>
-    </div>
-    <div data-group="compounds">
-      <span data-copy="title" data-i18n="groupCompounds">Compounds</span>
-      <span data-copy="note" data-i18n="groupCompoundsNote">Compound words containing the search term</span>
-      <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1"><b>nazar</b> &rarr; <b>nazar</b>gâh</span>
+      <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms given a distinct meaning of their own in the dictionary</span>
+      <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1">Ex: <b>civar</b> &rarr; <b>civarında</b></span>
     </div>
     <div data-group="partial">
       <span data-copy="title" data-i18n="groupPartial">Similar Spellings</span>
-      <span data-copy="note" data-i18n="groupPartialNote">Results spelled close to the search term</span>
+      <span data-copy="note" data-i18n="groupPartialNote">Results written with a spelling close to the search term</span>
       <span data-copy="example" data-i18n="groupPartialExample" data-i18n-html="1"></span>
+    </div>
+    <div data-group="derived">
+      <span data-copy="title" data-i18n="groupDerived">Derived Forms</span>
+      <span data-copy="note" data-i18n="groupDerivedNote">Results showing words formed with derivational suffixes</span>
+      <span data-copy="example" data-i18n="groupDerivedExample" data-i18n-html="1">Ex: <b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci</span>
+    </div>
+    <div data-group="compounds">
+      <span data-copy="title" data-i18n="groupCompounds">Compounds</span>
+      <span data-copy="note" data-i18n="groupCompoundsNote">Compounds containing the search term as a component</span>
+      <span data-copy="example" data-i18n="groupCompoundsExample" data-i18n-html="1">Ex: <b>nazar</b> &rarr; <b>nazar</b>gâh</span>
+    </div>
+    <div data-group="phrases">
+      <span data-copy="title" data-i18n="groupPhrases">Phrases</span>
+      <span data-copy="note" data-i18n="groupPhrasesNote">Phrases containing the search term as a component</span>
+      <span data-copy="example" data-i18n="groupPhrasesExample" data-i18n-html="1">Ex: <b>nazar</b> &rarr; <b>nazar</b> değmek</span>
     </div>
   </div>
 

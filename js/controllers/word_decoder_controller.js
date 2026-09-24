@@ -845,7 +845,7 @@ class WordDecoderController extends Stimulus.Controller {
             </button>
             ${note ? `
               <span class="group-note is-open">
-                <span class="group-note-text">${note}${example ? `<span class="group-note-example"><span class="group-note-ex-label">${this.escape(this.translate("groupExampleLabel", "Ex:"))}</span> ${example}</span>` : ""}</span>
+                <span class="group-note-text">${note}${example ? `<span class="group-note-example">${example}</span>` : ""}</span>
                 <button type="button" class="btn group-note-toggle" aria-expanded="true"
                         data-action="click->word-decoder#toggleNote"
                         aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">

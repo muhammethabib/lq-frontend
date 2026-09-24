@@ -15,6 +15,10 @@ const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Arrow
 // A group longer than this is not put on screen all at once: the reader is
 // given a page of it and asks for the rest.
 const PAGE = 25;
+
+// Every group closes on the reference's own 8px of air: 4px of the table's
+// spacing on either side of this empty row, and the row's own 4px.
+const TAIL = `<tr class="group-tail" aria-hidden="true"><td colspan="6"></td></tr>`;
 // A row has two halves, and which half the pointer is over decides where a
 // press will go. The words themselves, and everything else that has its own
 // answer to a press, are left out of that: a reader over a word is being told
@@ -773,18 +777,20 @@ class HomeController extends Stimulus.Controller {
            <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->home#toggleGroup">
-              <span class="group-chevron"><i data-feather="chevron-down"></i></span>
+              <span class="group-chevron"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true"><path d="M1 1L5 5L9 1"/></svg></span>
               <span class="group-title">${title}</span>
-              <span class="group-count">${rows.length}</span>
             </button>
+            <span class="group-count">${rows.length}</span>
             ${note ? `
               <span class="group-note is-open">
-                <span class="group-note-text">${note}${example ? `<span class="group-note-example"><span class="group-note-ex-label">${this.escape(this.translate("groupExampleLabel", "Ex:"))}</span> ${example}</span>` : ""}</span>
+                <span class="group-note-text">${note}${example ? `<span class="group-note-example">${example}</span>` : ""}</span>
                 <button type="button" class="btn group-note-toggle" aria-expanded="true"
                         data-action="click->home#toggleNote"
                         aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">
                   <i data-feather="info" aria-hidden="true"></i>
-                  <span class="group-note-close" aria-hidden="true">&times;</span>
+                  <span class="group-note-close" aria-hidden="true">✕</span>
                 </button>
               </span>` : ""}
            </div>
@@ -962,7 +968,7 @@ class HomeController extends Stimulus.Controller {
   // press says how many are left rather than offering a page bigger than the
   // remainder.
   showMoreHtml(bodyId, shown, total) {
-    if (shown >= total) return "";
+    if (shown >= total) return TAIL;
     const left = total - shown;
     const more = `
       <button type="button" class="btn show-more" data-action="click->home#revealMore"
@@ -979,8 +985,8 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="show-more-row">
-        <td colspan="6">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</td>
-      </tr>`;
+        <td colspan="6"><span class="show-more-cell">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</span></td>
+      </tr>${TAIL}`;
   }
 
   revealMore(event) {

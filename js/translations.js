@@ -181,29 +181,28 @@ window.LQ_TRANSLATIONS = {
 
     // --- result groups: <key>, <key>Note, <key>Example ---
     groupLemma: "Lemma",
-    groupExampleLabel: "Örnekler:",
     groupLemmaNote: "Ek almamış sonuçlar; bir değerin temel veya tekil biçimi",
-    groupLemmaExample: "<b>kalem</b>, <b>dost</b>",
+    groupLemmaExample: "Örnekler: <b>kalem</b>, <b>dost</b>",
 
     groupInflected: "Çekimli Biçimler",
     groupInflectedNote: "Arama teriminin çekimli biçimlerini gösteren sonuçlar",
-    groupInflectedExample: "<b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e",
+    groupInflectedExample: "Örnek: <b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e, <b>kalem</b>de",
 
     groupLexicalizedInflected: "Sözlükselleşmiş Çekimli Formlar",
     groupLexicalizedInflectedNote: "Sözlükte kendine ait ayrı bir anlam kazanmış çekimli biçimler",
-    groupLexicalizedInflectedExample: "<b>civar</b> &rarr; <b>civarında</b>",
+    groupLexicalizedInflectedExample: "Örnek: <b>civar</b> &rarr; <b>civarında</b>",
 
     groupDerived: "Türemiş Biçimler",
     groupDerivedNote: "Yapım ekleriyle oluşturulmuş kelimeleri gösteren sonuçlar",
-    groupDerivedExample: "<b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci",
+    groupDerivedExample: "Örnek: <b>kalem</b> &rarr; <b>kalem</b>lik, <b>kalem</b>ci",
 
     groupPhrases: "İbareler",
     groupPhrasesNote: "Arama terimini içeren ibareler",
-    groupPhrasesExample: "<b>nazar</b> &rarr; <b>nazar</b> değmek",
+    groupPhrasesExample: "Örnek: <b>nazar</b> &rarr; <b>nazar</b> değmek",
 
     groupCompounds: "Birleşik Kelimeler",
     groupCompoundsNote: "Arama terimini içeren birleşik kelimeler",
-    groupCompoundsExample: "<b>nazar</b> &rarr; <b>nazar</b>gâh",
+    groupCompoundsExample: "Örnek: <b>nazar</b> &rarr; <b>nazar</b>gâh",
 
     groupPartial: "Benzer İmlalar",
     groupPartialNote: "Arama terimine yakın bir imlayla yazılmış sonuçlar",

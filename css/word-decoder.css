@@ -631,7 +631,6 @@
 
 /* The worked example stands a little apart from the sentence it illustrates */
 .word-decoder-surface .group-note-example { margin-left: 10px; color: #5d718c; }
-.word-decoder-surface .group-note-ex-label { color: var(--lq-ink-soft); }
 /* Hide the note before the table gets narrow enough for it to squeeze the columns */
 @media (max-width: 1200px) { .word-decoder-surface .group-note { display: none; } }
 

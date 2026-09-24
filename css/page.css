@@ -81,10 +81,13 @@
 .page-surface .page-hero::before {
   content: "";
   position: absolute;
+  /* The Q overruns the band a little -- 340px of band, 384px of Q -- and is
+     cut by the same amount top and bottom, so it sits in the same place at
+     the same size on every page. */
   top: 50%;
-  right: -3%;
-  width: clamp(180px, 26vw, 330px);
-  height: 120%;
+  right: 5%;
+  width: 360px;
+  height: 384px;
   transform: translateY(-50%);
   background: url("../assets/q-watermark.svg") right center/contain no-repeat;
   opacity: .07;
@@ -394,9 +397,22 @@
 
 /* ---------- responsive ---------- */
 
-@media (max-width: 767px) {
-  .page-surface .page-hero { height: 260px; }
+/* The band and its Q shrink together, and the Q never goes away: the same
+   mark at every width. */
+@media (max-width: 760px) {
+  .page-surface .page-hero { height: 260px; min-height: 260px; }
   .page-surface .page-hero::before { width: 275px; height: 294px; right: -6%; }
+}
+@media (max-width: 590px) {
+  .page-surface .page-hero::before {
+    display: block;
+    width: 210px;
+    height: 224px;
+    right: -8%;
+  }
+}
+
+@media (max-width: 767px) {
   .page-surface .page-content { padding: 32px 22px 42px; border-radius: 0 0 16px 16px; }
   .page-surface .point-list { margin-left: 0; }
   .page-surface .point-list li { padding: 14px 16px 14px 40px; }

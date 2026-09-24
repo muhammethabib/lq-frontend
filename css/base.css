@@ -270,7 +270,16 @@ body {
   background: #d7dfe9;
   color: var(--lq-sapphire);
 }
-.page-top-row .classic-link svg { width: 11px; height: 11px; opacity: .75; }
+.page-top-row .classic-link svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: .75;
+}
 .page-top-row .classic-link:hover svg { opacity: 1; }
 
 /* ---------- shared: language switch ---------- */

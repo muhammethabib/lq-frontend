@@ -830,13 +830,13 @@ class WordDecoderController extends Stimulus.Controller {
     const candidates = this.groupByCandidate(group.rows);
 
     const body = candidates.length === 0
-      ? `<tr class="group-empty"><td colspan="5"><span>${this.escape(this.translate("decoderEmptyGroup", "No candidate readings in this section."))}</span></td></tr>`
+      ? `<tr class="group-empty"><td colspan="4"><span>${this.escape(this.translate("decoderEmptyGroup", "No candidate readings in this section."))}</span></td></tr>`
       : candidates.map((candidate) => this.candidateHtml(candidate)).join("");
 
     return `
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
-          <th colspan="5" scope="colgroup">
+          <th colspan="4" scope="colgroup">
            <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->word-decoder#toggleGroup">
@@ -888,7 +888,7 @@ class WordDecoderController extends Stimulus.Controller {
 
     return `
       <tr class="candidate-header" data-candidate="${id}">
-        <th colspan="5" scope="colgroup">
+        <th colspan="4" scope="colgroup">
           <button type="button" class="candidate-toggle" aria-expanded="false"
                   data-action="click->word-decoder#toggleCandidate">
             <span class="candidate-chevron"><i data-feather="chevron-down"></i></span>
@@ -911,13 +911,17 @@ class WordDecoderController extends Stimulus.Controller {
     return `
       <tr class="result-row${nested ? " is-nested" : ""}" data-category="${this.escape(row.category)}"
           ${candidateId ? `data-belongs-to="${candidateId}"` : ""} ${nested ? "hidden" : ""}>
-        <td>
-          <div class="word-pair">
-            <span class="word-ottoman"><span class="word-box ottoman-box" data-direction="rtl">${this.escape(candidate.ottoman)}</span></span>
-            <span class="word-latin"><span class="word-box latin-box">${this.escape(candidate.latin)}</span></span>
+        <td class="result-cell">
+          <div class="result-cell-pair">
+            <div class="result-main">
+              <div class="word-pair">
+                <span class="word-ottoman"><span class="word-box ottoman-box" data-direction="rtl">${this.escape(candidate.ottoman)}</span></span>
+                <span class="word-latin"><span class="word-box latin-box">${this.escape(candidate.latin)}</span></span>
+              </div>
+            </div>
+            <div class="category-slot"><span class="category-badge">${this.escape(this.categoryLabel(row.category))}</span></div>
           </div>
         </td>
-        <td class="text-center"><span class="category-badge">${this.escape(this.categoryLabel(row.category))}</span></td>
         <td class="text-center"><i class="row-arrow" data-feather="arrow-right"></i></td>
         <td class="headword-cell">
           <div class="word-pair">

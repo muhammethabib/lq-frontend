@@ -1051,27 +1051,44 @@
   top: 0;
   z-index: 2;
 }
+/* The result and its category share one column, as they share one cell of
+   the reference's grid: the result asks for 430px and the category for 100,
+   and when the card cannot hold both each gives ground in proportion, down
+   to the width of the words it holds. That is why the two meet in a
+   different place from one row to the next, and why they are laid out here
+   rather than given a column each. */
 .home-surface .results-table > thead th.col-result {
+  padding: 0;
+  /* The band stands the same 4px in from the card's edge as the rows, where
+     their category stripe is. */
+  border-left: 4px solid var(--lq-lat-bg);
   background: var(--lq-lat-bg);
-  padding: 10px 0 10px 24px;
   box-shadow: -20px 0 0 var(--lq-lat-bg);
 }
-.home-surface .results-table > thead th.col-category {
-  /* The four widths below are the reference's own. Its rows are laid on a
-     twelve-column grid over the card's inner width - five columns to the
-     result and its category, seven to the rest - so each is a share of the
-     card rather than a fixed number of pixels, and the list holds its
-     proportions as the card narrows. (A share is all a fixed table takes:
-     it resolves no calc() against the table's own width.) The result
-     column takes whatever the other four leave.
-
-     The category is the one column the reference gives a width in pixels:
-     100px, which gives ground to the result beside it as the card narrows
-     and stops at the width of the badge it holds. */
-  width: 7.8283%;
+.home-surface .col-result-pair {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+.home-surface .col-result-label {
+  flex: 0 1 430px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 10px 0 10px 24px;
+}
+.home-surface .col-category-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  padding: 10px 8px;
   border-left: 1px solid var(--lq-line);
   border-right: 1px solid var(--lq-line);
+  background: var(--lq-paper-soft);
 }
+
 .home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 5.803%; }
 .home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 29.02%; }
 .home-surface .results-table > thead th.col-dictionary {
@@ -1293,17 +1310,31 @@
 }
 .home-surface .result-row > td:first-child {
   padding-right: 0;
-  padding-left: 24px;
+  padding-left: 0;
   border-left: 4px solid transparent;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
+/* The reading and its category share the cell the way the reference's grid
+   gives them one: the reading asks for 430px and the category for 100. */
+.home-surface .result-cell-pair {
+  display: flex;
+  align-items: center;
+}
+.home-surface .result-main {
+  flex: 0 1 430px;
+  min-width: 0;
+  padding-left: 24px;
+}
+.home-surface .category-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+}
 /* The reference's result half is a hair narrower than its headword half:
    its column overflows by 4px and the pair gives that back. */
-.home-surface .result-row > td:first-child .word-pair { max-width: 396px; }
-/* The category stands in the middle of its own column, with no cell padding
-   of its own to push it off centre. */
-.home-surface .result-row > td:has(> .category-badge) { padding-right: 0; padding-left: 0; }
+.home-surface .result-main .word-pair { max-width: 396px; }
 
 .home-surface .result-row[data-category="ENTRY"] > td:first-child { border-left-color: #0d9488; }
 .home-surface .result-row[data-category="SUBENTRY"] > td:first-child { border-left-color: #d97706; }
@@ -1512,11 +1543,6 @@
   .home-surface .results-table > thead th.col-arrow { width: 5.81%; }
   .home-surface .results-table > thead th.col-headword { width: 34.859%; }
   .home-surface .results-table > thead th.col-dictionary { width: 17.5101%; }
-}
-
-/* The category stops giving ground at the width of its own badge. */
-@media (max-width: 1222px) {
-  .home-surface .results-table > thead th.col-category { width: 85px; }
 }
 
 /* ---------- responsive ---------- */

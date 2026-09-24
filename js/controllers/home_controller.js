@@ -18,7 +18,7 @@ const PAGE = 25;
 
 // Every group closes on the reference's own 8px of air: 4px of the table's
 // spacing on either side of this empty row, and the row's own 4px.
-const TAIL = `<tr class="group-tail" aria-hidden="true"><td colspan="5"></td></tr>`;
+const TAIL = `<tr class="group-tail" aria-hidden="true"><td colspan="4"></td></tr>`;
 // A row has two halves, and which half the pointer is over decides where a
 // press will go. The words themselves, and everything else that has its own
 // answer to a press, are left out of that: a reader over a word is being told
@@ -773,7 +773,7 @@ class HomeController extends Stimulus.Controller {
     return `
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
-          <th colspan="5" scope="colgroup">
+          <th colspan="4" scope="colgroup">
            <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->home#toggleGroup">
@@ -985,7 +985,7 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="show-more-row">
-        <td colspan="5"><span class="show-more-cell">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</span></td>
+        <td colspan="4"><span class="show-more-cell">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</span></td>
       </tr>${TAIL}`;
   }
 
@@ -1024,7 +1024,7 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="result-row${held ? " is-held" : ""}" data-category="${row.category}">
-        <td class="result-zone" data-action="click->home#openEntry" data-zone-focus="result"
+        <td class="result-zone result-cell" data-action="click->home#openEntry" data-zone-focus="result"
             data-zone-ottoman="${this.escape(row.resultOttoman)}"
             data-zone-latin="${this.escape(row.resultLatin)}"
             data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
@@ -1032,6 +1032,8 @@ class HomeController extends Stimulus.Controller {
             data-zone-dictionary="${this.escape(row.dictionary)}"
             data-zone-page="${this.escape(row.page)}"
             data-zone-tip="goToResult">
+         <div class="result-cell-pair">
+          <div class="result-main">
           <div class="word-pair">
             <span class="word-ottoman">
               <span class="word-box ottoman-box" data-direction="rtl"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.highlight(row.resultOttoman, "ottoman", markAffixes)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
@@ -1041,19 +1043,17 @@ class HomeController extends Stimulus.Controller {
                     aria-label="${this.escape(readingLabel)}"${this.menuData(row.resultOttoman, row.resultLatin)}>${this.escape(row.resultLatin)}${this.analysisHtml(row.resultOttoman, row.resultLatin)}</span>
             </span>
           </div>
-        </td>
-        <!-- The category belongs to the result and the arrow to the headword,
-             so each sits in that half's zone: a press anywhere in a half opens
-             the same entry, and the half lights as one. -->
-        <td class="text-center result-zone" data-action="click->home#openEntry" data-zone-focus="result"
-            data-zone-ottoman="${this.escape(row.resultOttoman)}"
-            data-zone-latin="${this.escape(row.resultLatin)}"
-            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
-            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
-            data-zone-dictionary="${this.escape(row.dictionary)}"
-            data-zone-page="${this.escape(row.page)}"
-            data-zone-tip="goToResult">
-          <span class="category-badge">${this.escape(this.categoryLabel(row.category))}</span>
+          </div>
+          <!-- The category belongs to the result, so it stands in the result's
+               own half: a press anywhere in that half opens the same entry,
+               and the half lights as one. It asks for 100px and the reading
+               beside it for 430; where the card cannot hold both, each gives
+               ground in proportion, which is why they meet in a different
+               place from one row to the next. -->
+          <div class="category-slot">
+            <span class="category-badge">${this.escape(this.categoryLabel(row.category))}</span>
+          </div>
+         </div>
         </td>
         <td class="text-center result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
             data-zone-ottoman="${this.escape(row.headwordOttoman)}"

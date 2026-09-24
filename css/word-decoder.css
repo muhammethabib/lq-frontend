@@ -533,8 +533,27 @@
   color: #566478;
   white-space: nowrap;
 }
-.word-decoder-surface .results-table > thead th.col-result { background: var(--lq-lat-bg); padding-left: 40px; }
-.word-decoder-surface .results-table > thead th.col-category { width: 120px; text-align: center; }
+.word-decoder-surface .results-table > thead th.col-result { background: var(--lq-lat-bg); padding: 0; }
+.word-decoder-surface .col-result-pair { display: flex; align-items: stretch; height: 100%; }
+.word-decoder-surface .col-result-label {
+  flex: 0 1 430px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 10px 0 10px 40px;
+}
+.word-decoder-surface .col-category-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  padding: 10px 8px;
+  background: var(--lq-paper-soft);
+}
+.word-decoder-surface .result-cell-pair { display: flex; align-items: center; }
+.word-decoder-surface .result-main { flex: 0 1 430px; min-width: 0; }
+.word-decoder-surface .category-slot { display: flex; align-items: center; justify-content: center; width: 120px; }
 .word-decoder-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); text-align: center; }
 .word-decoder-surface .results-table > thead th.col-dictionary { text-align: right; }
 

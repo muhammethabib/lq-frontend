@@ -162,8 +162,11 @@
    reader looking for one of them is looking at the shape, not at
    the dots. Each family is given a ground of its own, quiet enough
    to read the letters over and plain enough to see the block.
-   The keyboard's own order scatters the families, so it keeps the
-   one ground it has.
+
+   Eleven grounds out of two colours: the families take blue and
+   sand in turn, and a shade deeper on each lap of the alphabet.
+   Two that touch never share a ground, and the board stays a
+   board rather than a paint box.
    --------------------------------------------------------------- */
 
 .search-keyboard .search-key[data-family] {
@@ -174,17 +177,17 @@
   background: var(--family-hover);
   border-color: var(--family-edge);
 }
-.search-keyboard .search-key[data-family="be"] { --family-face: #eff6ff; --family-edge: #bfdbfe; --family-hover: #dbeafe; }
-.search-keyboard .search-key[data-family="cim"] { --family-face: #fffbeb; --family-edge: #fde68a; --family-hover: #fef3c7; }
-.search-keyboard .search-key[data-family="dal"] { --family-face: #f5f3ff; --family-edge: #ddd6fe; --family-hover: #ede9fe; }
-.search-keyboard .search-key[data-family="re"] { --family-face: #ecfeff; --family-edge: #a5f3fc; --family-hover: #cffafe; }
-.search-keyboard .search-key[data-family="sin"] { --family-face: #fdf2f8; --family-edge: #fbcfe8; --family-hover: #fce7f3; }
-.search-keyboard .search-key[data-family="sad"] { --family-face: #f0fdf4; --family-edge: #bbf7d0; --family-hover: #dcfce7; }
-.search-keyboard .search-key[data-family="ti"] { --family-face: #eef2ff; --family-edge: #c7d2fe; --family-hover: #e0e7ff; }
-.search-keyboard .search-key[data-family="ayn"] { --family-face: #fff7ed; --family-edge: #fed7aa; --family-hover: #ffedd5; }
-.search-keyboard .search-key[data-family="fe"] { --family-face: #f0fdfa; --family-edge: #99f6e4; --family-hover: #ccfbf1; }
-.search-keyboard .search-key[data-family="kef"] { --family-face: #faf5ff; --family-edge: #e9d5ff; --family-hover: #f3e8ff; }
-.search-keyboard .search-key[data-family="he"] { --family-face: #fef2f2; --family-edge: #fecaca; --family-hover: #fee2e2; }
+.search-keyboard .search-key[data-family="be"] { --family-face: #f2f7fe; --family-edge: #d8e6fa; --family-hover: #e7f0fd; }
+.search-keyboard .search-key[data-family="cim"] { --family-face: #fffaf0; --family-edge: #f4e5c4; --family-hover: #fdf4e1; }
+.search-keyboard .search-key[data-family="dal"] { --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; }
+.search-keyboard .search-key[data-family="re"] { --family-face: #fbf3e0; --family-edge: #ecd9a8; --family-hover: #f8ebd0; }
+.search-keyboard .search-key[data-family="sin"] { --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; }
+.search-keyboard .search-key[data-family="sad"] { --family-face: #f9efd9; --family-edge: #e8d49c; --family-hover: #f5e6c6; }
+.search-keyboard .search-key[data-family="ti"] { --family-face: #f2f7fe; --family-edge: #d8e6fa; --family-hover: #e7f0fd; }
+.search-keyboard .search-key[data-family="ayn"] { --family-face: #fffaf0; --family-edge: #f4e5c4; --family-hover: #fdf4e1; }
+.search-keyboard .search-key[data-family="fe"] { --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; }
+.search-keyboard .search-key[data-family="kef"] { --family-face: #fbf3e0; --family-edge: #ecd9a8; --family-hover: #f8ebd0; }
+.search-keyboard .search-key[data-family="he"] { --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; }
 
 /* ---------------------------------------------------- the keys */
 

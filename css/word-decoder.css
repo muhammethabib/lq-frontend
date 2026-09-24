@@ -148,6 +148,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Ottoman letters hang low in their box, so a mark centred in the box
+     reads as floating over them. The three pixels put every drawn mark --
+     star, skeleton, the sign for an unknown number of letters -- on the line
+     the letters' own bodies sit on. */
+  transform: translateY(3px);
   pointer-events: none;
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 24px;
@@ -486,6 +491,8 @@
   font-weight: 400;
   font-size: 27px;
   color: var(--lq-claret);
+  /* On the letters' own line, as the star and the skeletons are */
+  transform: translateY(3px);
 }
 /* A box that offers several letters for one position is drawn in the pill as
    that box: a chip the height of the letters, its letters at full size,
@@ -514,12 +521,36 @@
      letter before it whichever way the row is running. */
   border-inline-start: 2px dashed #cbd5e1;
 }
+/* A skeleton in the pill wears its drawn face, at the size the pill's
+   letters are set in: it keeps the same relation to the letters beside it
+   as it has to the letters up in the strip. The face is drawn on a square
+   far wider than the shape itself, so it is laid over a slot of the shape's
+   own width rather than laid out in it, and the pill keeps its height. */
+.word-decoder-surface .pattern-slot[data-kind="rasm"] {
+  position: relative;
+  width: 20px;
+  height: 24px;
+}
+.word-decoder-surface .pattern-slot[data-kind="rasm"] > svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 62px;
+  height: 62px;
+  /* Ottoman letters hang low in their line, so a mark centred on the line
+     reads as floating over them. The three pixels put the drawn shape on the
+     line the letters' own bodies sit on. */
+  transform: translate(-50%, calc(-50% + 3px));
+}
+
 .word-decoder-surface .pattern-slot .wildcard-star {
   /* 9.6 of box over the eleven units that hold the arms gives 9.03 of arm,
-     and the 5.2 either side leaves the 20 of advance the old site leaves. */
+     and the 5.2 either side leaves the 20 of advance the old site leaves.
+     The three pixels down put the star on the letters' own line, as above. */
   width: 9.6px;
   height: 9.6px;
   margin: 0 5.2px;
+  transform: translateY(3px);
 }
 
 .word-decoder-surface .decoder-stats-row {

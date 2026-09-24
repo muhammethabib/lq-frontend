@@ -575,6 +575,7 @@ class WordDecoderController extends Stimulus.Controller {
     delete cell.dataset.rasm;
     delete cell.dataset.dots;
     delete cell.dataset.matches;
+    delete cell.dataset.mark;
   }
 
   // ==================== the on-screen keyboard ====================
@@ -672,6 +673,9 @@ class WordDecoderController extends Stimulus.Controller {
       cell.dataset.rasm = content.rasm;
       cell.dataset.dots = content.dots || "";
       cell.dataset.matches = (content.matches || []).join(" ");
+      // Which drawn face it is, so the pattern over the results can wear the
+      // same one rather than spelling it out with a typed asterisk.
+      if (content.mark) cell.dataset.mark = content.mark; else delete cell.dataset.mark;
       delete cell.dataset.wildcard;
       // The box wears the same drawn face the key wore, so the shape the
       // reader chose and the shape now standing in the box are the same shape.
@@ -785,6 +789,7 @@ class WordDecoderController extends Stimulus.Controller {
         return {
           kind: "rasm",
           shape: rasm.dataset.rasm,
+          mark: rasm.dataset.mark || null,
           dots: rasm.dataset.dots || null,
           matches: rasm.dataset.matches ? rasm.dataset.matches.split(" ") : []
         };
@@ -921,7 +926,14 @@ class WordDecoderController extends Stimulus.Controller {
             slot.letters.map((letter) => `<span>${this.escape(letter)}</span>`).join("") +
             `</span>`;
         }
-        if (slot.kind === "rasm") return `<span class="pattern-slot" data-kind="rasm">${this.escape(slot.shape)}*</span>`;
+        if (slot.kind === "rasm") {
+          // The skeleton wears the face it wears on the key and in the box --
+          // the shape drawn with its asterisk where the dots would be --
+          // rather than the shape with a typed asterisk left beside it.
+          const marks = window.LQ_KEYBOARD_MARKS || {};
+          const face = slot.mark && marks[slot.mark] ? marks[slot.mark] : this.escape(slot.shape);
+          return `<span class="pattern-slot" data-kind="rasm">${face}</span>`;
+        }
         const mark = wildcards[slot.kind] || {};
         return `<span class="pattern-slot" data-kind="${slot.kind}">${mark.mark || this.escape(mark.symbol || "*")}</span>`;
       }).join("");

@@ -758,7 +758,6 @@
   letter-spacing: .01em;
   color: #c01a56;
   text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
   text-align: center;
   width: 78px;
   pointer-events: none;

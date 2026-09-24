@@ -75,12 +75,15 @@
    and here that is the page grey, so every window would come up wearing it.
    Both are cards standing on the page. The variables are set where Bootstrap
    sets them, since it redefines them on these elements. */
+/* The page's own stack, the one the reference's reset leaves on the root.
+   Everything visible takes Inter from body; this is only so a control that
+   asks the document rather than its parent gets the same answer here. */
+html {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 .modal { --bs-modal-bg: #ffffff; }
 .dropdown-menu { --bs-dropdown-bg: #ffffff; }
-
-body {
-  -webkit-font-smoothing: antialiased;
-}
 
 /* Bootstrap lifts every button onto the middle of the line; the reference
    leaves them where the browser puts them, on the baseline. */

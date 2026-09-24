@@ -282,20 +282,28 @@ class WordDecoderController extends Stimulus.Controller {
     this.setTooltip(button, this.slotRemoveLabel(slot.querySelectorAll(".slot-cell").length));
   }
 
+  // A press of the plus is a field the reader asked for, so it stays even if
+  // they leave it empty: leaving one empty is how a box is made to stand for
+  // "this letter, or nothing".
   addAlternative(event) {
-    this.openAlternative(event.currentTarget.closest(".slot-cell"));
+    this.openAlternative(event.currentTarget.closest(".slot-cell"), false);
   }
 
   // The word is written from the right, so an alternative offered from a box
   // opens on that box's left, the way the old site opens it: the new field
   // goes in front of the one it was offered from, and takes the caret. It is
-  // marked as just opened, which is what makes the next letter open another.
-  openAlternative(cell) {
+  // marked as just opened, which is what makes the next letter open another;
+  // `offered` says the board opened it rather than the reader, and only such a
+  // field is swept up when the reader moves on.
+  openAlternative(cell, offered) {
     if (!cell) return;
     const frame = cell.closest(".slot-frame");
     cell.insertAdjacentHTML("beforebegin", this.cellHtml());
     const fresh = cell.previousElementSibling;
-    if (fresh) fresh.dataset.autoExpand = "1";
+    if (fresh) {
+      fresh.dataset.autoExpand = "1";
+      if (offered) fresh.dataset.offered = "1";
+    }
     window.LQ.refreshDynamicContent(frame);
     this.relabelSlotRemove(frame.closest(".slot"));
     const input = fresh && fresh.querySelector(".slot-input");
@@ -312,10 +320,30 @@ class WordDecoderController extends Stimulus.Controller {
     const cell = input.closest(".slot-cell");
     if (cell && cell.dataset.autoExpand) {
       delete cell.dataset.autoExpand;
-      this.openAlternative(cell);
+      this.openAlternative(cell, true);
       return;
     }
     this.advance(input);
+  }
+
+  // The field the board opened and the reader never used is taken back the
+  // moment they move on, so a box that was filled through the plus is left
+  // holding only the letters they wrote. A field the reader opened themselves
+  // is never taken back, which is how an empty alternative can be kept on
+  // purpose. `keep` is the box the caret is moving into, and is left alone.
+  sweepOffered(keep) {
+    this.stripTarget.querySelectorAll(".slot").forEach((slot) => {
+      if (slot === keep) return;
+      const cells = Array.from(slot.querySelectorAll(".slot-cell"));
+      if (cells.length < 2) return;
+      cells.forEach((cell) => {
+        if (!cell.dataset.offered || this.cellIsFilled(cell)) return;
+        if (slot.querySelectorAll(".slot-cell").length < 2) return;
+        window.LQ.disposeTooltips(cell);
+        cell.remove();
+      });
+      this.relabelSlotRemove(slot);
+    });
   }
 
   removeAlternative(event) {
@@ -462,7 +490,8 @@ class WordDecoderController extends Stimulus.Controller {
   // there, and the caret moves on exactly as it would have.
   handleInput(event) {
     const input = event.currentTarget;
-    if (input.value) this.forgetMark(input.closest(".slot-cell"));
+    const cell = input.closest(".slot-cell");
+    if (input.value) { this.forgetMark(cell); delete cell.dataset.offered; }
     this.refreshClear();
     if (!input.value) return;
     this.afterWrite(input);
@@ -484,7 +513,10 @@ class WordDecoderController extends Stimulus.Controller {
   // the row, not to the box that happened to be pressed, and a panel that
   // jumped sideways with every box would be read as a new panel each time.
   openKeyboard(event) {
-    this.activeCell = event.currentTarget.closest(".slot-cell");
+    const cell = event.currentTarget.closest(".slot-cell");
+    // Moving to another box gives up the field the board was still offering
+    this.sweepOffered(cell && cell.closest(".slot"));
+    this.activeCell = cell;
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:request", {
       detail: {
         anchor: this.stripTarget,
@@ -498,6 +530,7 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   dismissKeyboard() {
+    this.sweepOffered(null);
     this.activeCell = null;
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:dismiss"));
   }
@@ -543,6 +576,9 @@ class WordDecoderController extends Stimulus.Controller {
     const input = cell.querySelector(".slot-input");
     const existing = cell.querySelector(".slot-mark");
     if (existing) existing.remove();
+    // Once something is written in it, the field is the reader's and is no
+    // longer the board's to take back.
+    delete cell.dataset.offered;
 
     if (content.char) {
       input.value = content.char;
@@ -606,6 +642,7 @@ class WordDecoderController extends Stimulus.Controller {
     if (index < all.length - 1) {
       all[index + 1].focus();
       this.activeCell = all[index + 1].closest(".slot-cell");
+      this.sweepOffered(this.activeCell.closest(".slot"));
     } else {
       this.stripTarget.insertAdjacentHTML("beforeend", this.slotHtml() + this.gapHtml(false));
       this.refreshGaps();

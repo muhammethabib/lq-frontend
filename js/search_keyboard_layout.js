@@ -11,22 +11,20 @@
 //
 //   map    Latin key (lower case, or upper case for a Shift-only letter)
 //          to the Ottoman letter it writes
-//   rows   the three rows, as the keys sit on the board
 //   dual   keys that carry more than one letter:
 //          [plain, shift, shift label, alt, alt label]
+//
+// Both say which key on the reader's own board writes a letter, which is what
+// each key of the board prints over its letter.
 //
 // "_ye_" is not a letter but a decision: a ye is written without its dots
 // until a letter follows it, and js/controllers/home_controller.js settles
 // which of the two it ends up as.
 //
-// The `alphabetical` layout is the second order the same keyboard can take:
-// the Ottoman alphabet as it is recited, elif, be, pe, te..., three rows read
-// from the right. Each key shows, as the keyboard order does, the physical key
-// that writes its letter; the controller reads that off the language's `map`
-// and `dual`, so it changes with the layout. It is the alphabet, so it holds
-// each letter once: the detached he, which a Turkish keyboard still writes on
-// its E key, would be a second guzel he standing beside the first. Physical
-// typing still follows `map`.
+// `alphabetical` is the board itself: the Ottoman alphabet as it is recited,
+// elif, be, pe, te..., three rows read from the right. It is the alphabet, so
+// it holds each letter once: the detached he, which a Turkish keyboard still
+// writes on its E key, would be a second guzel he standing beside the first.
 
 window.LQ_SEARCH_KEYBOARD = {
   // Which letters share a skeleton. In the alphabet's order the families fall

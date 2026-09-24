@@ -122,16 +122,8 @@
 
 .search-keyboard-teach-text b { font-weight: 700; color: #475569; }
 
-/* Both corners are lifted out of the row so the line that teaches the
-   keyboard sits in the middle of the panel, not in the middle of what the
-   buttons leave of it. */
-.search-keyboard-switch {
-  position: absolute;
-  left: 0;
-  top: -2px;
-  display: flex;
-}
-
+/* Lifted out of the row so the line that teaches the keyboard sits in the
+   middle of the panel, not in the middle of what the buttons leave of it. */
 .search-keyboard-buttons {
   position: absolute;
   right: 0;
@@ -159,45 +151,9 @@
    points the way the reference's does: into the text, not away from it. */
 .search-keyboard-backspace svg { transform: scaleX(-1); }
 
-/* The switch between the two orders of the same board. It changes a mode
-   rather than deleting or closing, so it stands in the blue of the interface
-   rather than the red the other two answer in, and it says where a press
-   leads twice: in the face, which is the first three letters of the other
-   order, and in the two-way arrow beside it. */
-.search-keyboard-order {
-  width: auto;
-  gap: 5px;
-  padding: 0 8px;
-  border-color: #93c5fd;
-  background: linear-gradient(135deg, var(--lq-lat-bg) 0%, var(--lq-lat-border) 100%);
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--lq-sapphire);
-  transition: background .15s, border-color .15s, color .15s;
-}
-
-.search-keyboard-order:hover {
-  background: linear-gradient(135deg, var(--lq-lat-border) 0%, #bfdbfe 100%);
-  border-color: #60a5fa;
-  color: #1d4ed8;
-}
-.search-keyboard-order:active {
-  background: var(--lq-sapphire);
-  border-color: var(--lq-sapphire);
-  color: #fff;
-}
-.search-keyboard-order-face { display: inline-flex; }
-.search-keyboard-order-arrow { width: 11px; height: 11px; flex: none; opacity: .75; }
-.search-keyboard-order-latin { display: none; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 1px; }
-.search-keyboard.is-alphabetical .search-keyboard-order-ottoman { display: none; }
-.search-keyboard.is-alphabetical .search-keyboard-order-latin { display: inline; }
-
-/* The alphabetical order: rows read from the right, as the alphabet is
-   recited. The label over each key is the physical key that writes it, set
-   as the keyboard order sets it. */
-.search-keyboard.is-alphabetical .search-key-row { direction: rtl; }
+/* The rows read from the right, as the alphabet is recited. The label over
+   each key is the key on the reader's own board that writes it. */
+.search-keyboard .search-key-row { direction: rtl; }
 
 /* ---------------------------------------------------------------
    The letter families
@@ -210,25 +166,25 @@
    one ground it has.
    --------------------------------------------------------------- */
 
-.search-keyboard.is-alphabetical .search-key[data-family] {
+.search-keyboard .search-key[data-family] {
   background: var(--family-face);
   border-color: var(--family-edge);
 }
-.search-keyboard.is-alphabetical .search-key[data-family]:hover {
+.search-keyboard .search-key[data-family]:hover {
   background: var(--family-hover);
   border-color: var(--family-edge);
 }
-.search-keyboard.is-alphabetical .search-key[data-family="be"] { --family-face: #eff6ff; --family-edge: #bfdbfe; --family-hover: #dbeafe; }
-.search-keyboard.is-alphabetical .search-key[data-family="cim"] { --family-face: #fffbeb; --family-edge: #fde68a; --family-hover: #fef3c7; }
-.search-keyboard.is-alphabetical .search-key[data-family="dal"] { --family-face: #f5f3ff; --family-edge: #ddd6fe; --family-hover: #ede9fe; }
-.search-keyboard.is-alphabetical .search-key[data-family="re"] { --family-face: #ecfeff; --family-edge: #a5f3fc; --family-hover: #cffafe; }
-.search-keyboard.is-alphabetical .search-key[data-family="sin"] { --family-face: #fdf2f8; --family-edge: #fbcfe8; --family-hover: #fce7f3; }
-.search-keyboard.is-alphabetical .search-key[data-family="sad"] { --family-face: #f0fdf4; --family-edge: #bbf7d0; --family-hover: #dcfce7; }
-.search-keyboard.is-alphabetical .search-key[data-family="ti"] { --family-face: #eef2ff; --family-edge: #c7d2fe; --family-hover: #e0e7ff; }
-.search-keyboard.is-alphabetical .search-key[data-family="ayn"] { --family-face: #fff7ed; --family-edge: #fed7aa; --family-hover: #ffedd5; }
-.search-keyboard.is-alphabetical .search-key[data-family="fe"] { --family-face: #f0fdfa; --family-edge: #99f6e4; --family-hover: #ccfbf1; }
-.search-keyboard.is-alphabetical .search-key[data-family="kef"] { --family-face: #faf5ff; --family-edge: #e9d5ff; --family-hover: #f3e8ff; }
-.search-keyboard.is-alphabetical .search-key[data-family="he"] { --family-face: #fef2f2; --family-edge: #fecaca; --family-hover: #fee2e2; }
+.search-keyboard .search-key[data-family="be"] { --family-face: #eff6ff; --family-edge: #bfdbfe; --family-hover: #dbeafe; }
+.search-keyboard .search-key[data-family="cim"] { --family-face: #fffbeb; --family-edge: #fde68a; --family-hover: #fef3c7; }
+.search-keyboard .search-key[data-family="dal"] { --family-face: #f5f3ff; --family-edge: #ddd6fe; --family-hover: #ede9fe; }
+.search-keyboard .search-key[data-family="re"] { --family-face: #ecfeff; --family-edge: #a5f3fc; --family-hover: #cffafe; }
+.search-keyboard .search-key[data-family="sin"] { --family-face: #fdf2f8; --family-edge: #fbcfe8; --family-hover: #fce7f3; }
+.search-keyboard .search-key[data-family="sad"] { --family-face: #f0fdf4; --family-edge: #bbf7d0; --family-hover: #dcfce7; }
+.search-keyboard .search-key[data-family="ti"] { --family-face: #eef2ff; --family-edge: #c7d2fe; --family-hover: #e0e7ff; }
+.search-keyboard .search-key[data-family="ayn"] { --family-face: #fff7ed; --family-edge: #fed7aa; --family-hover: #ffedd5; }
+.search-keyboard .search-key[data-family="fe"] { --family-face: #f0fdfa; --family-edge: #99f6e4; --family-hover: #ccfbf1; }
+.search-keyboard .search-key[data-family="kef"] { --family-face: #faf5ff; --family-edge: #e9d5ff; --family-hover: #f3e8ff; }
+.search-keyboard .search-key[data-family="he"] { --family-face: #fef2f2; --family-edge: #fecaca; --family-hover: #fee2e2; }
 
 /* ---------------------------------------------------- the keys */
 
@@ -262,14 +218,14 @@
 
 .search-key:hover { background: #fff1f2; border-color: #fda4af; }
 
-.search-key:not(.search-key-split):active {
+.search-key:active {
   transform: scale(0.92);
   background: var(--lq-claret);
   border-color: var(--lq-claret);
 }
 
-.search-key:not(.search-key-split):active .search-key-latin,
-.search-key:not(.search-key-split):active .search-key-ottoman { color: #fff; }
+.search-key:active .search-key-latin,
+.search-key:active .search-key-ottoman { color: #fff; }
 
 .search-key-latin {
   font-size: 9px;
@@ -287,42 +243,6 @@
   color: var(--lq-claret);
 }
 
-/* A key that carries more than one letter is split into as many parts, each
-   pressed on its own. */
-.search-key-split {
-  flex-direction: row;
-  gap: 0;
-  padding: 0;
-  overflow: hidden;
-  width: 80px;
-  background: var(--lq-lat-bg);
-  border-color: var(--lq-lat-border);
-}
-
-.search-key-split:hover { background: var(--lq-lat-bg); border-color: var(--lq-lat-border); }
-.search-key-triple { width: 114px; }
-
-.search-key-part {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  height: 100%;
-  padding: 0 4px;
-  border: 0;
-  border-radius: 0;
-  background: var(--lq-lat-bg);
-}
-
-.search-key-part + .search-key-part { border-left: 1px solid var(--lq-lat-border); }
-.search-key-part:hover { background: #dbeafe; }
-
-.search-key-part:active { background: var(--lq-claret); }
-.search-key-part:active .search-key-latin,
-.search-key-part:active .search-key-ottoman { color: #fff; }
-
 /* ---------------------------------------------------------------
    The echo of the reader's own keyboard
    A letter written on the board in front of the reader shows its
@@ -330,16 +250,13 @@
    the two boards read as one.
    --------------------------------------------------------------- */
 
-.search-key.is-echo:not(.search-key-split),
-.search-key-part.is-echo {
+.search-key.is-echo {
   background: var(--lq-claret);
   border-color: var(--lq-claret);
   animation: search-key-echo 170ms ease-out;
 }
-.search-key.is-echo:not(.search-key-split) .search-key-latin,
-.search-key.is-echo:not(.search-key-split) .search-key-ottoman,
-.search-key-part.is-echo .search-key-latin,
-.search-key-part.is-echo .search-key-ottoman { color: #fff; }
+.search-key.is-echo .search-key-latin,
+.search-key.is-echo .search-key-ottoman { color: #fff; }
 
 @keyframes search-key-echo {
   0% { transform: scale(0.92); }
@@ -347,19 +264,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .search-key.is-echo:not(.search-key-split),
-  .search-key-part.is-echo { animation: none; }
+  .search-key.is-echo { animation: none; }
 }
-
-.search-key-part + .search-key-part .search-key-latin { font-size: 7px; font-weight: 800; color: var(--lq-muted); }
 
 /* ---------------------------------------------------- narrow screens */
 
 @media (max-width: 1100px) {
   .search-keyboard { padding: 14px 14px 12px; gap: 7px; }
   .search-key { width: 44px; height: 44px; }
-  .search-key-split { width: 76px; }
-  .search-key-triple { width: 108px; }
 }
 
 @media (max-width: 900px) {
@@ -377,7 +289,5 @@
     border-radius: 16px 16px 0 0;
   }
   .search-key { width: 34px; height: 40px; }
-  .search-key-split { width: 62px; }
-  .search-key-triple { width: 86px; }
   .search-key-ottoman { font-size: 15px; }
 }

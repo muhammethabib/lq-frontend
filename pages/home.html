@@ -1366,29 +1366,6 @@
                       pointermove->search-keyboard#moveDrag
                       pointerup->search-keyboard#endDrag
                       pointercancel->search-keyboard#endDrag">
-      <!-- The key that changes the order of the board stands on its own, at
-           the near corner, so it is not taken for one of the keys that act
-           on what has been typed. -->
-      <span class="search-keyboard-switch">
-        <button type="button" class="btn search-keyboard-button search-keyboard-order"
-                data-search-keyboard-target="orderButton"
-                data-action="pointerdown->search-keyboard#toggleOrder"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardOrderKeyboard"
-                title="Back to keyboard layout"
-                aria-label="Back to keyboard layout" data-i18n-aria="keyboardOrderKeyboard"
-                aria-pressed="true">
-          <span class="search-keyboard-order-face">
-            <span class="search-keyboard-order-ottoman" aria-hidden="true">ا ب ت</span>
-            <span class="search-keyboard-order-latin" aria-hidden="true">Q W E</span>
-          </span>
-          <svg class="search-keyboard-order-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="17 2 21 6 17 10"/><path d="M3 6h18"/>
-            <polyline points="7 14 3 18 7 22"/><path d="M21 18H3"/>
-          </svg>
-        </button>
-      </span>
-
       <span class="search-keyboard-teach">
         <span class="search-keyboard-demo" aria-hidden="true">
           <span class="search-keyboard-demo-key">K</span>

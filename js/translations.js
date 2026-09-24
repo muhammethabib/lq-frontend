@@ -121,8 +121,6 @@ window.LQ_TRANSLATIONS = {
     keyboardClearAll: "Tüm kutuları temizle",
     keyboardBackspace: "Harfi sil",
     keyboardClose: "Kapat",
-    keyboardOrderAlphabetical: "Alfabetik sıra (elif, be, te…)",
-    keyboardOrderKeyboard: "Klavye dizilişine dön",
     keyMatches: "Karşılıkları",
     wildcardAny: "Bu harfi okuyamıyorum",
     wildcardMany: "Kaç harf var bilmiyorum",

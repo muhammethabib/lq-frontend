@@ -132,7 +132,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
     if (!letter) return;
     const panel = this.advancedPanelTarget.classList.contains("is-active")
       ? this.advancedPanelTarget : this.basicPanelTarget;
-    const key = panel.querySelector(`.key[data-kind="letter"][data-char="${CSS.escape(letter)}"]`);
+    this.light(panel.querySelector(`.key[data-kind="letter"][data-char="${CSS.escape(letter)}"]`));
+  }
+
+  // A key lights claret for a moment when it writes, however it was pressed.
+  // The class is taken off and put back on with a reflow between, so a second
+  // press of the same key starts the light again rather than leaving it on.
+  light(key) {
     if (!key) return;
     key.classList.remove("is-echo");
     void key.offsetWidth;
@@ -216,6 +222,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // Stops the press from moving focus out of the field being typed into
     event.preventDefault();
     const key = event.currentTarget;
+    this.light(key);
     this.announce({
       kind: key.dataset.kind,
       char: key.dataset.char,

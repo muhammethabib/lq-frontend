@@ -136,6 +136,7 @@ class SearchKeyboardController extends Stimulus.Controller {
   press(event) {
     // Stops the press from taking focus away from the bar.
     event.preventDefault();
+    this.light(event.currentTarget);
     document.dispatchEvent(new CustomEvent("search-keyboard:key", {
       detail: { char: event.currentTarget.dataset.searchChar }
     }));
@@ -153,7 +154,11 @@ class SearchKeyboardController extends Stimulus.Controller {
   // of one's own lasts.
   echo(letter) {
     if (!letter || !this.hasRowsTarget) return;
-    const key = this.rowsTarget.querySelector(`[data-search-char="${CSS.escape(letter)}"]`);
+    this.light(this.rowsTarget.querySelector(`[data-search-char="${CSS.escape(letter)}"]`));
+  }
+
+  // A key lights claret for a moment when it writes, however it was pressed.
+  light(key) {
     if (!key) return;
     key.classList.remove("is-echo");
     // Restarting the class within the same frame would not replay it.

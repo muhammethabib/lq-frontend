@@ -219,18 +219,25 @@
   border-radius: 8px;
   background: var(--lq-paper-soft);
   user-select: none;
+  /* The claret comes on at once and goes off slowly: that is the blink. */
+  transition: background .18s ease, border-color .18s ease, transform .12s;
 }
+.search-key .search-key-latin,
+.search-key .search-key-ottoman { transition: color .18s ease; }
 
 .search-key:hover { background: #fff1f2; border-color: #fda4af; }
 
-.search-key:active {
+/* Held down, and lit after a press: claret ground, white letter. Both are
+   written with the board's own class in front, so that they outweigh the
+   family grounds above and a family key lights like any other. */
+.search-keyboard .search-key:active {
   transform: scale(0.92);
   background: var(--lq-claret);
   border-color: var(--lq-claret);
 }
 
-.search-key:active .search-key-latin,
-.search-key:active .search-key-ottoman { color: #fff; }
+.search-keyboard .search-key:active .search-key-latin,
+.search-keyboard .search-key:active .search-key-ottoman { color: #fff; }
 
 .search-key-latin {
   font-size: 9px;
@@ -255,13 +262,14 @@
    the two boards read as one.
    --------------------------------------------------------------- */
 
-.search-key.is-echo {
+.search-keyboard .search-key.is-echo {
   background: var(--lq-claret);
   border-color: var(--lq-claret);
+  transition: none;
   animation: search-key-echo 170ms ease-out;
 }
-.search-key.is-echo .search-key-latin,
-.search-key.is-echo .search-key-ottoman { color: #fff; }
+.search-keyboard .search-key.is-echo .search-key-latin,
+.search-keyboard .search-key.is-echo .search-key-ottoman { color: #fff; transition: none; }
 
 @keyframes search-key-echo {
   0% { transform: scale(0.92); }
@@ -269,7 +277,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .search-key.is-echo { animation: none; }
+  .search-keyboard .search-key.is-echo { animation: none; }
 }
 
 /* ---------------------------------------------------- narrow screens */

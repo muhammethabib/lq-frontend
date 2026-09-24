@@ -7,7 +7,7 @@
 .ottoman-keyboard {
   --key-size: 46px;
   --key-face: var(--lq-paper-soft);
-  --key-edge: var(--lq-line);
+  --key-edge: #cbd5e1;
   --key-hover: var(--lq-osm-bg);
   --key-hover-edge: #fda4af;
   --key-pressed: var(--lq-claret);
@@ -35,20 +35,48 @@
 /* ---------- top bar ---------- */
 
 .ottoman-keyboard .keyboard-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 6px;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 8px 0 12px;
+  user-select: none;
 }
-.ottoman-keyboard .keyboard-bar-spacer { flex: 1; }
-.ottoman-keyboard .wildcard-row { display: inline-flex; gap: 8px; }
+.ottoman-keyboard .keyboard-bar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ottoman-keyboard .keyboard-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* A whole key tall in a bar of small controls, so it is lifted out of the row
+   and centred across the bar rather than squeezed into it. */
+.ottoman-keyboard .wildcard-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  /* It lies across the whole bar, so it lets presses through everywhere but
+     on the two keys themselves. */
+  pointer-events: none;
+}
+.ottoman-keyboard .wildcard-row > * { pointer-events: auto; }
 
 .ottoman-keyboard .keyboard-clear {
   height: 22px;
   padding: 0 8px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   border: 1px solid #ea580c;
   border-radius: 6px;
   background: transparent;
@@ -71,13 +99,14 @@
   border-radius: 6px;
   background: var(--lq-paper-soft);
   color: #94a3b8;
+  /* The two marks are characters, not drawings: the erase mark points the way
+     the board writes, and no icon set has to be asked for either of them. */
+  font-family: 'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif;
+  font-size: 12px;
 }
 .ottoman-keyboard .keyboard-close:hover,
 .ottoman-keyboard .keyboard-backspace:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .ottoman-keyboard .keyboard-close svg,
-/* The board writes right to left, so the key that takes a letter off the end
-   points the way the reference's does: into the text, not away from it. */
-.ottoman-keyboard .keyboard-backspace svg { width: 12px; height: 12px; transform: scaleX(-1); }
 
 /* The two wildcards sit apart from the letters, because they say "I cannot
    read this" rather than naming a letter. */
@@ -89,9 +118,11 @@
   justify-content: center;
   border: 1px solid var(--wildcard-edge);
   border-radius: 8px;
+  padding: 0;
   background: var(--wildcard-face);
   color: var(--wildcard-ink);
-  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
   font-weight: 800;
 }
 /* The star is drawn rather than typed, so it is sized here */
@@ -116,7 +147,10 @@
   gap: 5px;
   width: 100%;
 }
-.ottoman-keyboard .keyboard-row:last-child { justify-content: space-between; }
+/* The last row carries the key that leads to the other board. The letters
+   stay packed against the right, where the row begins, and the free space
+   falls between them and that key, as the reference has it. */
+.ottoman-keyboard .keyboard-row:last-child .panel-switch { margin-right: auto; }
 
 /* ---------- keys ---------- */
 
@@ -164,19 +198,17 @@
   border-color: var(--special-edge);
 }
 .ottoman-keyboard .key[data-kind="rasm"]:hover { background: var(--lq-lat-border); }
-.ottoman-keyboard .key .dot-mark {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  line-height: 1;
-  color: var(--lq-sapphire);
+
+/* A letter that stands for more than one spelling carries the same ground as
+   a skeleton, in a lighter edge: it is a letter, but it answers for others. */
+.ottoman-keyboard .key[data-kind="letter"][data-matches] {
+  background: var(--special-face);
+  border-color: #bfdbfe;
 }
-.ottoman-keyboard .key[data-dots="above"] .dot-mark { top: 6px; }
-.ottoman-keyboard .key[data-dots="below"] .dot-mark { bottom: 6px; }
-.ottoman-keyboard .key[data-dots="either"] .dot-mark { top: 6px; }
-.ottoman-keyboard .key[data-dots="either"] .dot-mark + .dot-mark { top: auto; bottom: 6px; }
+.ottoman-keyboard .key[data-kind="letter"][data-matches]:hover {
+  background: var(--lq-lat-border);
+  border-color: var(--special-edge);
+}
 
 /* The zero-width space key shows a bracket pair, which is read left to right
    whatever the surrounding direction. */
@@ -187,68 +219,6 @@
   unicode-bidi: isolate;
   background: var(--special-face);
   border-color: var(--special-edge);
-}
-
-/* ---------------------------------------------------------------
-   The line that teaches the keyboard
-   The boxes take the reader's own keyboard too; this says so, and
-   shows it: K -> k, on a loop, until anything has been typed.
-   --------------------------------------------------------------- */
-
-.ottoman-keyboard .keyboard-teach {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 0;
-  padding: 0 0 8px;
-  font-size: 11px;
-  color: #94a3b8;
-  user-select: none;
-}
-.ottoman-keyboard.is-learned .keyboard-teach { display: none; }
-
-.ottoman-keyboard .keyboard-teach-demo { display: inline-flex; align-items: center; gap: 5px; }
-.ottoman-keyboard .keyboard-teach-key {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 21px;
-  height: 21px;
-  border: 1px solid #cbd5e1;
-  border-bottom-width: 3px;
-  border-radius: 5px;
-  background: var(--lq-paper);
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  color: #334155;
-  animation: keyboard-teach-press 2s infinite;
-}
-.ottoman-keyboard .keyboard-teach-arrow { font-size: 11px; color: #cbd5e1; }
-.ottoman-keyboard .keyboard-teach-out {
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 16px;
-  line-height: 1;
-  color: var(--lq-claret);
-  animation: keyboard-teach-pop 2s infinite;
-}
-.ottoman-keyboard .keyboard-teach-text b { font-weight: 700; color: #475569; }
-
-@keyframes keyboard-teach-press {
-  0%, 100% { transform: none; border-bottom-width: 3px; background: #fff; }
-  5% { transform: translateY(2px); border-bottom-width: 1px; background: #fdf2f8; border-color: var(--lq-claret); color: var(--lq-claret); }
-  11% { transform: none; border-bottom-width: 3px; background: #fff; }
-}
-@keyframes keyboard-teach-pop {
-  0%, 4%, 100% { opacity: .3; transform: none; }
-  8% { opacity: 1; transform: scale(1.25); }
-  16% { opacity: .3; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ottoman-keyboard .keyboard-teach-key,
-  .ottoman-keyboard .keyboard-teach-out { animation: none; }
-  .ottoman-keyboard .keyboard-teach-out { opacity: 1; }
 }
 
 /* The one key on the board that is not a letter: it leads to the other

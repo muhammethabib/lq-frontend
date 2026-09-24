@@ -28,11 +28,11 @@ window.LQ_KEYBOARD_LAYOUT = {
 
   basic: [
     [
-      { type: "letter", char: "ا" },
+      { type: "letter", char: "ا", matches: ["ا", "آ", "أ", "إ"] },
       { type: "letter", char: "ء" },
-      { type: "rasm", char: "ٮ", dots: "none", matches: ["ن", "ب", "پ", "ت", "ث", "ء", "ی"] },
-      { type: "rasm", char: "ٮ", dots: "above", matches: ["ت", "ث", "ن"] },
-      { type: "rasm", char: "ٮ", dots: "below", matches: ["ب", "پ", "ی"] },
+      { type: "rasm", char: "ٮ", dots: "none", mark: "beh", matches: ["ن", "ب", "پ", "ت", "ث", "ء", "ی"] },
+      { type: "rasm", char: "ٮ", dots: "above", mark: "beh-above", matches: ["ت", "ث", "ن"] },
+      { type: "rasm", char: "ٮ", dots: "below", mark: "beh-below", matches: ["ب", "پ", "ی"] },
       { type: "letter", char: "ب" },
       { type: "letter", char: "پ" },
       { type: "letter", char: "ت" },
@@ -43,41 +43,41 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "چ" },
       { type: "letter", char: "ح" },
       { type: "letter", char: "خ" },
-      { type: "rasm", char: "ح", dots: "either", matches: ["ج", "چ", "ح", "خ"] }
+      { type: "rasm", char: "ح", dots: "either", mark: "ha", matches: ["ج", "چ", "ح", "خ"] }
     ],
     [
       { type: "letter", char: "د" },
       { type: "letter", char: "ذ" },
-      { type: "rasm", char: "د", dots: "above", matches: ["د", "ذ"] },
+      { type: "rasm", char: "د", dots: "above", mark: "dal", matches: ["د", "ذ"] },
       { type: "letter", char: "ر" },
       { type: "letter", char: "ز" },
       { type: "letter", char: "ژ" },
-      { type: "rasm", char: "ر", dots: "above", matches: ["ر", "ز", "ژ"] }
+      { type: "rasm", char: "ر", dots: "above", mark: "re", matches: ["ر", "ز", "ژ"] }
     ],
     [
       { type: "letter", char: "س" },
       { type: "letter", char: "ش" },
-      { type: "rasm", char: "س", dots: "above", matches: ["س", "ش"] },
+      { type: "rasm", char: "س", dots: "above", mark: "sin", matches: ["س", "ش"] },
       { type: "letter", char: "ص" },
       { type: "letter", char: "ض" },
-      { type: "rasm", char: "ص", dots: "above", matches: ["ص", "ض"] },
+      { type: "rasm", char: "ص", dots: "above", mark: "sad", matches: ["ص", "ض"] },
       { type: "letter", char: "ط" },
       { type: "letter", char: "ظ" },
-      { type: "rasm", char: "ط", dots: "above", matches: ["ط", "ظ"] }
+      { type: "rasm", char: "ط", dots: "above", mark: "ti", matches: ["ط", "ظ"] }
     ],
     [
       { type: "letter", char: "ع" },
       { type: "letter", char: "غ" },
-      { type: "rasm", char: "ع", dots: "above", matches: ["ع", "غ"] },
+      { type: "rasm", char: "ع", dots: "above", mark: "ayn", matches: ["ع", "غ"] },
       { type: "letter", char: "ف" },
       { type: "letter", char: "ق" },
-      { type: "rasm", char: "ڡ", dots: "above", matches: ["ق", "ف"] }
+      { type: "rasm", char: "ڡ", dots: "above", mark: "fe", matches: ["ق", "ف"] }
     ],
     [
       { type: "letter", char: "ك" },
       { type: "letter", char: "گ" },
       { type: "letter", char: "ڭ" },
-      { type: "rasm", char: "ك", dots: "above", matches: ["ك", "گ", "ڭ"] }
+      { type: "rasm", char: "ك", dots: "above", mark: "kef", matches: ["ك", "گ", "ڭ"] }
     ],
     [
       { type: "letter", char: "ل" },
@@ -98,11 +98,11 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "آ" },
       { type: "letter", char: "أ" },
       { type: "letter", char: "إ" },
-      { type: "letter", char: "ئ" },
+      { type: "letter", char: "ئ", mark: "ye-hemze" },
       { type: "letter", char: "ء" },
-      { type: "rasm", char: "ٮ", dots: "none", matches: ["ن", "ب", "پ", "ت", "ث", "ء", "ی"] },
-      { type: "rasm", char: "ٮ", dots: "above", matches: ["ت", "ث", "ن"] },
-      { type: "rasm", char: "ٮ", dots: "below", matches: ["ب", "پ", "ی"] }
+      { type: "rasm", char: "ٮ", dots: "none", mark: "beh", matches: ["ن", "ب", "پ", "ت", "ث", "ء", "ی"] },
+      { type: "rasm", char: "ٮ", dots: "above", mark: "beh-above", matches: ["ت", "ث", "ن"] },
+      { type: "rasm", char: "ٮ", dots: "below", mark: "beh-below", matches: ["ب", "پ", "ی"] }
     ],
     [
       { type: "letter", char: "ب" },
@@ -113,41 +113,41 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "چ" },
       { type: "letter", char: "ح" },
       { type: "letter", char: "خ" },
-      { type: "rasm", char: "ح", dots: "either", matches: ["ج", "چ", "ح", "خ"] }
+      { type: "rasm", char: "ح", dots: "either", mark: "ha", matches: ["ج", "چ", "ح", "خ"] }
     ],
     [
       { type: "letter", char: "د" },
       { type: "letter", char: "ذ" },
-      { type: "rasm", char: "د", dots: "above", matches: ["د", "ذ"] },
+      { type: "rasm", char: "د", dots: "above", mark: "dal", matches: ["د", "ذ"] },
       { type: "letter", char: "ر" },
       { type: "letter", char: "ز" },
       { type: "letter", char: "ژ" },
-      { type: "rasm", char: "ر", dots: "above", matches: ["ر", "ز", "ژ"] }
+      { type: "rasm", char: "ر", dots: "above", mark: "re", matches: ["ر", "ز", "ژ"] }
     ],
     [
       { type: "letter", char: "س" },
       { type: "letter", char: "ش" },
-      { type: "rasm", char: "س", dots: "above", matches: ["س", "ش"] },
+      { type: "rasm", char: "س", dots: "above", mark: "sin", matches: ["س", "ش"] },
       { type: "letter", char: "ص" },
       { type: "letter", char: "ض" },
-      { type: "rasm", char: "ص", dots: "above", matches: ["ص", "ض"] },
+      { type: "rasm", char: "ص", dots: "above", mark: "sad", matches: ["ص", "ض"] },
       { type: "letter", char: "ط" },
       { type: "letter", char: "ظ" },
-      { type: "rasm", char: "ط", dots: "above", matches: ["ط", "ظ"] }
+      { type: "rasm", char: "ط", dots: "above", mark: "ti", matches: ["ط", "ظ"] }
     ],
     [
       { type: "letter", char: "ع" },
       { type: "letter", char: "غ" },
-      { type: "rasm", char: "ع", dots: "above", matches: ["ع", "غ"] },
+      { type: "rasm", char: "ع", dots: "above", mark: "ayn", matches: ["ع", "غ"] },
       { type: "letter", char: "ف" },
       { type: "letter", char: "ق" },
-      { type: "rasm", char: "ڡ", dots: "above", matches: ["ق", "ف"] }
+      { type: "rasm", char: "ڡ", dots: "above", mark: "fe", matches: ["ق", "ف"] }
     ],
     [
       { type: "letter", char: "ك" },
       { type: "letter", char: "گ" },
       { type: "letter", char: "ڭ" },
-      { type: "rasm", char: "ك", dots: "above", matches: ["ك", "گ", "ڭ"] },
+      { type: "rasm", char: "ك", dots: "above", mark: "kef", matches: ["ك", "گ", "ڭ"] },
       { type: "letter", char: "ل" },
       { type: "letter", char: "م" },
       { type: "letter", char: "ن" },

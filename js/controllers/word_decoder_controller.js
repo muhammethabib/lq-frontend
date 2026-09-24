@@ -414,13 +414,14 @@ class WordDecoderController extends Stimulus.Controller {
 
   // ==================== the on-screen keyboard ====================
 
-  // The keyboard opens under the box that was pressed, so the letters and the
-  // place they are going to are in the same part of the screen.
+  // The keyboard opens under the row of boxes and stays there: it belongs to
+  // the row, not to the box that happened to be pressed, and a panel that
+  // jumped sideways with every box would be read as a new panel each time.
   openKeyboard(event) {
     this.activeCell = event.currentTarget.closest(".slot-cell");
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:request", {
       detail: {
-        anchor: this.activeCell,
+        anchor: this.stripTarget,
         // The boxes carry the join rings and the add and remove buttons
         // underneath, so the panel starts below the whole row.
         below: this.stripTarget,
@@ -458,7 +459,7 @@ class WordDecoderController extends Stimulus.Controller {
     if (detail.kind === "wildcard") {
       this.writeCell(this.activeCell, { wildcard: detail.wildcard });
     } else if (detail.kind === "rasm") {
-      this.writeCell(this.activeCell, { rasm: detail.char, dots: detail.dots, matches: detail.matches });
+      this.writeCell(this.activeCell, { rasm: detail.char, mark: detail.mark, dots: detail.dots, matches: detail.matches });
     } else {
       this.writeCell(this.activeCell, { char: detail.char });
     }
@@ -496,11 +497,13 @@ class WordDecoderController extends Stimulus.Controller {
       cell.dataset.dots = content.dots || "";
       cell.dataset.matches = (content.matches || []).join(" ");
       delete cell.dataset.wildcard;
-      const dots = content.dots === "either"
-        ? '<span class="dot-mark">*</span><span class="dot-mark">*</span>'
-        : '<span class="dot-mark">*</span>';
+      // The box wears the same drawn face the key wore, so the shape the
+      // reader chose and the shape now standing in the box are the same shape.
+      const marks = window.LQ_KEYBOARD_MARKS || {};
+      const face = content.mark && marks[content.mark]
+        ? marks[content.mark] : this.escape(content.rasm);
       cell.insertAdjacentHTML("beforeend",
-        `<span class="slot-mark" data-dots="${this.escape(content.dots || "")}" aria-hidden="true">${this.escape(content.rasm)}${dots}</span>`);
+        `<span class="slot-mark" data-dots="${this.escape(content.dots || "")}" aria-hidden="true">${face}</span>`);
     }
     this.refreshClear();
   }

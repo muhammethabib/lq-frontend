@@ -159,18 +159,8 @@
 }
 .word-decoder-surface .slot-mark[data-wildcard="many"] { font-family: Georgia, serif; font-weight: 400; }
 
-/* The asterisk on a skeleton key sits where the missing dots would be */
-.word-decoder-surface .slot-mark .dot-mark {
-  position: absolute;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  line-height: 1;
-  color: var(--lq-sapphire);
-}
-.word-decoder-surface .slot-mark[data-dots="above"] .dot-mark { top: 8px; }
-.word-decoder-surface .slot-mark[data-dots="below"] .dot-mark { bottom: 8px; }
-.word-decoder-surface .slot-mark[data-dots="either"] .dot-mark { top: 8px; }
-.word-decoder-surface .slot-mark[data-dots="either"] .dot-mark + .dot-mark { top: auto; bottom: 8px; }
+/* A drawn face stands a shade smaller in the box than it does on the key */
+.word-decoder-surface .slot-mark > svg { width: 44px; height: 44px; }
 
 /* ---------- per-slot controls ---------- */
 

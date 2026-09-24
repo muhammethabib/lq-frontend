@@ -143,13 +143,13 @@
   border-radius: 6px;
   background: var(--lq-paper-soft);
   color: #94a3b8;
+  /* The two marks are characters, not drawings: the erase mark points the way
+     the board writes, and no icon set has to be asked for either of them. */
+  font-family: 'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif;
+  font-size: 12px;
 }
 
 .search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
-.search-keyboard-button svg { width: 13px; height: 13px; }
-/* The board writes right to left, so the key that takes a letter off the end
-   points the way the reference's does: into the text, not away from it. */
-.search-keyboard-backspace svg { transform: scaleX(-1); }
 
 /* The rows read from the right, as the alphabet is recited. The label over
    each key is the key on the reader's own board that writes it. */

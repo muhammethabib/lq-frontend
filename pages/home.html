@@ -48,6 +48,7 @@
   <script src="../js/morphology_sample.js" defer></script>
   <script src="../js/cognates_sample.js" defer></script>
   <script src="../js/redhouse_sample.js" defer></script>
+  <script src="../js/keyboard_marks.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/search_keyboard_layout.js" defer></script>
   <script src="../js/view_states.js" defer></script>
@@ -1308,47 +1309,32 @@
   <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
     <div class="keyboard-bar">
-      <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
-              data-action="pointerdown->ottoman-keyboard#clearAll"
-              data-bs-toggle="tooltip" data-i18n-title="keyboardClearAll" title="Clear all boxes"
-              aria-label="Clear all boxes" data-i18n-aria="keyboardClearAll">
-        <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
-      </button>
-      <span class="keyboard-bar-spacer"></span>
+      <span class="keyboard-bar-left">
+        <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
+                data-action="pointerdown->ottoman-keyboard#clearAll"
+                data-bs-toggle="tooltip" data-i18n-title="keyboardClearAll" title="Clear all boxes"
+                aria-label="Clear all boxes" data-i18n-aria="keyboardClearAll">
+          <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
+        </button>
+      </span>
 
-      <!-- Written by the controller, so a key always shows the same symbol it
-           writes into the slot -->
+      <!-- The two keys stand a whole key tall in the middle of a bar of small
+           controls, so they are lifted out of the row and centred on it.
+           Written by the controller, so a key always shows the same symbol it
+           writes into the slot. -->
       <span class="wildcard-row" data-ottoman-keyboard-target="wildcardRow"></span>
 
-      <span class="keyboard-bar-spacer"></span>
-      <button type="button" class="btn keyboard-backspace"
-              data-action="pointerdown->ottoman-keyboard#backspace"
-              data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete letter"
-              aria-label="Delete letter" data-i18n-aria="keyboardBackspace">
-        <i data-feather="delete"></i>
-      </button>
-      <button type="button" class="btn keyboard-close"
-              data-action="pointerdown->ottoman-keyboard#close"
-              data-bs-toggle="tooltip" data-i18n-title="keyboardClose" title="Close"
-              aria-label="Close" data-i18n-aria="keyboardClose">
-        <i data-feather="x"></i>
-      </button>
+      <span class="keyboard-bar-right">
+        <button type="button" class="btn keyboard-backspace"
+                data-action="pointerdown->ottoman-keyboard#backspace"
+                data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete character"
+                aria-label="Delete character" data-i18n-aria="keyboardBackspace">&#x2326;</button>
+        <button type="button" class="btn keyboard-close"
+                data-action="pointerdown->ottoman-keyboard#close"
+                data-bs-toggle="tooltip" data-i18n-title="keyboardClose" title="Close"
+                aria-label="Close" data-i18n-aria="keyboardClose">&#x2715;</button>
+      </span>
     </div>
-
-    <!-- The same line the search bar's keyboard carries: the boxes take the
-         reader's own keyboard too, and it shows what that means. It retires
-         the moment anything has been typed, by either board. -->
-    <p class="keyboard-teach" data-ottoman-keyboard-target="teach">
-      <span class="keyboard-teach-demo" aria-hidden="true">
-        <span class="keyboard-teach-key">K</span>
-        <span class="keyboard-teach-arrow">&rarr;</span>
-        <span class="keyboard-teach-out">&#x0643;</span>
-      </span>
-      <span class="keyboard-teach-text">
-        <b data-i18n="keyboardTeach">Use your own keyboard</b>
-        <span data-i18n="keyboardTeachRest">or click the keys below</span>
-      </span>
-    </p>
 
     <!-- Both panels are written by the controller from js/keyboard_layout.js -->
     <div class="keyboard-panel is-active" data-ottoman-keyboard-target="basicPanel"></div>
@@ -1380,16 +1366,12 @@
       <span class="search-keyboard-buttons">
         <button type="button" class="btn search-keyboard-button search-keyboard-backspace"
                 data-action="pointerdown->search-keyboard#backspace"
-                data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete letter"
-                aria-label="Delete letter" data-i18n-aria="keyboardBackspace">
-          <i data-feather="delete" aria-hidden="true"></i>
-        </button>
+                data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete character"
+                aria-label="Delete character" data-i18n-aria="keyboardBackspace">&#x2326;</button>
         <button type="button" class="btn search-keyboard-button"
                 data-action="pointerdown->search-keyboard#close"
                 data-bs-toggle="tooltip" data-i18n-title="keyboardClose" title="Close"
-                aria-label="Close" data-i18n-aria="keyboardClose">
-          <i data-feather="x" aria-hidden="true"></i>
-        </button>
+                aria-label="Close" data-i18n-aria="keyboardClose">&#x2715;</button>
       </span>
     </div>
 

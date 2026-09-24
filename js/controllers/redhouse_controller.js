@@ -99,6 +99,7 @@ class RedhouseController extends Stimulus.Controller {
     this.element.innerHTML = template.innerHTML;
     this.fill();
     this.markShared();
+    this.markReadings();
     this.watchSections();
     // The sections are written here rather than in the template, so the
     // sweep comes after them; otherwise their own keys are never seen.
@@ -457,6 +458,68 @@ class RedhouseController extends Stimulus.Controller {
         if (card && term) this.wrapTerm(card, term, concept.key, one.id);
       });
     });
+  }
+
+  // ==================== the forms that lead back to the search ====================
+
+  // Beside the reading and in the grammar, every Ottoman form is a way into
+  // the search, as it is in the reference. The forms are written the same way
+  // in every language -- the Ottoman word, then its Latin reading in brackets
+  // or after a slash -- so they are read out of the text rather than listed
+  // in the sample.
+  markReadings() {
+    this.element.querySelectorAll("[data-redhouse-reading]")
+      .forEach((root) => this.markForms(root, true));
+    this.element.querySelectorAll("[data-redhouse-grammar]")
+      .forEach((root) => this.markForms(root, false));
+  }
+
+  markForms(root, leading) {
+    const OTTOMAN = "[\\u0600-\\u06FF\\u200c]+";
+    const LATIN = "[A-Za-z\\u00C0-\\u024F\\u2018\\u2019'\\u02BF\\-]+";
+    const pairs = new RegExp(`(${OTTOMAN})\\s*(?:\\(\\s*(${LATIN})\\s*\\)|/\\s*(${LATIN}))`, "g");
+    const first = new RegExp(`^(${LATIN})`);
+
+    const texts = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (!node.parentElement.closest(".redhouse-search")) texts.push(node);
+    }
+
+    texts.forEach((text, index) => {
+      const value = text.nodeValue;
+      const fragment = document.createDocumentFragment();
+      let at = 0;
+      let match;
+
+      // The Latin reading the line opens with is a form of its own.
+      if (leading && index === 0) {
+        const head = value.match(first);
+        if (head) { fragment.appendChild(this.formSpan(head[1], head[1])); at = head[1].length; }
+      }
+
+      pairs.lastIndex = at;
+      while ((match = pairs.exec(value))) {
+        const latin = match[2] || match[3];
+        if (match.index > at) fragment.appendChild(document.createTextNode(value.slice(at, match.index)));
+        fragment.appendChild(this.formSpan(`${match[1]} / ${latin}`, latin));
+        at = match.index + match[0].length;
+      }
+
+      if (!fragment.childNodes.length) return;
+      if (at < value.length) fragment.appendChild(document.createTextNode(value.slice(at)));
+      text.parentNode.replaceChild(fragment, text);
+    });
+  }
+
+  formSpan(shown, term) {
+    const span = document.createElement("span");
+    span.className = "redhouse-search redhouse-search-inline";
+    span.dataset.redhouseSearch = term;
+    span.dataset.action = "click->redhouse#search";
+    span.textContent = shown;
+    return span;
   }
 
   wrapTerm(card, term, concept, language) {

@@ -36,10 +36,11 @@
 
 /* ---------------------------------------------------- the header */
 
+/* The line under the tabs closes the head of the window; the strip with the
+   two controls sits below it and draws its own, as the reference has them. */
 .redhouse-surface .redhouse-header {
   position: relative;
   z-index: 20;
-  border-bottom: 1px solid var(--lq-line);
   background: rgba(255, 255, 255, 0.94);
 }
 
@@ -54,6 +55,7 @@
 
 .redhouse-surface .redhouse-badge {
   padding: 5px 9px;
+  line-height: normal;
   border-radius: 6px;
   background: #27272a;
   color: #fff;
@@ -62,12 +64,13 @@
   letter-spacing: 0.08em;
 }
 
+/* The crumb reads as one line of text, not a row of boxes: the words, the
+   headword and the mark between them sit on the same baseline, spaced by
+   the spaces in the markup, as the reference has them. */
 .redhouse-surface .redhouse-crumb {
-  display: flex;
-  align-items: center;
-  gap: 4px;
   margin: 0;
   font-size: 13px;
+  line-height: normal;
   color: var(--lq-muted);
 }
 
@@ -79,12 +82,13 @@
 }
 
 .redhouse-surface .redhouse-crumb b { color: var(--lq-sapphire); }
-.redhouse-surface .redhouse-crumb svg { width: 16px; height: 16px; color: #cbd5e1; }
+.redhouse-surface .redhouse-crumb-sep { color: #cbd5e1; }
 
 .redhouse-surface .redhouse-tabs {
   display: flex;
   align-items: stretch;
-  min-height: 42px;
+  min-height: 43px;
+  border-bottom: 1px solid var(--lq-line);
   padding: 0 18px;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -96,7 +100,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 10px;
+  padding: 0 10px;
   border: 0;
   border-radius: 0;
   font-size: 10px;
@@ -119,6 +123,10 @@
 
 .redhouse-surface .redhouse-tab svg { width: 14px; height: 14px; }
 
+/* The mark on a tab is a shade smaller than the one on a section head, as
+   the reference sets them. */
+.redhouse-surface .redhouse-tab .language-flag { width: 14px; height: 14px; }
+
 /* The language mark comes from css/language-flag.css; here it only says
    which of them is the one being read. */
 .redhouse-surface .redhouse-tab.active .language-flag,
@@ -140,6 +148,7 @@
 
 .redhouse-surface .entry-control {
   padding: 4px 12px;
+  line-height: normal;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -181,6 +190,7 @@
   text-align: left;
   font-size: 11px;
   font-weight: 800;
+  line-height: 18px;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: #475569;
@@ -251,6 +261,16 @@
 
 .redhouse-surface .redhouse-search:hover { background: #eef2f7; box-shadow: 0 0 0 4px #eef2f7; }
 
+/* A form standing inside a line of text rather than on a line of its own */
+.redhouse-surface .redhouse-search-inline {
+  display: inline-block;
+  margin: 0 1px;
+  padding: 0 2px;
+  cursor: pointer;
+  font-style: inherit;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
 .redhouse-surface .redhouse-headword {
   display: flex;
   align-items: center;
@@ -312,25 +332,37 @@
   border-top: 1px solid #eef2f7;
 }
 
+/* The key runs the width of the card, as the reference has it, so pressing
+   anywhere along the line reaches the search. The two halves sit on one
+   baseline as words do, not as boxes in a row. */
 .redhouse-surface .redhouse-expression-key {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
   margin-bottom: 3px;
-  padding: 2px 4px;
+  padding: 0;
+  font-size: inherit;
+  line-height: 1.68;
+  text-align: inherit;
 }
 
+
 .redhouse-surface .redhouse-expression-ottoman {
+  display: inline-block;
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 20px;
+  line-height: 1.68;
   font-weight: 700;
   color: #334155;
   unicode-bidi: isolate;
 }
 
 .redhouse-surface .redhouse-expression-latin {
+  display: inline-block;
   padding: 2px 7px;
+  line-height: 1.68;
   border: 1px solid var(--lq-line);
   border-radius: 999px;
   background: #f1f5f9;

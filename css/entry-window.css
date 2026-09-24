@@ -107,6 +107,7 @@
 .entry-surface .entry-tabs {
   display: flex;
   align-items: stretch;
+  height: 38px;
   padding: 0 24px;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -116,7 +117,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 10px;
+  padding: 0 10px;
   border: 0;
   border-radius: 0;
   font-size: 11px;

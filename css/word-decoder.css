@@ -116,7 +116,7 @@
   cursor: pointer;
 }
 .word-decoder-surface .slot-cell:hover:not(:focus-within) { background: var(--decoder-slot-hover); }
-.word-decoder-surface .slot-cell:not(:last-child) { border-right: 2px dashed var(--lq-line); }
+.word-decoder-surface .slot-cell:not(:last-child) { border-right: 2px dashed #cbd5e1; }
 
 .word-decoder-surface .slot-input {
   width: 100%;
@@ -505,9 +505,9 @@
   padding: 0 7px;
 }
 .word-decoder-surface .pattern-slot[data-kind="alternatives"] > span + span {
-  /* The rule goes on the side facing the letter before it, whichever way
-     the row is running. */
-  border-inline-start: 1.5px dashed var(--lq-line);
+  /* The boxes' own rule, at the boxes' own weight, on the side facing the
+     letter before it whichever way the row is running. */
+  border-inline-start: 2px dashed #cbd5e1;
 }
 .word-decoder-surface .pattern-slot .wildcard-star {
   /* 9.6 of box over the eleven units that hold the arms gives 9.03 of arm,

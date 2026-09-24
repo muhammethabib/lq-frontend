@@ -282,19 +282,40 @@ class WordDecoderController extends Stimulus.Controller {
     this.setTooltip(button, this.slotRemoveLabel(slot.querySelectorAll(".slot-cell").length));
   }
 
-  // The word is written from the right, so an alternative offered from a
-  // box opens on that box's left, the way the old site opens it: the new
-  // field goes in front of the one whose plus was pressed, and takes the
-  // caret.
   addAlternative(event) {
-    const cell = event.currentTarget.closest(".slot-cell");
+    this.openAlternative(event.currentTarget.closest(".slot-cell"));
+  }
+
+  // The word is written from the right, so an alternative offered from a box
+  // opens on that box's left, the way the old site opens it: the new field
+  // goes in front of the one it was offered from, and takes the caret. It is
+  // marked as just opened, which is what makes the next letter open another.
+  openAlternative(cell) {
+    if (!cell) return;
     const frame = cell.closest(".slot-frame");
     cell.insertAdjacentHTML("beforebegin", this.cellHtml());
+    const fresh = cell.previousElementSibling;
+    if (fresh) fresh.dataset.autoExpand = "1";
     window.LQ.refreshDynamicContent(frame);
     this.relabelSlotRemove(frame.closest(".slot"));
-    const fresh = cell.previousElementSibling;
     const input = fresh && fresh.querySelector(".slot-input");
-    if (input) input.focus();
+    if (input) { input.focus(); this.activeCell = fresh; }
+  }
+
+  // Where the caret goes once something has been written. On the old site a
+  // box opened by the plus keeps offering: write into it -- a letter, a
+  // skeleton, a wildcard, it makes no difference there -- and the next empty
+  // alternative is already open and waiting, so a reader listing the letters
+  // a shape might be never reaches for the plus again. Everywhere else the
+  // caret simply moves along the strip.
+  afterWrite(input) {
+    const cell = input.closest(".slot-cell");
+    if (cell && cell.dataset.autoExpand) {
+      delete cell.dataset.autoExpand;
+      this.openAlternative(cell);
+      return;
+    }
+    this.advance(input);
   }
 
   removeAlternative(event) {
@@ -415,7 +436,7 @@ class WordDecoderController extends Stimulus.Controller {
     // The key that writes this letter is shown going down on the on-screen
     // keyboard as well, so the two boards read as one.
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:echo", { detail: { char: letter } }));
-    this.advance(input);
+    this.afterWrite(input);
   }
 
   // Which Ottoman letter a physical key produces. A key can carry up to three
@@ -435,12 +456,16 @@ class WordDecoderController extends Stimulus.Controller {
     return map.single[lower] || null;
   }
 
+  // A letter that reaches the field without passing through the key handler --
+  // pasted, or typed on a board that writes Ottoman itself -- takes the same
+  // road afterwards as one written from a key: it clears whatever mark was
+  // there, and the caret moves on exactly as it would have.
   handleInput(event) {
-    // A letter pasted or typed straight into the field replaces whatever mark
-    // was there, so the record of that mark has to go with it.
-    const cell = event.currentTarget.closest(".slot-cell");
-    if (event.currentTarget.value) this.forgetMark(cell);
+    const input = event.currentTarget;
+    if (input.value) this.forgetMark(input.closest(".slot-cell"));
     this.refreshClear();
+    if (!input.value) return;
+    this.afterWrite(input);
   }
 
   // Everything that made a cell a wildcard or a skeleton, cleared together
@@ -506,7 +531,7 @@ class WordDecoderController extends Stimulus.Controller {
     } else {
       this.writeCell(this.activeCell, { char: detail.char });
     }
-    this.advance(input);
+    this.afterWrite(input);
   }
 
   // ==================== reading and writing a cell ====================

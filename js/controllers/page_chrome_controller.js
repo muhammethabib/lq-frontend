@@ -91,7 +91,7 @@ class PageChromeController extends Stimulus.Controller {
   // A menu entry names the page it leads to. Entries start without an href
   // and marked unavailable, because most of those pages are not rebuilt yet;
   // the ones listed as built become ordinary links.
-  // Sign in and Sign up open the same window on different tabs.
+  // Sign in and Sign up open the same window, titled for the one asked for.
   openAuth(event) {
     const mode = event.currentTarget.dataset.mode === "signup" ? "signUp" : "signIn";
     const container = this.element.querySelector("#authModal");
@@ -109,9 +109,22 @@ class PageChromeController extends Stimulus.Controller {
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(container);
     window.LQ.refreshDynamicContent(container);
 
-    // Bootstrap decides which tab is shown, so the window opens on the one
-    // the reader asked for rather than always on the first.
-    bootstrap.Tab.getOrCreateInstance(container.querySelector(`#${mode}Tab`)).show();
+    // The window carries one form at a time, under its own name, as the
+    // reference draws it: a heading, not a pair of tabs.
+    const title = container.querySelector("[data-auth-title]");
+    const titleKey = mode === "signUp" ? "menuSignUp" : "menuSignIn";
+    title.dataset.i18n = titleKey;
+    title.textContent = window.LQ.translate(titleKey, mode === "signUp" ? "Sign up" : "Sign in");
+    ["signIn", "signUp"].forEach((one) => {
+      const pane = container.querySelector(`#${one}Pane`);
+      pane.classList.toggle("show", one === mode);
+      pane.classList.toggle("active", one === mode);
+    });
+    // The first field is ready to type into as soon as the window is up.
+    container.addEventListener("shown.bs.modal", () => {
+      const first = container.querySelector(`#${mode}Pane input`);
+      if (first) first.focus();
+    }, { once: true });
     bootstrap.Modal.getOrCreateInstance(container).show();
 
     // Nothing is submitted anywhere yet; the forms stand for the screens the

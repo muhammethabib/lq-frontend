@@ -1,6 +1,6 @@
 /* =========================================================
    Account window
-   Sign in and Sign up, one window on two tabs. It is opened
+   Sign in and Sign up, one window under one name at a time. It is opened
    from the side menu, so every page loads it; the buttons
    that open it stay with the chrome in base.css.
 
@@ -17,35 +17,30 @@
   box-shadow: 0 24px 48px -12px rgba(15, 23, 42, .35), 0 0 1px rgba(0, 0, 0, .05);
 }
 
+.auth-modal .modal-dialog { margin: 24px auto; }
 .auth-modal .modal-header {
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 26px 34px 0;
+  display: block;
+  padding: 34px 34px 0;
   border-bottom: 0;
 }
-.auth-modal .auth-tabs {
-  gap: 2px;
-  border-bottom: 0;
-}
-.auth-modal .auth-tabs .nav-link {
-  border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  padding: 8px 16px 10px;
+/* The window's name, in the interface's own face: a form is a working
+   screen, not a brand moment. */
+.auth-modal .auth-title {
+  margin: 4px 0 24px;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -.3px;
-  color: var(--lq-ink-soft);
-}
-.auth-modal .auth-tabs .nav-link:hover { color: var(--lq-sapphire); }
-.auth-modal .auth-tabs .nav-link.active {
-  border-bottom-color: var(--lq-sapphire);
-  background: none;
+  text-align: center;
   color: var(--lq-sapphire);
 }
+/* The page behind is covered whole, as the reference has it. */
+body:has(.auth-modal.show) .modal-backdrop {
+  --bs-backdrop-bg: #4a4557;
+  --bs-backdrop-opacity: 1;
+}
 
-.auth-modal .modal-body { padding: 24px 34px 30px; }
+.auth-modal .modal-body { padding: 0 34px 30px; }
 
 .auth-modal .auth-form {
   display: grid;

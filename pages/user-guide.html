@@ -38,7 +38,7 @@
 
   <div class="page-body">
     <header class="page-hero">
-      <p class="page-eyebrow" data-i18n="guideEyebrow">LexiQamus 3.0</p>
+      <p class="page-eyebrow" data-i18n="guideEyebrow" data-i18n-html="1"><span lang="en">LexiQamus</span> 3.0</p>
       <h1 data-i18n="guideTitle">User Guide</h1>
       <p class="page-lede" data-i18n="guideLede">A step-by-step guide to the search screens, the Word Decoder, the results list and the dictionary page window of LexiQamus 3.0.</p>
     </header>
@@ -60,8 +60,8 @@
         <section class="guide-section" id="home">
           <h2 class="guide-h2" data-i18n="guideHome">Home</h2>
             <p class="section-intro" data-i18n="homeIntro" data-i18n-html="1">LexiQamus offers two distinct ways of searching. The <a href="#search-tab"><b>Search tab</b></a> is for looking up the meaning of a word you can read in the dictionaries; the <a href="#word-decoder"><b>Word Decoder</b></a> is for finding a word you cannot read, starting out from the clues you do have. You can move between the two tabs freely.</p>
-            <figure class="guide-shot guide-shot-map guide-wide" style="--natural-width:1879;--aspect:6.8828">
-              <div class="guide-map">
+            <figure class="guide-shot guide-shot-map" style="--natural-width:1879;--aspect:6.8828">
+              <div class="guide-map" data-zoom-frame="guide-surface">
                 <img src="../assets/guide/en/home-search-area.webp" data-i18n-src="shotHomeSearchAreaSrc" alt="The search area on the home page: the Word Decoder and Search tabs, the search bar, the Search button and the dictionary list" data-i18n-alt="shotHomeSearchAreaAlt" width="1879" height="273" loading="lazy">
                 <a class="guide-pin guide-pin-top guide-pin-square" href="#word-decoder" style="--x:44.39%;--ty:0.0769"></a>
                 <a class="guide-pin guide-pin-top guide-pin-square" href="#search-tab" style="--x:55.56%;--ty:0.0769"></a>
@@ -116,7 +116,7 @@
           <h2 class="guide-h2" data-i18n="guideResults">Search Results</h2>
             <p class="section-intro" data-i18n="resultsIntro" data-i18n-html="1">Both ways of searching lead you to the same results list. At the head of the list you see how many records were found and how many dictionaries and volumes were scanned. The list is divided into four columns, and each row shows a single record in one dictionary. The word you searched for is listed separately under the headings <b>Lemma</b>, <b>Inflected Forms</b>, <b>Derived Forms</b>, <b>Phrases and Compounds</b> and <b>Similar Spellings</b>, running from the plainest form to the broadest.</p>
             <figure class="guide-shot guide-shot-map guide-tall" style="--natural-width:1689;--aspect:0.7008">
-              <div class="guide-map guide-map-bands">
+              <div class="guide-map guide-map-bands" data-zoom-frame="guide-surface">
                 <img src="../assets/guide/en/results-overview.webp" data-i18n-src="shotResultsOverviewSrc" alt="A search for arı: the search bar, the results header and the Lemma, Inflected Forms, Derived Forms, Phrases and Compounds and Similar Spellings groups" data-i18n-alt="shotResultsOverviewAlt" width="1689" height="2410" loading="lazy">
                 <a class="guide-pin guide-pin-right" href="#variant-spellings" style="--px:0.7851;--ty:0.1510"></a>
                 <a class="guide-pin guide-pin-right" href="#variant-spellings" style="--px:0.9728;--ty:0.1884"></a>
@@ -260,13 +260,22 @@
         <section class="guide-section" id="dictionary-page">
           <h2 class="guide-h2" data-i18n="guideDictionaryPage">The Original Dictionary Page</h2>
             <p class="section-intro" data-i18n="dictionaryPageIntro" data-i18n-html="1">When you click a <a href="#two-zones">result or headword zone</a>, the original page of the dictionary opens in a window. What you see is not merely a scanned page: the digitized words are shown on the page in <b>colored boxes according to their categories</b>, and the page is <b>interactive</b> throughout.</p>
-            <p data-i18n="dictionaryPageIntro2" data-i18n-html="1">When you bring the cursor onto a box you see the Ottoman spelling and the Latin reading of the word, and when you click it you start <b>a new search for that word</b>. You can view the entry as a <b>slice, a column or a page</b>, move through the dictionary with the arrows, and report an error from the very same place when you notice one.</p>
-            <figure class="guide-shot guide-wide" style="--natural-width:2404;--aspect:1.7807">
-              <img src="../assets/guide/en/dictionary-page-overview.webp" data-i18n-src="shotDictionaryPageOverviewSrc" alt="The dictionary page window: colored boxes on the original page, arrows on either side, the Slice, Column and Page buttons at the bottom" data-i18n-alt="shotDictionaryPageOverviewAlt" width="2404" height="1350" loading="lazy">
+            <p class="section-intro" data-i18n="dictionaryPageIntro2" data-i18n-html="1">When you bring the cursor onto a box you see the Ottoman spelling and the Latin reading of the word, and when you click it you start <b>a new search for that word</b>. You can view the entry as a <b>slice, a column or a page</b>, move through the dictionary with the arrows, and report an error from the very same place when you notice one.</p>
+            <figure class="guide-shot guide-shot-map" id="dictionary-overview" style="--natural-width:1424;--aspect:1.9037">
+              <div class="guide-map guide-map-bands" data-zoom-frame="guide-surface">
+                <img src="../assets/guide/en/dictionary-page-overview.webp" data-i18n-src="shotDictionaryPageOverviewSrc" alt="The dictionary page window: colored boxes on the original page, arrows on either side, the Slice, Column and Page buttons at the bottom" data-i18n-alt="shotDictionaryPageOverviewAlt" width="1424" height="748" loading="lazy">
+                <a class="guide-pin guide-pin-bottom" href="#slice-column-page" style="--px:0.4993;--ty:0.9719"></a>
+                <a class="guide-pin guide-pin-right" href="#colored-boxes" style="--px:0.7584;--ty:0.6698"></a>
+                <a class="guide-pin guide-pin-right" href="#digital-value" style="--px:0.8237;--ty:0.2406"></a>
+                <a class="guide-pin guide-pin-top" href="#click-a-word" style="--px:0.4424;--ty:0.1471"></a>
+                <a class="guide-pin guide-pin-right" href="#report-error" style="--px:0.8237;--ty:0.3877"></a>
+                <a class="guide-pin guide-pin-left" href="#dictionary-navigation" style="--px:0.0365;--ty:0.4973"></a>
+                <a class="guide-pin guide-pin-right" href="#dictionary-navigation" style="--px:0.9607;--ty:0.4973"></a>
+              </div>
             </figure>
           <div class="guide-block" id="slice-column-page">
             <h3 class="guide-h3" data-i18n="guideSlice">Slice, Column, Page</h3>
-            <p data-i18n="sliceBody" data-i18n-html="1">When the window first opens, the <b>Slice</b> view is active, as in the overview above. A slice is the part of a single dictionary entry that falls within one column. Often, though, you come across this: an entry’s definition begins in one column and ends in the next. In such cases the entry consists of two slices. With headwords that have longer definitions (e.g. “baş”, “bir”, “göz”), an entry may spread over several columns and so consist of more than one slice.</p>
+            <p data-i18n="sliceBody" data-i18n-html="1">When the window first opens, the <b>Slice</b> view is active, as in <a href="#dictionary-overview">the overview above</a>. A slice is the part of a single dictionary entry that falls within one column. Often, though, you come across this: an entry’s definition begins in one column and ends in the next. In such cases the entry consists of two slices. With headwords that have longer definitions (e.g. “baş”, “bir”, “göz”), an entry may spread over several columns and so consist of more than one slice.</p>
             <p data-i18n="sliceViews" data-i18n-html="1">When you click <b>Column</b>, the whole column opens. When you click <b>Page</b>, you see the entire page. The digitized words stay marked in all three views.</p>
             <figure class="guide-shot guide-pair" style="--scale:.5;--natural-width:1486;--aspect:1.4980">
               <img src="../assets/guide/en/column-view.webp" data-i18n-src="shotColumnViewSrc" alt="Column view: the whole column; a cyan bracket shows the lines of Slice 5" data-i18n-alt="shotColumnViewAlt" width="1486" height="992" loading="lazy">
@@ -331,11 +340,12 @@
             </figure>
           </div>
         </section>
+        <div class="guide-divider" aria-hidden="true"><span class="guide-divider-line guide-divider-line-a"></span><span class="guide-divider-mark"></span><span class="guide-divider-line guide-divider-line-b"></span></div>
         <section class="guide-section" id="word-decoder">
           <h2 class="guide-h2" data-i18n="guideWordDecoder">The Word Decoder</h2>
             <p class="section-intro" data-i18n="wordDecoderIntro" data-i18n-html="1">This is the tool to use when you come across a word you cannot read in a manuscript. You enter the letters you can read and leave a marker for those you cannot; LexiQamus lists the words that match these criteria.</p>
-            <figure class="guide-shot guide-shot-map guide-wide" style="--natural-width:2404;--aspect:1.7807">
-              <div class="guide-map guide-map-bands">
+            <figure class="guide-shot guide-shot-map" style="--natural-width:2404;--aspect:1.7807">
+              <div class="guide-map guide-map-bands" data-zoom-frame="guide-surface">
                 <img src="../assets/guide/en/decoder-overview.webp" data-i18n-src="shotDecoderOverviewSrc" alt="The Word Decoder: letter boxes at the top, the basic and the advanced keyboard side by side below" data-i18n-alt="shotDecoderOverviewAlt" width="2404" height="1350" loading="lazy">
                 <a class="guide-pin guide-pin-left" href="#boxes" style="--px:0.2030;--ty:0.0919"></a>
                 <a class="guide-pin guide-pin-left" href="#decoder-keyboard" style="--px:0.0191;--ty:0.5926"></a>
@@ -398,16 +408,16 @@
               <span class="guide-sub-note" data-i18n="subBoxButtonsNote">adding, deleting, alternatives</span>
             </h4>
             <p data-i18n="boxButtonsBody" data-i18n-html="1">When you bring the cursor onto a box, two small buttons appear at its corners and a trash can beneath it. The gray bars between the boxes are for adding a new box:</p>
-            <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
+            <figure class="guide-shot" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
               <img src="../assets/guide/en/box-button-add.webp" data-i18n-src="shotBoxButtonAddSrc" alt="The plus between the boxes: adds a new box in between" data-i18n-alt="shotBoxButtonAddAlt" width="1050" height="539" loading="lazy">
             </figure>
-            <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
+            <figure class="guide-shot" style="--scale:.36;--natural-width:1050;--aspect:1.9481">
               <img src="../assets/guide/en/box-button-alternative.webp" data-i18n-src="shotBoxButtonAlternativeSrc" alt="The plus inside the box: adds an alternative letter to the same box" data-i18n-alt="shotBoxButtonAlternativeAlt" width="1050" height="539" loading="lazy">
             </figure>
-            <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
+            <figure class="guide-shot" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
               <img src="../assets/guide/en/box-button-delete-letter.webp" data-i18n-src="shotBoxButtonDeleteLetterSrc" alt="The cross: deletes only one of the letters in the box" data-i18n-alt="shotBoxButtonDeleteLetterAlt" width="1050" height="537" loading="lazy">
             </figure>
-            <figure class="guide-shot guide-quarter" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
+            <figure class="guide-shot" style="--scale:.36;--natural-width:1050;--aspect:1.9553">
               <img src="../assets/guide/en/box-button-delete-box.webp" data-i18n-src="shotBoxButtonDeleteBoxSrc" alt="The trash can: removes the box together with all the letters in it" data-i18n-alt="shotBoxButtonDeleteBoxAlt" width="1050" height="537" loading="lazy">
             </figure>
             <h4 class="guide-sub">
@@ -427,7 +437,7 @@
             <p data-i18n="exampleBody" data-i18n-html="1">Say you have come across the word below in a document. Ink has been spilled over it and one letter cannot be read; but you can make out the other letters.</p>
             <p data-i18n="exampleEnter" data-i18n-html="1">You enter the letters you can read into the boxes according to their places, and put a <span class="guide-key" aria-hidden="true"><svg class="wildcard-star" viewBox="17.5 17.5 11 11" aria-hidden="true"><g transform="matrix(0.54,0,0,0.4398,-65.821,-15.934)"><path fill="currentColor" stroke="currentColor" stroke-width="0.8" stroke-linejoin="round" d="M168.073,76.772L170.466,78.58L166.877,86.716L174.055,86.716L174.055,90.332L166.877,90.332L170.466,98.468L168.073,100.276L164.484,92.14L160.895,100.276L158.502,98.468L162.091,90.332L154.913,90.332L154.913,86.716L162.091,86.716L158.502,78.58L160.895,76.772L164.484,84.908L168.073,76.772Z"/></g></svg></span> in place of the letter you cannot read:</p>
             <p class="guide-seq-line">
-              <bdi class="guide-seq" data-direction="rtl" aria-hidden="true"><span class="guide-seq-cell">ح</span><span class="guide-seq-cell">ا</span><span class="guide-seq-cell is-mark">٭</span><span class="guide-seq-cell">ر</span></bdi>
+              <bdi class="guide-seq" data-direction="rtl" aria-hidden="true"><span class="guide-seq-cell"><i>ح</i></span><span class="guide-seq-cell"><i>ا</i></span><span class="guide-seq-cell is-mark"><i>*</i></span><span class="guide-seq-cell"><i>ر</i></span></bdi>
             </p>
             <figure class="guide-shot" style="--scale:.5;--natural-width:1250;--aspect:1.8012">
               <img src="../assets/guide/en/decoder-worked-example.webp" data-i18n-src="shotDecoderWorkedExampleSrc" alt="" width="1250" height="694" loading="lazy">
@@ -442,6 +452,7 @@
             </figure>
           </div>
         </section>
+        <div class="guide-end"><span class="guide-end-line guide-end-line-a" aria-hidden="true"></span><a class="guide-end-link" href="home.html" aria-label="Start exploring: the LexiQamus home page" data-i18n-aria="guideEndAria" target="_blank" rel="noopener"><span class="guide-end-beat" aria-hidden="true"><span class="guide-end-mark"></span></span><span class="guide-end-cta" data-i18n="guideEndCta">Start exploring</span></a><span class="guide-end-line guide-end-line-b" aria-hidden="true"></span></div>
         </div>
       </div>
     </main>

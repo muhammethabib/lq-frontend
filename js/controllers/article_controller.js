@@ -104,8 +104,11 @@ class ArticleController extends Stimulus.Controller {
     // the list, so the sub-heading is left out.
     this.entries.forEach((entry) => {
       if (entry.subs.length !== 1) return;
-      const sub = entry.subs[0].label.toLocaleLowerCase();
-      if (sub === entry.label.toLocaleLowerCase()) entry.subs = [];
+      // Compared in the page's own language: a Turkish dotted İ lowers to i
+      // only when the locale says so.
+      const locale = document.documentElement.lang || undefined;
+      const sub = entry.subs[0].label.toLocaleLowerCase(locale);
+      if (sub === entry.label.toLocaleLowerCase(locale)) entry.subs = [];
     });
 
     const hasCodes = this.entries.some((entry) => entry.code);

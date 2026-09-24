@@ -1,0 +1,50 @@
+/* =========================================================
+   Lexicon Digitization Project — the story page
+   Everything else on the page is the article layout in
+   css/article.css; this file carries only what is the
+   story's own: the seven digitization steps.
+   ========================================================= */
+
+/* Each step is a card of its own, numbered in a claret disc, set in the
+   heading serif so it reads as a heading and not as a list item. The
+   reference measures: 15px top and bottom, 66px on the side the number
+   sits, a hairline in the palest claret over a wash that fades to white. */
+.article-surface .article-body .story-step {
+  list-style: none;
+  margin: 2.65rem 0 1rem;
+  padding: 0;
+}
+
+.article-surface .article-body .story-step li {
+  position: relative;
+  margin: .42rem 0;
+  padding: 15px 22px 15px 66px;
+  border: 1px solid #f0dae4;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #fdf2f6, #fff);
+  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.78;
+  color: var(--lq-sapphire);
+  scroll-margin-top: 18px;
+}
+
+.article-surface .article-body .story-step li::before {
+  content: attr(data-step);
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--lq-claret);
+  color: #fff;
+  font: 800 15.2px/1 'Inter', sans-serif;
+}
+
+.article-surface .article-body .story-step li p { margin: 0; }
+.article-surface .article-body .story-step li em { font-family: inherit; font-style: normal; }

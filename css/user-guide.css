@@ -128,13 +128,14 @@
 
 
 .guide-surface .guide-section { scroll-margin-top: 20px; }
+.guide-surface .guide-section:first-of-type .guide-h2 { margin-top: 0; padding-top: 0; }
 
 .guide-surface .page-content .guide-h2 {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin: 0 0 1.05rem;
-  padding-top: 0;
+  margin: 3.1rem 0 1.05rem;
+  padding-top: 4px;
   min-width: 0;
   overflow-wrap: break-word;
   font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
@@ -320,6 +321,18 @@
   vertical-align: -8px;
 }
 
+/* A key mark inside running text: one size, one alignment */
+.guide-surface .guide-block p .guide-key {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  margin: 0 2px;
+  vertical-align: -3.5px;
+  overflow: hidden;
+}
+.guide-surface .guide-block p .guide-key .wildcard-star { width: 14px; height: 14px; display: block; }
+.guide-surface .guide-block p .guide-key-inf { font-size: 19px; padding-bottom: 3px; }
+
 .guide-surface .guide-chip {
   display: inline-grid;
   place-items: center;
@@ -329,12 +342,13 @@
 }
 /* The bar that sits between two boxes */
 .guide-surface .guide-chip-bar {
-  width: 12px;
-  height: 24px;
-  border-radius: 4px;
-  background: #e2e8f0;
+  width: 10px;
+  height: 27px;
+  border-radius: 3px;
+  background: #e3e9f0;
   font-size: .7rem;
-  color: #64748b;
+  color: #a9b2c1;
+  vertical-align: -6px;
 }
 /* The button inside a box, for an alternative letter */
 .guide-surface .guide-chip-box {
@@ -383,34 +397,44 @@
 
 /* ---------- the worked example's letter strip ---------- */
 
-.guide-surface .guide-seq-line {
-  margin: 18px 0 22px;
+.guide-surface .page-content .guide-seq-line {
+  margin: 18px 0;
+  line-height: 1;
   text-align: center;
 }
+/* A short run of letters shown as keys, with the unread one starred */
 .guide-surface .guide-seq {
   display: inline-flex;
-  gap: 6px;
-  padding: 8px 10px;
-  border-radius: 14px;
-  background: var(--lq-osm-bg);
-}
-.guide-surface .guide-seq-cell {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 52px;
+  gap: 4px;
+  margin: 0 2px;
+  padding: 2px 6px;
   border-radius: 9px;
+  background: #fdf2f6;
+  box-shadow: inset 0 0 0 1px #f5d0de;
+  vertical-align: -5px;
+  unicode-bidi: isolate;
+}
+.guide-surface .guide-seq[data-direction="rtl"] { direction: rtl; }
+.guide-surface .guide-seq-line .guide-seq { zoom: 1.3; vertical-align: baseline; margin: 0; }
+.guide-surface .guide-seq-cell {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 26px;
+  padding: 0 3px;
+  border-radius: 6px;
   background: var(--lq-paper);
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 1.7rem;
+  box-shadow: inset 0 0 0 1px #f1c7d6;
+  font: 700 18px/1 'Noto Naskh Arabic', serif;
   color: var(--lq-claret);
 }
-/* The unreadable letter, standing in for a glyph rather than being one */
-.guide-surface .guide-seq-cell.is-mark {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  color: var(--lq-sapphire);
-}
+.guide-surface .guide-seq-cell i { display: block; font-style: normal; }
+.guide-surface .guide-seq-cell.is-mark { font: 800 16px/26px 'Inter', sans-serif; }
+/* Each glyph is nudged to sit on the key's centre */
+.guide-surface .guide-seq-cell:nth-child(1) i { transform: translate(-0.4px, -3.75px); }
+.guide-surface .guide-seq-cell:nth-child(2) i { transform: translate(0.1px, 1.5px); }
+.guide-surface .guide-seq-cell:nth-child(3) i { transform: translateY(2.9px); }
+.guide-surface .guide-seq-cell:nth-child(4) i { transform: translate(1.1px, -2.2px); }
 
 /* ---------- screenshots ---------- */
 
@@ -419,32 +443,34 @@
    was captured and the frame reserves its height before the image loads. */
 .guide-surface .guide-shot {
   --scale: .75;
-  width: min(100%, calc(var(--natural-width) * var(--scale) * 1px));
-  margin: 18px 0;
-  padding: 10px;
+  --frame: 26px;
+  --cap: min(72vh, 640px);
+  /* no larger than 75% of the natural size, so it stays sharp; a tall one is
+     capped by height instead, so it does not take over the screen */
+  width: min(100%, calc(var(--natural-width) * var(--scale) * 1px + var(--frame)), calc(var(--cap) * var(--aspect) + var(--frame)));
+  margin: 22px auto 30px;
+  padding: 12px;
   border: 1px solid var(--lq-line);
-  border-radius: 13px;
+  border-radius: 14px;
   background: var(--lq-paper);
-  box-shadow: 0 12px 32px rgba(23, 33, 43, .07);
+  box-shadow: 0 12px 32px rgba(23, 33, 43, .08);
 }
 .guide-surface .guide-shot img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: var(--aspect);
-  border-radius: 6px;
+  border-radius: 8px;
+  background: var(--lq-paper);
+  cursor: zoom-in;
 }
-.guide-surface .guide-narrow { width: min(100%, 520px); }
-.guide-surface .guide-quarter { width: min(100%, 380px); }
-.guide-surface .guide-wide { width: 100%; }
-/* A tall screenshot is capped by height instead, so it does not take over */
-.guide-surface .guide-tall img {
-  max-height: 640px;
-  width: auto;
-  max-width: 100%;
-}
+/* Two screenshots in a row sit closer than a screenshot and a paragraph */
+.guide-surface .guide-shot + .guide-shot { margin-top: -12px; }
+.guide-surface .guide-narrow { max-width: 520px; }
+/* A whole-screen map and a tall list are shown at full height */
+.guide-surface .guide-tall,
+.guide-surface .guide-shot-map { --cap: 100000px; }
 /* Two figures that belong together are pulled into one unit */
-.guide-surface .guide-shot + .guide-pair { margin-top: -6px; }
 
 /* ---------- responsive ---------- */
 
@@ -478,6 +504,19 @@
   .guide-surface .guide-h2 { font-size: 1.6rem; }
 }
 
+@media (max-width: 590px) {
+  .guide-surface .guide-shot {
+    --frame: 14px;
+    width: min(calc(100% + 12px), calc(var(--natural-width) * var(--scale) * 1px + var(--frame)), calc(var(--cap) * var(--aspect) + var(--frame)));
+    margin: 18px auto 24px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+  .guide-surface .guide-shot:not(.guide-narrow) { margin-left: -6px; margin-right: -6px; }
+  .guide-surface .guide-shot + .guide-shot { margin-top: -8px; }
+  .guide-surface .guide-shot img { border-radius: 7px; }
+}
+
 /* ---------- the markers on a screenshot ----------
    A screenshot of the whole screen is a map: each part of it that the guide
    explains carries a marker, and pressing one takes the reader to the
@@ -497,7 +536,7 @@
   background: var(--lq-paper);
 }
 
-.guide-surface .guide-map img { border-radius: 6px; }
+.guide-surface .guide-map img { border-radius: 8px; }
 
 .guide-surface .guide-pin {
   --pin: #f2a007;
@@ -520,6 +559,9 @@
   box-shadow: 0 0 0 2px #fff, 0 3px 10px -3px rgba(8, 37, 103, 0.5);
 }
 
+/* The page paints its links claret; a marker keeps its own dark ink. */
+.guide-surface .page-content a.guide-pin,
+.guide-surface .page-content a.guide-pin:hover { color: #2b1d00; text-decoration: none; }
 .guide-surface .guide-pin-square { border-radius: 7px; min-width: 26px; }
 .guide-surface .guide-pin:hover,
 .guide-surface .guide-pin:focus-visible { --pin: #e09000; }
@@ -563,7 +605,6 @@
   padding: 34px var(--band);
 }
 
-.guide-surface .guide-map-bands .guide-pin { min-width: 14px; height: 14px; padding: 0; }
 .guide-surface .guide-map-bands .guide-pin-top,
 .guide-surface .guide-map-bands .guide-pin-bottom { left: calc(var(--band) + var(--px) * var(--picture)); }
 .guide-surface .guide-map-bands .guide-pin-top::after { height: calc(10px + var(--ty) * var(--picture-height)); }
@@ -593,15 +634,9 @@
 }
 .guide-surface .guide-map-bands .guide-pin-left::before,
 .guide-surface .guide-map-bands .guide-pin-right::before { top: 50%; margin: -4px 0 0; }
+.guide-surface .guide-map-bands .guide-pin-left::before { left: calc(var(--band) - 8px + var(--px) * var(--picture)); }
+.guide-surface .guide-map-bands .guide-pin-right::before { left: auto; right: calc(var(--band) - 8px + (1 - var(--px)) * var(--picture)); }
 
-/* A tall screenshot is normally capped by height so it does not take over the
-   page. A map is the exception: its markers are measured from the picture, so
-   the picture has to fill the frame for them to land where they are aimed. */
-.guide-surface .guide-shot-map.guide-tall .guide-map img {
-  max-height: none;
-  width: 100%;
-  max-width: 100%;
-}
 
 @media (max-width: 589.98px) {
   .guide-surface .guide-map { padding: 28px 0; }
@@ -623,4 +658,122 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.375rem;
   font-weight: 400;
+}
+
+/* ---------- the divider before the Word Decoder ----------
+   Two lines meet at an amber diamond: the guide turns from looking words
+   up to working them out. */
+.guide-surface .guide-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 104px 0 96px;
+}
+.guide-surface .guide-divider-line { position: relative; height: 2px; flex: 1; max-width: 340px; }
+.guide-surface .guide-divider-line-a {
+  background: linear-gradient(90deg, rgba(29, 44, 91, 0), #1d2c5b);
+  clip-path: polygon(0 0, calc(100% - 1px) 0, 100% 50%, calc(100% - 1px) 100%, 0 100%);
+}
+.guide-surface .guide-divider-line-b {
+  background: linear-gradient(90deg, #1d2c5b, rgba(29, 44, 91, 0));
+  clip-path: polygon(1px 0, 100% 0, 100% 100%, 1px 100%, 0 50%);
+}
+.guide-surface .guide-divider-mark { width: 8px; height: 8px; background: #d97706; transform: rotate(45deg); flex: none; }
+@media (max-width: 640px) {
+  .guide-surface .guide-divider { margin: 72px 0 64px; }
+  .guide-surface .guide-divider-line { max-width: 120px; }
+}
+
+/* ---------- a map at its own size ----------
+   A screenshot opens full size through the page's image viewer; a map is
+   opened whole, so its markers come along and still lead to their passages. */
+.guide-surface.image-viewer-frame { display: flex; justify-content: center; width: 100%; }
+.guide-surface.image-viewer-frame .guide-map {
+  position: relative;
+  container-type: inline-size;
+  padding: 34px 0;
+  width: min(100%, calc((100vh - 140px) * var(--aspect)));
+  background: var(--lq-paper);
+  border-radius: 12px;
+}
+.guide-surface.image-viewer-frame .guide-map-bands {
+  --band: 58px;
+  --picture: 100cqw;
+  --picture-height: calc(var(--picture) / var(--aspect));
+  padding: 34px var(--band);
+  width: min(calc(100% - 116px), calc((100vh - 140px) * var(--aspect)));
+}
+.guide-surface.image-viewer-frame .guide-map img { display: block; width: 100%; height: auto; max-height: none; border-radius: 8px; }
+
+/* ---------- the end of the guide ----------
+   A line runs in from both sides to the LexiQamus mark, which beats gently
+   and leads to the home page. */
+.guide-surface .guide-end {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 136px;
+  margin: 124px 0 40px;
+}
+.guide-surface .guide-end-line { position: absolute; height: 3px; top: 64.34px; }
+.guide-surface .guide-end-line-a { left: 0; right: calc(50% + 58px); background: linear-gradient(90deg, rgba(29, 44, 91, 0), #1d2c5b); }
+.guide-surface .guide-end-line-b { right: 0; left: calc(50% + 58px); background: linear-gradient(90deg, #1d2c5b, rgba(29, 44, 91, 0)); }
+.guide-surface a.guide-end-link {
+  display: block;
+  position: relative;
+  flex: none;
+  text-decoration: none;
+  border-radius: 50%;
+  transition: transform .2s ease;
+}
+.guide-surface .guide-end-beat { display: block; transform-origin: 50% 50%; animation: guide-end-beat 2.6s ease-in-out infinite; }
+.guide-surface .guide-end-mark {
+  display: block;
+  position: relative;
+  flex: none;
+  width: 114.62px;
+  height: 131.68px;
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMy41MCAtMjUuNzAgMTcyLjAwIDE5Ny42MCI+PGNpcmNsZSBjeD0iNzIuNSIgY3k9IjczLjEiIHI9IjY3LjgzIiBmaWxsPSJub25lIiBzdHJva2U9IiMxZDJjNWIiIHN0cm9rZS13aWR0aD0iMTMuMjYiLz48cGF0aCBmaWxsPSIjMWQyYzViIiBkPSJNOTAuNTEgMTA0LjQwIEwxNDYuNDMgMTY5Ljg3IEwxNTYuNTEgMTYxLjI2IEwxMDAuNjAgOTUuNzkgWiIvPjwvc3ZnPg==") center/contain no-repeat;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform .26s cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
+}
+.guide-surface a.guide-end-link:hover .guide-end-beat { animation-play-state: paused; }
+.guide-surface a.guide-end-link:hover .guide-end-mark { transform: scale(1.12); }
+.guide-surface a.guide-end-link:focus-visible { outline: 2px solid var(--lq-claret); outline-offset: 8px; }
+@keyframes guide-end-beat {
+  0%, 88%, 100% { transform: scale(1); }
+  92% { transform: scale(1.045); }
+  96% { transform: scale(1.015); }
+}
+.guide-surface .guide-end-cta {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -50%);
+  font: italic 600 15.5px/1.45 'EB Garamond', Garamond, Georgia, serif;
+  letter-spacing: .01em;
+  color: #c01a56;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  width: 78px;
+  pointer-events: none;
+  transition: font-size .26s cubic-bezier(.22, .61, .36, 1), color .26s ease;
+}
+.guide-surface a.guide-end-link:hover .guide-end-cta { color: #e11d48; font-size: 17px; }
+@media (prefers-reduced-motion: reduce) {
+  .guide-surface .guide-end-beat { animation: none; }
+}
+@media (max-width: 640px) {
+  .guide-surface .guide-end { height: 118px; margin: 88px 0 28px; }
+  .guide-surface .guide-end-mark { width: 98px; height: 112.59px; }
+  .guide-surface .guide-end-line { top: 54.79px; }
+  .guide-surface .guide-end-line-a { right: calc(50% + 50px); }
+  .guide-surface .guide-end-line-b { left: calc(50% + 50px); }
+  .guide-surface .guide-end-cta { font-size: 13.2px; width: 66px; }
+  .guide-surface a.guide-end-link:hover .guide-end-cta { font-size: 14.2px; }
 }

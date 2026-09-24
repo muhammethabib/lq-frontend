@@ -2743,13 +2743,13 @@ body.in-story-view #langSwitch {
 }
 
 /* the main page and the story together: scrolling is free, the bar is not drawn */
-html:has(body.vs-home:not(.tool-focus)),
-body.vs-home:not(.tool-focus) {
+html:has(body.story-armed:not(.tool-focus)),
+body.story-armed:not(.tool-focus) {
   scrollbar-width: none;
 }
 
-html:has(body.vs-home:not(.tool-focus))::-webkit-scrollbar,
-body.vs-home:not(.tool-focus)::-webkit-scrollbar {
+html:has(body.story-armed:not(.tool-focus))::-webkit-scrollbar,
+body.story-armed:not(.tool-focus)::-webkit-scrollbar {
   width: 0;
   height: 0;
 }

@@ -135,11 +135,7 @@ class GuideController extends Stimulus.Controller {
       const code = target && target.dataset.code;
       const heading = target && target.querySelector(".guide-h2, .guide-h3");
       const name = heading ? heading.textContent.trim() : "";
-      // A marker reaching in from the side of a tall screenshot is a dot:
-      // there is no room for a code beside the picture, so it carries its
-      // name for a screen reader instead.
-      const labelled = !pin.closest(".guide-map-bands");
-      pin.textContent = labelled && code ? code : "";
+      pin.textContent = code || "";
       pin.setAttribute("aria-label", [code, name].filter(Boolean).join(" · "));
     });
   }

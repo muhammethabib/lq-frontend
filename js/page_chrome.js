@@ -198,21 +198,10 @@ window.LQ_PAGE_CHROME = `
   <div class="modal fade auth-modal" id="authModal" tabindex="-1" aria-hidden="true"></div>
 
   <template id="authTemplate">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <ul class="nav nav-tabs auth-tabs" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="signInTab" data-bs-toggle="tab" data-bs-target="#signInPane"
-                      type="button" role="tab" aria-controls="signInPane" aria-selected="false"
-                      data-i18n="menuSignIn">Sign in</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="signUpTab" data-bs-toggle="tab" data-bs-target="#signUpPane"
-                      type="button" role="tab" aria-controls="signUpPane" aria-selected="false"
-                      data-i18n="menuSignUp">Sign up</button>
-            </li>
-          </ul>
+          <h2 class="auth-title" data-auth-title data-i18n="menuSignUp">Sign up</h2>
           <button type="button" class="btn window-close" data-bs-dismiss="modal"
                   aria-label="Close" data-i18n-aria="close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"

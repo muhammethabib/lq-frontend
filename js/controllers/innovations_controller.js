@@ -2,14 +2,16 @@
 // The 2026 innovations, read under the main page.
 //
 // The tool comes first. Someone who arrives to look up a word sees the search
-// bar and nothing else: the main page is one fixed screen, it does not move,
-// and the story is parked below it out of sight. The prompt at the foot of
-// the screen is the only way in.
+// bar and nothing else: the story begins exactly one screen down, out of
+// sight. The prompt at the foot of the screen leads into it, and so does
+// simply scrolling on.
 //
-// Once it is open the story is read like a deck rather than a page: one
-// movement of the wheel, one swipe of a trackpad or one press of Page Down
-// moves exactly one screen, so every reader sees the same composition
-// whatever the height of their window. Nothing is ever half-cut.
+// The page scrolls freely: wheel, trackpad, touch and keys all work as they
+// do anywhere, and a strong swipe can pass several screens. When the
+// scrolling stops, the page settles gently onto the nearest screen, unless
+// the reader is inside a screen taller than the window, where the settling
+// keeps out of the way. While the story is being read the controls at the
+// top of the main page withdraw, so the story stands on its own.
 //
 // And the story always gives way. The moment the reader touches either side
 // of the search bar, the filters, the dictionary list or a decoder box, the
@@ -17,15 +19,23 @@
 // reader comes back to the main screen or reloads. Nothing is thrown away;
 // it is only out of the way.
 //
-// Four states on the body say where things stand:
-//   story-armed   the story is parked below; the page is locked to one screen
-//   story-open    the deck is open and a gesture moves one screen
-//   tool-focus    a search tool is in use; the story has stepped aside
-//   lqs-fit       the lock itself, which is what keeps the scrollbar away
+// Five states on the body say where things stand:
+//   story-armed    the story waits one screen down
+//   story-open     the prompt has been pressed
+//   in-story-view  the reader is down in the story; the top controls withdraw
+//   tool-focus     a search tool is in use; the story has stepped aside
+//   lqs-fit        the main screen fits the window on its own, so there is no
+//                  scrollbar to show; it comes off by itself when something
+//                  (an open keyboard, say) needs the room
 
-// How long one gesture holds the deck still, so the tail of a trackpad swipe
-// cannot carry it past the next screen.
-const GESTURE_LOCK = 700;
+// How long the page waits after the last scroll before settling onto a screen,
+// and how long a settling move is given before the reader's own scrolling
+// counts again.
+const SETTLE_DELAY = 180;
+const SETTLE_HOLD = 900;
+
+// Below this much overflow the main screen counts as fitting the window.
+const FIT_SLACK = 30;
 
 // How far the invitation stands off the bottom of the first screen, and the
 // margin it keeps when there is no room to pin it there.
@@ -91,7 +101,7 @@ class InnovationsController extends Stimulus.Controller {
     this.onPrompt = () => this.open();
     if (this.prompt) this.prompt.addEventListener("click", this.onPrompt);
 
-    this.onResize = () => { this.placePrompt(); this.park(); this.sizeCanvases(); this.placeBadges(); };
+    this.onResize = () => { this.placePrompt(); this.park(); this.sizeCanvases(); this.placeBadges(); this.fitLock(); this.syncChrome(); };
     window.addEventListener("resize", this.onResize);
   }
 
@@ -99,31 +109,36 @@ class InnovationsController extends Stimulus.Controller {
     if (this.prompt) this.prompt.removeEventListener("click", this.onPrompt);
     document.removeEventListener("view-state:change", this.onViewState);
     window.removeEventListener("resize", this.onResize);
-    document.removeEventListener("wheel", this.onWheel, { capture: true });
-    document.removeEventListener("keydown", this.onKey, { capture: true });
+    window.removeEventListener("scroll", this.onScroll);
+    ["wheel", "keydown", "pointerdown"].forEach((kind) => window.removeEventListener(kind, this.onGesture, { capture: true }));
+    window.removeEventListener("touchstart", this.onTouchStart);
+    ["touchend", "touchcancel"].forEach((kind) => window.removeEventListener(kind, this.onTouchEnd));
+    ["pointerdown", "keydown", "transitionend", "focusin"].forEach((kind) => document.removeEventListener(kind, this.onFitCheck, true));
+    clearTimeout(this.settleTimer);
+    clearTimeout(this.fitTimer);
     document.removeEventListener("pointerdown", this.onTool, { capture: true });
     document.removeEventListener("keydown", this.onToolKey, { capture: true });
     if (this.watcher) this.watcher.disconnect();
     cancelAnimationFrame(this.rainFrame);
     cancelAnimationFrame(this.networkFrame);
-    document.body.classList.remove("story-armed", "story-open", "tool-focus", "lqs-fit");
+    document.body.classList.remove("story-armed", "story-open", "in-story-view", "tool-focus", "lqs-fit");
   }
 
   // ==================== where things stand ====================
 
-  // Parked below the fold, with the page locked to the one screen above it.
+  // Waiting one screen down, with the main page whole above it.
   arm() {
     document.body.classList.add("story-armed");
-    document.body.classList.remove("story-open", "tool-focus");
+    document.body.classList.remove("story-open", "in-story-view", "tool-focus");
     window.scrollTo({ top: 0 });
     this.placePrompt();
     this.park();
     [100, 400, 1200].forEach((delay) => setTimeout(() => this.placeBadges(), delay));
-    this.lock();
+    this.fitLock();
+    this.syncChrome();
   }
 
-  // The prompt was pressed: the lock comes off and the first screen is
-  // brought up.
+  // The prompt was pressed: the first screen is brought up, gently.
   reveal(prompt) {
     if (document.body.classList.contains("tool-focus")) return;
     // The prompt has done its work; leaving the focus ring on it would follow
@@ -131,13 +146,25 @@ class InnovationsController extends Stimulus.Controller {
     if (prompt && prompt.blur) prompt.blur();
     document.body.classList.add("story-open");
     document.body.classList.remove("lqs-fit");
-    this.goToIndex(1);
+    setTimeout(() => this.goToIndex(1), 20);
   }
 
   // A tool was touched. Nothing is deleted; the story is only out of the way.
   standAside() {
+    if (document.body.classList.contains("tool-focus")) return;
     document.body.classList.add("tool-focus");
-    document.body.classList.remove("story-open", "lqs-fit");
+    document.body.classList.remove("story-open", "in-story-view", "lqs-fit");
+  }
+
+  // The top controls withdraw once the reader is down in the story, and come
+  // back as soon as the main screen is in view again.
+  syncChrome() {
+    const inStory = this.storyShown() && window.scrollY > window.innerHeight * 0.35;
+    document.body.classList.toggle("in-story-view", inStory);
+  }
+
+  storyShown() {
+    return getComputedStyle(this.element).display !== "none";
   }
 
   // The invitation sits on the bottom edge of the first screen, so the page
@@ -181,91 +208,94 @@ class InnovationsController extends Stimulus.Controller {
     if (left) this.element.style.marginTop = `${Math.max(0, room + left)}px`;
   }
 
-  // The lock is what keeps the main screen still and the scrollbar away. It
-  // is only applied while the story is parked, and it gives way by itself
-  // when something genuinely needs the room: an open keyboard adds its own
-  // space to the page, and the stylesheet lets that win.
-  lock() {
-    if (!document.body.classList.contains("story-armed")) return;
-    if (document.body.classList.contains("story-open")) return;
-    document.body.classList.add("lqs-fit");
+  // With the main screen fitting the window on its own there is no scrollbar
+  // to show, so the page is held to one screen; the moment something needs
+  // more room (an open keyboard, say) the hold comes off by itself. It is
+  // looked at again whenever the page may have changed shape.
+  fitLock() {
+    const body = document.body;
+    body.classList.remove("lqs-fit");
+    if (!body.classList.contains("story-armed") || body.classList.contains("story-open")) return;
+    if (!this.storyShown()) return;
+    const excess = document.documentElement.scrollHeight - window.innerHeight;
+    if (excess <= FIT_SLACK) body.classList.add("lqs-fit");
   }
 
-  // ==================== one gesture, one screen ====================
+  // ==================== free scrolling, with a gentle settle ====================
 
   watchGestures() {
-    this.onWheel = (event) => this.handleWheel(event);
-    this.onKey = (event) => this.handleKey(event);
-    document.addEventListener("wheel", this.onWheel, { passive: false, capture: true });
-    document.addEventListener("keydown", this.onKey, { capture: true });
+    this.onScroll = () => {
+      this.syncChrome();
+      if (this.settling) return;
+      clearTimeout(this.settleTimer);
+      this.settleTimer = setTimeout(() => this.settle(), SETTLE_DELAY);
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    // The reader scrolling again takes the settling move away from the page.
+    this.onGesture = () => { this.settling = false; clearTimeout(this.settleTimer); };
+    ["wheel", "keydown", "pointerdown"].forEach((kind) => {
+      window.addEventListener(kind, this.onGesture, { passive: true, capture: true });
+    });
+    this.onTouchStart = () => { this.touching = true; this.onGesture(); };
+    this.onTouchEnd = () => { this.touching = false; this.onScroll(); };
+    window.addEventListener("touchstart", this.onTouchStart, { passive: true });
+    ["touchend", "touchcancel"].forEach((kind) => window.addEventListener(kind, this.onTouchEnd, { passive: true }));
+    // Whatever may have changed the page's shape is a reason to look at the
+    // fit again.
+    this.onFitCheck = () => { clearTimeout(this.fitTimer); this.fitTimer = setTimeout(() => this.fitLock(), 80); };
+    ["pointerdown", "keydown", "transitionend", "focusin"].forEach((kind) => document.addEventListener(kind, this.onFitCheck, true));
   }
 
-  // While the story is parked the page does not move at all; once it is open
-  // a gesture is worth exactly one screen, however long the reader keeps
-  // swiping.
-  handleWheel(event) {
-    if (document.body.classList.contains("tool-focus")) return;
-    if (event.target.closest(".ottoman-keyboard, .search-keyboard, .modal")) return;
-    if (document.body.classList.contains("story-open")) {
-      event.preventDefault();
-      this.step(event.deltaY > 0 ? 1 : -1);
-      return;
+  // Once the scrolling has stopped, the page moves onto the nearest screen.
+  // The main screen and the top and bottom of every story screen are the
+  // places it can settle; inside a screen taller than the window it stays
+  // where the reader left it.
+  settle() {
+    if (this.touching || !this.canSettle()) return;
+    const here = window.scrollY;
+    let best = null;
+    let distance = Infinity;
+    for (const stop of this.stops()) {
+      if (stop.b > stop.a && here > stop.a + 1 && here < stop.b - 1) return;
+      [stop.a, stop.b].forEach((point) => {
+        const away = Math.abs(point - here);
+        if (away < distance) { distance = away; best = point; }
+      });
     }
-    if (document.body.classList.contains("story-armed")) event.preventDefault();
+    if (best === null || distance < 2) return;
+    this.settling = true;
+    window.scrollTo({ top: best, behavior: "smooth" });
+    clearTimeout(this.settleHold);
+    this.settleHold = setTimeout(() => { this.settling = false; }, SETTLE_HOLD);
   }
 
-  handleKey(event) {
-    if (document.body.classList.contains("tool-focus")) return;
-    if (event.target.closest("input, textarea, [contenteditable='true'], .modal")) return;
-    // Space is how a focused control is worked, so a control keeps it; the
-    // page keys belong to the deck wherever the focus happens to be.
-    if (event.key === " " && event.target.closest("button, a, [role='button']")) return;
-    const forward = event.key === "PageDown" || event.key === " " || event.key === "ArrowDown";
-    const back = event.key === "PageUp" || event.key === "ArrowUp";
-    if (!forward && !back) return;
-    if (document.body.classList.contains("story-open")) {
-      event.preventDefault();
-      this.step(forward ? 1 : -1);
-      return;
-    }
-    if (document.body.classList.contains("story-armed")) event.preventDefault();
-  }
-
-  step(by) {
-    if (this.held) return;
-    this.held = true;
-    clearTimeout(this.holdTimer);
-    this.holdTimer = setTimeout(() => { this.held = false; }, GESTURE_LOCK);
-    this.goToIndex(this.currentIndex() + by);
+  canSettle() {
+    return this.storyShown() && !document.body.classList.contains("tool-focus");
   }
 
   // The stops are the main screen and each screen of the story, in order.
+  // A screen taller than the window is a range, from its top to the point
+  // where its bottom edge comes into view.
   stops() {
-    return [0].concat(this.screens.map(
-      (screen) => Math.round(screen.getBoundingClientRect().top + window.scrollY)));
-  }
-
-  currentIndex() {
-    const stops = this.stops();
-    const here = window.scrollY;
-    let closest = 0;
-    stops.forEach((stop, index) => {
-      if (Math.abs(stop - here) < Math.abs(stops[closest] - here)) closest = index;
+    const height = window.innerHeight;
+    const most = Math.max(0, document.documentElement.scrollHeight - height);
+    const out = [{ a: 0, b: 0 }];
+    this.screens.forEach((screen) => {
+      const top = Math.round(screen.getBoundingClientRect().top + window.scrollY);
+      const extra = Math.max(0, screen.offsetHeight - height);
+      out.push({ a: Math.min(top, most), b: Math.min(top + extra, most) });
     });
-    return closest;
+    out.push({ a: most, b: most });
+    return out;
   }
 
+  // The main screen is 0; the story's screens follow in order.
   goToIndex(index) {
-    const stops = this.stops();
-    const at = Math.max(0, Math.min(index, stops.length - 1));
-    // Back past the first screen is back to the main page, and the lock goes
-    // on again behind the reader.
-    if (at === 0) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setTimeout(() => this.arm(), 600);
-      return;
-    }
-    window.scrollTo({ top: stops[at], behavior: "smooth" });
+    const tops = [0].concat(this.screens.map(
+      (screen) => Math.round(screen.getBoundingClientRect().top + window.scrollY)));
+    const at = Math.max(0, Math.min(index, tops.length - 1));
+    this.onGesture();
+    window.scrollTo({ top: tops[at], behavior: "smooth" });
   }
 
   // The prompt at the foot of the main page, and the arrows inside the story.

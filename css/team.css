@@ -13,8 +13,7 @@
   padding: 34px 0;
   border-bottom: 1px solid var(--lq-line);
 }
-.team-surface .person:first-of-type { padding-top: 0; }
-.team-surface .person:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.team-surface .person:last-of-type { border-bottom: 0; }
 
 .team-surface .person-photo {
   width: 96px;

@@ -732,7 +732,9 @@
   border: 1px solid var(--lq-line);
   border-radius: var(--home-surface-radius);
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
-  overflow: hidden;
+  /* Clipped, not scrolled: a scroll container would stop the column head
+     from sticking as the list goes by. */
+  overflow: clip;
 }
 /* 4px bar across the top, coloured by the script of the active spelling. It
    lies over the panel's edge rather than above its content, so the heading
@@ -977,7 +979,10 @@
 /* The table is held a gutter in from the card's edges, as the reference
    holds its rows; the head's two grounds are carried out into those gutters
    by a shadow rather than by widening the cells. */
-.home-surface .results-table-scroll { overflow-x: auto; padding: 0 20px; }
+.home-surface .results-table-scroll { padding: 0 20px; }
+@media (max-width: 991.98px) {
+  .home-surface .results-table-scroll { overflow-x: auto; }
+}
 .home-surface .results-table {
   margin: 0;
   --bs-table-bg: transparent;
@@ -1009,8 +1014,9 @@
   text-align: center;
   color: #566478;
   white-space: nowrap;
+  /* Sticks below the jump bar once that has slid in over the top. */
   position: sticky;
-  top: 0;
+  top: var(--jump-bar-height, 0px);
   z-index: 2;
 }
 .home-surface .results-table > thead th.col-result {
@@ -1026,12 +1032,12 @@
 .home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 73px; }
 .home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 439px; }
 .home-surface .results-table > thead th.col-dictionary {
-  width: 150px;
+  width: 165px;
   text-align: right;
   border-left: 1px solid var(--lq-line);
 }
 .home-surface .results-table > thead th.col-actions {
-  width: 70px;
+  width: 55px;
   box-shadow: 20px 0 0 var(--lq-paper-soft);
 }
 

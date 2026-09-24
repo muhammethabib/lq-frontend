@@ -136,8 +136,6 @@
 /* The column's own paragraphs are set at the reading size; one inside a card
    or an aside takes that card's, as the reference has it. */
 .article-surface .article-body > p { font-size: 16.5px; line-height: 1.78; }
-/* The opening paragraph is set a shade larger, the way a standfirst is. */
-.article-surface .article-body > p:first-child { font-size: 1.08rem; }
 /* An italic term in running text is set in the serif face; in a heading it
    keeps the heading's own (see page.css). */
 .article-surface .article-body em { font-family: Georgia, 'Times New Roman', serif; }
@@ -210,7 +208,7 @@
   color: #4f5a65;
 }
 
-.article-surface .article-bibliography {
+.article-surface .article-body p.article-bibliography {
   margin: 0 0 1.25em;
   font-size: .94rem;
   color: #4e5964;
@@ -230,8 +228,8 @@
 
 /* A footnote number in the running text, and the mark that leads back */
 .article-surface .footnote-ref {
-  text-decoration: none;
-  font-weight: 700;
+  text-decoration: underline;
+  font-weight: 400;
 }
 .article-surface .footnote-back { text-decoration: none; }
 
@@ -367,4 +365,4 @@
 /* The reference wraps each item's words in a paragraph of their own, which
    is what gives an item its inner air; here the item carries it directly. */
 .article-surface .article-list li { padding: 0; }
-.article-surface .article-list .article-list { margin: 6px 0 4px; }
+.article-surface .article-list .article-list { margin: 1rem 0 1.7rem; }

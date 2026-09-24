@@ -130,8 +130,7 @@ class SearchKeyboardController extends Stimulus.Controller {
   // The label of the physical key that writes a letter, as the keyboard order
   // prints it. A plain key comes first (و is w, u, o and v; the first of them),
   // then a split key's Shift or Alt label, then a letter reached only through
-  // an upper-case key. A letter the layout cannot write (ە on the English
-  // layout) is left unlabelled.
+  // an upper-case key. A letter the layout cannot write is left unlabelled.
   physicalLabel(letter, layout) {
     const map = layout.map || {};
     const dual = layout.dual || {};
@@ -231,7 +230,9 @@ class SearchKeyboardController extends Stimulus.Controller {
   // A ye is written without its dots and gains them when a letter follows,
   // so the key has to show something: the dotted one, which is what a reader
   // looking for the key expects to see.
-  face(letter) { return letter === "_ye_" ? "ي" : letter; }
+  // A ye wears no dots until a letter follows it, and the key writes the bare
+  // one, so the bare one is what the key shows.
+  face(letter) { return letter === "_ye_" ? "\u0649" : letter; }
 
   press(event) {
     // Stops the press from taking focus away from the bar.

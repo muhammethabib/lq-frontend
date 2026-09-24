@@ -40,12 +40,28 @@
 
 .search-keyboard.is-dragging .search-keyboard-bar { cursor: grabbing; }
 
+/* The line keeps clear of both corners, so it is centred on the panel and
+   never runs under the keys standing in them. */
 .search-keyboard-teach {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-width: 0;
+  padding: 0 76px;
+}
+
+.search-keyboard-teach-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* On a narrow panel there is only room for the half that says the thing */
+@media (max-width: 575.98px) {
+  .search-keyboard-teach-text > span { display: none; }
 }
 
 /* Once the reader has typed anything the line has done its work. The row
@@ -106,8 +122,16 @@
 
 .search-keyboard-teach-text b { font-weight: 700; color: #475569; }
 
-/* Lifted out of the row so the line that teaches the keyboard sits in the
-   middle of the panel, not in the middle of what the buttons leave of it. */
+/* Both corners are lifted out of the row so the line that teaches the
+   keyboard sits in the middle of the panel, not in the middle of what the
+   buttons leave of it. */
+.search-keyboard-switch {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: flex;
+}
+
 .search-keyboard-buttons {
   position: absolute;
   right: 0;

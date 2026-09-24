@@ -23,8 +23,9 @@
 // the Ottoman alphabet as it is recited, elif, be, pe, te..., three rows read
 // from the right. Each key shows, as the keyboard order does, the physical key
 // that writes its letter; the controller reads that off the language's `map`
-// and `dual`, so it changes with the layout. The set covers every letter the
-// two layouts can write, so nothing becomes untypeable by switching. Physical
+// and `dual`, so it changes with the layout. It is the alphabet, so it holds
+// each letter once: the detached he, which a Turkish keyboard still writes on
+// its E key, would be a second guzel he standing beside the first. Physical
 // typing still follows `map`.
 
 window.LQ_SEARCH_KEYBOARD = {
@@ -45,14 +46,14 @@ window.LQ_SEARCH_KEYBOARD = {
     "ع": "ayn", "غ": "ayn",
     "ف": "fe", "ق": "fe",
     "ك": "kef", "گ": "kef", "ڭ": "kef",
-    "ه": "he", "ة": "he", "ە": "he"
+    "ه": "he", "ة": "he"
   },
 
   alphabetical: {
     rows: [
       ["ا", "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ", "ر"],
       ["ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق"],
-      ["ك", "گ", "ڭ", "ل", "م", "ن", "و", "ه", "ە", "_ye_", "ء", "ة"]
+      ["ك", "گ", "ڭ", "ل", "م", "ن", "و", "ه", "_ye_", "ء", "ة"]
     ]
   },
 

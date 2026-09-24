@@ -1366,20 +1366,10 @@
                       pointermove->search-keyboard#moveDrag
                       pointerup->search-keyboard#endDrag
                       pointercancel->search-keyboard#endDrag">
-      <span class="search-keyboard-teach">
-        <span class="search-keyboard-demo" aria-hidden="true">
-          <span class="search-keyboard-demo-key">K</span>
-          <span class="search-keyboard-demo-arrow">&rarr;</span>
-          <span class="search-keyboard-demo-out">&#x0643;</span>
-        </span>
-        <span class="search-keyboard-teach-text">
-          <b data-i18n="keyboardTeach">Use your own keyboard</b>
-          <span data-i18n="keyboardTeachRest">or click the keys below</span>
-        </span>
-      </span>
-      <span class="search-keyboard-buttons">
-        <!-- Switches the keys between the reader's keyboard order and the
-             alphabet's. Its title is swapped by the controller with the order. -->
+      <!-- The key that changes the order of the board stands on its own, at
+           the near corner, so it is not taken for one of the keys that act
+           on what has been typed. -->
+      <span class="search-keyboard-switch">
         <button type="button" class="btn search-keyboard-button search-keyboard-order"
                 data-search-keyboard-target="orderButton"
                 data-action="pointerdown->search-keyboard#toggleOrder"
@@ -1397,6 +1387,20 @@
             <polyline points="7 14 3 18 7 22"/><path d="M21 18H3"/>
           </svg>
         </button>
+      </span>
+
+      <span class="search-keyboard-teach">
+        <span class="search-keyboard-demo" aria-hidden="true">
+          <span class="search-keyboard-demo-key">K</span>
+          <span class="search-keyboard-demo-arrow">&rarr;</span>
+          <span class="search-keyboard-demo-out">&#x0643;</span>
+        </span>
+        <span class="search-keyboard-teach-text">
+          <b data-i18n="keyboardTeach">Use your own keyboard</b>
+          <span data-i18n="keyboardTeachRest">or click the keys below</span>
+        </span>
+      </span>
+      <span class="search-keyboard-buttons">
         <button type="button" class="btn search-keyboard-button search-keyboard-backspace"
                 data-action="pointerdown->search-keyboard#backspace"
                 data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete letter"

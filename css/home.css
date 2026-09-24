@@ -17,18 +17,20 @@
   position: relative;
 }
 
-/* On a wide screen the corner controls sit over the page, as the reference
-   has them, so the wordmark starts at the top of the card rather than a row
-   below it. The wordmark is centred and narrow, so nothing can collide. Below
-   this width the row keeps its place in the flow, where it needs the room. */
-@media (min-width: 1024px) {
-  .home-surface > .page-chrome > .page-top-row {
-    position: absolute;
-    top: 28px;
-    left: 24px;
-    right: 24px;
-    z-index: 3;
-  }
+/* The corner controls sit over the page, as the reference has them, so the
+   wordmark starts at the top of the card rather than a row below it. The
+   wordmark is centred and narrow, so nothing can collide; on a screen too
+   narrow for that the wordmark takes a little room above it instead, which
+   is what the reference does. */
+.home-surface > .page-chrome > .page-top-row {
+  position: absolute;
+  top: 28px;
+  left: 24px;
+  right: 24px;
+  z-index: 3;
+}
+@media (max-width: 909.98px) {
+  .home-surface .branding { padding-top: 26px; }
 }
 
 /* ---------- branding ---------- */
@@ -176,7 +178,10 @@
   border: 1px solid var(--lq-line-strong);
   border-radius: var(--home-radius);
   box-shadow: 0 20px 40px -10px rgba(8, 37, 103, .06), 0 0 1px rgba(0, 0, 0, .05);
-  padding: 24px 40px;
+  /* No room above and below of its own: the card is 140 tall and holds what
+     it carries in the middle, so a line that wraps on a narrow screen does
+     not push the card taller, as the reference's does not. */
+  padding: 0 40px;
   position: relative;
   z-index: 5;
 }
@@ -779,7 +784,6 @@
 
 .home-surface .results-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 24px 40px 16px;
@@ -1556,24 +1560,116 @@
 @media (max-width: 1023px) {
   .home-surface .search-row { flex-wrap: wrap; gap: 14px 12px; }
   .home-surface .search-input-group { flex: 1 0 100%; }
-  .home-surface .dictionary-trigger { width: auto; flex: 1 1 200px; }
+  /* The dictionaries press takes the rest of the line, as the reference
+     has it, rather than shrinking to its own words. */
+  .home-surface .search-row > .dropdown:last-child { flex: 1 1 auto; min-width: 0; }
+  .home-surface .dictionary-trigger { width: 100%; }
 }
 
 @media (max-width: 900px) {
   /* The Ottoman placeholder would collide with the Latin one on a narrow bar */
   .home-surface .placeholder-ottoman { display: none; }
-  .home-surface .results-header { padding: 20px 20px 12px; }
-  .home-surface .results-table > thead th.col-result,
-  .home-surface .result-row > td:first-child { padding-left: 20px; }
+}
+
+/* ---------------------------------------------------------------
+   The narrow list
+   Twelve columns do not fit a phone: at 480px the headword cell
+   falls to 111px and the dictionary to 88px, while a word box
+   cannot go below 82px, so the boxes spill out of their cells.
+   Below 900px the row stacks instead, the way the reference
+   stacks it: the reading and its category on the first line, the
+   arrow and the headword on the second, the dictionary on the
+   third. The column head has nothing left to head, so it goes.
+   --------------------------------------------------------------- */
+
+@media (max-width: 899.98px) {
+  .home-surface .results-table > thead { display: none; }
+  .home-surface .results-table,
+  .home-surface .results-table > tbody { display: block; width: 100%; min-width: 0; }
+  .home-surface .results-table { margin: 0; }
+
+  .home-surface .group-header,
+  .home-surface .group-header th,
+  .home-surface .show-more-row,
+  .home-surface .show-more-row td,
+  .home-surface .group-tail { display: block; }
   .home-surface .group-header th { padding: 16px 20px 8px; }
+  .home-surface .group-tail td { display: block; height: 4px; }
+
+  .home-surface .result-row {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    margin-bottom: 4px;
+    padding: 4px 0 6px;
+    background: var(--lq-paper);
+    border: 1px solid transparent;
+    border-bottom-color: #f1f5f9;
+    border-left: 4px solid transparent;
+    border-radius: 8px;
+  }
+  .home-surface .result-row:has(+ .group-tail) { border-bottom-color: transparent; }
+  .home-surface .result-row[data-category="ENTRY"] { border-left-color: #0d9488; }
+  .home-surface .result-row[data-category="SUBENTRY"] { border-left-color: #d97706; }
+  .home-surface .result-row[data-category="RELATED"] { border-left-color: #2563eb; }
+  .home-surface .result-row > td {
+    display: block;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .home-surface .result-row > td:first-child { border-left: 0; }
+
+  /* First line: the reading, and its category beside it. */
+  .home-surface .result-row > td.result-cell { grid-column: 1 / -1; padding: 8px 14px 6px 16px; }
+  .home-surface .result-cell-pair { align-items: flex-start; gap: 10px; }
+  .home-surface .result-main { flex: 1 1 auto; padding-left: 0; }
+  .home-surface .result-main .word-pair { max-width: none; }
+  .home-surface .category-slot { width: auto; padding-top: 5px; }
+
+  /* Second line: the arrow, now pointing down, and the headword. */
+  .home-surface .result-row > td:nth-child(2) { grid-column: 1; grid-row: 2; padding-left: 16px; }
+  .home-surface .result-row > td.headword-cell { grid-column: 2; grid-row: 2; padding: 2px 14px 2px 0; }
+  .home-surface .row-arrow { transform: rotate(90deg); opacity: .55; }
+  .home-surface .result-row:has(> td[data-zone-focus="headword"]:hover) .row-arrow {
+    transform: rotate(90deg) translateX(3px) scale(1.1);
+  }
+
+  /* Third line: the dictionary, under the arrow's column. */
+  .home-surface .result-row > td.dictionary-cell {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    /* The reference's second and third lines are one grid with 2px between */
+    margin-top: 2px;
+    padding: 0 14px 4px 46px;
+  }
+  .home-surface .dictionary-row { justify-content: flex-start; }
+  .home-surface .dictionary-text {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-right: 10px;
+    text-align: left;
+  }
+  .home-surface .dictionary-page { margin-top: 0; }
+
+  /* The pair is left-aligned and each half takes its own width: halved, the
+     two would meet in the middle of a wide cell with a hole between them. */
+  .home-surface .result-row .word-pair { justify-content: flex-start; margin-inline: 0; gap: 12px; }
+  .home-surface .result-row .word-ottoman,
+  .home-surface .result-row .word-latin { width: auto; max-width: 100%; justify-content: flex-start; }
 }
 
 @media (max-width: 767px) {
-  .home-surface .search-card { padding: 20px; }
+  .home-surface .search-card { padding-left: 20px; padding-right: 20px; }
   .home-surface .results-term { font-size: 34px; }
-  .home-surface .word-pair { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .home-surface .word-pair .word-ottoman,
-  .home-surface .word-pair .word-latin { flex: none; justify-content: flex-start; }
+}
+
+/* A phone cannot hold the two scripts side by side: on a 294px card each
+   half takes 48% and a long reading falls to four lines. Here the pair
+   stacks, and each half has the card to itself. */
+@media (max-width: 640px) {
+  .home-surface .result-row .word-pair { flex-direction: column; align-items: flex-start; gap: 2px; }
 }
 
 @media (max-width: 560px) {

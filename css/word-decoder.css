@@ -132,7 +132,7 @@
      between the key pressed and the box it lands in; here the Ottoman face
      carries it the whole way. */
   font-family: 'Noto Naskh Arabic', serif;
-  direction: ltr;
+  direction: rtl;
   font-size: 24px;
   font-weight: 700;
   line-height: inherit;
@@ -164,6 +164,14 @@
 
 /* A drawn face stands a shade smaller in the box than it does on the key */
 .word-decoder-surface .slot-mark > svg { width: 44px; height: 44px; }
+/* The star is the exception: the old site draws it in the box at a little
+   under ten pixels across. Our star is cropped to the eleven units that
+   hold it, of which the drawn arms are 10.34, so 10.52 of box gives the
+   9.89 the old site gives. */
+.word-decoder-surface .slot-mark[data-wildcard="any"] > svg {
+  width: 10.52px;
+  height: 10.52px;
+}
 
 /* ---------- per-slot controls ---------- */
 

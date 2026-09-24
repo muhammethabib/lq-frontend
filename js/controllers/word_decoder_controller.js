@@ -527,14 +527,16 @@ class WordDecoderController extends Stimulus.Controller {
 
     input.value = "";
     if (content.wildcard) {
-      // In the slot the wildcard is the plain character the pattern carries;
-      // the drawn star is for the key and for the pattern pill.
+      // The box wears the face the key wore: the star is the same drawn star,
+      // in the claret of the box rather than the green of the key. The other
+      // wildcard has no drawn face -- its sign is a letter in Georgia -- and
+      // falls back to the character the pattern carries.
       const wildcard = window.LQ_KEYBOARD_LAYOUT.wildcards[content.wildcard] || {};
-      const symbol = this.escape(wildcard.symbol || "*");
+      const face = wildcard.slotMark || wildcard.mark || this.escape(wildcard.symbol || "*");
       cell.dataset.wildcard = content.wildcard;
       delete cell.dataset.rasm;
       cell.insertAdjacentHTML("beforeend",
-        `<span class="slot-mark" data-wildcard="${content.wildcard}" aria-hidden="true">${symbol}</span>`);
+        `<span class="slot-mark" data-wildcard="${content.wildcard}" aria-hidden="true">${face}</span>`);
     } else if (content.rasm) {
       cell.dataset.rasm = content.rasm;
       cell.dataset.dots = content.dots || "";

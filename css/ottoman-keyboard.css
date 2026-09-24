@@ -75,7 +75,9 @@
 .ottoman-keyboard .keyboard-close:hover,
 .ottoman-keyboard .keyboard-backspace:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .ottoman-keyboard .keyboard-close svg,
-.ottoman-keyboard .keyboard-backspace svg { width: 12px; height: 12px; }
+/* The board writes right to left, so the key that takes a letter off the end
+   points the way the reference's does: into the text, not away from it. */
+.ottoman-keyboard .keyboard-backspace svg { width: 12px; height: 12px; transform: scaleX(-1); }
 
 /* The two wildcards sit apart from the letters, because they say "I cannot
    read this" rather than naming a letter. */

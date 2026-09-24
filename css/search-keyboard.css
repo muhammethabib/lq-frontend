@@ -122,6 +122,9 @@
 
 .search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .search-keyboard-button svg { width: 13px; height: 13px; }
+/* The board writes right to left, so the key that takes a letter off the end
+   points the way the reference's does: into the text, not away from it. */
+.search-keyboard-backspace svg { transform: scaleX(-1); }
 
 /* The switch between the two orders of the same board. It changes a mode
    rather than deleting or closing, so it stands in the blue of the interface

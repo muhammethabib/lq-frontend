@@ -159,14 +159,8 @@ class LanguageController extends Stimulus.Controller {
   // language has its tooltip built again. Disposing first, because disposing
   // puts the old title back on the element.
   writeAttribute(element, attribute, value) {
-    const tooltip = attribute === "title" && window.bootstrap
-      ? bootstrap.Tooltip.getInstance(element) : null;
-    if (tooltip) tooltip.dispose();
+    if (attribute === "title") { window.LQ.retitle(element, value); return; }
     element.setAttribute(attribute, value);
-    if (attribute === "title" && element.hasAttribute("data-bs-title")) {
-      element.setAttribute("data-bs-title", value);
-    }
-    if (tooltip) bootstrap.Tooltip.getOrCreateInstance(element);
   }
 }
 

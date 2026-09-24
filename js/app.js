@@ -18,6 +18,20 @@ window.LQ = {
     });
   },
 
+  // A tooltip reads its text once, when it is built. An element whose title
+  // changes -- because the language changed, or because the button now leads
+  // somewhere else -- has its tooltip built again around the new words.
+  // Disposing comes first: disposing is what puts the old title back on the
+  // element, so setting the new one before that would lose it.
+  retitle(element, text) {
+    if (!element) return;
+    const built = window.bootstrap ? bootstrap.Tooltip.getInstance(element) : null;
+    if (built) built.dispose();
+    element.setAttribute("title", text);
+    if (element.hasAttribute("data-bs-title")) element.setAttribute("data-bs-title", text);
+    if (element.dataset.bsToggle === "tooltip") bootstrap.Tooltip.getOrCreateInstance(element);
+  },
+
   // A tooltip holds a reference to its element, so it is disposed before the
   // element leaves the page rather than left behind. The root is swept too,
   // because querySelectorAll never matches the element it is called on.

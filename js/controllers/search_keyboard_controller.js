@@ -175,11 +175,10 @@ class SearchKeyboardController extends Stimulus.Controller {
     const button = this.orderButtonTarget;
     button.dataset.i18nTitle = key;
     button.dataset.i18nAria = key;
-    button.setAttribute("title", text);
     button.setAttribute("aria-label", text);
     button.setAttribute("aria-pressed", String(alphabetical));
     // The tooltip took its text when it was built; it is built again.
-    window.LQ.refreshDynamicContent(button.parentElement);
+    window.LQ.retitle(button, text);
   }
 
   rememberedOrder() {

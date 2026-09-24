@@ -958,7 +958,10 @@
   display: flex;
   align-items: center;
   gap: 0;
-  flex-wrap: wrap;
+  /* The pill keeps to one line and runs past the column's edge where it must,
+     as the reference's does: wrapped, it would push the list down. */
+  flex-wrap: nowrap;
+  white-space: nowrap;
   margin-top: 29px;
   padding: 5px 8px 5px 24px;
   border: 1px solid var(--lq-line);
@@ -968,8 +971,10 @@
 }
 .home-surface .pronunciation-button {
   display: inline-flex;
+  flex: none;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
   border: 1px solid #cbd5e1;
   border-radius: 99px;
   background: var(--lq-paper);
@@ -1593,8 +1598,12 @@
   .home-surface .show-more-row,
   .home-surface .show-more-row td,
   .home-surface .group-tail { display: block; }
-  .home-surface .group-header th { padding: 16px 20px 8px; }
-  .home-surface .group-tail td { display: block; height: 4px; }
+  /* Stacked, the table's own 4px between rows is gone, so the group's name
+     carries the reference's 8px above it and its 12px under it itself. */
+  .home-surface .group-header th { margin-top: 8px; padding: 20px 24px 12px; }
+  .home-surface .group-tail td { display: block; height: 8px; }
+  .home-surface .result-row:has(+ .group-tail) { margin-bottom: 0; }
+  .home-surface .show-more-row td { padding: 4px 0 0; }
 
   .home-surface .result-row {
     display: grid;
@@ -1655,7 +1664,7 @@
 
   /* The pair is left-aligned and each half takes its own width: halved, the
      two would meet in the middle of a wide cell with a hole between them. */
-  .home-surface .result-row .word-pair { justify-content: flex-start; margin-inline: 0; gap: 12px; }
+  .home-surface .result-row .word-pair { justify-content: flex-start; max-width: none; margin-inline: 0; gap: 12px; }
   .home-surface .result-row .word-ottoman,
   .home-surface .result-row .word-latin { width: auto; max-width: 100%; justify-content: flex-start; }
 }

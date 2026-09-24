@@ -1333,6 +1333,21 @@
       </button>
     </div>
 
+    <!-- The same line the search bar's keyboard carries: the boxes take the
+         reader's own keyboard too, and it shows what that means. It retires
+         the moment anything has been typed, by either board. -->
+    <p class="keyboard-teach" data-ottoman-keyboard-target="teach">
+      <span class="keyboard-teach-demo" aria-hidden="true">
+        <span class="keyboard-teach-key">K</span>
+        <span class="keyboard-teach-arrow">&rarr;</span>
+        <span class="keyboard-teach-out">&#x0643;</span>
+      </span>
+      <span class="keyboard-teach-text">
+        <b data-i18n="keyboardTeach">Use your own keyboard</b>
+        <span data-i18n="keyboardTeachRest">or click the keys below</span>
+      </span>
+    </p>
+
     <!-- Both panels are written by the controller from js/keyboard_layout.js -->
     <div class="keyboard-panel is-active" data-ottoman-keyboard-target="basicPanel"></div>
     <div class="keyboard-panel" data-ottoman-keyboard-target="advancedPanel"></div>
@@ -1370,8 +1385,15 @@
                 title="Alphabetical order (elif, be, te…)"
                 aria-label="Alphabetical order (elif, be, te…)" data-i18n-aria="keyboardOrderAlphabetical"
                 aria-pressed="false">
-          <span class="search-keyboard-order-ottoman" aria-hidden="true">ا ب ت</span>
-          <span class="search-keyboard-order-latin" aria-hidden="true">Q W E</span>
+          <span class="search-keyboard-order-face">
+            <span class="search-keyboard-order-ottoman" aria-hidden="true">ا ب ت</span>
+            <span class="search-keyboard-order-latin" aria-hidden="true">Q W E</span>
+          </span>
+          <svg class="search-keyboard-order-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="17 2 21 6 17 10"/><path d="M3 6h18"/>
+            <polyline points="7 14 3 18 7 22"/><path d="M21 18H3"/>
+          </svg>
         </button>
         <button type="button" class="btn search-keyboard-button"
                 data-action="pointerdown->search-keyboard#backspace"

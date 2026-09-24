@@ -139,6 +139,22 @@
 .ottoman-keyboard .key:hover { background: var(--key-hover); border-color: var(--key-hover-edge); }
 .ottoman-keyboard .key:active { background: var(--key-pressed); border-color: var(--key-pressed); color: #fff; transform: scale(.92); }
 
+/* A letter written on the board in front of the reader shows its key going
+   down here as well, for as long as a press lasts. */
+.ottoman-keyboard .key.is-echo {
+  background: var(--key-pressed);
+  border-color: var(--key-pressed);
+  color: #fff;
+  animation: keyboard-key-echo 170ms ease-out;
+}
+@keyframes keyboard-key-echo {
+  0% { transform: scale(.92); }
+  100% { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard .key.is-echo { animation: none; }
+}
+
 /* A skeleton key: the shape without its dots, with an asterisk where the
    dots would go. Picking it means "this shape, dots unclear". */
 .ottoman-keyboard .key[data-kind="rasm"] {
@@ -171,24 +187,110 @@
   border-color: var(--special-edge);
 }
 
-.ottoman-keyboard .panel-switch {
-  height: var(--key-size);
-  padding: 0 12px;
-  flex: none;
+/* ---------------------------------------------------------------
+   The line that teaches the keyboard
+   The boxes take the reader's own keyboard too; this says so, and
+   shows it: K -> k, on a loop, until anything has been typed.
+   --------------------------------------------------------------- */
+
+.ottoman-keyboard .keyboard-teach {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  user-select: none;
+}
+.ottoman-keyboard.is-learned .keyboard-teach { display: none; }
+
+.ottoman-keyboard .keyboard-teach-demo { display: inline-flex; align-items: center; gap: 5px; }
+.ottoman-keyboard .keyboard-teach-key {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  border: 1px solid var(--special-edge);
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  background: var(--lq-paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: #334155;
+  animation: keyboard-teach-press 2s infinite;
+}
+.ottoman-keyboard .keyboard-teach-arrow { font-size: 11px; color: #cbd5e1; }
+.ottoman-keyboard .keyboard-teach-out {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--lq-claret);
+  animation: keyboard-teach-pop 2s infinite;
+}
+.ottoman-keyboard .keyboard-teach-text b { font-weight: 700; color: #475569; }
+
+@keyframes keyboard-teach-press {
+  0%, 100% { transform: none; border-bottom-width: 3px; background: #fff; }
+  5% { transform: translateY(2px); border-bottom-width: 1px; background: #fdf2f8; border-color: var(--lq-claret); color: var(--lq-claret); }
+  11% { transform: none; border-bottom-width: 3px; background: #fff; }
+}
+@keyframes keyboard-teach-pop {
+  0%, 4%, 100% { opacity: .3; transform: none; }
+  8% { opacity: 1; transform: scale(1.25); }
+  16% { opacity: .3; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard .keyboard-teach-key,
+  .ottoman-keyboard .keyboard-teach-out { animation: none; }
+  .ottoman-keyboard .keyboard-teach-out { opacity: 1; }
+}
+
+/* The one key on the board that is not a letter: it leads to the other
+   keyboard. It is drawn as a keyboard rather than as a letter, stands apart
+   in the blue of the interface rather than the claret of the letters, and
+   says which way it goes in the arrow beside its name. */
+.ottoman-keyboard .panel-switch {
+  height: var(--key-size);
+  padding: 0 10px;
+  flex: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid #93c5fd;
   border-radius: 8px;
   background: linear-gradient(135deg, var(--lq-lat-bg) 0%, var(--lq-lat-border) 100%);
+  box-shadow: 0 1px 3px rgba(8, 37, 103, .08);
   color: var(--lq-sapphire);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 800;
   letter-spacing: .6px;
+  line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
+  transition: background .15s, border-color .15s, box-shadow .15s, transform .15s;
 }
-.ottoman-keyboard .panel-switch:hover { filter: brightness(.97); }
-.ottoman-keyboard .panel-switch svg { width: 14px; height: 14px; }
+.ottoman-keyboard .panel-switch:hover {
+  background: linear-gradient(135deg, var(--lq-lat-border) 0%, #bfdbfe 100%);
+  border-color: #60a5fa;
+  box-shadow: 0 2px 6px rgba(8, 37, 103, .15);
+}
+.ottoman-keyboard .panel-switch:active {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  box-shadow: none;
+  color: #fff;
+  transform: scale(.95);
+}
+.ottoman-keyboard .panel-switch-face { display: flex; }
+.ottoman-keyboard .panel-switch-face svg { width: 15px; height: 15px; }
+.ottoman-keyboard .panel-switch-label { display: inline-flex; align-items: center; gap: 3px; }
+.ottoman-keyboard .panel-switch-arrow { width: 10px; height: 10px; }
 
 /* ---------- responsive ---------- */
 
@@ -219,6 +321,19 @@
 @media (prefers-reduced-motion: reduce) {
   .ottoman-keyboard * { transition: none !important; }
 }
+
+/* Where the key that leads to the other keyboard leads: the lead-in above,
+   the name of the keyboard below. */
+.tooltip .switch-tip-lead {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+.tooltip .switch-tip-name { display: block; white-space: nowrap; }
 
 /* What a skeleton key stands for, shown as the letters themselves. */
 .tooltip .key-matches-label {

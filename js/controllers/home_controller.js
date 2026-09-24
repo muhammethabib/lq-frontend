@@ -351,7 +351,7 @@ class HomeController extends Stimulus.Controller {
       const named = layout.dual[lower] ? lower
         : (/^Key[A-Z]$/.test(event.code || "") ? event.code.slice(3).toLowerCase() : lower);
       const alt = (layout.dual[named] || [])[3];
-      if (alt) { event.preventDefault(); this.insertOttoman(alt); }
+      if (alt) { event.preventDefault(); this.insertOttoman(alt); this.echoKey(alt); }
       else if (event.key.length === 1) event.preventDefault();
       return;
     }
@@ -360,6 +360,7 @@ class HomeController extends Stimulus.Controller {
     if (layout.map[key]) {
       event.preventDefault();
       this.insertOttoman(layout.map[key]);
+      this.echoKey(layout.map[key]);
       return;
     }
     // A letter with no Ottoman equivalent is refused rather than left to be
@@ -368,6 +369,13 @@ class HomeController extends Stimulus.Controller {
       event.preventDefault();
       this.warnScript();
     }
+  }
+
+  // A letter written from the reader's own keyboard is shown going down on
+  // the on-screen one, so the two are plainly the same keyboard. A press on
+  // the on-screen key needs no echo: it has its own.
+  echoKey(letter) {
+    document.dispatchEvent(new CustomEvent("search-keyboard:echo", { detail: { char: letter } }));
   }
 
   keyboardLayout() {

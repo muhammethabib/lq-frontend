@@ -28,6 +28,26 @@
 // typing still follows `map`.
 
 window.LQ_SEARCH_KEYBOARD = {
+  // Which letters share a skeleton. In the alphabet's order the families fall
+  // next to each other -- be, pe, te, se; cim, çim, ha, hı -- and a reader
+  // looking for one of them is looking at the shape, not the dots. The keys
+  // of a family carry one ground, so the family is visible as a block.
+  // A letter with a skeleton of its own is not in any family and keeps the
+  // plain ground.
+  families: {
+    "ب": "be", "پ": "be", "ت": "be", "ث": "be",
+    "ج": "cim", "چ": "cim", "ح": "cim", "خ": "cim",
+    "د": "dal", "ذ": "dal",
+    "ر": "re", "ز": "re", "ژ": "re",
+    "س": "sin", "ش": "sin",
+    "ص": "sad", "ض": "sad",
+    "ط": "ti", "ظ": "ti",
+    "ع": "ayn", "غ": "ayn",
+    "ف": "fe", "ق": "fe",
+    "ك": "kef", "گ": "kef", "ڭ": "kef",
+    "ه": "he", "ة": "he", "ە": "he"
+  },
+
   alphabetical: {
     rows: [
       ["ا", "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ", "ر"],

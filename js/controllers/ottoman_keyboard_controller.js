@@ -17,8 +17,24 @@
 // screen; the same query lives in css/ottoman-keyboard.css.
 const KEYBOARD_DOCK_QUERY = "(max-width: 767px)";
 
+// How long a key stays down after the reader's own key wrote its letter.
+const KEY_ECHO_MS = 170;
+
+// The face of the key that leads to the other keyboard, and the arrows that
+// say which way it goes.
+const KEYBOARD_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+  'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<rect x="2" y="4" width="20" height="16" rx="2"/>' +
+  '<path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>';
+const ARROW_LEFT = '<svg class="panel-switch-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+  'stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>';
+const ARROW_RIGHT = '<svg class="panel-switch-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+  'stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+
 class OttomanKeyboardController extends Stimulus.Controller {
-  static targets = ["basicPanel", "advancedPanel", "wildcardRow"]
+  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "teach"]
   static values = { open: { type: Boolean, default: false } }
 
   connect() {
@@ -53,11 +69,17 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // it is the only one there is.
     this.onState = () => {};
     document.addEventListener("ottoman-keyboard:state", this.onState);
+
+    // A letter written on the reader's own keyboard shows its key going down
+    // here too, and retires the line that says the board takes it.
+    this.onEcho = (event) => { this.echo((event.detail || {}).char); this.retireTeach(); };
+    document.addEventListener("ottoman-keyboard:echo", this.onEcho);
   }
 
   disconnect() {
     document.removeEventListener("ottoman-keyboard:request", this.onRequest);
     document.removeEventListener("ottoman-keyboard:dismiss", this.onDismiss);
+    document.removeEventListener("ottoman-keyboard:echo", this.onEcho);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("ottoman-keyboard:state", this.onState);
     window.removeEventListener("resize", this.onReposition);
@@ -97,6 +119,34 @@ class OttomanKeyboardController extends Stimulus.Controller {
     }).join("");
   }
 
+  // ==================== the line that teaches the keyboard ====================
+
+  // It says it once, shows it on a loop, and stops the moment the reader has
+  // typed anything, by either board. It does not come back this session.
+  retireTeach() {
+    if (this.taught) return;
+    this.taught = true;
+    this.element.classList.add("is-learned");
+  }
+
+  // ==================== the echo of the reader's own keyboard ====================
+
+  // The key that writes a letter is shown pressed for as long as a press of
+  // one's own lasts. Only a letter key can echo: a skeleton stands for
+  // several letters and no single key on the board wrote it.
+  echo(letter) {
+    if (!letter) return;
+    const panel = this.advancedPanelTarget.classList.contains("is-active")
+      ? this.advancedPanelTarget : this.basicPanelTarget;
+    const key = panel.querySelector(`.key[data-kind="letter"][data-char="${CSS.escape(letter)}"]`);
+    if (!key) return;
+    key.classList.remove("is-echo");
+    void key.offsetWidth;
+    key.classList.add("is-echo");
+    clearTimeout(key.echoTimer);
+    key.echoTimer = setTimeout(() => key.classList.remove("is-echo"), KEY_ECHO_MS);
+  }
+
   keyHtml(key) {
     // A skeleton key shows where the missing dots would sit
     const dots = key.type === "rasm"
@@ -121,13 +171,26 @@ class OttomanKeyboardController extends Stimulus.Controller {
       >${this.escape(key.face || key.char)}${dots}</button>`;
   }
 
+  // The key that leads to the other keyboard. It is the only key on the board
+  // that is not a letter, so it is drawn as a keyboard rather than a letter,
+  // stands apart in the blue of the interface, and says where it leads twice:
+  // in the arrow beside its name and in the tooltip above it.
   switchHtml(target) {
-    const label = target === "advanced"
+    const advanced = target === "advanced";
+    const label = advanced
       ? this.translate("keyboardAdvanced", "Advanced")
       : this.translate("keyboardBasic", "Basic");
+    const title =
+      `<span class="switch-tip-lead">${this.escape(this.translate("keyboardGoTo", "Go to"))}</span>` +
+      `<span class="switch-tip-name">${this.escape(advanced
+        ? this.translate("keyboardAdvancedLayout", "Advanced layout")
+        : this.translate("keyboardBasicLayout", "Basic layout"))}</span>`;
+    const arrow = advanced ? ARROW_LEFT : ARROW_RIGHT;
     return `<button type="button" class="btn panel-switch" data-panel="${target}"
-      data-action="pointerdown->ottoman-keyboard#switchPanel">
-      <i data-feather="${target === "advanced" ? "chevrons-left" : "chevrons-right"}"></i>${this.escape(label)}
+      data-action="pointerdown->ottoman-keyboard#switchPanel"
+      data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(title)}">
+      <span class="panel-switch-face" aria-hidden="true">${KEYBOARD_GLYPH}</span>
+      <span class="panel-switch-label">${advanced ? arrow : ""}${this.escape(label)}${advanced ? "" : arrow}</span>
     </button>`;
   }
 
@@ -153,6 +216,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       dots: key.dataset.dots || null,
       matches: key.dataset.matches ? key.dataset.matches.split(" ") : null
     });
+    this.retireTeach();
   }
 
   pressWildcard(event) {

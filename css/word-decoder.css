@@ -922,6 +922,9 @@
   top: calc(100% + 16px);
   z-index: 40;
   display: inline-flex;
+  /* The demo stands on its own line above the sentence it illustrates, as
+     the reference sets it: side by side the two read as one long line. */
+  flex-direction: column;
   align-items: center;
   gap: 7px;
   margin: 0;

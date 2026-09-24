@@ -371,6 +371,9 @@ class WordDecoderController extends Stimulus.Controller {
     if (!letter) return;
     event.preventDefault();
     this.writeCell(input.closest(".slot-cell"), { char: letter });
+    // The key that writes this letter is shown going down on the on-screen
+    // keyboard as well, so the two boards read as one.
+    document.dispatchEvent(new CustomEvent("ottoman-keyboard:echo", { detail: { char: letter } }));
     this.advance(input);
   }
 

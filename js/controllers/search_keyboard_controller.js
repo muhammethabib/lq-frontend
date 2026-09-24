@@ -24,6 +24,9 @@
 
 const SEARCH_KEYBOARD_ORDER_KEY = "lq-search-keyboard-order";
 
+// How long a key stays down after the reader's own key wrote its letter.
+const SEARCH_ECHO_MS = 170;
+
 class SearchKeyboardController extends Stimulus.Controller {
   static targets = ["rows", "hint", "orderButton"]
   static values = {
@@ -48,6 +51,11 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.onTyped = () => this.retireHint();
     document.addEventListener("search-keyboard:typed", this.onTyped);
 
+    // A letter written on the reader's own keyboard shows its key going down
+    // here too, so the two boards read as one.
+    this.onEcho = (event) => this.echo((event.detail || {}).char);
+    document.addEventListener("search-keyboard:echo", this.onEcho);
+
     // The keys carry the layout of the reader's own keyboard, which is the
     // one the interface language implies.
     this.onLanguageChange = () => { this.labelOrderButton(); this.render(); };
@@ -70,6 +78,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     document.removeEventListener("search-keyboard:request", this.onRequest);
     document.removeEventListener("search-keyboard:dismiss", this.onDismiss);
     document.removeEventListener("search-keyboard:typed", this.onTyped);
+    document.removeEventListener("search-keyboard:echo", this.onEcho);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("pointerdown", this.onAway);
     window.removeEventListener("resize", this.onReposition);
@@ -104,8 +113,11 @@ class SearchKeyboardController extends Stimulus.Controller {
   // writes it where the other order shows the key's name.
   letterKeyHtml(letter, layout) {
     const safe = window.LQ.escape;
+    const family = (window.LQ_SEARCH_KEYBOARD || {}).families || {};
+    const shape = family[this.face(letter)] || family[letter] || "";
     return `
       <button type="button" class="btn search-key" data-search-char="${safe(letter)}"
+              ${shape ? `data-family="${safe(shape)}"` : ""}
               data-action="pointerdown->search-keyboard#press">
         <span class="search-key-latin">${safe(this.physicalLabel(letter, layout))}</span>
         <span class="search-key-ottoman">${safe(this.face(letter))}</span>
@@ -231,6 +243,23 @@ class SearchKeyboardController extends Stimulus.Controller {
   backspace(event) {
     event.preventDefault();
     document.dispatchEvent(new CustomEvent("search-keyboard:key", { detail: { kind: "backspace" } }));
+  }
+
+  // ==================== the echo of the reader's own keyboard ====================
+
+  // The key that writes this letter is shown pressed for as long as a press
+  // of one's own lasts. A letter can sit on more than one key only in the
+  // keyboard order's split keys, where the first is the one to light.
+  echo(letter) {
+    if (!letter || !this.hasRowsTarget) return;
+    const key = this.rowsTarget.querySelector(`[data-search-char="${CSS.escape(letter)}"]`);
+    if (!key) return;
+    key.classList.remove("is-echo");
+    // Restarting the class within the same frame would not replay it.
+    void key.offsetWidth;
+    key.classList.add("is-echo");
+    clearTimeout(key.echoTimer);
+    key.echoTimer = setTimeout(() => key.classList.remove("is-echo"), SEARCH_ECHO_MS);
   }
 
   // ==================== the line that teaches the keyboard ====================

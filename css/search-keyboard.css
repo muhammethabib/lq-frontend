@@ -123,20 +123,37 @@
 .search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .search-keyboard-button svg { width: 13px; height: 13px; }
 
-/* The order switch. It changes a mode rather than deleting or closing, so it
-   answers the cursor in blue, not the red the other two use. Its face says
-   where a press leads: the first three letters of the other order. */
+/* The switch between the two orders of the same board. It changes a mode
+   rather than deleting or closing, so it stands in the blue of the interface
+   rather than the red the other two answer in, and it says where a press
+   leads twice: in the face, which is the first three letters of the other
+   order, and in the two-way arrow beside it. */
 .search-keyboard-order {
   width: auto;
+  gap: 5px;
   padding: 0 8px;
+  border-color: #93c5fd;
+  background: linear-gradient(135deg, var(--lq-lat-bg) 0%, var(--lq-lat-border) 100%);
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
-  color: var(--lq-muted);
+  color: var(--lq-sapphire);
+  transition: background .15s, border-color .15s, color .15s;
 }
 
-.search-keyboard-order:hover { background: var(--lq-lat-bg); border-color: #bfdbfe; color: #1d4ed8; }
+.search-keyboard-order:hover {
+  background: linear-gradient(135deg, var(--lq-lat-border) 0%, #bfdbfe 100%);
+  border-color: #60a5fa;
+  color: #1d4ed8;
+}
+.search-keyboard-order:active {
+  background: var(--lq-sapphire);
+  border-color: var(--lq-sapphire);
+  color: #fff;
+}
+.search-keyboard-order-face { display: inline-flex; }
+.search-keyboard-order-arrow { width: 11px; height: 11px; flex: none; opacity: .75; }
 .search-keyboard-order-latin { display: none; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 1px; }
 .search-keyboard.is-alphabetical .search-keyboard-order-ottoman { display: none; }
 .search-keyboard.is-alphabetical .search-keyboard-order-latin { display: inline; }
@@ -145,6 +162,37 @@
    recited. The label over each key is the physical key that writes it, set
    as the keyboard order sets it. */
 .search-keyboard.is-alphabetical .search-key-row { direction: rtl; }
+
+/* ---------------------------------------------------------------
+   The letter families
+   In the alphabet's order the letters that share a skeleton fall
+   next to each other -- be, pe, te, se; cim, cim, ha, hi -- and a
+   reader looking for one of them is looking at the shape, not at
+   the dots. Each family is given a ground of its own, quiet enough
+   to read the letters over and plain enough to see the block.
+   The keyboard's own order scatters the families, so it keeps the
+   one ground it has.
+   --------------------------------------------------------------- */
+
+.search-keyboard.is-alphabetical .search-key[data-family] {
+  background: var(--family-face);
+  border-color: var(--family-edge);
+}
+.search-keyboard.is-alphabetical .search-key[data-family]:hover {
+  background: var(--family-hover);
+  border-color: var(--family-edge);
+}
+.search-keyboard.is-alphabetical .search-key[data-family="be"] { --family-face: #eff6ff; --family-edge: #bfdbfe; --family-hover: #dbeafe; }
+.search-keyboard.is-alphabetical .search-key[data-family="cim"] { --family-face: #fffbeb; --family-edge: #fde68a; --family-hover: #fef3c7; }
+.search-keyboard.is-alphabetical .search-key[data-family="dal"] { --family-face: #f5f3ff; --family-edge: #ddd6fe; --family-hover: #ede9fe; }
+.search-keyboard.is-alphabetical .search-key[data-family="re"] { --family-face: #ecfeff; --family-edge: #a5f3fc; --family-hover: #cffafe; }
+.search-keyboard.is-alphabetical .search-key[data-family="sin"] { --family-face: #fdf2f8; --family-edge: #fbcfe8; --family-hover: #fce7f3; }
+.search-keyboard.is-alphabetical .search-key[data-family="sad"] { --family-face: #f0fdf4; --family-edge: #bbf7d0; --family-hover: #dcfce7; }
+.search-keyboard.is-alphabetical .search-key[data-family="ti"] { --family-face: #eef2ff; --family-edge: #c7d2fe; --family-hover: #e0e7ff; }
+.search-keyboard.is-alphabetical .search-key[data-family="ayn"] { --family-face: #fff7ed; --family-edge: #fed7aa; --family-hover: #ffedd5; }
+.search-keyboard.is-alphabetical .search-key[data-family="fe"] { --family-face: #f0fdfa; --family-edge: #99f6e4; --family-hover: #ccfbf1; }
+.search-keyboard.is-alphabetical .search-key[data-family="kef"] { --family-face: #faf5ff; --family-edge: #e9d5ff; --family-hover: #f3e8ff; }
+.search-keyboard.is-alphabetical .search-key[data-family="he"] { --family-face: #fef2f2; --family-edge: #fecaca; --family-hover: #fee2e2; }
 
 /* ---------------------------------------------------- the keys */
 
@@ -238,6 +286,34 @@
 .search-key-part:active { background: var(--lq-claret); }
 .search-key-part:active .search-key-latin,
 .search-key-part:active .search-key-ottoman { color: #fff; }
+
+/* ---------------------------------------------------------------
+   The echo of the reader's own keyboard
+   A letter written on the board in front of the reader shows its
+   key going down here as well, for as long as a press lasts, so
+   the two boards read as one.
+   --------------------------------------------------------------- */
+
+.search-key.is-echo:not(.search-key-split),
+.search-key-part.is-echo {
+  background: var(--lq-claret);
+  border-color: var(--lq-claret);
+  animation: search-key-echo 170ms ease-out;
+}
+.search-key.is-echo:not(.search-key-split) .search-key-latin,
+.search-key.is-echo:not(.search-key-split) .search-key-ottoman,
+.search-key-part.is-echo .search-key-latin,
+.search-key-part.is-echo .search-key-ottoman { color: #fff; }
+
+@keyframes search-key-echo {
+  0% { transform: scale(0.92); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-key.is-echo:not(.search-key-split),
+  .search-key-part.is-echo { animation: none; }
+}
 
 .search-key-part + .search-key-part .search-key-latin { font-size: 7px; font-weight: 800; color: var(--lq-muted); }
 

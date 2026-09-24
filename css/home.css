@@ -305,7 +305,8 @@
   padding: 0 20px 0 100px;
   font-size: 18px;
   font-weight: 500;
-  color: var(--lq-ink);
+  /* A shade softer than the page's ink, as the reference sets the bar's own */
+  color: #334155;
   position: relative;
   z-index: 2;
 }
@@ -332,6 +333,7 @@
 }
 .home-surface .placeholder-layer span {
   font-size: 13.5px;
+  letter-spacing: -.15px;
   color: #94a3b8;
   white-space: nowrap;
   max-width: 55%;
@@ -341,10 +343,14 @@
 }
 .home-surface .placeholder-layer span.is-hidden { opacity: 0; transform: translateX(5px); }
 /* Direction comes from the element's data-direction, as everywhere else;
-   only the face and the size are this placeholder's own. */
-.home-surface .placeholder-ottoman {
+   only the face and the size are this placeholder's own. The Ottoman line is
+   set larger than the Latin one, as the reference sets it: at the Latin's
+   size the script is too small to read at a glance. */
+.home-surface .placeholder-layer span.placeholder-ottoman {
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 19px;
+  margin-top: -3px;
+  text-align: right;
 }
 
 .home-surface .search-submit {

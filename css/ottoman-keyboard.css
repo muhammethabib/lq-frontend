@@ -170,8 +170,8 @@
   font-size: 22px;
   font-weight: 700;
   color: var(--lq-claret);
-  /* The claret comes on at once and goes off slowly: that is the blink. */
-  transition: background .18s ease, border-color .18s ease, color .18s ease, transform .12s;
+  /* The old site moves a key on twelve hundredths, whatever changes. */
+  transition: background .12s, border-color .12s, color .12s, transform .12s;
 }
 .ottoman-keyboard .key:hover { background: var(--key-hover); border-color: var(--key-hover-edge); }
 
@@ -194,48 +194,65 @@
   background: var(--family-hover);
   border-color: var(--family-edge-firm);
 }
-.ottoman-keyboard .key[data-kind="rasm"][data-family] { border-color: var(--family-edge-firm); }
+/* A skeleton key is a letter's shape with an asterisk where its dots would
+   be, and that is a different kind of answer from a letter. It stands on the
+   same family colour two shades down, behind the family's firm edge, so the
+   asterisked keys read as a block of their own within the family. */
+.ottoman-keyboard .key[data-kind="rasm"][data-family] {
+  background: var(--family-deep);
+  border-color: var(--family-edge-firm);
+}
+.ottoman-keyboard .key[data-kind="rasm"][data-family]:hover {
+  background: var(--family-deep-hover);
+  border-color: var(--family-edge-firm);
+}
 
 .ottoman-keyboard .key[data-family="be"],
 .ottoman-keyboard .key[data-family="ti"] {
   --family-face: #f2f7fe; --family-edge: #d8e6fa; --family-hover: #e7f0fd; --family-edge-firm: #93c5fd;
+  --family-deep: #dbe9fd; --family-deep-hover: #c8e0fc;
 }
 .ottoman-keyboard .key[data-family="cim"],
 .ottoman-keyboard .key[data-family="ayn"] {
   --family-face: #fffaf0; --family-edge: #f4e5c4; --family-hover: #fdf4e1; --family-edge-firm: #e8c77f;
+  --family-deep: #faeed3; --family-deep-hover: #f6e6bf;
 }
 .ottoman-keyboard .key[data-family="dal"],
 .ottoman-keyboard .key[data-family="fe"],
 .ottoman-keyboard .key[data-family="ye"] {
   --family-face: #e5edfa; --family-edge: #c2d7f5; --family-hover: #d9e6f8; --family-edge-firm: #7fb3f0;
+  --family-deep: #cadcf7; --family-deep-hover: #b7cff4;
 }
 .ottoman-keyboard .key[data-family="re"],
 .ottoman-keyboard .key[data-family="kef"] {
   --family-face: #fbf3e0; --family-edge: #ecd9a8; --family-hover: #f8ebd0; --family-edge-firm: #dfb96a;
+  --family-deep: #f2e3bb; --family-deep-hover: #ecd8a4;
 }
 .ottoman-keyboard .key[data-family="sin"],
 .ottoman-keyboard .key[data-family="vav"] {
   --family-face: #dce7f8; --family-edge: #b6cef2; --family-hover: #cfdff6; --family-edge-firm: #6ea7ea;
+  --family-deep: #bed5f4; --family-deep-hover: #a9c8f1;
 }
 .ottoman-keyboard .key[data-family="sad"],
 .ottoman-keyboard .key[data-family="he"],
 .ottoman-keyboard .key[data-family="elif"] {
   --family-face: #f9efd9; --family-edge: #e8d49c; --family-hover: #f5e6c6; --family-edge-firm: #d8ae57;
+  --family-deep: #eedeb3; --family-deep-hover: #e6d19b;
 }
 
 /* A key held down is claret while it is held, wherever it sits. */
-.ottoman-keyboard .key:active { background: var(--key-pressed); border-color: var(--key-pressed); color: #fff; transform: scale(.92); }
+.ottoman-keyboard .key.key:active { background: var(--key-pressed); border-color: var(--key-pressed); color: #fff; transform: scale(.92); }
 
 /* A key that has just written a letter is lit: claret ground, white letter,
-   and a small dip. It lights whether the letter came from this board or from
-   the reader's own keyboard, and fades back to its own ground on the key's
-   transition. It stands after the family grounds, which weigh the same, so
-   that a family key lights like any other. */
-.ottoman-keyboard .key.is-echo {
+   and a small dip, exactly as the old site lights a key held down. It lights
+   whether the letter came from this board or from the reader's own keyboard.
+   Both this and the rule above name the key's class twice, so that they
+   outweigh the family grounds and the deeper skeleton ground above and every
+   key lights alike. */
+.ottoman-keyboard .key.key.is-echo {
   background: var(--key-pressed);
   border-color: var(--key-pressed);
   color: #fff;
-  transition: none;
   animation: keyboard-key-echo 170ms ease-out;
 }
 @keyframes keyboard-key-echo {
@@ -243,7 +260,7 @@
   100% { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ottoman-keyboard .key.is-echo { animation: none; }
+  .ottoman-keyboard .key.key.is-echo { animation: none; }
 }
 
 /* A skeleton outside every family -- a shape no other letter shares --

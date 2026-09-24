@@ -219,11 +219,11 @@
   border-radius: 8px;
   background: var(--lq-paper-soft);
   user-select: none;
-  /* The claret comes on at once and goes off slowly: that is the blink. */
-  transition: background .18s ease, border-color .18s ease, transform .12s;
+  /* The old site moves a key on twelve hundredths, whatever changes. */
+  transition: background .12s, border-color .12s, transform .12s;
 }
 .search-key .search-key-latin,
-.search-key .search-key-ottoman { transition: color .18s ease; }
+.search-key .search-key-ottoman { transition: color .12s; }
 
 .search-key:hover { background: #fff1f2; border-color: #fda4af; }
 
@@ -265,11 +265,10 @@
 .search-keyboard .search-key.is-echo {
   background: var(--lq-claret);
   border-color: var(--lq-claret);
-  transition: none;
   animation: search-key-echo 170ms ease-out;
 }
 .search-keyboard .search-key.is-echo .search-key-latin,
-.search-keyboard .search-key.is-echo .search-key-ottoman { color: #fff; transition: none; }
+.search-keyboard .search-key.is-echo .search-key-ottoman { color: #fff; }
 
 @keyframes search-key-echo {
   0% { transform: scale(0.92); }

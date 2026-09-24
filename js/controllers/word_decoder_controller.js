@@ -282,13 +282,19 @@ class WordDecoderController extends Stimulus.Controller {
     this.setTooltip(button, this.slotRemoveLabel(slot.querySelectorAll(".slot-cell").length));
   }
 
+  // The word is written from the right, so an alternative offered from a
+  // box opens on that box's left, the way the old site opens it: the new
+  // field goes in front of the one whose plus was pressed, and takes the
+  // caret.
   addAlternative(event) {
-    const frame = event.currentTarget.closest(".slot-frame");
-    frame.insertAdjacentHTML("beforeend", this.cellHtml());
+    const cell = event.currentTarget.closest(".slot-cell");
+    const frame = cell.closest(".slot-frame");
+    cell.insertAdjacentHTML("beforebegin", this.cellHtml());
     window.LQ.refreshDynamicContent(frame);
     this.relabelSlotRemove(frame.closest(".slot"));
-    const cells = frame.querySelectorAll(".slot-input");
-    cells[cells.length - 1].focus();
+    const fresh = cell.previousElementSibling;
+    const input = fresh && fresh.querySelector(".slot-input");
+    if (input) input.focus();
   }
 
   removeAlternative(event) {

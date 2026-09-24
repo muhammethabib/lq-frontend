@@ -18,8 +18,24 @@
 // "_ye_" is not a letter but a decision: a ye is written without its dots
 // until a letter follows it, and js/controllers/home_controller.js settles
 // which of the two it ends up as.
+//
+// The `alphabetical` layout is the second order the same keyboard can take:
+// the Ottoman alphabet as it is recited, elif, be, pe, te..., three rows read
+// from the right. Each key shows, as the keyboard order does, the physical key
+// that writes its letter; the controller reads that off the language's `map`
+// and `dual`, so it changes with the layout. The set covers every letter the
+// two layouts can write, so nothing becomes untypeable by switching. Physical
+// typing still follows `map`.
 
 window.LQ_SEARCH_KEYBOARD = {
+  alphabetical: {
+    rows: [
+      ["ا", "ب", "پ", "ت", "ث", "ج", "چ", "ح", "خ", "د", "ذ", "ر"],
+      ["ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق"],
+      ["ك", "گ", "ڭ", "ل", "م", "ن", "و", "ه", "ە", "_ye_", "ء", "ة"]
+    ]
+  },
+
   en: {
     map: {
       q: "ق", w: "و", e: "ع", r: "ر", t: "ت", y: "_ye_",

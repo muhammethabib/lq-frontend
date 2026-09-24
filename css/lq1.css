@@ -8,9 +8,8 @@
 .lq1-surface .page-hero h1 { max-width: 760px; }
 
 /* The opening heading sits straight on top of the text it introduces, with
-   nothing above it: the archived page opened on a line, not on a heading
-   with a heading's room over it. */
-.lq1-surface .page-content h2:first-child {
+   no space above it: the reference sets it as a kicker, not a section. */
+.lq1-surface .lq1-intro > h2 {
   margin-top: 0;
   margin-bottom: .6rem;
   padding-top: 0;

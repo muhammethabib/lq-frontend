@@ -117,6 +117,8 @@ window.LQ_TRANSLATIONS = {
     keyboardAdvanced: "Gelişmiş",
     keyboardBackspace: "Harfi sil",
     keyboardClose: "Kapat",
+    keyboardOrderAlphabetical: "Alfabetik sıra (elif, be, te…)",
+    keyboardOrderKeyboard: "Klavye dizilişine dön",
     keyMatches: "Karşılıkları",
     wildcardAny: "Bu harfi okuyamıyorum",
     wildcardMany: "Kaç harf var bilmiyorum",
@@ -189,6 +191,7 @@ window.LQ_TRANSLATIONS = {
     groupInflectedExample: "Örnek: <b>kalem</b> &rarr; <b>kalem</b>i, <b>kalem</b>e, <b>kalem</b>de",
 
     groupLexicalizedInflected: "Sözlükselleşmiş Çekimli Formlar",
+    groupLexicalizedInflectedShort: "Sözl. Çekimli Form.",
     groupLexicalizedInflectedNote: "Sözlükte kendine ait ayrı bir anlam kazanmış çekimli biçimler",
     groupLexicalizedInflectedExample: "Örnek: <b>civar</b> &rarr; <b>civarında</b>",
 
@@ -360,7 +363,7 @@ window.LQ_TRANSLATIONS = {
     lq1Eyebrow: "Arşiv · 2016",
     lq1Title: "LexiQamus 1.0: İlk Sürüm",
     lq1Lede: "Osmanlıca metinlerde okunamayan kelimeleri çözmek için geliştirilen ilk dijital araç, 7 Haziran 2016’da yayına çıktı.",
-    lq1WhyHeading: "Neden geliştirildi",
+    lq1WhyHeading: "Neden geliştirildi?",
     lq1Why: "Geleneksel sözlükler, kelimenin başındaki ya da ortasındaki harfler okunamadığında büyük ölçüde işlevsiz kalır: madde başını bilmeden arama yapılamaz. LexiQamus bu sorunu çözmek için geliştirildi; ayrıntısı için <a class=\"xlink\" href=\"what-is-lexiqamus.html\" target=\"_blank\" rel=\"noopener\">LexiQamus Nedir?</a> sayfasına bakabilirsiniz.",
     lq1First: "Alanında bir ilkti: o güne kadar okunamayan kelimeleri dijital yolla çözen başka bir araç yoktu. İlk sürüm tek bir araçtan, <strong>Kelime Çözücü</strong>’den oluşuyordu.",
     lq1Reception: "Kelimenin yalnızca birkaç harfini okuyabilen araştırmacıya, kapsamlı sözlükler içinde aranarak bulunması günler sürebilecek bir kelimeyi neredeyse anında gösteren LexiQamus, kısa süre içinde Türkiye’den ve dünyadan pek çok saygıdeğer kurumun teveccühüne mazhar oldu.",
@@ -399,7 +402,7 @@ window.LQ_TRANSLATIONS = {
     historyReport: "Siz de bir hata görürseniz sonuç satırındaki <b>Düzelt</b> düğmesinden, öneri ve görüşlerinizi ise <a href=\"mailto:info@lexiqamus.com\">info@lexiqamus.com</a> adresinden bize iletebilirsiniz.",
 
     // --- LexiQamus 3.0 what's new ---
-    v3Eyebrow: "LexiQamus 3.0 · 2026",
+    v3Eyebrow: "<span lang=\"en\">LexiQamus</span> 3.0 · 2026",
     v3Title: "Yenilikler",
     v3Lede: "Arama ekranından sonuç listesine, sözlük sayfasından Kelime Çözücü’ye, yeni sürümle gelen özellikler.",
     v3Intro: "LexiQamus 3.0 ile aracın bütün ekranları baştan tasarlandı. Aşağıda yeni sürümün öne çıkan özelliklerini bulabilirsiniz; her birinin ayrıntılı anlatımı <a class=\"xlink\" href=\"user-guide.html\" target=\"_blank\" rel=\"noopener\">Kullanım Kılavuzu</a>’nda yer alıyor.",
@@ -451,6 +454,10 @@ window.LQ_TRANSLATIONS = {
     v3KeyboardsBody: "Temel klavye bütün aramalar için yeterlidir; gelişmiş klavye harflerin bütün yazım biçimlerini ve sıfır-boşluk karakterini ayrı tuşlarda sunar.",
     v3TypingName: "Kendi klavyenizle yazma",
     v3TypingBody: "Tuşlara tıklamak zorunda değilsiniz; harfleri kutulara doğrudan kendi klavyenizle de yazabilirsiniz.",
+    v3Number1: "491.000+",
+    v3Number2: "209.000+",
+    v3Number3: "152.000+",
+    v3Number4: "130.000+",
     v3DecoderResultsName: "Çözücü sonuçları",
     v3DecoderResultsBody: "Çözücünün sonuçları da yeni düzende gelir. <b>BuildLQ</b> ile hazırladığımız dijital sözlük ekosistemi sayesinde kayıtlar, kökten ibarelere, en sade biçimden en genişe doğru başlıklar altında toplanır; satırlar da <b>Ara</b> sekmesindeki sonuçlarla aynı şekilde çalışır.",
 
@@ -596,7 +603,7 @@ window.LQ_TRANSLATIONS = {
     cogExpandAll: "Tümünü aç",
     cogCollapseAll: "Tümünü kapat",
 
-    jumpTo: "Şuraya git:",
+    jumpTo: "Git:",
     jumpToAria: "Bir gruba git",
     noResultsFor: "Şunun için sonuç bulunamadı:",
     didYouMean: "Bunu mu demek istediniz?",
@@ -679,7 +686,7 @@ window.LQ_TRANSLATIONS = {
     v2TocGeneral: "Genel İyileştirmeler",
     v2OnThisPage: "Bu sayfada",
     v2Introduction: "Giriş",
-    v2Eyebrow: "Arşiv duyurusu · 2020",
+    v2Eyebrow: "Arşivlenmiş duyuru · 2020",
     v2Title: "LexiQamus 2.0: Yeni Özellikler ve Geliştirmeler",
     v2Lede: "LexiQamus 2.0 ile sunulan genişletilmiş arama deneyiminin, dijitize edilen Lexicon içeriğinin ve araştırma araçlarının kaydı.",
     v2T001: "Bildiğiniz üzere LexiQamus ilk defa 7 Haziran 2016 tarihinde yayınlanmış ve ilan edilmişti. Şimdiye kadar kelime çözümleme hizmeti verdik fakat kelimelerin anlamları için sadece link verebildik. Ancak aradan geçen üç buçuk sene içinde çok yoğun çalıştık ve sahadaki en değerli sözlüklerden biri olan, James Redhouse’un 1890’da yayınladığı, <em>A Turkish and English Lexicon</em> isimli eseri, içindeki bütün maddeler, alt maddeler, İngilizce tanımlar ve diğer yabancı dillerdeki kelimeler dahil etmek üzere dijitize ettik ve şimdi sizlere sunmanın mutluluğunu yaşıyoruz.",
@@ -749,6 +756,8 @@ window.LQ_TRANSLATIONS = {
     v2T067: "Sütunların altındaki form aracılığıyla sözlük içindeki <b>bir başka sütuna direkt gidilebiliyor</b>. Sayfanın solundaki sütun için a, sağındaki sütun için b harfi kullanılıyor.",
     v2T068: "Aynı şekilde, sayfaların altındaki formlar aracılığıyla, sayfa numarası girilerek <b>sözlüğün bir başka kısmına doğrudan erişilebiliyor.</b>",
     v2T069: "Klavyedeki yenilikler",
+    v2T057Toc: "Orijinali Görüntüle",
+    v2T069Toc: "Klavyedeki Yenilikler",
     v2T070: "Klavyeye 5 adet yeni karakter ekledik. Böylece klavyedeki harf sayısı 42 oldu.",
     v2T071: "../assets/lq2/tr/lq211.png",
     v2T072: "LexiQamus 2.0 Osmanlıca klavyesi ile arama kontrolleri ve karakter tuşları.",
@@ -803,7 +812,7 @@ window.LQ_TRANSLATIONS = {
     // --- Suggestions tally ---
 
     // --- User guide ---
-    guideEyebrow: "LexiQamus 3.0",
+    guideEyebrow: "<span lang=\"en\">LexiQamus</span> 3.0",
     guideTitle: "Kullanım Kılavuzu",
     guideLede: "LexiQamus 3.0'ın arama ekranlarını, kelime çözücüyü, sonuç listesini ve sözlük sayfası penceresini adım adım anlatan kılavuz.",
     guideOnThisPage: "Bu sayfada",
@@ -920,8 +929,10 @@ window.LQ_TRANSLATIONS = {
     dictionaryPageIntro2: "Bir kutunun üzerine geldiğinizde kelimenin Osmanlıca yazılışını ve Latin okunuşunu görür, tıkladığınızda <b>o kelime için yeni bir arama</b> başlatırsınız. Maddeyi <b>dilim, sütun ya da sayfa</b> olarak görüntüleyebilir, oklarla sözlükte gezinebilir, bir hata fark ettiğinizde aynı yerden bildirebilirsiniz.",
     shotDictionaryPageOverviewAlt: "Sözlük sayfası penceresi: orijinal sayfada renkli kutular, iki yanda oklar, altta Dilim, Sütun, Sayfa butonları",
     shotDictionaryPageOverviewSrc: "../assets/guide/tr/dictionary-page-overview.webp",
+    guideEndCta: "Keşfetmeye başla",
+    guideEndAria: "Keşfetmeye başla: LexiQamus ana sayfası",
     guideSlice: "Dilim, Sütun, Sayfa",
-    sliceBody: "Pencere ilk açıldığında, yukarıdaki genel görünümde olduğu gibi, <b>Dilim</b> görünümü etkindir. Dilim, sözlükteki tek bir maddenin bir sütunda kalan bölümüdür. Ancak sıklıkla şu durumla da karşılaşılır: Bir maddenin tanımı bir sütunda başlayıp, diğer sütunda biter. Böyle durumlarda madde iki dilimden oluşur. Daha uzun tanımlı madde başlarında (ör; “baş”, “bir”, “göz”) madde birkaç sütuna yayılarak birden fazla dilimden oluşabilir.",
+    sliceBody: "Pencere ilk açıldığında, <a href=\"#dictionary-overview\">yukarıdaki genel görünümde</a> olduğu gibi, <b>Dilim</b> görünümü etkindir. Dilim, sözlükteki tek bir maddenin bir sütunda kalan bölümüdür. Ancak sıklıkla şu durumla da karşılaşılır: Bir maddenin tanımı bir sütunda başlayıp, diğer sütunda biter. Böyle durumlarda madde iki dilimden oluşur. Daha uzun tanımlı madde başlarında (ör; “baş”, “bir”, “göz”) madde birkaç sütuna yayılarak birden fazla dilimden oluşabilir.",
     sliceViews: "<b>Sütun</b>’a tıkladığınızda sütunun tamamı açılır. <b>Sayfa</b>’ya tıkladığınızda ise sayfanın tamamını görürsünüz. Dijitalleştirilmiş kelimeler üç görünümde de işaretli kalır.",
     shotColumnViewAlt: "Sütun görünümü: sütunun tamamı; camgöbeği köşeli parantez Dilim 5’in satırlarını gösteriyor",
     shotColumnViewSrc: "../assets/guide/tr/column-view.webp",
@@ -1018,7 +1029,7 @@ window.LQ_TRANSLATIONS = {
     shotDecoderResultsSrc: "../assets/guide/tr/decoder-results.webp",
 
     // --- Data model ---
-    dmEyebrow: "LexiQamus 3.0",
+    dmEyebrow: "<span lang=\"en\">LexiQamus</span> 3.0",
     dmTitle: "Sözlük Dijitalleştirme ve Dilbilimsel Veri Modeli",
     dmLede: "Kaynak görüntüden analitik ve aranabilir sözlük verisine: BuildLQ'da geliştirdiğimiz yöntemin aşama aşama anlatımı.",
     dmOnThisPage: "Bu sayfada",
@@ -1042,6 +1053,12 @@ window.LQ_TRANSLATIONS = {
     dmT018: "Bu problem özellikle Arap harfli yazıda önem kazanıyor. <strong><span data-direction=\"rtl\">ك</span></strong>, <strong><span data-direction=\"rtl\">ی</span></strong>, <strong><span data-direction=\"rtl\">ۃ</span></strong> ve benzeri birçok harfin görünüşü aynı veya çok yakın olabildiği halde dijital değerleri farklı olabiliyor. Biz karakter setini proje düzeyinde kontrol ederek sırf bu sebeple bir kelimenin veri tabanında bulunamaması ihtimalini mümkün olduğunca azaltıyoruz.",
     dmT019: "5. Çalışma Birimleri: Setler",
     dmT020: "Sözlükleri veri girişi için küçük çalışma birimlerine, yani setlere ayırıyoruz. İlk çalıştığımız sözlüklerden <em>Kâmûs-ı Türkî</em>'yi beşer sayfalık setlere bölmüştük. Ancak süreç içinde beş sayfalık çalışma birimlerinin kullanıcı açısından yorucu olduğunu gördük. Bu yüzden daha sonraki çalışmalarda standart set büyüklüğünü üç sayfaya düşürdük. Dolayısıyla bir set genel olarak üç sözlük sayfasından oluşuyor. Bu üç sayfayı sonraki aşamalarda önce sütunlara, ardından maddelere, kelimelere ve gerektiğinde kelime bileşenlerine kadar ayrıştırıyoruz.",
+    dmT021Toc: "Birinci Aşama: Sayfa ve Sütunların Yapısal Olarak Bölümlenmesi",
+    dmT024Toc: "İkinci Aşama: Dilimleme ve Madde Sınırlarının Tespiti",
+    dmT030Toc: "Üçüncü Aşama: İşaretleme",
+    dmT179Toc: "Değerlendirme ve Kalite Kontrol Süreci",
+    dmT057Toc: "Dördüncü Aşama: Type-O",
+    dmT151Toc: "Beşinci Aşama: Type-L",
     dmT021: "6. Birinci Aşama: Sayfa ve Sütunların Yapısal Olarak Bölümlenmesi (<em>Split</em>)",
     dmT022: "Tarihi sözlük sayfalarının büyük çoğunluğu sütunlardan oluşuyor. <strong>Bölümleme</strong> (<em>Split</em>) adını verdiğimiz ilk aşamada sayfadaki metin sütunlarını tespit edip bunların etrafına sınırlar çiziyoruz. Burada görüntüyü fiziksel olarak kırpmıyoruz, bunun yerine sütunların koordinatlarını tanımlıyoruz. Çizdiğimiz alanların metni kapsamasını, fakat sütunun üzerindeki çizgi, sayfa numarası veya sütunlar arasındaki ayırıcı çizgiler gibi metne ait olmayan unsurları dışarıda bırakmasını istiyoruz. Mümkün olduğu ölçüde tam dikdörtgen alanlar kullanıyoruz. Bunun mümkün olmadığı durumlarda ise dikdörtgene yakın poligonlar çiziyoruz. Üst ve alt kenarları daima sıfır derece olacak şekilde düz tutuyoruz. Sağ ve sol kenarları ise sayfadaki metnin eğimine paralel biçimde geçiriyoruz. Sınırların metne değmemesine dikkat ediyoruz; fakat onları metinden gereksiz ölçüde uzağa da yerleştirmiyoruz.",
     dmT023: "Sözlüğün normal düzeninde her sayfada iki sütun bulunsa bile özellikle harf geçişlerinde dört veya daha fazla sütunun bulunduğu sayfalarla karşılaşabiliyoruz. Böyle durumlarda önceden varsaydığımız sütun sayısına bağlı kalmıyoruz. Sayfanın gerçek yapısına göre ne kadar sütun gerekiyorsa o kadar sütun tanımlıyoruz.",
@@ -1272,7 +1289,7 @@ window.LQ_TRANSLATIONS = {
     dmT247: "Muallim Naci. <em>Lugat-ı Nâci</em>. c. 1, İstanbul: Matbaa-i Amire, 1901, s. 316.<a href=\"#fnref8\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a>",
 
     // --- Lexicon digitization ---
-    storyEyebrow: "Arşiv &middot; 2020",
+    storyEyebrow: "Arşivlenmiş proje hikâyesi · 2020",
     storyT041b: "Alt maddelerden sonra = karakterinin ilave edilmesi.",
     storyT041c: "Örnek madde: <em>nedamet</em>.",
     storyT041d: "Örnek alt madde: <em>nedamet çekmek</em>.",

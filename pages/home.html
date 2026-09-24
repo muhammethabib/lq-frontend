@@ -190,6 +190,7 @@
           </div>
           <div data-group="lexicalizedInflected">
             <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
+            <span data-copy="short" data-i18n="groupLexicalizedInflectedShort">Lex. Inflected Forms</span>
             <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms given a distinct meaning of their own in the dictionary</span>
             <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1">Ex: <b>civar</b> &rarr; <b>civarında</b></span>
           </div>
@@ -806,6 +807,7 @@
     </div>
     <div data-group="lexicalizedInflected">
       <span data-copy="title" data-i18n="groupLexicalizedInflected">Lexicalized Inflected Forms</span>
+      <span data-copy="short" data-i18n="groupLexicalizedInflectedShort">Lex. Inflected Forms</span>
       <span data-copy="note" data-i18n="groupLexicalizedInflectedNote">Inflected forms given a distinct meaning of their own in the dictionary</span>
       <span data-copy="example" data-i18n="groupLexicalizedInflectedExample" data-i18n-html="1">Ex: <b>civar</b> &rarr; <b>civarında</b></span>
     </div>
@@ -1359,6 +1361,18 @@
         </span>
       </span>
       <span class="search-keyboard-buttons">
+        <!-- Switches the keys between the reader's keyboard order and the
+             alphabet's. Its title is swapped by the controller with the order. -->
+        <button type="button" class="btn search-keyboard-button search-keyboard-order"
+                data-search-keyboard-target="orderButton"
+                data-action="pointerdown->search-keyboard#toggleOrder"
+                data-bs-toggle="tooltip" data-i18n-title="keyboardOrderAlphabetical"
+                title="Alphabetical order (elif, be, te…)"
+                aria-label="Alphabetical order (elif, be, te…)" data-i18n-aria="keyboardOrderAlphabetical"
+                aria-pressed="false">
+          <span class="search-keyboard-order-ottoman" aria-hidden="true">ا ب ت</span>
+          <span class="search-keyboard-order-latin" aria-hidden="true">Q W E</span>
+        </button>
         <button type="button" class="btn search-keyboard-button"
                 data-action="pointerdown->search-keyboard#backspace"
                 data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete letter"

@@ -9,7 +9,7 @@
   --home-card-width: min(100% - 48px, 1300px);
   /* Bootstrap's p-4 utility carries !important, so the page's own padding is
      written here rather than fought with there. */
-  padding: 32px 24px 24px;
+  padding: 32px 24px;
   --home-radius: 20px;
   --home-surface-radius: 24px;
   max-width: var(--lq-max-width);
@@ -760,7 +760,9 @@
   border-radius: var(--home-surface-radius);
   background: var(--lq-paper);
   box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
-  overflow: hidden;
+  /* Clipped, not scrolled: a scroll container would stop the column head
+     from sticking as the list goes by. */
+  overflow: clip;
 }
 /* 4px bar across the top, coloured by the script of the active spelling. It
    lies over the panel's edge rather than above its content, so the heading
@@ -1005,7 +1007,10 @@
 /* The table is held a gutter in from the card's edges, as the reference
    holds its rows; the head's two grounds are carried out into those gutters
    by a shadow rather than by widening the cells. */
-.home-surface .results-table-scroll { overflow-x: auto; padding: 0 20px; }
+.home-surface .results-table-scroll { padding: 0 20px; }
+@media (max-width: 991.98px) {
+  .home-surface .results-table-scroll { overflow-x: auto; }
+}
 .home-surface .results-table {
   margin: 0;
   --bs-table-bg: transparent;
@@ -1047,8 +1052,9 @@
   text-align: center;
   color: #566478;
   white-space: nowrap;
+  /* Sticks below the jump bar once that has slid in over the top. */
   position: sticky;
-  top: 0;
+  top: var(--jump-bar-height, 0px);
   z-index: 2;
 }
 /* The result and its category share one column, as they share one cell of

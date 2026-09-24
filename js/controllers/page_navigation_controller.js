@@ -196,13 +196,27 @@ class PageNavigationController extends Stimulus.Controller {
     this.viewer = viewer;
   }
 
+  // An image inside a frame that says so opens together with its frame: a
+  // screenshot with markers on it keeps the markers, and they still work.
+  // The frame's value names the surface whose stylesheet dresses the copy.
   openViewer(image) {
     if (!this.viewer) return;
-    const large = document.createElement("img");
-    large.src = image.currentSrc || image.src;
-    large.alt = image.alt || "";
+    const frame = image.closest("[data-zoom-frame]");
+    let shown;
+    if (frame) {
+      shown = document.createElement("div");
+      shown.className = `${frame.dataset.zoomFrame} image-viewer-frame`;
+      const copy = frame.cloneNode(true);
+      const figure = frame.closest("figure");
+      if (figure) copy.style.setProperty("--aspect", figure.style.getPropertyValue("--aspect"));
+      shown.appendChild(copy);
+    } else {
+      shown = document.createElement("img");
+      shown.src = image.currentSrc || image.src;
+      shown.alt = image.alt || "";
+    }
     this.viewer.innerHTML = "";
-    this.viewer.appendChild(large);
+    this.viewer.appendChild(shown);
     this.viewer.hidden = false;
   }
 

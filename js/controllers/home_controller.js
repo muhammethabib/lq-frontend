@@ -672,11 +672,14 @@ class HomeController extends Stimulus.Controller {
     this.jumpLinksTarget.innerHTML = groups.map((body) => {
       const title = body.querySelector(".group-title");
       const note = body.querySelector(".group-note");
+      // A long group name has a short form for the bar, kept in its copy block.
+      const short = this.groupCopyTarget.querySelector(`[data-group="${body.id.replace(/^group-/, "")}"] [data-copy="short"]`);
+      const label = short ? short.innerHTML.trim() : (title ? title.innerHTML : body.id);
       return `
         <button type="button" class="btn jump-link" data-jump="${this.escape(body.id)}"
                 data-action="click->home#jumpToGroup"
                 ${note ? `data-bs-toggle="tooltip" data-bs-title="${this.escape(note.textContent.trim())}"` : ""}>
-          ${title ? title.innerHTML : body.id}
+          ${label}
         </button>`;
     }).join("");
     this.watchScrollForJumpBar();
@@ -702,6 +705,8 @@ class HomeController extends Stimulus.Controller {
       && !this.element.classList.contains("state-no-matches")
       && window.scrollY > 250;
     this.jumpBarTarget.hidden = !showing;
+    // The column head sticks just under the bar while the bar is there.
+    this.element.style.setProperty("--jump-bar-height", showing ? `${this.jumpBarTarget.offsetHeight}px` : "0px");
     if (!showing) return;
     // The group the reader is in is the last one whose heading has passed
     // under the bar.
@@ -1098,7 +1103,7 @@ class HomeController extends Stimulus.Controller {
             <div class="row-actions">
             <!-- A citation is of the dictionary entry the record sits under, not
                  of the form that matched, so it names the headword. -->
-            <button type="button" class="btn cite-button" data-action="click->home#cite"
+            <button type="button" class="btn cite-button" data-action="click->home#cite:stop"
                     data-cite-latin="${this.escape(row.headwordLatin)}"
                     data-cite-ottoman="${this.escape(row.headwordOttoman)}"
                     data-cite-dictionary="${this.escape(row.dictionary)}"
@@ -1109,7 +1114,7 @@ class HomeController extends Stimulus.Controller {
             </button>
             <!-- Staff only: editing a stored reading, as opposed to a reader
                  suggesting a correction. Restrict this when permissions land. -->
-            <button type="button" class="btn cite-button admin-only" hidden data-action="click->home#editEntry"
+            <button type="button" class="btn cite-button admin-only" hidden data-action="click->home#editEntry:stop"
                     title="${this.escape(this.translate("editEntry", "Edit entry"))}"
                     aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
               <i data-feather="edit-2"></i>

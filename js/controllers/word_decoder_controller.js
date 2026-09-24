@@ -938,7 +938,7 @@ class WordDecoderController extends Stimulus.Controller {
             <div class="row-actions">
               <!-- A citation is of the dictionary entry the record sits under,
                    not of the reading that matched, so it names the headword. -->
-              <button type="button" class="btn cite-button" data-action="click->word-decoder#cite"
+              <button type="button" class="btn cite-button" data-action="click->word-decoder#cite:stop"
                       data-cite-latin="${this.escape(row.headwordLatin)}"
                       data-cite-ottoman="${this.escape(row.headwordOttoman)}"
                       data-cite-dictionary="${this.escape(row.dictionary)}"

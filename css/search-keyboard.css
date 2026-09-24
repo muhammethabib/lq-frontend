@@ -123,6 +123,29 @@
 .search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .search-keyboard-button svg { width: 13px; height: 13px; }
 
+/* The order switch. It changes a mode rather than deleting or closing, so it
+   answers the cursor in blue, not the red the other two use. Its face says
+   where a press leads: the first three letters of the other order. */
+.search-keyboard-order {
+  width: auto;
+  padding: 0 8px;
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--lq-muted);
+}
+
+.search-keyboard-order:hover { background: var(--lq-lat-bg); border-color: #bfdbfe; color: #1d4ed8; }
+.search-keyboard-order-latin { display: none; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 1px; }
+.search-keyboard.is-alphabetical .search-keyboard-order-ottoman { display: none; }
+.search-keyboard.is-alphabetical .search-keyboard-order-latin { display: inline; }
+
+/* The alphabetical order: rows read from the right, as the alphabet is
+   recited. The label over each key is the physical key that writes it, set
+   as the keyboard order sets it. */
+.search-keyboard.is-alphabetical .search-key-row { direction: rtl; }
+
 /* ---------------------------------------------------- the keys */
 
 .search-keyboard-rows {

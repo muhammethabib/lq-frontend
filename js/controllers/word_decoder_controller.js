@@ -750,7 +750,13 @@ class WordDecoderController extends Stimulus.Controller {
       .filter((slot) => slot.kind !== "empty")
       .map((slot) => {
         if (slot.kind === "letter") return `<span class="pattern-slot" data-kind="letter">${this.escape(slot.letters[0])}</span>`;
-        if (slot.kind === "alternatives") return `<span class="pattern-slot" data-kind="alternatives">${this.escape(slot.letters.join("/"))}</span>`;
+        if (slot.kind === "alternatives") {
+          // The letters keep the size of every other letter in the pill; the
+          // stroke between them is the quiet part.
+          const sep = `<span class="pattern-alt-sep" aria-hidden="true">/</span>`;
+          return `<span class="pattern-slot" data-kind="alternatives">` +
+            slot.letters.map((letter) => this.escape(letter)).join(sep) + `</span>`;
+        }
         if (slot.kind === "rasm") return `<span class="pattern-slot" data-kind="rasm">${this.escape(slot.shape)}*</span>`;
         const mark = wildcards[slot.kind] || {};
         return `<span class="pattern-slot" data-kind="${slot.kind}">${mark.mark || this.escape(mark.symbol || "*")}</span>`;

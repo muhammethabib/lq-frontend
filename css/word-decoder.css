@@ -459,29 +459,51 @@
 .word-decoder-surface .pattern-pill {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
   padding: 3px 15px 6px;
-  border: 1.5px solid var(--lq-osm-border);
+  border: 1.5px solid #fecdd3;
   border-radius: 999px;
   background: #fff8f9;
 }
+/* A slot centres what it holds rather than sitting it on the line, which is
+   what keeps a small mark level with the letters instead of riding high over
+   the deep Naskh descenders. The old site's pill does the same. */
 .word-decoder-surface .pattern-slot {
+  display: flex;
+  align-items: center;
   font-family: 'Noto Naskh Arabic', serif;
   font-size: 34px;
   font-weight: 700;
+  line-height: 1.1;
   color: var(--lq-claret);
-  line-height: 1.3;
 }
-.word-decoder-surface .pattern-slot[data-kind="any"],
+/* The two wildcards are marks, not letters, and the old site keeps them
+   small beside the letters rather than scaling them up with the line: its
+   star measures nine pixels of drawn arm in a pill of 34px letters, the
+   same nine it measures in a box. The other wildcard is set to the same
+   nine of ink, in the Georgia it wears everywhere else. */
 .word-decoder-surface .pattern-slot[data-kind="many"] {
-  font-family: 'Inter', sans-serif;
-  font-size: 26px;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 27px;
   color: var(--lq-claret);
 }
-.word-decoder-surface .pattern-slot .wildcard-star { width: 22px; height: 22px; margin: 0 2px; }
-
-/* Alternatives for one position are stacked behind a slash */
-.word-decoder-surface .pattern-slot[data-kind="alternatives"] { font-size: 26px; }
+/* Two letters offered for one position stand at the size of every other
+   letter in the pill; the stroke between them is thin, light and set in the
+   interface face, so it parts them without reading as a letter itself. */
+.word-decoder-surface .pattern-alt-sep {
+  font-family: 'Inter', sans-serif;
+  font-size: 23px;
+  font-weight: 300;
+  color: #d8a5bb;
+  margin: 0 2px;
+}
+.word-decoder-surface .pattern-slot .wildcard-star {
+  /* 9.6 of box over the eleven units that hold the arms gives 9.03 of arm,
+     and the 5.2 either side leaves the 20 of advance the old site leaves. */
+  width: 9.6px;
+  height: 9.6px;
+  margin: 0 5.2px;
+}
 
 .word-decoder-surface .decoder-stats-row {
   display: flex;

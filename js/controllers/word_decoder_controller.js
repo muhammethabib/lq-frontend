@@ -378,6 +378,15 @@ class WordDecoderController extends Stimulus.Controller {
     button.classList.remove("can-hover");
 
     this.setTooltip(button, this.joinLabel(next));
+
+    // Whether two boxes were written together is part of what was asked for,
+    // so a search already on the page is answering an older question: it is
+    // asked again, and the pattern shown over the results is set from the
+    // chains as they stand.
+    if (this.results) {
+      this.lastPattern = this.readPattern();
+      this.runSearch(this.activeExpansion || null);
+    }
   }
 
   restoreJoinHover(event) {

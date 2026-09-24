@@ -366,6 +366,64 @@ class WordDecoderController extends Stimulus.Controller {
   }
 
   // separate -> connected -> uncertain -> separate
+  // ==================== the chains ====================
+
+  // What a box can be joined to, as the joining classes of the letters it
+  // could hold: one class for a letter, several for a box that offers a
+  // choice or wears a skeleton, all three for a wildcard, which could be any
+  // letter at all. A box with nothing in it answers nothing.
+  joinTypes(slot) {
+    const classes = (window.LQ_KEYBOARD_LAYOUT || {}).joining || {};
+    const typeOf = (letter) => {
+      if ((classes.dual || "").includes(letter)) return "dual";
+      if ((classes.right || "").includes(letter)) return "right";
+      if ((classes.none || "").includes(letter)) return "none";
+      return "dual";
+    };
+    if (!slot || slot.kind === "empty") return null;
+    if (slot.kind === "any" || slot.kind === "many") return ["dual", "right", "none"];
+    const letters = slot.kind === "rasm" ? (slot.matches || []) : (slot.letters || []);
+    if (letters.length === 0) return ["dual", "right", "none"];
+    return [...new Set(letters.map(typeOf))];
+  }
+
+  // The chain between two boxes, read off the letters themselves. A letter is
+  // written on to the one before it when that one carries a join and it is
+  // not the hamze, which stands alone. Where every letter the two boxes could
+  // hold answers the same way the chain says so; where they disagree -- a
+  // wildcard beside a letter, a skeleton that stands for both kinds -- the
+  // chain says it does not know, which is the question mark.
+  deriveJoin(previous, next) {
+    const before = this.joinTypes(previous);
+    const after = this.joinTypes(next);
+    if (!before || !after) return "separate";
+    let joins = false;
+    let parts = false;
+    before.forEach((a) => after.forEach((b) => {
+      if (a === "dual" && b !== "none") joins = true; else parts = true;
+    }));
+    if (joins && !parts) return "connected";
+    if (!joins) return "separate";
+    return "uncertain";
+  }
+
+  // Every chain the reader has not taken over is set from the boxes it sits
+  // between, after each change to the strip. A chain the reader has pressed
+  // is theirs from then on: they may know something about the hand that the
+  // letters do not say.
+  refreshJoins() {
+    if (!this.hasStripTarget) return;
+    const slots = this.readSlots();
+    const chains = Array.from(this.stripTarget.querySelectorAll(".gap-join"));
+    chains.forEach((chain, index) => {
+      if (chain.dataset.manual) return;
+      const state = this.deriveJoin(slots[index], slots[index + 1]);
+      if (chain.dataset.join === state) return;
+      chain.dataset.join = state;
+      this.setTooltip(chain, this.joinLabel(state));
+    });
+  }
+
   cycleJoin(event) {
     // Keeps focus in the letter field rather than moving it to this button
     event.preventDefault();
@@ -373,6 +431,9 @@ class WordDecoderController extends Stimulus.Controller {
     const order = ["separate", "connected", "uncertain"];
     const next = order[(order.indexOf(button.dataset.join) + 1) % order.length];
     button.dataset.join = next;
+    // From the first press the chain is the reader's, and the board stops
+    // setting it from the letters.
+    button.dataset.manual = "1";
     // The rings have just been set; the hover preview would argue with them
     // while the hand is still there, so it waits until the hand has left.
     button.classList.remove("can-hover");
@@ -681,7 +742,10 @@ class WordDecoderController extends Stimulus.Controller {
   // The row's own Clear appears only when there is something to clear, and
   // never while the keyboard is open: the panel covers the row, so a button
   // behind it would be one the reader cannot see.
+  // Called after every change to the strip, so the chains are read off the
+  // letters here as well as the Clear button off whether anything is written.
   refreshClear() {
+    this.refreshJoins();
     const dirty = this.isDirty();
     // Its place in the row is kept whether it is on screen or not: a button
     // appearing to the left of the boxes would push them sideways, and a row
@@ -709,8 +773,9 @@ class WordDecoderController extends Stimulus.Controller {
 
   // Reads the strip into the shape the endpoint is given. Slots come out in
   // reading order, and the joins come out as one entry per gap between them.
-  readPattern() {
-    const slots = Array.from(this.stripTarget.querySelectorAll(".slot")).map((slot) => {
+  // What each box says, in the order the word is written
+  readSlots() {
+    return Array.from(this.stripTarget.querySelectorAll(".slot")).map((slot) => {
       const cells = Array.from(slot.querySelectorAll(".slot-cell"));
       const wildcard = cells.find((cell) => cell.dataset.wildcard);
       if (wildcard) return { kind: wildcard.dataset.wildcard };
@@ -731,7 +796,10 @@ class WordDecoderController extends Stimulus.Controller {
       if (letters.length === 0) return { kind: "empty" };
       return { kind: letters.length > 1 ? "alternatives" : "letter", letters };
     });
+  }
 
+  readPattern() {
+    const slots = this.readSlots();
     const joins = Array.from(this.stripTarget.querySelectorAll(".gap-join"))
       .map((join) => join.dataset.join);
 

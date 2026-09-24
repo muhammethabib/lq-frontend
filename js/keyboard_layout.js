@@ -40,6 +40,21 @@ window.LQ_KEYBOARD_LAYOUT = {
     "\u0649": "ye", "\u0626": "ye"
   },
 
+  // Which letters another letter can be written on to. A chain between two
+  // boxes is a question about the two letters either side of it, and the
+  // letters answer it themselves, so the board sets the chain rather than
+  // waiting to be told: a letter of the first kind carries a join on to
+  // whatever follows; a letter of the second kind ends a run -- the elif, the
+  // dal, the re, the vav and their kin, which the next letter cannot be
+  // written on to, though they may be written on to themselves; and the
+  // hamze stands alone on both sides. These are the joining classes Unicode
+  // gives the letters, which is what every Arabic face is cut to.
+  joining: {
+    dual: "\u0626\u0628\u062a\u062b\u062c\u062d\u062e\u0633\u0634\u0635\u0636\u0637\u0638\u0639\u063a\u0641\u0642\u0643\u0644\u0645\u0646\u0647\u0649\u066e\u067e\u0686\u06a1\u06ad\u06af\u06be\u06cc",
+    right: "\u0622\u0623\u0624\u0625\u0627\u0629\u062f\u0630\u0631\u0632\u0648\u0698\u06c0\u06d5",
+    none: "\u0621"
+  },
+
   // Written into the pattern for the two wildcards
   wildcards: {
     // symbol is what the pattern carries in writing; mark is the face it wears

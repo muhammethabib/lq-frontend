@@ -95,7 +95,7 @@
   font-weight: 800;
 }
 /* The star is drawn rather than typed, so it is sized here */
-.ottoman-keyboard .wildcard-key .wildcard-star { width: 17px; height: 17px; flex: none; }
+.ottoman-keyboard .wildcard-key .wildcard-star { width: 11px; height: 11px; flex: none; }
 .ottoman-keyboard .wildcard-key[data-wildcard="many"] { font-family: Georgia, serif; font-size: 22px; font-weight: 400; }
 .ottoman-keyboard .wildcard-key:hover { background: #dcfce7; border-color: #4ade80; }
 .ottoman-keyboard .wildcard-key:active { background: var(--wildcard-ink); color: #fff; transform: scale(.92); }

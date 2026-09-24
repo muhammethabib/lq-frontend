@@ -138,10 +138,35 @@ class LanguageController extends Stimulus.Controller {
       const key = element.dataset[datasetKey];
       const store = `${attribute}:${key}`;
       if (!(store in this.originals)) {
-        this.originals[store] = element.getAttribute(attribute) || "";
+        this.originals[store] = this.readAttribute(element, attribute);
       }
-      element.setAttribute(attribute, key in dictionary ? dictionary[key] : this.originals[store]);
+      this.writeAttribute(element, attribute, key in dictionary ? dictionary[key] : this.originals[store]);
     });
+  }
+
+  // A tooltip takes the title off the element when it is built, so the first
+  // reading of a title has to look where Bootstrap put it.
+  readAttribute(element, attribute) {
+    if (attribute === "title") {
+      return element.getAttribute("title")
+        || element.getAttribute("data-bs-original-title")
+        || element.getAttribute("data-bs-title") || "";
+    }
+    return element.getAttribute(attribute) || "";
+  }
+
+  // A tooltip reads its text once, when it is built, so a title that changes
+  // language has its tooltip built again. Disposing first, because disposing
+  // puts the old title back on the element.
+  writeAttribute(element, attribute, value) {
+    const tooltip = attribute === "title" && window.bootstrap
+      ? bootstrap.Tooltip.getInstance(element) : null;
+    if (tooltip) tooltip.dispose();
+    element.setAttribute(attribute, value);
+    if (attribute === "title" && element.hasAttribute("data-bs-title")) {
+      element.setAttribute("data-bs-title", value);
+    }
+    if (tooltip) bootstrap.Tooltip.getOrCreateInstance(element);
   }
 }
 

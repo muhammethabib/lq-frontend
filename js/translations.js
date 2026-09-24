@@ -118,6 +118,7 @@ window.LQ_TRANSLATIONS = {
     keyboardGoTo: "Şuna geç",
     keyboardBasicLayout: "Temel klavye",
     keyboardAdvancedLayout: "Gelişmiş klavye",
+    keyboardClearAll: "Tüm kutuları temizle",
     keyboardBackspace: "Harfi sil",
     keyboardClose: "Kapat",
     keyboardOrderAlphabetical: "Alfabetik sıra (elif, be, te…)",

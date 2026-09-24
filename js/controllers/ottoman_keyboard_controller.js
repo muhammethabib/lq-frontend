@@ -101,7 +101,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   renderWildcards(wildcards) {
     this.wildcardRowTarget.innerHTML = Object.keys(wildcards).map((name) => {
       const wildcard = wildcards[name];
-      const label = this.translate(wildcard.labelKey, name);
+      const label = this.translate(wildcard.labelKey, wildcard.label || name);
       return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
         data-action="pointerdown->ottoman-keyboard#pressWildcard"
         data-bs-toggle="tooltip" data-bs-title="${this.escape(label)}"

@@ -543,10 +543,15 @@
   border-bottom: 0;
   padding: 20px 40px 8px;
 }
+/* The name and its note are laid out as a row rather than as words on a
+   line, so the cell is as tall as they are and no taller. */
+.word-decoder-surface .group-header-inner {
+  display: flex;
+  align-items: center;
+}
 .word-decoder-surface .group-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   padding: 6px 10px;
   margin-left: -10px;
   border: 0;
@@ -561,13 +566,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 8px;
   border-radius: 50%;
   background: var(--lq-body-bg);
   color: var(--lq-sapphire);
   transition: transform .3s;
 }
+.word-decoder-surface .group-toggle:hover .group-chevron { background: var(--lq-line); }
 .word-decoder-surface .group-toggle[aria-expanded="false"] .group-chevron { transform: rotate(-90deg); }
 .word-decoder-surface .group-title {
+  margin-right: 10px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .8px;
@@ -583,56 +591,74 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-/* The same note the search results carry, on the same groups */
+
+/* The same note the search results carry, on the same groups: the ground is
+   the pill, the words and the closing mark carry their own room. */
 .word-decoder-surface .group-note {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-left: 4px;
-  padding: 5px 12px;
+  min-width: 0;
+  max-width: 100%;
+  margin-left: 14px;
   border-radius: 999px;
   background: var(--lq-body-bg);
-  color: var(--lq-ink-soft);
+}
+
+.word-decoder-surface .group-note-text {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 4px 5px 12px;
   font-size: 11.5px;
   font-weight: 500;
+  color: var(--lq-ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* The description is worth reading once, not on every visit. Put away, the
    pill shrinks to the mark that brings it back. */
 .word-decoder-surface .group-note:not(.is-open) .group-note-text { display: none; }
-.word-decoder-surface .group-note:not(.is-open) { padding: 4px; }
 
 .word-decoder-surface .group-note-toggle {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  gap: 4px;
+  width: 22px;
+  height: 22px;
+  margin: 3px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: none;
-  color: #94a3b8;
+  border-radius: 999px;
+  background: transparent;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: all .15s ease;
 }
 
-.word-decoder-surface .group-note-toggle:hover { color: var(--lq-sapphire); }
-.word-decoder-surface .group-note-toggle svg { width: 12px; height: 12px; }
+.word-decoder-surface .group-note.is-open .group-note-toggle { background: rgba(15, 23, 42, .08); color: #334155; }
+.word-decoder-surface .group-note-toggle:hover { background: rgba(15, 23, 42, .1); color: #1e293b; }
+.word-decoder-surface .group-note.is-open .group-note-toggle:hover { background: rgba(15, 23, 42, .14); color: #0f172a; }
+.word-decoder-surface .group-note-toggle svg { flex-shrink: 0; width: 12px; height: 12px; }
 
 /* Open, the mark is a cross that closes it; closed, it is the info mark. */
 .word-decoder-surface .group-note.is-open .group-note-toggle svg { display: none; }
 .word-decoder-surface .group-note:not(.is-open) .group-note-close { display: none; }
 
-.word-decoder-surface .group-note-close {
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-}
+.word-decoder-surface .group-note-close { line-height: 1; }
 .word-decoder-surface .group-note b { color: var(--lq-ink); font-weight: 700; }
 
 /* The worked example stands a little apart from the sentence it illustrates */
-.word-decoder-surface .group-note-example { margin-left: 10px; color: #5d718c; }
-/* Hide the note before the table gets narrow enough for it to squeeze the columns */
-@media (max-width: 1200px) { .word-decoder-surface .group-note { display: none; } }
+.word-decoder-surface .group-note-example { color: #5d718c; }
 
 .word-decoder-surface .result-group.is-collapsed .candidate-header,
 .word-decoder-surface .result-group.is-collapsed .result-row { display: none; }
@@ -707,8 +733,12 @@
 .word-decoder-surface .result-row[data-category="RELATED"] > td:first-child { border-left-color: #2563eb; }
 
 .word-decoder-surface .word-pair { display: flex; align-items: center; gap: 4%; width: 100%; max-width: 400px; margin-right: auto; }
-.word-decoder-surface .word-pair .word-ottoman { flex: 0 1 48%; display: flex; justify-content: flex-end; }
-.word-decoder-surface .word-pair .word-latin { flex: 0 1 48%; display: flex; justify-content: flex-start; }
+/* Each half is given its share as a width rather than as a flex basis, as
+   the reference gives it: a half with a width of its own is allowed to fall
+   below its content's own least width, and one without is not, so a long
+   unbroken reading would otherwise push the other half out of the column. */
+.word-decoder-surface .word-pair .word-ottoman { width: 48%; display: flex; justify-content: flex-end; }
+.word-decoder-surface .word-pair .word-latin { width: 48%; display: flex; justify-content: flex-start; }
 
 .word-decoder-surface .word-box {
   display: inline-flex;
@@ -760,7 +790,14 @@
 .word-decoder-surface .headword-cell .word-box { background: transparent; border-color: transparent; min-width: 82px; }
 .word-decoder-surface .headword-cell .latin-box { font-size: 14.5px; color: #475569; }
 
-.word-decoder-surface .dictionary-cell { text-align: right; max-width: 22ch; }
+/* The name and the cite press share one column here too. */
+.word-decoder-surface .result-row > td.dictionary-cell { padding: 0 14px 0 16px; }
+.word-decoder-surface .dictionary-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.word-decoder-surface .dictionary-text { min-width: 0; margin-right: 12px; text-align: right; }
 .word-decoder-surface .dictionary-name { font-size: 13px; font-weight: 700; color: var(--lq-ink); line-height: 1.3; overflow-wrap: break-word; }
 .word-decoder-surface .dictionary-page {
   font-size: 9px;
@@ -774,7 +811,7 @@
 
 .word-decoder-surface .row-arrow { color: #94a3b8; opacity: .35; }
 
-.word-decoder-surface .row-actions { display: flex; gap: 4px; justify-content: center; }
+.word-decoder-surface .row-actions { display: flex; gap: 4px; justify-content: flex-end; }
 .word-decoder-surface .cite-button {
   display: inline-flex;
   align-items: center;

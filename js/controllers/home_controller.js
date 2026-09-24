@@ -18,7 +18,7 @@ const PAGE = 25;
 
 // Every group closes on the reference's own 8px of air: 4px of the table's
 // spacing on either side of this empty row, and the row's own 4px.
-const TAIL = `<tr class="group-tail" aria-hidden="true"><td colspan="6"></td></tr>`;
+const TAIL = `<tr class="group-tail" aria-hidden="true"><td colspan="5"></td></tr>`;
 // A row has two halves, and which half the pointer is over decides where a
 // press will go. The words themselves, and everything else that has its own
 // answer to a press, are left out of that: a reader over a word is being told
@@ -773,7 +773,7 @@ class HomeController extends Stimulus.Controller {
     return `
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
-          <th colspan="6" scope="colgroup">
+          <th colspan="5" scope="colgroup">
            <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->home#toggleGroup">
@@ -985,7 +985,7 @@ class HomeController extends Stimulus.Controller {
 
     return `
       <tr class="show-more-row">
-        <td colspan="6"><span class="show-more-cell">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</span></td>
+        <td colspan="5"><span class="show-more-cell">${left <= PAGE ? last : more + (total > PAGE * 2 ? all : "")}</span></td>
       </tr>${TAIL}`;
   }
 
@@ -1090,38 +1090,33 @@ class HomeController extends Stimulus.Controller {
             data-zone-dictionary="${this.escape(row.dictionary)}"
             data-zone-page="${this.escape(row.page)}"
             data-zone-tip="goToHeadword">
-          <div class="dictionary-name">${this.escape(this.dictionaryLabelFor(row.dictionary))}</div>
-          <div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>
-        </td>
-        <td class="result-zone" data-action="click->home#openEntry" data-zone-focus="headword"
-            data-zone-ottoman="${this.escape(row.headwordOttoman)}"
-            data-zone-latin="${this.escape(row.headwordLatin)}"
-            data-zone-headword-ottoman="${this.escape(row.headwordOttoman)}"
-            data-zone-headword-latin="${this.escape(row.headwordLatin)}"
-            data-zone-dictionary="${this.escape(row.dictionary)}"
-            data-zone-page="${this.escape(row.page)}"
-            data-zone-tip="goToHeadword">
-          <div class="row-actions">
-          <!-- A citation is of the dictionary entry the record sits under, not
-               of the form that matched, so it names the headword. -->
-          <button type="button" class="btn cite-button" data-action="click->home#cite"
-                  data-cite-latin="${this.escape(row.headwordLatin)}"
-                  data-cite-ottoman="${this.escape(row.headwordOttoman)}"
-                  data-cite-dictionary="${this.escape(row.dictionary)}"
-                  data-cite-page="${this.escape(row.page)}"
-                  data-tooltip="${this.escape(this.translate("cite", "Cite"))}"
-                  aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
-            ${window.LQ.citeIcon()}
-          </button>
-          <!-- Staff only: editing a stored reading, as opposed to a reader
-               suggesting a correction. Restrict this when permissions land. -->
-          <button type="button" class="btn cite-button admin-only" hidden data-action="click->home#editEntry"
-                  title="${this.escape(this.translate("editEntry", "Edit entry"))}"
-                  aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
-            <i data-feather="edit-2"></i>
-          </button>
+          <div class="dictionary-row">
+            <div class="dictionary-text">
+              <div class="dictionary-name">${this.escape(this.dictionaryLabelFor(row.dictionary))}</div>
+              <div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>
+            </div>
+            <div class="row-actions">
+            <!-- A citation is of the dictionary entry the record sits under, not
+                 of the form that matched, so it names the headword. -->
+            <button type="button" class="btn cite-button" data-action="click->home#cite"
+                    data-cite-latin="${this.escape(row.headwordLatin)}"
+                    data-cite-ottoman="${this.escape(row.headwordOttoman)}"
+                    data-cite-dictionary="${this.escape(row.dictionary)}"
+                    data-cite-page="${this.escape(row.page)}"
+                    data-tooltip="${this.escape(this.translate("cite", "Cite"))}"
+                    aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
+              ${window.LQ.citeIcon()}
+            </button>
+            <!-- Staff only: editing a stored reading, as opposed to a reader
+                 suggesting a correction. Restrict this when permissions land. -->
+            <button type="button" class="btn cite-button admin-only" hidden data-action="click->home#editEntry"
+                    title="${this.escape(this.translate("editEntry", "Edit entry"))}"
+                    aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
+              <i data-feather="edit-2"></i>
+            </button>
+            </div>
           </div>
-        </td>
+          </td>
       </tr>`;
   }
 

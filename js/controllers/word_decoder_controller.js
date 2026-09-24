@@ -830,19 +830,22 @@ class WordDecoderController extends Stimulus.Controller {
     const candidates = this.groupByCandidate(group.rows);
 
     const body = candidates.length === 0
-      ? `<tr class="group-empty"><td colspan="6"><span>${this.escape(this.translate("decoderEmptyGroup", "No candidate readings in this section."))}</span></td></tr>`
+      ? `<tr class="group-empty"><td colspan="5"><span>${this.escape(this.translate("decoderEmptyGroup", "No candidate readings in this section."))}</span></td></tr>`
       : candidates.map((candidate) => this.candidateHtml(candidate)).join("");
 
     return `
       <tbody class="result-group" id="${bodyId}">
         <tr class="group-header">
-          <th colspan="6" scope="colgroup">
+          <th colspan="5" scope="colgroup">
+           <div class="group-header-inner">
             <button type="button" class="btn group-toggle" aria-expanded="true" aria-controls="${bodyId}"
                     data-action="click->word-decoder#toggleGroup">
-              <span class="group-chevron"><i data-feather="chevron-down"></i></span>
+              <span class="group-chevron"><svg width="10" height="6" viewBox="0 0 10 6" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true"><path d="M1 1L5 5L9 1"/></svg></span>
               <span class="group-title">${title}</span>
-              <span class="group-count">${group.rows.length}</span>
             </button>
+            <span class="group-count">${group.rows.length}</span>
             ${note ? `
               <span class="group-note is-open">
                 <span class="group-note-text">${note}${example ? `<span class="group-note-example">${example}</span>` : ""}</span>
@@ -850,9 +853,10 @@ class WordDecoderController extends Stimulus.Controller {
                         data-action="click->word-decoder#toggleNote"
                         aria-label="${this.escape(this.translate("groupNoteToggle", "Show or hide this description"))}">
                   <i data-feather="info" aria-hidden="true"></i>
-                  <span class="group-note-close" aria-hidden="true">&times;</span>
+                  <span class="group-note-close" aria-hidden="true">✕</span>
                 </button>
               </span>` : ""}
+           </div>
           </th>
         </tr>
         ${body}
@@ -884,7 +888,7 @@ class WordDecoderController extends Stimulus.Controller {
 
     return `
       <tr class="candidate-header" data-candidate="${id}">
-        <th colspan="6" scope="colgroup">
+        <th colspan="5" scope="colgroup">
           <button type="button" class="candidate-toggle" aria-expanded="false"
                   data-action="click->word-decoder#toggleCandidate">
             <span class="candidate-chevron"><i data-feather="chevron-down"></i></span>
@@ -922,29 +926,31 @@ class WordDecoderController extends Stimulus.Controller {
           </div>
         </td>
         <td class="dictionary-cell">
-          <div class="dictionary-name">${this.escape(window.LQ.dictionaryLabel(row.dictionary))}</div>
-          ${row.page ? `<div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>` : ""}
-        </td>
-        <td>
-          <div class="row-actions">
-            <!-- A citation is of the dictionary entry the record sits under,
-                 not of the reading that matched, so it names the headword. -->
-            <button type="button" class="btn cite-button" data-action="click->word-decoder#cite"
-                    data-cite-latin="${this.escape(row.headwordLatin)}"
-                    data-cite-ottoman="${this.escape(row.headwordOttoman)}"
-                    data-cite-dictionary="${this.escape(row.dictionary)}"
-                    data-cite-page="${this.escape(row.page)}"
-                    aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
-              ${window.LQ.citeIcon()}
-            </button>
-            <!-- Staff only: editing a stored reading, as opposed to a reader
-                 suggesting a correction. Restrict this when permissions land. -->
-            <button type="button" class="btn cite-button admin-only" hidden data-action="click->word-decoder#editEntry"
-                    aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
-              <i data-feather="edit-2"></i>
-            </button>
+          <div class="dictionary-row">
+            <div class="dictionary-text">
+              <div class="dictionary-name">${this.escape(window.LQ.dictionaryLabel(row.dictionary))}</div>
+              ${row.page ? `<div class="dictionary-page">${this.escape(this.translate("colPage", "Page"))} ${this.escape(row.page)}</div>` : ""}
+            </div>
+            <div class="row-actions">
+              <!-- A citation is of the dictionary entry the record sits under,
+                   not of the reading that matched, so it names the headword. -->
+              <button type="button" class="btn cite-button" data-action="click->word-decoder#cite"
+                      data-cite-latin="${this.escape(row.headwordLatin)}"
+                      data-cite-ottoman="${this.escape(row.headwordOttoman)}"
+                      data-cite-dictionary="${this.escape(row.dictionary)}"
+                      data-cite-page="${this.escape(row.page)}"
+                      aria-label="${this.escape(this.translate("cite", "Cite"))}: ${this.escape(row.headwordLatin)}">
+                ${window.LQ.citeIcon()}
+              </button>
+              <!-- Staff only: editing a stored reading, as opposed to a reader
+                   suggesting a correction. Restrict this when permissions land. -->
+              <button type="button" class="btn cite-button admin-only" hidden data-action="click->word-decoder#editEntry"
+                      aria-label="${this.escape(this.translate("editEntry", "Edit entry"))}">
+                <i data-feather="edit-2"></i>
+              </button>
+            </div>
           </div>
-        </td>
+          </td>
       </tr>`;
   }
 

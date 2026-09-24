@@ -1057,22 +1057,28 @@
   box-shadow: -20px 0 0 var(--lq-lat-bg);
 }
 .home-surface .results-table > thead th.col-category {
-  /* The five widths below are the reference's own: its rows are laid on a
-     twelve-column grid over the card's inner width, and these are the tracks
-     that grid hands each column at the card's full 1300px. */
-  width: 98.6px;
+  /* The four widths below are the reference's own. Its rows are laid on a
+     twelve-column grid over the card's inner width - five columns to the
+     result and its category, seven to the rest - so each is a share of the
+     card rather than a fixed number of pixels, and the list holds its
+     proportions as the card narrows. (A share is all a fixed table takes:
+     it resolves no calc() against the table's own width.) The result
+     column takes whatever the other four leave.
+
+     The category is the one column the reference gives a width in pixels:
+     100px, which gives ground to the result beside it as the card narrows
+     and stops at the width of the badge it holds. */
+  width: 7.8283%;
   border-left: 1px solid var(--lq-line);
   border-right: 1px solid var(--lq-line);
 }
-.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 73.21px; }
-.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 439.26px; }
+.home-surface .results-table > thead th.col-arrow { background: var(--lq-lat-bg); width: 5.803%; }
+.home-surface .results-table > thead th.col-headword { background: var(--lq-lat-bg); width: 29.02%; }
 .home-surface .results-table > thead th.col-dictionary {
-  width: 157.63px;
+  width: 23.316%;
+  padding-right: 70px;
   text-align: right;
   border-left: 1px solid var(--lq-line);
-}
-.home-surface .results-table > thead th.col-actions {
-  width: 63px;
   box-shadow: 20px 0 0 var(--lq-paper-soft);
 }
 
@@ -1199,8 +1205,6 @@
 
 /* The worked example stands a little apart from the sentence it illustrates */
 .home-surface .group-note-example { color: #5d718c; }
-/* Hide the note before the table gets narrow enough for it to squeeze the columns */
-@media (max-width: 1200px) { .home-surface .group-note { display: none; } }
 
 .home-surface .result-group.is-collapsed .result-row { display: none; }
 
@@ -1316,8 +1320,12 @@
   max-width: 400px;
   margin-right: auto;
 }
-.home-surface .word-pair .word-ottoman { flex: 0 1 48%; display: flex; justify-content: flex-end; }
-.home-surface .word-pair .word-latin { flex: 0 1 48%; display: flex; justify-content: flex-start; }
+/* Each half is given its share as a width rather than as a flex basis, as
+   the reference gives it: a half with a width of its own is allowed to fall
+   below its content's own least width, and one without is not, so a long
+   unbroken reading would otherwise push the other half out of the column. */
+.home-surface .word-pair .word-ottoman { width: 48%; display: flex; justify-content: flex-end; }
+.home-surface .word-pair .word-latin { width: 48%; display: flex; justify-content: flex-start; }
 
 .home-surface .word-box {
   display: inline-flex;
@@ -1448,10 +1456,21 @@
 
 /* The longest real name ("Müntahabat-ı Lügat-ı Osmaniye, 1852") wraps here
    rather than pushing the table wider. */
-/* The name is given the reference's own room: 16px in from the column's
-   start and flush with its end, so a long title breaks in the same place. */
-.home-surface .result-row > td.dictionary-cell { padding-right: 0; padding-left: 16px; }
-.home-surface .dictionary-cell { text-align: right; max-width: 22ch; }
+/* The name and the cite press share one column, as they share one grid cell
+   in the reference: the press keeps 14px from the card's edge, the name
+   stands 12px clear of it and 16px in from the column's start, which is the
+   141.6px the reference gives a title to break in. */
+.home-surface .result-row > td.dictionary-cell { padding: 0 14px 0 16px; }
+.home-surface .dictionary-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.home-surface .dictionary-text {
+  min-width: 0;
+  margin-right: 12px;
+  text-align: right;
+}
 .home-surface .dictionary-name { overflow-wrap: break-word; }
 .home-surface .dictionary-name { font-size: 13px; font-weight: 700; color: #334155; line-height: 1.25; }
 .home-surface .dictionary-page {
@@ -1485,6 +1504,20 @@
   border-color: var(--lq-lat-border);
 }
 
+
+/* Where the card has the room, the reference hands the headword a column
+   from the dictionary beside it: the longest dictionary name still fits on
+   one line there, and below it does not. */
+@media (min-width: 1360px) {
+  .home-surface .results-table > thead th.col-arrow { width: 5.81%; }
+  .home-surface .results-table > thead th.col-headword { width: 34.859%; }
+  .home-surface .results-table > thead th.col-dictionary { width: 17.5101%; }
+}
+
+/* The category stops giving ground at the width of its own badge. */
+@media (max-width: 1222px) {
+  .home-surface .results-table > thead th.col-category { width: 85px; }
+}
 
 /* ---------- responsive ---------- */
 

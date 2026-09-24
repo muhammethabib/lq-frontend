@@ -802,16 +802,40 @@ class WordDecoderController extends Stimulus.Controller {
 
   // ==================== rendering ====================
 
+  // Boxes the reader has chained as written together are set in one run, so
+  // the letters take the shapes they take in a word -- the alif after the ha
+  // hanging off it rather than standing beside it. Only plain letters can
+  // join: a skeleton or a wildcard wears a drawn face, a box of alternatives
+  // wears a chip, and none of those is type to be shaped. A box left empty
+  // parts its neighbours, as an empty box does on the board.
+  patternRuns(pattern) {
+    const runs = [];
+    let openRun = null;
+    pattern.slots.forEach((slot, index) => {
+      if (slot.kind === "empty") { openRun = null; return; }
+      const chained = index > 0 && pattern.joins[index - 1] === "connected";
+      if (slot.kind === "letter" && chained && openRun) {
+        openRun.letters.push(slot.letters[0]);
+        return;
+      }
+      const run = { slot, letters: slot.kind === "letter" ? [slot.letters[0]] : [] };
+      runs.push(run);
+      openRun = slot.kind === "letter" ? run : null;
+    });
+    return runs;
+  }
+
   // The pattern is shown slot by slot rather than as a string, so the reader
   // recognises the shape they described.
   renderPattern() {
     if (!this.results) return;
     const pattern = this.readPattern();
     const wildcards = (window.LQ_KEYBOARD_LAYOUT || {}).wildcards || {};
-    this.patternTarget.innerHTML = pattern.slots
-      .filter((slot) => slot.kind !== "empty")
-      .map((slot) => {
-        if (slot.kind === "letter") return `<span class="pattern-slot" data-kind="letter">${this.escape(slot.letters[0])}</span>`;
+    this.patternTarget.innerHTML = this.patternRuns(pattern)
+      .map(({ slot, letters }) => {
+        if (slot.kind === "letter") {
+          return `<span class="pattern-slot" data-kind="letter">${this.escape(letters.join(""))}</span>`;
+        }
         if (slot.kind === "alternatives") {
           // One box offering several letters is drawn as that box: a small
           // chip inside the pill, its letters at the size of every other

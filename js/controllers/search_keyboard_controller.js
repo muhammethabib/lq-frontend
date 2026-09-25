@@ -437,7 +437,12 @@ class SearchKeyboardController extends Stimulus.Controller {
   showFlag() {
     if (!this.hasFlagTarget) return;
     this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < SEARCH_FLAG_ROOM_PX);
+    this.flagTarget.style.marginLeft = "";
     this.flagTarget.hidden = false;
+    // Centred on a button that stands in the panel's corner, so it can still
+    // reach past the edge of the window on a panel parked hard against it.
+    const past = 6 - this.flagTarget.getBoundingClientRect().left;
+    if (past > 0) this.flagTarget.style.marginLeft = `${Math.round(past)}px`;
     clearTimeout(this.flagTimer);
     this.flagTimer = setTimeout(() => this.hideFlag(), SEARCH_FLAG_MS);
   }

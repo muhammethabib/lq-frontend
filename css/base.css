@@ -769,9 +769,8 @@ body.has-panel-room::after {
    stylesheets.
    ========================================================= */
 
-/* Not positioned: the word below is placed against the panel, which is what
-   moved, so it can be centred on it and cannot hang off its edge. */
-.keyboard-pin-wrap { display: inline-flex; }
+/* The word below is measured from here, so that it centres on the pin */
+.keyboard-pin-wrap { position: relative; display: inline-flex; }
 
 /* The pin shows only once the panel has been parked, and it is claret the
    whole time it is there: while it shows, this panel is fixed where the
@@ -855,21 +854,23 @@ body.has-panel-room::after {
 .keyboard-pin-flag {
   position: absolute;
   bottom: calc(100% + 9px);
-  /* Centred on the panel. It is the panel that moved, and the panel is wide
-     enough that the word is never pushed off an edge -- which is what
-     centring it on the pin, hard against the panel's corner, did. */
   left: 50%;
   z-index: 2;
-  padding: 3px 9px;
-  border-radius: 999px;
+  /* Two lines rather than one. Centred on the pin, and the pin stands in the
+     panel's corner, so the sentence on one line would reach past the corner
+     and off the panel; broken in two it sits over the button it belongs to.
+     The controller nudges it right if even that would leave the window. */
+  width: max-content;
+  max-width: 104px;
+  padding: 4px 9px 5px;
+  border-radius: 10px;
   background: var(--lq-claret);
   color: var(--lq-paper);
   font-size: 10.5px;
   font-weight: 800;
-  letter-spacing: .04em;
-  white-space: nowrap;
+  line-height: 1.25;
+  letter-spacing: .02em;
   box-shadow: 0 8px 18px -10px rgba(8, 37, 103, .6);
-  /* One line: a word that confirms is read at a glance or not at all. */
   text-align: center;
   transform: translateX(-50%);
   animation: keyboard-flag-in .2s ease-out both;

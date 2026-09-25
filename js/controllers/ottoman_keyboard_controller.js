@@ -70,7 +70,6 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.onRequest = (event) => {
       this.owner = event.detail.owner || null;
       this.below = event.detail.below || null;
-      this.guard = event.detail.guard || null;
       this.openNear(event.detail.anchor);
     };
     this.onDismiss = () => this.close();
@@ -339,7 +338,6 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.hideFlag();
     this.anchor = null;
     this.below = null;
-    this.guard = null;
     this.owner = null;
     window.LQ.releaseRoom();
     // Whoever was typing needs to know: the Clear that was hidden behind the
@@ -437,8 +435,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const spot = this.dragSpot(event);
     this.drag = null;
     this.element.classList.remove("is-dragging");
-    if (!this.clearsGuard(spot) ||
-        this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < KEYBOARD_SNAP_PX) {
+    if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < KEYBOARD_SNAP_PX) {
       this.goHome();
       return;
     }
@@ -464,35 +461,16 @@ class OttomanKeyboardController extends Stimulus.Controller {
     setTimeout(() => this.element.classList.remove("is-springing"), 400);
   }
 
-  // ==================== where the panel may not be ====================
-
-  // A place is the reader's to choose, with one exception: the row this
-  // panel serves. A keyboard over the boxes it types into, or over the
-  // button that searches them, is a keyboard in the way of its own work.
-  // So a place that covers any of it is refused -- on the drop, and again
-  // on every opening, because a window can be resized or the page reflowed
-  // under a place that was fine when it was made.
-  clearsGuard(spot) {
-    if (!this.guard || !this.guard.isConnected) return true;
-    const row = this.guard.getBoundingClientRect();
-    const width = this.element.offsetWidth;
-    const height = this.element.offsetHeight;
-    return spot.left >= row.right || spot.left + width <= row.left ||
-           spot.top >= row.bottom || spot.top + height <= row.top;
-  }
-
-  // The reader's place, if it is still one the panel can be opened at: it
-  // has to fit the window as it stands, not only the window it was made in,
-  // and it has to clear the row above. Anything else and the place is given
-  // up and the panel goes back to opening where the page puts it.
+  // The reader's place, if it is still one the panel can be opened at. Where
+  // they put it is their business -- over the boxes, over the search bar, over
+  // anything: they moved it there and they can move it back. The one thing
+  // the page still decides is that it has to be reachable, so a place made in
+  // a larger window is pulled back inside this one rather than left half off
+  // the edge.
   usableSpot() {
     const spot = this.placedSpot();
     if (!spot) return null;
-    const inside = window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
-    if (inside.left === spot.left && inside.top === spot.top && this.clearsGuard(spot)) return spot;
-    window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
-    this.refreshPin();
-    return null;
+    return window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
   }
 
   // ==================== the pin ====================

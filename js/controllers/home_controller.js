@@ -289,9 +289,10 @@ class HomeController extends Stimulus.Controller {
     this.keyboardOpen = true;
     this.hideScriptHint();
     document.dispatchEvent(new CustomEvent("search-keyboard:request", {
-      // The row the panel serves: the bar, the source switch and Search. A
-      // keyboard over any of it is a keyboard in the way of its own work.
-      detail: { anchor: this.inputWrapperTarget, guard: this.element.querySelector(".search-row") }
+      // The whole row, not just the field: the panel opens below all of it,
+      // and on a narrow window the source switch and the dictionary picker
+      // wrap onto a line of their own.
+      detail: { anchor: this.inputWrapperTarget, below: this.element.querySelector(".search-row") }
     }));
   }
 

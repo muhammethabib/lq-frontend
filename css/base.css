@@ -800,15 +800,18 @@ body.has-panel-room::after {
   color: var(--lq-paper);
 }
 
-/* The hand that drags the bar is drawn from a hotspot at its wrist, so it
-   covers this button well before the pointer reaches it -- and a button you
-   can see the hand over but cannot press is a broken button. So the button
-   answers to the wider patch the hand suggests. It stays inside the bar: the
-   keys below it and the control beside it keep their own presses. */
+/* The hand that drags the bar is drawn eleven pixels either side of the
+   pointer and twenty above it, from a hotspot at its wrist. So it covers this
+   button long before the pointer reaches it, and a button you can see the
+   hand over but cannot press is a broken button. The button answers to a
+   patch wide enough that the hand cannot reach it from outside: the whole
+   height of the bar, and twenty pixels into the stretch the hand comes from.
+   It stops short of the control beside it and the keys below, which keep
+   their own presses, and the handle keeps seventy pixels of its own. */
 .keyboard-pin::before {
   content: "";
   position: absolute;
-  inset: -8px -10px -10px -4px;
+  inset: -9px -20px -13px -5px;
 }
 
 /* Arriving. A control that appears quietly in a corner is a control nobody
@@ -860,80 +863,65 @@ body.has-panel-room::after {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* The choices the pin carries, offered when the pointer reaches it. Beside
-   the pin rather than under it: under it is where the hand comes from, and
-   that band belongs to the pin's own press. The two overlap by a couple of
-   pixels, so the pointer never crosses a strip that belongs to neither. */
-.keyboard-pin-menu {
-  position: absolute;
-  top: -5px;
-  left: calc(100% + 8px);
-  z-index: 3;
-  display: none;
-  cursor: default;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 196px;
-  padding: 4px;
-  border: 1px solid var(--lq-line);
-  border-radius: 10px;
-  background: var(--lq-paper);
-  box-shadow: 0 14px 34px -14px rgba(8, 37, 103, .45);
+/* What the pin says when the pointer reaches it. Bootstrap's tooltip, but
+   three short blocks rather than one grey line: what is true now, what that
+   means, and -- set apart, under a rule, behind a mouse -- what a press
+   would do. */
+.keyboard-pin-tip .tooltip-inner {
+  max-width: 250px;
+  padding: 8px 11px 9px;
+  text-align: left;
 }
-.keyboard-pin-wrap:hover .keyboard-pin:not([hidden]) ~ .keyboard-pin-menu,
-.keyboard-pin-wrap:focus-within .keyboard-pin:not([hidden]) ~ .keyboard-pin-menu { display: flex; }
-/* One at a time: the word steps aside for the choices. */
-.keyboard-pin-wrap:hover .keyboard-pin-flag,
-.keyboard-pin-wrap:focus-within .keyboard-pin-flag { display: none; }
 
-.keyboard-pin-choice {
+.pin-tip-now b {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .01em;
+  color: #fff;
+}
+.pin-tip-now i {
+  display: block;
+  margin-top: 1px;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #a7b4c6;
+}
+
+.pin-tip-do {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 8px;
-  border: 0;
-  border-radius: 7px;
-  background: none;
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--lq-ink);
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
+  gap: 5px;
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, .13);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #a7b4c6;
 }
-.keyboard-pin-choice:hover { background: var(--lq-soft); color: var(--lq-ink); }
-
-.keyboard-pin-box {
+/* Drawn here rather than written into the tooltip: Bootstrap strips an svg
+   out of its own markup before it reaches the screen. */
+.pin-tip-do::before {
+  content: "";
   flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 15px;
-  height: 15px;
-  border: 1.5px solid var(--lq-line-strong);
-  border-radius: 4px;
-  color: transparent;
-  transition: background .12s, border-color .12s, color .12s;
+  width: 12px;
+  height: 12px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2.1' stroke-linecap='round'%3E%3Crect x='6' y='2.6' width='12' height='18.8' rx='6'/%3E%3Cline x1='12' y1='6.6' x2='12' y2='10'/%3E%3C/svg%3E") no-repeat center / contain;
 }
-.keyboard-pin-box svg { width: 9px; height: 9px; }
-.keyboard-pin-remember.is-on .keyboard-pin-box {
-  border-color: var(--lq-claret);
-  background: var(--lq-claret);
-  color: var(--lq-paper);
+/* The verb, not another word of description */
+.pin-tip-do em {
+  padding: 1px 6px 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  font-size: 9.5px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #fff;
 }
-
-.keyboard-pin-glyph {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 15px;
-  height: 15px;
-  color: var(--lq-muted);
-}
-.keyboard-pin-glyph svg { width: 14px; height: 14px; }
-.keyboard-pin-reset:hover .keyboard-pin-glyph { color: var(--lq-claret); }
 
 @media (prefers-reduced-motion: reduce) {
   .keyboard-pin.is-arriving,

@@ -89,6 +89,16 @@
 }
 .ottoman-keyboard .wildcard-row > * { pointer-events: auto; }
 
+/* Clear answers over the whole height of the bar, the way the pin beside it
+   does: between the two of them the drag hand cannot reach either button
+   from the side, and the corner is easier to hit besides. */
+.ottoman-keyboard .keyboard-clear { position: relative; }
+.ottoman-keyboard .keyboard-clear::before {
+  content: "";
+  position: absolute;
+  inset: -9px -2px -13px -2px;
+}
+
 .ottoman-keyboard .keyboard-clear {
   height: 22px;
   padding: 0 8px;

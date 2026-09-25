@@ -8,9 +8,9 @@
 // holds that decision instead, and the keyboards ask it before they place
 // themselves.
 //
-// A move lasts the session. If the reader asks for it to be kept it lasts
-// until they put the keyboard back themselves. Nothing is written down that
-// was not asked for.
+// Parking a keyboard is the reader saying where it belongs, so it is written
+// down and honoured on the next visit as well. Pressing the pin it leaves
+// behind is what takes it back, and nothing else does.
 
 // One entry per keyboard. The two float in different places and are different
 // sizes, so a place found for one says nothing about the other.
@@ -21,8 +21,8 @@ const PLACEMENT_PREFIX = "lq.keyboard-place.";
 const PLACEMENT_MARGIN = 8;
 
 window.LQ_PLACEMENT = {
-  // This session's places, whether or not they are being kept. A page with no
-  // storage at all still honours a move for as long as the reader is here.
+  // This session's places, written down as well. A page with no storage at
+  // all still honours a move for as long as the reader is here.
   moves: {},
 
   // ==================== reading and writing ====================
@@ -30,39 +30,23 @@ window.LQ_PLACEMENT = {
   // The place this keyboard should open at, or null for the page's own.
   spot(name) {
     if (name in this.moves) return this.moves[name];
-    const kept = this.read(`${PLACEMENT_PREFIX}${name}`);
-    return kept && typeof kept.left === "number" && typeof kept.top === "number" ? kept : null;
+    const fixed = this.read(`${PLACEMENT_PREFIX}${name}`);
+    return fixed && typeof fixed.left === "number" && typeof fixed.top === "number" ? fixed : null;
   },
 
-  // The reader has just put the keyboard down somewhere. It stays there for
-  // the session, and is written down as well if they asked for that.
-  hold(name, spot) {
+  // The reader has parked the keyboard here. It stays, this visit and the
+  // next, until they put it back themselves: that was the whole point of
+  // asking, and a place that lasted only until the tab closed would be the
+  // page having its way again by the back door.
+  fix(name, spot) {
     this.moves[name] = { left: Math.round(spot.left), top: Math.round(spot.top) };
-    if (this.kept(name)) this.write(`${PLACEMENT_PREFIX}${name}`, this.moves[name]);
+    this.write(`${PLACEMENT_PREFIX}${name}`, this.moves[name]);
   },
 
   // The keyboard is back where the page would have put it: there is no
   // decision left to honour, here or in storage.
   release(name) {
     delete this.moves[name];
-    this.remove(`${PLACEMENT_PREFIX}${name}`);
-    this.remove(`${PLACEMENT_PREFIX}${name}.kept`);
-  },
-
-  // ==================== keeping it across visits ====================
-
-  kept(name) { return this.read(`${PLACEMENT_PREFIX}${name}.kept`) === true; },
-
-  keep(name, spot) {
-    this.write(`${PLACEMENT_PREFIX}${name}.kept`, true);
-    this.hold(name, spot);
-  },
-
-  // Only the keeping is given up. The keyboard stays where it is for the rest
-  // of the session -- the reader asked for one less thing, not for their
-  // panel to jump back under their hands.
-  unkeep(name) {
-    this.remove(`${PLACEMENT_PREFIX}${name}.kept`);
     this.remove(`${PLACEMENT_PREFIX}${name}`);
   },
 

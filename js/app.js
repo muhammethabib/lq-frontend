@@ -126,6 +126,29 @@ window.LQ = {
     return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
   },
 
+  // What the pin on a floating keyboard says when the pointer reaches it.
+  // Two things have to be said and a dash between them tells the reader
+  // neither: what is true now, and what a press would do. So they are two
+  // blocks, the second wearing a mouse -- drawn by the stylesheet, since
+  // Bootstrap's tooltip strips an svg out of its own markup -- and the verb
+  // in a chip, which reads as the thing to do rather than more description.
+  pinTip() {
+    const safe = this.escape;
+    return '<span class="pin-tip-now"><b>' +
+      safe(this.translate("keyboardPinnedState", "Pinned")) + '</b>' +
+      '<i>' + safe(this.translate("keyboardPinnedWhat", "the keyboard always opens here")) + '</i></span>' +
+      '<span class="pin-tip-do"><em>' + safe(this.translate("keyboardPinDo", "click")) + '</em>' +
+      safe(this.translate("keyboardPinUndo", "to put it back")) + '</span>';
+  },
+
+  // The same in one line, for a reader who is hearing it rather than seeing it
+  pinTipText() {
+    return [this.translate("keyboardPinnedState", "Pinned") + ".",
+            this.translate("keyboardPinnedWhat", "the keyboard always opens here") + ".",
+            this.translate("keyboardPinDo", "click"),
+            this.translate("keyboardPinUndo", "to put it back")].join(" ");
+  },
+
   // A dictionary is shown with its publication year where one is known.
   dictionaryLabel(name) {
     const record = (window.LQ_DICTIONARIES || {})[name];

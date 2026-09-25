@@ -55,7 +55,7 @@ const ARROW_RIGHT = '<svg class="panel-switch-arrow" viewBox="0 0 24 24" fill="n
   '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
 class OttomanKeyboardController extends Stimulus.Controller {
-  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "bar", "pin", "flag", "remember"]
+  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "bar", "pin", "flag"]
   static values = { open: { type: Boolean, default: false } }
 
   connect() {
@@ -419,7 +419,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // Whether the control is about to arrive rather than already standing
     // there, which is the only moment worth drawing an eye to.
     const arriving = this.hasPinTarget && this.pinTarget.hidden;
-    window.LQ_PLACEMENT.hold(KEYBOARD_PLACE, spot);
+    window.LQ_PLACEMENT.fix(KEYBOARD_PLACE, spot);
     this.refreshPin();
     if (arriving) this.flashPin();
     this.showFlag();
@@ -438,18 +438,16 @@ class OttomanKeyboardController extends Stimulus.Controller {
 
   // ==================== the pin ====================
 
-  // The pin only shows once the panel has been parked, so a keyboard nobody
+  // The pin shows only once the panel has been parked, so a keyboard nobody
   // has touched looks exactly as it did. It is claret the whole time it is
-  // there: while it shows, this panel is fixed where the reader left it.
+  // there: while it shows, this panel is fixed where the reader left it, this
+  // visit and the next, and pressing it is how that ends.
   refreshPin() {
     if (!this.hasPinTarget) return;
     this.pinTarget.hidden = !this.placedSpot();
-    if (this.hasRememberTarget) {
-      const kept = window.LQ_PLACEMENT.kept(KEYBOARD_PLACE);
-      this.rememberTarget.setAttribute("aria-pressed", kept ? "true" : "false");
-      this.rememberTarget.classList.toggle("is-on", kept);
-    }
-    if (this.pinTarget.hidden) this.hideFlag();
+    if (this.pinTarget.hidden) { this.hideFlag(); return; }
+    window.LQ.retitle(this.pinTarget, window.LQ.pinTip());
+    this.pinTarget.setAttribute("aria-label", window.LQ.pinTipText());
   }
 
   // A control that appears quietly in a corner is a control nobody sees.
@@ -463,12 +461,11 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.pinArrival = setTimeout(() => this.pinTarget.classList.remove("is-arriving"), KEYBOARD_PIN_ARRIVAL_MS);
   }
 
-  // The word for what just happened, over the pin that now says it. Above the
-  // panel where there is room for it, under the pin where there is not.
+  // The word for what just happened, over the pin that now stands for it.
+  // Above the panel where there is room, under the pin where there is not.
   showFlag() {
     if (!this.hasFlagTarget) return;
-    const room = this.element.getBoundingClientRect().top;
-    this.flagTarget.classList.toggle("is-below", room < KEYBOARD_FLAG_ROOM_PX);
+    this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < KEYBOARD_FLAG_ROOM_PX);
     this.flagTarget.hidden = false;
     clearTimeout(this.flagTimer);
     this.flagTimer = setTimeout(() => this.hideFlag(), KEYBOARD_FLAG_MS);
@@ -478,24 +475,12 @@ class OttomanKeyboardController extends Stimulus.Controller {
     if (this.hasFlagTarget) this.flagTarget.hidden = true;
   }
 
-  // Pressing the pin is how the panel goes back where the page would put it.
+  // Pressing the pin is the whole of it: the panel goes back where the page
+  // would put it, and the place is given up for good.
   togglePin(event) {
     event.preventDefault();
     this.goHome();
   }
-
-  // The one choice the pin carries, offered when the pointer reaches it: keep
-  // this place for the next visit as well. Pressed again, it is given up --
-  // without moving the panel, which the reader did not ask for.
-  toggleRemember(event) {
-    event.preventDefault();
-    const spot = this.placedSpot();
-    if (!spot) return;
-    if (window.LQ_PLACEMENT.kept(KEYBOARD_PLACE)) window.LQ_PLACEMENT.unkeep(KEYBOARD_PLACE);
-    else window.LQ_PLACEMENT.keep(KEYBOARD_PLACE, spot);
-    this.refreshPin();
-  }
-
   // The keyboard must be reachable wherever it lands. Docked at the foot of a
   // narrow screen it can cover the field, so the page moves the field clear
   // of it; on a wide screen it opens under the box and can fall past the

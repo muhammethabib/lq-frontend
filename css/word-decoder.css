@@ -434,6 +434,10 @@
    ========================================================= */
 
 .word-decoder-surface .decoder-results {
+  /* The claret line across the top is absolutely placed -- it lies over the
+     card's edge rather than above its content -- so the card has to be what
+     it is placed against. Without this it goes to the top of the page. */
+  position: relative;
   width: min(100% - 48px, 1300px);
   margin: 32px auto 0;
   background: var(--lq-paper);
@@ -443,6 +447,45 @@
   overflow: hidden;
 }
 .word-decoder-surface .results-accent { height: 4px; background: var(--lq-red); }
+
+/* ---------- nothing fitted the description ---------- */
+
+/* The same card as the answer it stands in for, so the claret line across the
+   top reads as the same line and the surface does not change shape between a
+   search that found something and one that did not. */
+.word-decoder-surface .decoder-empty {
+  position: relative;
+  width: min(100% - 48px, 1300px);
+  margin: 32px auto 0;
+  background: var(--lq-paper);
+  border: 1px solid var(--lq-line);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, .05);
+  overflow: hidden;
+}
+
+.word-decoder-surface .decoder-empty-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  padding: 30px 32px 34px;
+}
+
+/* The words before the pattern stand off it rather than the line spacing
+   them, so the pill sits against them however long the sentence is. */
+.word-decoder-surface .decoder-empty-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--lq-muted);
+}
+
 
 .word-decoder-surface .decoder-results-header {
   display: flex;

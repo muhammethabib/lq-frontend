@@ -26,6 +26,17 @@
 
 window.LQ_DECODER_RESULTS = {
   pattern: { display: "حا٭ر" },
+  // What the endpoint offers when nothing fits the description: the readings
+  // whose spelling comes nearest to it. Fixed here rather than derived from
+  // the pattern, so the empty answer reads the same whatever is searched
+  // while there is no backend to work them out.
+  suggestions: [
+    { ottoman: "حاضر", latin: "hâzır" },
+    { ottoman: "حاذر", latin: "hâzir" },
+    { ottoman: "حافر", latin: "hâfir" },
+    { ottoman: "حاسر", latin: "hâsir" },
+    { ottoman: "حاشر", latin: "hâşir" }
+  ],
   totals: { records: 22, dictionaries: 9, volumes: 17 },
   expansions: [
     { key: "pronunciation", count: 14 },

@@ -20,7 +20,8 @@ const WILDCARD_KEYS = ["*", "\u066D"];
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
     "strip", "clear", "rowHint", "results", "resultsTable", "pattern",
-    "recordCount", "dictionaryCount", "expansionRow", "error", "groupCopy"
+    "recordCount", "dictionaryCount", "expansionRow", "error", "groupCopy",
+    "empty", "emptyPattern", "suggestions"
   ]
 
   static values = {
@@ -111,12 +112,16 @@ class WordDecoderController extends Stimulus.Controller {
         if (cells[index]) this.writeCell(cells[index], content);
       });
       this.lastPattern = this.readPattern();
-      this.runSearch(null);
+      // The empty answer is fed straight in rather than searched for: there is
+      // no backend to return nothing yet, and the state is what is being shown.
+      if (state === "no-results") this.receive(this.emptySample(), null);
+      else this.runSearch(null);
     } else {
       this.clearStrip();
       this.results = null;
       this.lastPattern = null;
       this.resultsTarget.hidden = true;
+      this.emptyTarget.hidden = true;
       this.errorTarget.hidden = true;
     }
     this.refreshClear();
@@ -893,6 +898,12 @@ class WordDecoderController extends Stimulus.Controller {
     this.results = results;
     this.activeExpansion = expansion || null;
     this.errorTarget.hidden = true;
+
+    // Nothing fitted the description: the table, the counts and the offers to
+    // widen have nothing to describe, so the empty answer takes their place.
+    if (!this.foundAnything(results)) { this.showEmpty(); return; }
+
+    this.emptyTarget.hidden = true;
     this.resultsTarget.hidden = false;
 
     const totals = results.totals || {};
@@ -904,11 +915,73 @@ class WordDecoderController extends Stimulus.Controller {
     this.renderResults();
   }
 
+  foundAnything(results) {
+    return (results.groups || []).some((group) => (group.rows || []).length > 0);
+  }
+
+  // The pattern said back, and the readings whose spelling comes nearest to
+  // it. The pill is the same one the results header carries, so a reader sees
+  // the description they gave in the shape they gave it.
+  showEmpty() {
+    this.resultsTarget.hidden = true;
+    this.emptyTarget.hidden = false;
+    this.renderPattern(this.emptyPatternTarget);
+    this.renderSuggestions();
+  }
+
+  renderSuggestions() {
+    const offered = (this.results && this.results.suggestions) || [];
+    this.suggestionsTarget.innerHTML = offered.map((one, index) => `
+      <li class="suggestion">
+        <span class="suggestion-number">${index + 1}.</span>
+        <span class="suggestion-pair">
+          <button type="button" class="btn suggestion-word suggestion-ottoman" data-direction="rtl"
+                  data-suggestion="${this.escape(one.ottoman)}"
+                  data-action="click->word-decoder#chooseSuggestion">${this.escape(one.ottoman)}</button>
+          <button type="button" class="btn suggestion-word suggestion-latin"
+                  data-suggestion="${this.escape(one.ottoman)}"
+                  data-action="click->word-decoder#chooseSuggestion">${this.escape(one.latin)}</button>
+        </span>
+      </li>`).join("");
+  }
+
+  // Either half of a pair asks the same question: read the word this way.
+  // The boxes are filled with that spelling and the search is run again, so
+  // the reader can see where the offer came from and go on working from it.
+  chooseSuggestion(event) {
+    event.preventDefault();
+    const word = event.currentTarget.dataset.suggestion || "";
+    const letters = Array.from(word);
+    if (!letters.length) return;
+    this.buildStrip(letters.length);
+    const cells = Array.from(this.stripTarget.querySelectorAll(".slot-cell"));
+    letters.forEach((char, index) => {
+      if (cells[index]) this.writeCell(cells[index], { char });
+    });
+    this.refreshClear();
+    this.lastPattern = this.readPattern();
+    this.runSearch(null);
+  }
+
+  // What the endpoint returns when nothing in any dictionary fits: no rows,
+  // and the spellings nearest the one that was described.
+  emptySample() {
+    const sample = window.LQ_DECODER_RESULTS || {};
+    return {
+      pattern: sample.pattern,
+      totals: { records: 0, dictionaries: 0 },
+      expansions: [],
+      groups: [],
+      suggestions: sample.suggestions || []
+    };
+  }
+
   // A failure gets its own element, so it is not overwritten the next time the
   // language sweep rewrites the empty-state copy.
   showError() {
     this.errorTarget.hidden = false;
     this.resultsTarget.hidden = true;
+    this.emptyTarget.hidden = true;
   }
 
   // ==================== rendering ====================
@@ -938,11 +1011,12 @@ class WordDecoderController extends Stimulus.Controller {
 
   // The pattern is shown slot by slot rather than as a string, so the reader
   // recognises the shape they described.
-  renderPattern() {
+  renderPattern(into) {
     if (!this.results) return;
+    const target = into || this.patternTarget;
     const pattern = this.readPattern();
     const wildcards = (window.LQ_KEYBOARD_LAYOUT || {}).wildcards || {};
-    this.patternTarget.innerHTML = this.patternRuns(pattern)
+    target.innerHTML = this.patternRuns(pattern)
       .map(({ slot, letters }) => {
         if (slot.kind === "letter") {
           return `<span class="pattern-slot" data-kind="letter">${this.escape(letters.join(""))}</span>`;

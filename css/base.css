@@ -949,3 +949,113 @@ body.has-panel-room::after {
   .keyboard-pin-wrap,
   .keyboard-pin-flag { display: none; }
 }
+
+
+/* =========================================================
+   Did you mean?
+   An Ottoman word can be written several ways, so a search
+   that found nothing offers the spellings nearest the one
+   that was tried. The search bar and the Word Decoder both
+   answer that way, so the list is drawn once here.
+   ========================================================= */
+
+.suggestions {
+  width: 336px;
+  max-width: calc(100% - 32px);
+}
+
+.suggestions-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.8px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--lq-sapphire);
+}
+
+.suggestions-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 56px;
+}
+
+.suggestion-number {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 2;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 700;
+  color: #5d718c;
+}
+
+.suggestion-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 18px;
+  min-height: 52px;
+  padding: 4px 15px;
+}
+
+.suggestion-word {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid;
+  border-radius: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.suggestion-word:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-ottoman {
+  justify-self: end;
+  min-width: 88px;
+  padding: 5px 16px 8px;
+  border-color: var(--lq-osm-border);
+  background: var(--lq-osm-bg);
+  color: var(--lq-red);
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  direction: rtl;
+  text-align: right;
+}
+
+.suggestion-ottoman:hover { background: #ffe4e6; color: var(--lq-red); border-color: #fecdd3; }
+
+.suggestion-latin {
+  justify-self: start;
+  min-width: 74px;
+  text-align: left;
+  padding: 8px 14px;
+  border-color: var(--lq-line);
+  background: var(--lq-paper-soft);
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.suggestion-latin:hover { background: var(--lq-lat-bg); color: var(--lq-focus-latin); border-color: var(--lq-lat-border); }
+
+@media (prefers-reduced-motion: reduce) {
+  .suggestion-word:hover { transform: none; }
+}

@@ -286,6 +286,31 @@
           </div>
         </section>
 
+        <!-- Nothing fitted the description. The pattern is said back in the
+             same pill the results header uses, and the readings whose
+             spelling comes nearest to it are offered: an Ottoman word can be
+             written several ways, so the answer is often one of these. -->
+        <section class="decoder-empty" data-word-decoder-target="empty" hidden
+                 aria-labelledby="decoderEmptyHeading">
+          <div class="results-accent"></div>
+          <div class="decoder-empty-body">
+            <p class="decoder-empty-line">
+              <span data-i18n="noResultsFor">No results found for</span>
+              <span class="pattern-pill" data-word-decoder-target="emptyPattern"
+                    data-direction="rtl"></span>
+            </p>
+
+            <div class="suggestions">
+              <h2 class="suggestions-title" id="decoderEmptyHeading"
+                  data-i18n="didYouMean">Did you mean?</h2>
+              <ol class="suggestions-list" data-word-decoder-target="suggestions"></ol>
+            </div>
+
+            <button type="button" class="btn library-button"
+                    data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+          </div>
+        </section>
+
         <p class="decoder-hint" data-word-decoder-target="error" hidden data-i18n="searchFailed">
           The search could not be completed. Please try again.
         </p>

@@ -307,7 +307,13 @@ class SearchKeyboardController extends Stimulus.Controller {
   // ==================== moving it out of the way ====================
 
   startDrag(event) {
-    if (event.target.closest(".search-keyboard-button")) return;
+    // Below the width at which the stylesheet pins the panel to the foot of
+    // the screen there is nowhere to drag it to.
+    if (window.matchMedia(SEARCH_KEYBOARD_DOCK_QUERY).matches) return;
+    // Every control in the bar, not only the two in the right-hand corner:
+    // the pin stands in the left one, and a press on it was starting a drag
+    // and then parking the panel again where it had just been unparked.
+    if (event.target.closest("button")) return;
     event.preventDefault();
     this.hintTarget.setPointerCapture(event.pointerId);
     const bounds = this.element.getBoundingClientRect();

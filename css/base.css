@@ -769,7 +769,9 @@ body.has-panel-room::after {
    stylesheets.
    ========================================================= */
 
-.keyboard-pin-wrap { position: relative; display: inline-flex; }
+/* Not positioned: the word below is placed against the panel, which is what
+   moved, so it can be centred on it and cannot hang off its edge. */
+.keyboard-pin-wrap { display: inline-flex; }
 
 /* The pin shows only once the panel has been parked, and it is claret the
    whole time it is there: while it shows, this panel is fixed where the
@@ -853,9 +855,10 @@ body.has-panel-room::after {
 .keyboard-pin-flag {
   position: absolute;
   bottom: calc(100% + 9px);
-  /* From the pin's own edge rather than centred on it: the word is longer
-     than the button by some way, and centred it hangs off the panel. */
-  left: -6px;
+  /* Centred on the panel. It is the panel that moved, and the panel is wide
+     enough that the word is never pushed off an edge -- which is what
+     centring it on the pin, hard against the panel's corner, did. */
+  left: 50%;
   z-index: 2;
   padding: 3px 9px;
   border-radius: 999px;
@@ -866,6 +869,9 @@ body.has-panel-room::after {
   letter-spacing: .04em;
   white-space: nowrap;
   box-shadow: 0 8px 18px -10px rgba(8, 37, 103, .6);
+  /* One line: a word that confirms is read at a glance or not at all. */
+  text-align: center;
+  transform: translateX(-50%);
   animation: keyboard-flag-in .2s ease-out both;
   cursor: default;
 }
@@ -874,8 +880,8 @@ body.has-panel-room::after {
 .keyboard-pin-flag[hidden] { display: none; }
 
 @keyframes keyboard-flag-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translate(-50%, 4px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 /* What the pin says when the pointer reaches it. Bootstrap's tooltip, but
@@ -939,5 +945,6 @@ body.has-panel-room::after {
 /* On a narrow screen both keyboards are pinned to the foot of the window and
    there is nowhere to move them to, so none of this has anything to say. */
 @media (max-width: 767.98px) {
-  .keyboard-pin-wrap { display: none; }
+  .keyboard-pin-wrap,
+  .keyboard-pin-flag { display: none; }
 }

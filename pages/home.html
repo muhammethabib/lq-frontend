@@ -1336,8 +1336,6 @@
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Pinned" data-i18n-aria="keyboardPinnedState" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
-          <span class="keyboard-pin-flag" data-ottoman-keyboard-target="flag" role="status"
-                data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
         </span>
       </span>
 
@@ -1366,6 +1364,13 @@
          data-ottoman-keyboard-target="basicPanel"></div>
     <div class="keyboard-panel" data-panel="advanced"
          data-ottoman-keyboard-target="advancedPanel"></div>
+
+    <!-- The word that confirms a parking. A child of the panel rather than of
+         the pin: it is the panel that moved, so it is centred on the panel,
+         and the panel is the one ancestor whose box is certain to be the
+         whole of it. -->
+    <span class="keyboard-pin-flag" data-ottoman-keyboard-target="flag" role="status"
+          data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
   </div>
 
 
@@ -1391,8 +1396,6 @@
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Pinned" data-i18n-aria="keyboardPinnedState" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
-          <span class="keyboard-pin-flag" data-search-keyboard-target="flag" role="status"
-                data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
         </span>
       </span>
       <span class="search-keyboard-teach">
@@ -1420,6 +1423,10 @@
 
     <!-- Written by the controller from js/search_keyboard_layout.js -->
     <div class="search-keyboard-rows" data-search-keyboard-target="rows"></div>
+
+    <!-- See the note on the decoder keyboard's own -->
+    <span class="keyboard-pin-flag" data-search-keyboard-target="flag" role="status"
+          data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
   </div>
 
 

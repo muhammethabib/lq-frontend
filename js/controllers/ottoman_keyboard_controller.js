@@ -448,7 +448,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.fix(KEYBOARD_PLACE, spot);
     this.refreshPin();
     if (arriving) this.flashPin();
-    this.showFlag(window.LQ.translate("keyboardPinnedState", "Pinned"));
+    this.showFlag();
   }
 
   // Back to the place the page picked, with the decision dropped: the panel
@@ -456,10 +456,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
   goHome() {
     const wasParked = !!this.placedSpot();
     window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
+    this.hideFlag();
     if (wasParked) this.retirePin(); else this.refreshPin();
-    // Said every time, not only after a pin: a panel that springs back from a
-    // place it was refused has to say why it moved.
-    this.showFlag(window.LQ.translate("keyboardHomeState", "Default position"));
     if (!this.home) return;
     this.element.classList.add("is-springing");
     this.moveTo(this.home);
@@ -523,10 +521,11 @@ class OttomanKeyboardController extends Stimulus.Controller {
   }
 
   // The word for what just happened, over the pin it happened to. Above the
-  // panel where there is room, under the pin where there is not.
-  showFlag(word) {
+  // panel where there is room, under the pin where there is not. Said on the
+  // parking and nowhere else: going back to the place the page picks is what
+  // the reader asked the pin for, and they can see it happen.
+  showFlag() {
     if (!this.hasFlagTarget) return;
-    this.flagTarget.textContent = word;
     this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < KEYBOARD_FLAG_ROOM_PX);
     this.flagTarget.hidden = false;
     clearTimeout(this.flagTimer);

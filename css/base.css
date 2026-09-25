@@ -1059,3 +1059,18 @@ body.has-panel-room::after {
 @media (prefers-reduced-motion: reduce) {
   .suggestion-word:hover { transform: none; }
 }
+
+
+/* =========================================================
+   The line that says what was not found
+   English puts the words before the term, Turkish after it.
+   The line carries a slot on each side; the one that language
+   does not use comes out of the line rather than spacing it.
+   Both empty answers, the search bar's and the decoder's, say
+   it the same way.
+   ========================================================= */
+
+.nr-before:empty,
+.nr-after:empty { display: none; }
+.nr-before:not(:empty) { margin-right: 8px; }
+.nr-before:empty ~ .nr-after { margin-left: 8px; }

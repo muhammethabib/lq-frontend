@@ -612,7 +612,10 @@ window.LQ_TRANSLATIONS = {
 
     jumpTo: "Git:",
     jumpToAria: "Bir gruba git",
-    noResultsFor: "Şunun için sonuç bulunamadı:",
+    // Turkish says it after the term, English before it, so the side this
+    // language does not use is left empty and drops out of the line.
+    noResultsFor: "",
+    noResultsForAfter: "için sonuç bulunamadı.",
     didYouMean: "Şunlardan birini mi aradınız?",
     // --- The 2026 innovations, read under the main page ---
     innovationsLabel: "2026 yenilikleri",

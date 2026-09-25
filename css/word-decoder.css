@@ -472,13 +472,10 @@
   padding: 30px 32px 34px;
 }
 
-/* The words before the pattern stand off it rather than the line spacing
-   them, so the pill sits against them however long the sentence is. */
 .word-decoder-surface .decoder-empty-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   margin: 0;
   font-size: 15px;
   font-weight: 600;

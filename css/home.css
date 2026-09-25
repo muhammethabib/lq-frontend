@@ -1979,10 +1979,6 @@
   font-weight: 600;
   color: var(--lq-muted);
 }
-/* The words before the term stand off it rather than the line spacing them
-   both, so a line with nothing before the term is not left with a gap. */
-.home-surface .no-matches-line > span:not(:empty) { margin-right: 8px; }
-
 .home-surface .no-matches-term {
   position: relative;
   top: 2px;

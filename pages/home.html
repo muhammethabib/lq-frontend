@@ -294,10 +294,12 @@
                  aria-labelledby="decoderEmptyHeading">
           <div class="results-accent"></div>
           <div class="decoder-empty-body">
+            <!-- A slot on each side: see the note on the search bar's own -->
             <p class="decoder-empty-line">
-              <span data-i18n="noResultsFor">No results found for</span>
+              <span class="nr-before" data-i18n="noResultsFor">No results found for</span>
               <span class="pattern-pill" data-word-decoder-target="emptyPattern"
                     data-direction="rtl"></span>
+              <span class="nr-after" data-i18n="noResultsForAfter">.</span>
             </p>
 
             <div class="suggestions">
@@ -782,9 +784,13 @@
            spellings closest to it are offered: an Ottoman word can be written
            several ways, so the answer is nearly always one of these. -->
       <div class="no-matches" data-home-target="noMatches" hidden>
+        <!-- English puts the words before the term and Turkish after it, so
+             the line carries a slot on each side and the language sweep fills
+             whichever one that language uses. -->
         <p class="no-matches-line" data-home-target="noMatchesLine">
-          <span data-i18n="noResultsFor">No results found for</span>
+          <span class="nr-before" data-i18n="noResultsFor">No results found for</span>
           <b class="no-matches-term" data-direction="rtl" data-home-target="noMatchesTerm"></b>
+          <span class="nr-after" data-i18n="noResultsForAfter">.</span>
         </p>
         <p class="no-matches-line" data-home-target="searchFailed" hidden
            data-i18n="searchFailed">The search could not be completed. Please try again.</p>

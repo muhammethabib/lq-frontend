@@ -706,8 +706,8 @@
 
 /* Which of the two wordings the press carries. */
 .home-surface .fuzzy-text-empty { display: none; }
-.home-surface.state-no-matches .fuzzy-text-found { display: none; }
-.home-surface.state-no-matches .fuzzy-text-empty { display: flex; }
+.home-surface.state-no-matches .results-surface .fuzzy-text-found { display: none; }
+.home-surface.state-no-matches .results-surface .fuzzy-text-empty { display: flex; }
 
 @media (max-width: 767.98px) {
   .home-surface .fuzzy-row { flex-direction: column; gap: 14px; }
@@ -1996,24 +1996,28 @@
 /* The question and the list of spellings under it are the same component on
    the Word Decoder's own empty answer, so they are drawn in css/base.css. */
 
+/* Every rule below names the search bar's own answer through .results-surface.
+   The Word Decoder sits inside the same surface and carries a results table, a
+   fuzzy row and a library button of the same names, and this state is not its
+   state: it has an empty answer of its own. */
 /* With nothing to list, the column headings and the alternative spellings
    would be headings over an empty table. */
 /* Nothing matched, so the heading over the list, the term repeated above it
    and the two counts have nothing to describe: the surface says so once, in
    the line below, exactly as the reference does. */
-.home-surface.state-no-matches .results-table-scroll,
-.home-surface.state-no-matches .results-header { display: none; }
+.home-surface.state-no-matches .results-surface .results-table-scroll,
+.home-surface.state-no-matches .results-surface .results-header { display: none; }
 
 /* With no list to sit under, the question moves to the foot of the answer
    and stands alone, as the reference has it. */
-.home-surface.state-no-matches .fuzzy-container {
+.home-surface.state-no-matches .results-surface .fuzzy-container {
   order: 2;
   margin-top: 28px;
   padding: 0 32px 32px;
 }
-.home-surface.state-no-matches .fuzzy-container::before { display: none; }
-.home-surface.state-no-matches .fuzzy-button { display: none; }
-.home-surface.state-no-matches .fuzzy-row .library-button { position: static; transform: none; }
+.home-surface.state-no-matches .results-surface .fuzzy-container::before { display: none; }
+.home-surface.state-no-matches .results-surface .fuzzy-button { display: none; }
+.home-surface.state-no-matches .results-surface .fuzzy-row .library-button { position: static; transform: none; }
 .home-surface.state-no-matches .results-surface { display: flex; flex-direction: column; }
 .home-surface.state-no-matches .no-matches { order: 1; padding-bottom: 0; }
 

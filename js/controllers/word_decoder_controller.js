@@ -114,9 +114,14 @@ class WordDecoderController extends Stimulus.Controller {
       this.lastPattern = this.readPattern();
       // The empty answer is fed straight in rather than searched for: there is
       // no backend to return nothing yet, and the state is what is being shown.
-      if (state === "no-results") this.receive(this.emptySample(), null);
+      // It sticks, too: a reader looking at this screen searches their own
+      // descriptions against it, and every one of them has to come back
+      // empty, with their own pattern said back to them.
+      this.emptyState = state === "no-results";
+      if (this.emptyState) this.receive(this.emptySample(), null);
       else this.runSearch(null);
     } else {
+      this.emptyState = false;
       this.clearStrip();
       this.results = null;
       this.lastPattern = null;
@@ -888,7 +893,10 @@ class WordDecoderController extends Stimulus.Controller {
       // No backend yet: returning false from beforeSend cancels the request and
       // the page is fed sample data instead. Delete beforeSend once the route
       // exists; success already handles the real response shape.
-      beforeSend: () => { this.receive(window.LQ_DECODER_RESULTS, expansion); return false; },
+      beforeSend: () => {
+        this.receive(this.emptyState ? this.emptySample() : window.LQ_DECODER_RESULTS, expansion);
+        return false;
+      },
       success: (response) => this.receive(response, expansion),
       error: () => this.showError()
     });

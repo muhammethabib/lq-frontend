@@ -43,3 +43,7 @@ same look with the patterns above.
 
 The repository owner communicates in Turkish. Reply in Turkish; keep code,
 names and comments in English.
+
+Anything written for the development team is English: tickets, issue and
+pull request text, video and demo scripts, release notes. The interface's
+own Turkish copy still lives in `js/translations.js`.

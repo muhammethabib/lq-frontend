@@ -1063,14 +1063,18 @@ body.has-panel-room::after {
 
 /* =========================================================
    The line that says what was not found
-   English puts the words before the term, Turkish after it.
-   The line carries a slot on each side; the one that language
-   does not use comes out of the line rather than spacing it.
+   English puts the words before the term, Turkish after it,
+   so the line carries a slot on each side and each language
+   fills the one it uses. Whichever is used takes a whole line
+   to itself, leaving the term a line of its own: both come out
+   centred, so the term sits on the card's own middle whichever
+   language is being read, on the same axis as the question and
+   the list below it, and neither line hangs off to one side.
    Both empty answers, the search bar's and the decoder's, say
    it the same way.
    ========================================================= */
 
 .nr-before:empty,
 .nr-after:empty { display: none; }
-.nr-before:not(:empty) { margin-right: 8px; }
-.nr-before:empty ~ .nr-after { margin-left: 8px; }
+.nr-before:not(:empty) { flex: 0 0 100%; text-align: center; }
+.nr-before:empty ~ .nr-after { flex: 0 0 100%; text-align: center; }

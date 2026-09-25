@@ -32,8 +32,10 @@ const KEYBOARD_SNAP_PX = 40;
 // The name this panel's place is held under.
 const KEYBOARD_PLACE = "decoder";
 
-// The room the card that offers to keep a place needs below the panel.
-const KEYBOARD_RECALL_ROOM_PX = 86;
+// The room the word that says the panel is fixed needs above it, and how
+// long it stays before it has been read.
+const KEYBOARD_FLAG_ROOM_PX = 44;
+const KEYBOARD_FLAG_MS = 1900;
 
 // How long the pin wears the class that pops it in and sends its two rings
 // out: the stylesheet's own animations, run to the end.
@@ -53,7 +55,7 @@ const ARROW_RIGHT = '<svg class="panel-switch-arrow" viewBox="0 0 24 24" fill="n
   '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
 class OttomanKeyboardController extends Stimulus.Controller {
-  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "bar", "pin", "recall"]
+  static targets = ["basicPanel", "advancedPanel", "wildcardRow", "bar", "pin", "flag", "remember"]
   static values = { open: { type: Boolean, default: false } }
 
   connect() {
@@ -94,7 +96,10 @@ class OttomanKeyboardController extends Stimulus.Controller {
 
     // A letter written on the reader's own keyboard shows its key going down
     // here too, and retires the line that says the board takes it.
-    this.onEcho = (event) => this.echo((event.detail || {}).char);
+    this.onEcho = (event) => {
+      const detail = event.detail || {};
+      if (detail.wildcard) this.echoWildcard(detail.wildcard); else this.echo(detail.char);
+    };
     document.addEventListener("ottoman-keyboard:echo", this.onEcho);
   }
 
@@ -148,13 +153,20 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // ==================== the echo of the reader's own keyboard ====================
 
   // The key that writes a letter is shown pressed for as long as a press of
-  // one's own lasts. Only a letter key can echo: a skeleton stands for
-  // several letters and no single key on the board wrote it.
+  // one's own lasts. A skeleton cannot echo: it stands for several letters
+  // and no single key on the board wrote it.
   echo(letter) {
     if (!letter) return;
     const panel = this.advancedPanelTarget.classList.contains("is-active")
       ? this.advancedPanelTarget : this.basicPanelTarget;
     this.light(panel.querySelector(`.key[data-kind="letter"][data-char="${CSS.escape(letter)}"]`));
+  }
+
+  // The star the reader typed lights the star on the board, for the same
+  // reason: the two boards are meant to read as one.
+  echoWildcard(name) {
+    if (!name || !this.hasWildcardRowTarget) return;
+    this.light(this.wildcardRowTarget.querySelector(`[data-wildcard="${CSS.escape(name)}"]`));
   }
 
   // A key lights claret for a moment when it writes, however it was pressed.
@@ -300,7 +312,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     if (!this.openValue) return;
     this.openValue = false;
     this.element.classList.remove("is-open");
-    this.hideRecall();
+    this.hideFlag();
     this.anchor = null;
     this.below = null;
     this.owner = null;
@@ -374,13 +386,22 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // A spring still easing back would make the panel lag behind the pointer.
     this.element.classList.remove("is-springing");
     this.element.classList.add("is-dragging");
-    this.hideRecall();
+    this.hideFlag();
   }
 
   moveDrag(event) {
     if (!this.drag) return;
-    this.moveTo({ left: this.drag.left + event.clientX - this.drag.x,
-                  top: this.drag.top + event.clientY - this.drag.y });
+    this.moveTo(this.dragSpot(event));
+  }
+
+  // Where the pointer has taken the panel, never past an edge of the window:
+  // a panel dragged off the top cannot be dragged back, and the place is
+  // remembered now, so it would be off the top next time as well.
+  dragSpot(event) {
+    return window.LQ_PLACEMENT.clamp(
+      { left: this.drag.left + event.clientX - this.drag.x,
+        top: this.drag.top + event.clientY - this.drag.y },
+      this.element.offsetWidth, this.element.offsetHeight);
   }
 
   // Let go near where it started and it goes back: the reader was putting it
@@ -388,8 +409,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // been placed, and nothing the page does moves it again.
   endDrag(event) {
     if (!this.drag) return;
-    const spot = { left: this.drag.left + event.clientX - this.drag.x,
-                   top: this.drag.top + event.clientY - this.drag.y };
+    const spot = this.dragSpot(event);
     this.drag = null;
     this.element.classList.remove("is-dragging");
     if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < KEYBOARD_SNAP_PX) {
@@ -402,14 +422,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.hold(KEYBOARD_PLACE, spot);
     this.refreshPin();
     if (arriving) this.flashPin();
-    this.offerRecall();
+    this.showFlag();
   }
 
   // Back to the place the page picked, with the decision dropped: the panel
   // follows the boxes again from here.
   goHome() {
     window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
-    this.hideRecall();
     this.refreshPin();
     if (!this.home) return;
     this.element.classList.add("is-springing");
@@ -417,21 +436,20 @@ class OttomanKeyboardController extends Stimulus.Controller {
     setTimeout(() => this.element.classList.remove("is-springing"), 400);
   }
 
-  // ==================== keeping the place ====================
+  // ==================== the pin ====================
 
-  // The pin only appears once there is a place to keep, so a panel the reader
-  // has not touched looks exactly as it did.
+  // The pin only shows once the panel has been parked, so a keyboard nobody
+  // has touched looks exactly as it did. It is claret the whole time it is
+  // there: while it shows, this panel is fixed where the reader left it.
   refreshPin() {
     if (!this.hasPinTarget) return;
-    const kept = window.LQ_PLACEMENT.kept(KEYBOARD_PLACE);
     this.pinTarget.hidden = !this.placedSpot();
-    this.pinTarget.classList.toggle("is-kept", kept);
-    this.pinTarget.setAttribute("aria-pressed", kept ? "true" : "false");
-    const label = kept
-      ? this.translate("keyboardPinKept", "Position saved \u2014 put it back")
-      : this.translate("keyboardPinKeep", "Always open it here");
-    window.LQ.retitle(this.pinTarget, label);
-    this.pinTarget.setAttribute("aria-label", label);
+    if (this.hasRememberTarget) {
+      const kept = window.LQ_PLACEMENT.kept(KEYBOARD_PLACE);
+      this.rememberTarget.setAttribute("aria-pressed", kept ? "true" : "false");
+      this.rememberTarget.classList.toggle("is-on", kept);
+    }
+    if (this.pinTarget.hidden) this.hideFlag();
   }
 
   // A control that appears quietly in a corner is a control nobody sees.
@@ -445,41 +463,37 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.pinArrival = setTimeout(() => this.pinTarget.classList.remove("is-arriving"), KEYBOARD_PIN_ARRIVAL_MS);
   }
 
+  // The word for what just happened, over the pin that now says it. Above the
+  // panel where there is room for it, under the pin where there is not.
+  showFlag() {
+    if (!this.hasFlagTarget) return;
+    const room = this.element.getBoundingClientRect().top;
+    this.flagTarget.classList.toggle("is-below", room < KEYBOARD_FLAG_ROOM_PX);
+    this.flagTarget.hidden = false;
+    clearTimeout(this.flagTimer);
+    this.flagTimer = setTimeout(() => this.hideFlag(), KEYBOARD_FLAG_MS);
+  }
+
+  hideFlag() {
+    if (this.hasFlagTarget) this.flagTarget.hidden = true;
+  }
+
+  // Pressing the pin is how the panel goes back where the page would put it.
   togglePin(event) {
     event.preventDefault();
-    if (window.LQ_PLACEMENT.kept(KEYBOARD_PLACE)) { this.goHome(); return; }
-    this.keepSpot(event);
+    this.goHome();
   }
 
-  // Offered once, the first time the panel is put somewhere of the reader's
-  // own choosing. Answered either way, it does not come back.
-  offerRecall() {
-    if (!this.hasRecallTarget) return;
-    if (!window.LQ_PLACEMENT.mayOffer(KEYBOARD_PLACE)) return;
-    window.LQ_PLACEMENT.offered(KEYBOARD_PLACE);
-    // It sits under the panel, or over it when the panel is low enough that
-    // under would be off the bottom of the window.
-    const room = window.innerHeight - this.element.getBoundingClientRect().bottom;
-    this.recallTarget.classList.toggle("is-above", room < KEYBOARD_RECALL_ROOM_PX);
-    this.recallTarget.hidden = false;
-  }
-
-  hideRecall() {
-    if (this.hasRecallTarget) this.recallTarget.hidden = true;
-  }
-
-  keepSpot(event) {
+  // The one choice the pin carries, offered when the pointer reaches it: keep
+  // this place for the next visit as well. Pressed again, it is given up --
+  // without moving the panel, which the reader did not ask for.
+  toggleRemember(event) {
     event.preventDefault();
     const spot = this.placedSpot();
-    if (spot) window.LQ_PLACEMENT.keep(KEYBOARD_PLACE, spot);
-    this.hideRecall();
+    if (!spot) return;
+    if (window.LQ_PLACEMENT.kept(KEYBOARD_PLACE)) window.LQ_PLACEMENT.unkeep(KEYBOARD_PLACE);
+    else window.LQ_PLACEMENT.keep(KEYBOARD_PLACE, spot);
     this.refreshPin();
-  }
-
-  refuseSpot(event) {
-    event.preventDefault();
-    window.LQ_PLACEMENT.answered(KEYBOARD_PLACE);
-    this.hideRecall();
   }
 
   // The keyboard must be reachable wherever it lands. Docked at the foot of a

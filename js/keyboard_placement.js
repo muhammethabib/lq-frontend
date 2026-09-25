@@ -16,10 +16,6 @@
 // sizes, so a place found for one says nothing about the other.
 const PLACEMENT_PREFIX = "lq.keyboard-place.";
 
-// How many times the offer to keep a position may go unanswered before it
-// stops asking. Saying nothing is an answer too.
-const PLACEMENT_OFFER_LIMIT = 3;
-
 // Nothing may sit closer than this to an edge of the window: a keyboard half
 // off the screen cannot be dragged back on.
 const PLACEMENT_MARGIN = 8;
@@ -60,27 +56,15 @@ window.LQ_PLACEMENT = {
   keep(name, spot) {
     this.write(`${PLACEMENT_PREFIX}${name}.kept`, true);
     this.hold(name, spot);
-    this.answered(name);
   },
 
-  // ==================== the offer ====================
-
-  // The offer is made once a session and gives up after a few unanswered
-  // sessions. Answering it, either way, ends it for good.
-  mayOffer(name) {
-    if (this.kept(name)) return false;
-    if (this.offeredThisSession && this.offeredThisSession[name]) return false;
-    return (this.read(`${PLACEMENT_PREFIX}${name}.asked`) || 0) < PLACEMENT_OFFER_LIMIT;
+  // Only the keeping is given up. The keyboard stays where it is for the rest
+  // of the session -- the reader asked for one less thing, not for their
+  // panel to jump back under their hands.
+  unkeep(name) {
+    this.remove(`${PLACEMENT_PREFIX}${name}.kept`);
+    this.remove(`${PLACEMENT_PREFIX}${name}`);
   },
-
-  offered(name) {
-    this.offeredThisSession = this.offeredThisSession || {};
-    this.offeredThisSession[name] = true;
-    this.write(`${PLACEMENT_PREFIX}${name}.asked`,
-      (this.read(`${PLACEMENT_PREFIX}${name}.asked`) || 0) + 1);
-  },
-
-  answered(name) { this.write(`${PLACEMENT_PREFIX}${name}.asked`, PLACEMENT_OFFER_LIMIT); },
 
   // ==================== staying on the screen ====================
 

@@ -13,6 +13,10 @@
 // written joined, apart, or the reader cannot tell. That is a real reading
 // clue in Ottoman script, so it is sent with the pattern rather than dropped.
 
+// The characters that mean "a letter I cannot read" on the reader's own
+// keyboard: the star they have, and the Arabic one they may be typing.
+const WILDCARD_KEYS = ["*", "\u066D"];
+
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
     "strip", "clear", "rowHint", "results", "resultsTable", "pattern",
@@ -527,6 +531,14 @@ class WordDecoderController extends Stimulus.Controller {
     if (event.key === "Enter") { event.preventDefault(); this.submit(event); return; }
     if (event.ctrlKey || event.metaKey) return;
 
+    // The star on the reader's own keyboard writes the same mark the star on
+    // the board writes, drawn rather than typed: a letter I cannot read.
+    if (WILDCARD_KEYS.includes(event.key)) {
+      event.preventDefault();
+      this.writeWildcard(input, "any");
+      return;
+    }
+
     const letter = this.letterFor(event.key, event.shiftKey, event.altKey);
     if (!letter) return;
     event.preventDefault();
@@ -534,6 +546,16 @@ class WordDecoderController extends Stimulus.Controller {
     // The key that writes this letter is shown going down on the on-screen
     // keyboard as well, so the two boards read as one.
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:echo", { detail: { char: letter } }));
+    this.afterWrite(input);
+  }
+
+  // A wildcard written into the box the caret is in, from wherever it came:
+  // the board's own key, the reader's keyboard, or a paste.
+  writeWildcard(input, name) {
+    this.writeCell(input.closest(".slot-cell"), { wildcard: name });
+    // The key that writes it is shown going down on the board as well, so the
+    // two read as one.
+    document.dispatchEvent(new CustomEvent("ottoman-keyboard:echo", { detail: { wildcard: name } }));
     this.afterWrite(input);
   }
 
@@ -561,6 +583,13 @@ class WordDecoderController extends Stimulus.Controller {
   handleInput(event) {
     const input = event.currentTarget;
     const cell = input.closest(".slot-cell");
+    // A star that arrives any other way -- pasted, or from a board that
+    // writes it itself -- becomes the same drawn mark.
+    if (WILDCARD_KEYS.includes(input.value)) {
+      input.value = "";
+      this.writeWildcard(input, "any");
+      return;
+    }
     if (input.value) { this.forgetMark(cell); delete cell.dataset.offered; }
     this.refreshClear();
     if (!input.value) return;

@@ -763,47 +763,58 @@ body.has-panel-room::after {
 
 /* =========================================================
    Where the reader put a keyboard
-   Both keyboards float, both are dragged by their top bar and
-   both offer to keep the place they were left in. The controls
-   that do it are the same on either, so they are drawn once
-   here rather than twice in the two keyboard stylesheets.
+   Both keyboards float, both are dragged by their top bar
+   and both say so afterwards with the same control, so it
+   is drawn once here rather than twice in the two keyboard
+   stylesheets.
    ========================================================= */
 
-/* The pin sits in the bar beside the delete and close keys and wears their
-   chrome. It appears only once the panel has been moved: a keyboard nobody
-   has touched has nothing to keep. */
+.keyboard-pin-wrap { position: relative; display: inline-flex; }
+
+/* The pin shows only once the panel has been parked, and it is claret the
+   whole time it is there: while it shows, this panel is fixed where the
+   reader left it, and pressing it is how it goes back. */
 .keyboard-pin {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 22px;
   height: 22px;
   padding: 0;
-  border: 1px solid var(--lq-line);
+  border: 1px solid var(--lq-claret);
   border-radius: 6px;
-  background: var(--lq-paper-soft);
-  color: #94a3b8;
-  transition: background .12s, border-color .12s, color .12s;
+  background: var(--lq-claret);
+  color: var(--lq-paper);
+  transition: background .12s, border-color .12s;
 }
 .keyboard-pin svg { width: 12px; height: 12px; }
 /* The attribute has to be spelled out: the browser's own [hidden] rule loses
-   to any author rule that sets display, and both of these set one. */
-.keyboard-pin[hidden],
-.keyboard-recall[hidden] { display: none; }
+   to any author rule that sets display, and this one sets one. */
+.keyboard-pin[hidden] { display: none; }
+/* The colour is spelled out again: Bootstrap's own .btn:hover sets one, and
+   it outranks the plain class that put the white there. */
 .keyboard-pin:hover {
-  background: var(--lq-osm-bg);
-  border-color: #fda4af;
-  color: var(--lq-claret);
+  background: var(--lq-claret-hover);
+  border-color: var(--lq-claret-hover);
+  color: var(--lq-paper);
 }
-/* Arriving. A control that simply appears in a corner is a control nobody
-   sees, so it is put there: it pops in, and two claret rings go out from it
-   before it settles. Only on the drop that first brings it -- opening a
-   keyboard that already has a place kept is not news. */
+
+/* The hand that drags the bar is drawn from a hotspot at its wrist, so it
+   covers this button well before the pointer reaches it -- and a button you
+   can see the hand over but cannot press is a broken button. So the button
+   answers to the wider patch the hand suggests. It stays inside the bar: the
+   keys below it and the control beside it keep their own presses. */
+.keyboard-pin::before {
+  content: "";
+  position: absolute;
+  inset: -8px -10px -10px -4px;
+}
+
+/* Arriving. A control that appears quietly in a corner is a control nobody
+   sees, so it pops in and sends two rings out. Only on the drop that first
+   brings it: reopening a panel that already has a place is not news. */
 .keyboard-pin.is-arriving {
-  /* Claret while it is new, easing back to the bar's grey when the class
-     goes: the rings say look here, the colour says this one is new. */
-  border-color: #fda4af;
-  color: var(--lq-claret);
   animation:
     keyboard-pin-in .36s cubic-bezier(0.34, 1.56, 0.64, 1) both,
     keyboard-pin-ring 1.15s ease-out .18s 2 both;
@@ -821,94 +832,116 @@ body.has-panel-room::after {
   100% { box-shadow: 0 0 0 0 rgba(157, 28, 81, 0); }
 }
 
-/* The ring is the whole point of the effect, so where movement is not
-   welcome the colour says it instead of the motion. */
-@media (prefers-reduced-motion: reduce) {
-  .keyboard-pin.is-arriving {
-    animation: none;
-    border-color: var(--lq-claret);
-    color: var(--lq-claret);
-  }
+/* The word for what just happened, over the pin that now stands for it. */
+.keyboard-pin-flag {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  z-index: 2;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--lq-claret);
+  color: var(--lq-paper);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px -10px rgba(8, 37, 103, .6);
+  transform: translateX(-50%);
+  animation: keyboard-flag-in .2s ease-out both;
+  cursor: default;
+}
+/* Under the pin where the panel sits too high for the word to go above it */
+.keyboard-pin-flag.is-below { bottom: auto; top: calc(100% + 9px); }
+.keyboard-pin-flag[hidden] { display: none; }
+
+@keyframes keyboard-flag-in {
+  from { opacity: 0; transform: translate(-50%, 4px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* Kept: the panel opens here every visit until the reader says otherwise, so
-   the control reads as on rather than as one more grey key. */
-.keyboard-pin.is-kept {
+/* The choices the pin carries, offered when the pointer reaches it. Beside
+   the pin rather than under it: under it is where the hand comes from, and
+   that band belongs to the pin's own press. The two overlap by a couple of
+   pixels, so the pointer never crosses a strip that belongs to neither. */
+.keyboard-pin-menu {
+  position: absolute;
+  top: -5px;
+  left: calc(100% + 8px);
+  z-index: 3;
+  display: none;
+  cursor: default;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 196px;
+  padding: 4px;
+  border: 1px solid var(--lq-line);
+  border-radius: 10px;
+  background: var(--lq-paper);
+  box-shadow: 0 14px 34px -14px rgba(8, 37, 103, .45);
+}
+.keyboard-pin-wrap:hover .keyboard-pin:not([hidden]) ~ .keyboard-pin-menu,
+.keyboard-pin-wrap:focus-within .keyboard-pin:not([hidden]) ~ .keyboard-pin-menu { display: flex; }
+/* One at a time: the word steps aside for the choices. */
+.keyboard-pin-wrap:hover .keyboard-pin-flag,
+.keyboard-pin-wrap:focus-within .keyboard-pin-flag { display: none; }
+
+.keyboard-pin-choice {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--lq-ink);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.keyboard-pin-choice:hover { background: var(--lq-soft); color: var(--lq-ink); }
+
+.keyboard-pin-box {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--lq-line-strong);
+  border-radius: 4px;
+  color: transparent;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.keyboard-pin-box svg { width: 9px; height: 9px; }
+.keyboard-pin-remember.is-on .keyboard-pin-box {
   border-color: var(--lq-claret);
   background: var(--lq-claret);
   color: var(--lq-paper);
 }
-.keyboard-pin.is-kept:hover { background: var(--lq-claret-hover); border-color: var(--lq-claret-hover); }
 
-/* The offer. It hangs off the panel rather than sitting inside it, so the
-   keys keep their room and the panel keeps its size. */
-.keyboard-recall {
-  position: absolute;
-  top: calc(100% + 10px);
-  /* Under the pin rather than under the middle of the panel: the card is
-     about that control, and the reader's eye goes from one to the other. */
-  left: 0;
-  z-index: 1;
-  display: flex;
+.keyboard-pin-glyph {
+  flex: none;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  width: max-content;
-  max-width: min(430px, calc(100vw - 24px));
-  padding: 8px 10px 8px 12px;
-  border: 1px solid var(--lq-line);
-  border-radius: 12px;
-  background: var(--lq-paper);
-  box-shadow: 0 12px 30px -12px rgba(8, 37, 103, .35);
-  animation: keyboard-recall-in .22s ease-out both;
-}
-/* Over the panel instead, when under it would be off the bottom of the window */
-.keyboard-recall.is-above { top: auto; bottom: calc(100% + 10px); }
-
-.keyboard-recall-mark { display: inline-flex; color: var(--lq-claret); }
-.keyboard-recall-mark svg { width: 14px; height: 14px; }
-
-.keyboard-recall-text {
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--lq-ink);
-}
-
-.keyboard-recall-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
-
-.keyboard-recall-keep,
-.keyboard-recall-skip {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.keyboard-recall-keep {
-  border: 1px solid var(--lq-claret);
-  background: var(--lq-claret);
-  color: var(--lq-paper);
-}
-.keyboard-recall-keep:hover { background: var(--lq-claret-hover); border-color: var(--lq-claret-hover); color: var(--lq-paper); }
-.keyboard-recall-skip {
-  border: 1px solid transparent;
-  background: none;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
   color: var(--lq-muted);
 }
-.keyboard-recall-skip:hover { background: var(--lq-soft); color: var(--lq-ink); }
-
-@keyframes keyboard-recall-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
+.keyboard-pin-glyph svg { width: 14px; height: 14px; }
+.keyboard-pin-reset:hover .keyboard-pin-glyph { color: var(--lq-claret); }
 
 @media (prefers-reduced-motion: reduce) {
-  .keyboard-recall { animation: none; }
+  .keyboard-pin.is-arriving,
+  .keyboard-pin-flag { animation: none; }
 }
 
 /* On a narrow screen both keyboards are pinned to the foot of the window and
-   there is nowhere to move them to, so neither control has anything to say. */
+   there is nowhere to move them to, so none of this has anything to say. */
 @media (max-width: 767.98px) {
-  .keyboard-pin,
-  .keyboard-recall { display: none; }
+  .keyboard-pin-wrap { display: none; }
 }

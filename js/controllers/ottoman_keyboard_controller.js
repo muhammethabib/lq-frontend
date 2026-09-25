@@ -35,6 +35,10 @@ const KEYBOARD_PLACE = "decoder";
 // The room the word that says the panel is fixed needs above it, and how
 // long it stays before it has been read.
 const KEYBOARD_FLAG_ROOM_PX = 44;
+
+// How long the pin takes to fade out when the panel goes back to the
+// place the page picks: the stylesheet's own animation, run to the end.
+const KEYBOARD_PIN_LEAVING_MS = 620;
 const KEYBOARD_FLAG_MS = 1900;
 
 // How long the pin wears the class that pops it in and sends its two rings
@@ -66,15 +70,33 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.onRequest = (event) => {
       this.owner = event.detail.owner || null;
       this.below = event.detail.below || null;
+      this.guard = event.detail.guard || null;
       this.openNear(event.detail.anchor);
     };
     this.onDismiss = () => this.close();
     document.addEventListener("ottoman-keyboard:request", this.onRequest);
     document.addEventListener("ottoman-keyboard:dismiss", this.onDismiss);
 
-    this.onReposition = () => { if (this.openValue) this.place(); };
-    window.addEventListener("resize", this.onReposition);
+    // The panel follows the row as the page scrolls, and the page keeps
+    // whatever length it takes to be able to scroll to it: a keyboard the
+    // reader can see but cannot reach is a keyboard they have lost.
+    this.onReposition = () => {
+      if (!this.openValue) return;
+      this.place();
+      if (!this.placedSpot()) window.LQ.roomFor(this.element);
+    };
     window.addEventListener("scroll", this.onReposition, true);
+
+    // A window made smaller can leave the panel below the fold although it is
+    // still under the boxes where it belongs, so the page is brought to it
+    // again. Not on scroll: that is the reader moving the page themselves,
+    // and scrolling them back would be an argument they cannot win.
+    this.onResize = () => {
+      if (!this.openValue) return;
+      this.place();
+      if (!this.placedSpot()) this.scrollIntoReach();
+    };
+    window.addEventListener("resize", this.onResize);
 
     // The keys carry their labels and tooltips, so a language change rebuilds
     // them. The event is dispatched on the page root, an ancestor of this
@@ -109,7 +131,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     document.removeEventListener("ottoman-keyboard:echo", this.onEcho);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("ottoman-keyboard:state", this.onState);
-    window.removeEventListener("resize", this.onReposition);
+    window.removeEventListener("resize", this.onResize);
     window.removeEventListener("scroll", this.onReposition, true);
     window.LQ.disposeTooltips(this.element);
   }
@@ -297,8 +319,10 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.element.classList.add("is-open");
     this.place();
     this.refreshPin();
-    // A panel the reader has placed is already inside the window and is not
-    // worth moving the page for; only the page's own placing needs that.
+    // A panel the reader has parked is already inside the window and is not
+    // worth moving the page for. Every other opening is under the boxes, and
+    // the page comes to it -- place() has already given up a parked place
+    // that no longer holds, so this reads the settled answer.
     if (this.placedSpot()) return;
     // Only on opening: doing it from place() would make the page scroll
     // itself every time the scroll listener fired. It is tried again a few
@@ -315,6 +339,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.hideFlag();
     this.anchor = null;
     this.below = null;
+    this.guard = null;
     this.owner = null;
     window.LQ.releaseRoom();
     // Whoever was typing needs to know: the Clear that was hidden behind the
@@ -336,8 +361,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
     }
     const home = this.homeSpot();
     if (home) this.home = home;
-    const own = this.placedSpot();
-    if (own) { this.moveTo(window.LQ_PLACEMENT.clamp(own, this.element.offsetWidth, this.element.offsetHeight)); return; }
+    const own = this.usableSpot();
+    if (own) { this.moveTo(own); return; }
     if (home) this.moveTo(home);
   }
 
@@ -412,7 +437,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const spot = this.dragSpot(event);
     this.drag = null;
     this.element.classList.remove("is-dragging");
-    if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < KEYBOARD_SNAP_PX) {
+    if (!this.clearsGuard(spot) ||
+        this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < KEYBOARD_SNAP_PX) {
       this.goHome();
       return;
     }
@@ -422,18 +448,53 @@ class OttomanKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.fix(KEYBOARD_PLACE, spot);
     this.refreshPin();
     if (arriving) this.flashPin();
-    this.showFlag();
+    this.showFlag(window.LQ.translate("keyboardPinnedState", "Pinned"));
   }
 
   // Back to the place the page picked, with the decision dropped: the panel
   // follows the boxes again from here.
   goHome() {
+    const wasParked = !!this.placedSpot();
     window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
-    this.refreshPin();
+    if (wasParked) this.retirePin(); else this.refreshPin();
+    // Said every time, not only after a pin: a panel that springs back from a
+    // place it was refused has to say why it moved.
+    this.showFlag(window.LQ.translate("keyboardHomeState", "Default position"));
     if (!this.home) return;
     this.element.classList.add("is-springing");
     this.moveTo(this.home);
     setTimeout(() => this.element.classList.remove("is-springing"), 400);
+  }
+
+  // ==================== where the panel may not be ====================
+
+  // A place is the reader's to choose, with one exception: the row this
+  // panel serves. A keyboard over the boxes it types into, or over the
+  // button that searches them, is a keyboard in the way of its own work.
+  // So a place that covers any of it is refused -- on the drop, and again
+  // on every opening, because a window can be resized or the page reflowed
+  // under a place that was fine when it was made.
+  clearsGuard(spot) {
+    if (!this.guard || !this.guard.isConnected) return true;
+    const row = this.guard.getBoundingClientRect();
+    const width = this.element.offsetWidth;
+    const height = this.element.offsetHeight;
+    return spot.left >= row.right || spot.left + width <= row.left ||
+           spot.top >= row.bottom || spot.top + height <= row.top;
+  }
+
+  // The reader's place, if it is still one the panel can be opened at: it
+  // has to fit the window as it stands, not only the window it was made in,
+  // and it has to clear the row above. Anything else and the place is given
+  // up and the panel goes back to opening where the page puts it.
+  usableSpot() {
+    const spot = this.placedSpot();
+    if (!spot) return null;
+    const inside = window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
+    if (inside.left === spot.left && inside.top === spot.top && this.clearsGuard(spot)) return spot;
+    window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
+    this.refreshPin();
+    return null;
   }
 
   // ==================== the pin ====================
@@ -443,7 +504,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // there: while it shows, this panel is fixed where the reader left it, this
   // visit and the next, and pressing it is how that ends.
   refreshPin() {
-    if (!this.hasPinTarget) return;
+    if (!this.hasPinTarget || this.pinTarget.classList.contains("is-leaving")) return;
     this.pinTarget.hidden = !this.placedSpot();
     if (this.pinTarget.hidden) { this.hideFlag(); return; }
     window.LQ.retitle(this.pinTarget, window.LQ.pinTip());
@@ -461,10 +522,11 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.pinArrival = setTimeout(() => this.pinTarget.classList.remove("is-arriving"), KEYBOARD_PIN_ARRIVAL_MS);
   }
 
-  // The word for what just happened, over the pin that now stands for it.
-  // Above the panel where there is room, under the pin where there is not.
-  showFlag() {
+  // The word for what just happened, over the pin it happened to. Above the
+  // panel where there is room, under the pin where there is not.
+  showFlag(word) {
     if (!this.hasFlagTarget) return;
+    this.flagTarget.textContent = word;
     this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < KEYBOARD_FLAG_ROOM_PX);
     this.flagTarget.hidden = false;
     clearTimeout(this.flagTimer);
@@ -473,6 +535,21 @@ class OttomanKeyboardController extends Stimulus.Controller {
 
   hideFlag() {
     if (this.hasFlagTarget) this.flagTarget.hidden = true;
+  }
+
+  // The panel is back where the page puts it, so the pin has nothing left to
+  // say. It goes quietly rather than blinking out from under the pointer.
+  retirePin() {
+    if (!this.hasPinTarget || this.pinTarget.hidden) return;
+    const built = window.bootstrap ? bootstrap.Tooltip.getInstance(this.pinTarget) : null;
+    if (built) built.hide();
+    this.pinTarget.classList.remove("is-arriving");
+    this.pinTarget.classList.add("is-leaving");
+    clearTimeout(this.pinLeaving);
+    this.pinLeaving = setTimeout(() => {
+      this.pinTarget.classList.remove("is-leaving");
+      this.refreshPin();
+    }, KEYBOARD_PIN_LEAVING_MS);
   }
 
   // Pressing the pin is the whole of it: the panel goes back where the page

@@ -79,9 +79,16 @@ window.LQ = {
   // cannot be scrolled to: the page has to have somewhere to scroll first.
   // These give the page exactly the room the panel needs and take it back
   // when the panel closes. Both keyboards use them.
-  makeRoomFor(panel) {
+  // The room alone, without moving the reader: the page is made long enough
+  // that the panel can be scrolled to. Called as the page scrolls, so that a
+  // panel following the row it belongs to is always reachable, whatever the
+  // reader does with the scrollbar.
+  roomFor(panel) {
     const past = panel.getBoundingClientRect().bottom + 16 - window.innerHeight;
-    if (past <= 0) { this.releaseRoom(); return; }
+    if (past <= 0) { this.releaseRoom(); return 0; }
+    // A release still waiting for the top of the page would take the room
+    // away the moment the reader got there, with the panel still needing it.
+    this.stopWaitingForTop();
     // The panel is fixed, so it adds nothing to the page's own height and the
     // page may have nowhere to scroll to. What is wanted is not the overlap
     // but the scroll range the page is short of: the room makes up that
@@ -96,7 +103,15 @@ window.LQ = {
     } else if (!current) {
       document.body.style.setProperty("--lq-panel-room", "0px");
     }
-    window.scrollBy({ top: past, behavior: "smooth" });
+    return past;
+  },
+
+  // The room, and the page brought to the panel. Only where the reader has
+  // not just scrolled the page themselves: on opening, and when the window
+  // has been resized under an open panel.
+  makeRoomFor(panel) {
+    const past = this.roomFor(panel);
+    if (past > 0) window.scrollBy({ top: past, behavior: "smooth" });
   },
 
   // Taking the room back moves everything under the pointer, and a press that
@@ -108,15 +123,21 @@ window.LQ = {
       if (this.waitingForTop) return;
       this.waitingForTop = () => {
         if (window.scrollY > 0) return;
-        window.removeEventListener("scroll", this.waitingForTop);
-        this.waitingForTop = null;
+        this.stopWaitingForTop();
         this.releaseRoom();
       };
       window.addEventListener("scroll", this.waitingForTop, { passive: true });
       return;
     }
+    this.stopWaitingForTop();
     document.body.classList.remove("has-panel-room");
     document.body.style.removeProperty("--lq-panel-room");
+  },
+
+  stopWaitingForTop() {
+    if (!this.waitingForTop) return;
+    window.removeEventListener("scroll", this.waitingForTop);
+    this.waitingForTop = null;
   },
 
   // The mark on every button that opens the citation window. It is a pair of
@@ -127,26 +148,24 @@ window.LQ = {
   },
 
   // What the pin on a floating keyboard says when the pointer reaches it.
-  // Two things have to be said and a dash between them tells the reader
-  // neither: what is true now, and what a press would do. So they are two
-  // blocks, the second wearing a mouse -- drawn by the stylesheet, since
-  // Bootstrap's tooltip strips an svg out of its own markup -- and the verb
-  // in a chip, which reads as the thing to do rather than more description.
+  // What is true, and under a rule what a press would do -- the second line
+  // behind a mouse, drawn by the stylesheet since Bootstrap's tooltip strips
+  // an svg out of its own markup, with the verb alone in a chip so it reads
+  // as the thing to do rather than more description.
   pinTip() {
     const safe = this.escape;
-    return '<span class="pin-tip-now"><b>' +
-      safe(this.translate("keyboardPinnedState", "Pinned")) + '</b>' +
-      '<i>' + safe(this.translate("keyboardPinnedWhat", "the keyboard always opens here")) + '</i></span>' +
-      '<span class="pin-tip-do"><em>' + safe(this.translate("keyboardPinDo", "click")) + '</em>' +
+    return '<span class="pin-tip-now">' +
+      safe(this.translate("keyboardPinnedState", "Pinned")) + '</span>' +
+      '<span class="pin-tip-do"><em>' +
+      safe(this.translate("keyboardPinDo", "click")) + '</em>' +
       safe(this.translate("keyboardPinUndo", "to put it back")) + '</span>';
   },
 
   // The same in one line, for a reader who is hearing it rather than seeing it
   pinTipText() {
-    return [this.translate("keyboardPinnedState", "Pinned") + ".",
-            this.translate("keyboardPinnedWhat", "the keyboard always opens here") + ".",
-            this.translate("keyboardPinDo", "click"),
-            this.translate("keyboardPinUndo", "to put it back")].join(" ");
+    return this.translate("keyboardPinnedState", "Pinned") + ". " +
+      this.translate("keyboardPinDo", "click") + " " +
+      this.translate("keyboardPinUndo", "to put it back");
   },
 
   // A dictionary is shown with its publication year where one is known.

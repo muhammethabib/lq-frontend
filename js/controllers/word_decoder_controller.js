@@ -623,6 +623,10 @@ class WordDecoderController extends Stimulus.Controller {
         // The boxes carry the join rings and the add and remove buttons
         // underneath, so the panel starts below the whole row.
         below: this.stripTarget,
+        // The row the panel serves: the boxes, Clear and Search. A keyboard
+        // over any of it is a keyboard in the way of its own work, so the
+        // panel is never placed there and cannot be parked there either.
+        guard: this.element.querySelector(".decoder-row"),
         canClear: this.isDirty(),
         owner: this.ownerName
       }

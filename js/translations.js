@@ -124,7 +124,7 @@ window.LQ_TRANSLATIONS = {
     keyboardBackspace: "Harfi sil",
     keyboardClose: "Kapat",
     keyboardPinnedState: "Sabitlendi",
-    keyboardPinnedWhat: "klavye hep burada açılır",
+    keyboardHomeState: "Varsayılan konum",
     keyboardPinDo: "tıkla",
     keyboardPinUndo: "eski yerine alsın",
     keyMatches: "Şu harfleri arar",

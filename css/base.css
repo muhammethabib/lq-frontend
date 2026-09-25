@@ -829,6 +829,20 @@ body.has-panel-room::after {
   100% { opacity: 1; transform: scale(1); }
 }
 
+/* Leaving. The panel is back where the page puts it, so the pin has nothing
+   left to say -- and a control that blinks out from under the pointer reads
+   as a fault rather than an answer. */
+.keyboard-pin.is-leaving {
+  pointer-events: none;
+  animation: keyboard-pin-out .6s ease-in both;
+}
+
+@keyframes keyboard-pin-out {
+  0% { opacity: 1; transform: scale(1); }
+  35% { opacity: .85; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(.72); }
+}
+
 @keyframes keyboard-pin-ring {
   0% { box-shadow: 0 0 0 0 rgba(157, 28, 81, .5); }
   70% { box-shadow: 0 0 0 11px rgba(157, 28, 81, 0); }
@@ -864,35 +878,27 @@ body.has-panel-room::after {
 }
 
 /* What the pin says when the pointer reaches it. Bootstrap's tooltip, but
-   three short blocks rather than one grey line: what is true now, what that
-   means, and -- set apart, under a rule, behind a mouse -- what a press
-   would do. */
+   two blocks rather than one grey line: what is true now, and -- set apart,
+   under a rule, behind a mouse -- what a press would do. Both centred on the
+   pin they belong to. */
 .keyboard-pin-tip .tooltip-inner {
   max-width: 250px;
-  padding: 8px 11px 9px;
-  text-align: left;
+  padding: 8px 12px 9px;
+  text-align: center;
 }
 
-.pin-tip-now b {
+.pin-tip-now {
   display: block;
   font-size: 11.5px;
   font-weight: 800;
   letter-spacing: .01em;
   color: #fff;
 }
-.pin-tip-now i {
-  display: block;
-  margin-top: 1px;
-  font-size: 10.5px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.35;
-  color: #a7b4c6;
-}
 
 .pin-tip-do {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   margin-top: 7px;
   padding-top: 6px;
@@ -925,6 +931,7 @@ body.has-panel-room::after {
 
 @media (prefers-reduced-motion: reduce) {
   .keyboard-pin.is-arriving,
+  .keyboard-pin.is-leaving,
   .keyboard-pin-flag { animation: none; }
 }
 

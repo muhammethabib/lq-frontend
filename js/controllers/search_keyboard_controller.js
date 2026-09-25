@@ -38,6 +38,10 @@ const SEARCH_KEYBOARD_DOCK_QUERY = "(max-width: 767.98px)";
 // The room the word that says the panel is fixed needs above it, and how
 // long it stays before it has been read.
 const SEARCH_FLAG_ROOM_PX = 44;
+
+// How long the pin takes to fade out when the panel goes back to the
+// place the page picks: the stylesheet's own animation, run to the end.
+const SEARCH_PIN_LEAVING_MS = 620;
 const SEARCH_FLAG_MS = 1900;
 
 // How long the pin wears the class that pops it in and sends its two rings
@@ -73,8 +77,29 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.onLanguageChange = () => { this.render(); this.refreshPin(); };
     document.addEventListener("language:changed", this.onLanguageChange);
 
-    this.onReposition = () => { if (this.openValue) this.place(); };
-    window.addEventListener("resize", this.onReposition);
+    // The panel is fixed to the window, so scrolling the page does not carry
+    // it along: it has to be put under the bar again, or the page scrolls out
+    // from under it and a panel below the fold stays below the fold.
+    // The panel follows the row as the page scrolls, and the page keeps
+    // whatever length it takes to be able to scroll to it: a keyboard the
+    // reader can see but cannot reach is a keyboard they have lost.
+    this.onReposition = () => {
+      if (!this.openValue) return;
+      this.place();
+      if (!this.placedSpot()) window.LQ.roomFor(this.element);
+    };
+    window.addEventListener("scroll", this.onReposition, true);
+
+    // A window made smaller can leave the panel below the fold although it is
+    // still under the bar where it belongs, so the page is brought to it
+    // again. Not on scroll: that is the reader moving the page themselves,
+    // and scrolling them back would be an argument they cannot win.
+    this.onResize = () => {
+      if (!this.openValue) return;
+      this.place();
+      if (!this.placedSpot()) window.LQ.makeRoomFor(this.element);
+    };
+    window.addEventListener("resize", this.onResize);
 
     // Pressing anywhere but the bar and the keyboard closes it.
     this.onAway = (event) => {
@@ -93,7 +118,8 @@ class SearchKeyboardController extends Stimulus.Controller {
     document.removeEventListener("search-keyboard:echo", this.onEcho);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("pointerdown", this.onAway);
-    window.removeEventListener("resize", this.onReposition);
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("scroll", this.onReposition, true);
   }
 
   layout() {
@@ -204,12 +230,21 @@ class SearchKeyboardController extends Stimulus.Controller {
 
   open(request) {
     this.anchor = request.anchor || null;
+    this.guard = request.guard || null;
     this.openValue = true;
     this.element.hidden = false;
     this.element.classList.add("is-open");
     this.place();
     this.refreshPin();
-    window.LQ.makeRoomFor(this.element);
+    // A panel the reader has parked is already inside the window and is not
+    // worth moving the page for. Every other opening is under the bar, and
+    // the page comes to it -- place() has already given up a parked place
+    // that no longer holds, so this reads the settled answer.
+    // Tried again a few times: the panel's own height is not final until its
+    // keys have been drawn, and a measurement taken before that is short.
+    if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
+      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element);
+    }, delay));
   }
 
   close(event) {
@@ -220,21 +255,28 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.element.hidden = true;
     this.hideFlag();
     this.anchor = null;
+    this.guard = null;
     window.LQ.releaseRoom();
     document.dispatchEvent(new CustomEvent("search-keyboard:closed"));
   }
 
   // It opens under the caret rather than under the middle of the bar: on the
   // Ottoman side the caret sits at the right-hand edge of the field.
+  //
+  // Under the bar, and not pulled up to fit a short window: a panel lifted
+  // over the bar it types into is worse than one below the fold, and the
+  // page can be scrolled to a panel below the fold. makeRoomFor does that.
   homeSpot() {
     if (!this.anchor || !this.anchor.isConnected) return null;
     const bounds = this.anchor.getBoundingClientRect();
+    // Below the whole row, not just the field: on a narrow window the source
+    // switch and the dictionary picker wrap onto a line of their own, and a
+    // panel measured from the field alone would come down on top of them.
+    const clears = (this.guard && this.guard.isConnected ? this.guard : this.anchor).getBoundingClientRect();
     const width = this.element.offsetWidth || 700;
-    const height = this.element.offsetHeight || 260;
     const caret = bounds.right - 20;
     const left = Math.max(8, Math.min(caret - width / 2, window.innerWidth - width - 8));
-    const top = Math.min(bounds.bottom + 10, Math.max(8, window.innerHeight - height - 8));
-    return { left: Math.round(left), top: Math.round(top) };
+    return { left: Math.round(left), top: Math.round(Math.max(8, clears.bottom + 10)) };
   }
 
   // The page's own place is worked out every time, because the spring-back and
@@ -244,8 +286,8 @@ class SearchKeyboardController extends Stimulus.Controller {
     if (this.drag) return;
     const home = this.homeSpot();
     if (home) this.home = home;
-    const own = this.placedSpot();
-    if (own) { this.moveTo(window.LQ_PLACEMENT.clamp(own, this.element.offsetWidth, this.element.offsetHeight)); return; }
+    const own = this.usableSpot();
+    if (own) { this.moveTo(own); return; }
     if (home) this.moveTo(home);
   }
 
@@ -299,7 +341,8 @@ class SearchKeyboardController extends Stimulus.Controller {
     const spot = this.dragSpot(event);
     this.drag = null;
     this.element.classList.remove("is-dragging");
-    if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < SEARCH_SNAP_PX) {
+    if (!this.clearsGuard(spot) ||
+        this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < SEARCH_SNAP_PX) {
       this.goHome();
       return;
     }
@@ -309,18 +352,53 @@ class SearchKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.fix(SEARCH_KEYBOARD_PLACE, spot);
     this.refreshPin();
     if (arriving) this.flashPin();
-    this.showFlag();
+    this.showFlag(window.LQ.translate("keyboardPinnedState", "Pinned"));
   }
 
   // Back to the place the page picked, with the decision dropped: the panel
   // follows the bar again from here.
   goHome() {
+    const wasParked = !!this.placedSpot();
     window.LQ_PLACEMENT.release(SEARCH_KEYBOARD_PLACE);
-    this.refreshPin();
+    if (wasParked) this.retirePin(); else this.refreshPin();
+    // Said every time, not only after a pin: a panel that springs back from a
+    // place it was refused has to say why it moved.
+    this.showFlag(window.LQ.translate("keyboardHomeState", "Default position"));
     if (!this.home) return;
     this.element.classList.add("is-springing");
     this.moveTo(this.home);
     setTimeout(() => this.element.classList.remove("is-springing"), 400);
+  }
+
+  // ==================== where the panel may not be ====================
+
+  // A place is the reader's to choose, with one exception: the row this
+  // panel serves. A keyboard over the boxes it types into, or over the
+  // button that searches them, is a keyboard in the way of its own work.
+  // So a place that covers any of it is refused -- on the drop, and again
+  // on every opening, because a window can be resized or the page reflowed
+  // under a place that was fine when it was made.
+  clearsGuard(spot) {
+    if (!this.guard || !this.guard.isConnected) return true;
+    const row = this.guard.getBoundingClientRect();
+    const width = this.element.offsetWidth;
+    const height = this.element.offsetHeight;
+    return spot.left >= row.right || spot.left + width <= row.left ||
+           spot.top >= row.bottom || spot.top + height <= row.top;
+  }
+
+  // The reader's place, if it is still one the panel can be opened at: it
+  // has to fit the window as it stands, not only the window it was made in,
+  // and it has to clear the row above. Anything else and the place is given
+  // up and the panel goes back to opening where the page puts it.
+  usableSpot() {
+    const spot = this.placedSpot();
+    if (!spot) return null;
+    const inside = window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
+    if (inside.left === spot.left && inside.top === spot.top && this.clearsGuard(spot)) return spot;
+    window.LQ_PLACEMENT.release(SEARCH_KEYBOARD_PLACE);
+    this.refreshPin();
+    return null;
   }
 
   // ==================== the pin ====================
@@ -330,7 +408,7 @@ class SearchKeyboardController extends Stimulus.Controller {
   // there: while it shows, this panel is fixed where the reader left it, this
   // visit and the next, and pressing it is how that ends.
   refreshPin() {
-    if (!this.hasPinTarget) return;
+    if (!this.hasPinTarget || this.pinTarget.classList.contains("is-leaving")) return;
     this.pinTarget.hidden = !this.placedSpot();
     if (this.pinTarget.hidden) { this.hideFlag(); return; }
     window.LQ.retitle(this.pinTarget, window.LQ.pinTip());
@@ -348,10 +426,11 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.pinArrival = setTimeout(() => this.pinTarget.classList.remove("is-arriving"), SEARCH_PIN_ARRIVAL_MS);
   }
 
-  // The word for what just happened, over the pin that now stands for it.
-  // Above the panel where there is room, under the pin where there is not.
-  showFlag() {
+  // The word for what just happened, over the pin it happened to. Above the
+  // panel where there is room, under the pin where there is not.
+  showFlag(word) {
     if (!this.hasFlagTarget) return;
+    this.flagTarget.textContent = word;
     this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < SEARCH_FLAG_ROOM_PX);
     this.flagTarget.hidden = false;
     clearTimeout(this.flagTimer);
@@ -360,6 +439,21 @@ class SearchKeyboardController extends Stimulus.Controller {
 
   hideFlag() {
     if (this.hasFlagTarget) this.flagTarget.hidden = true;
+  }
+
+  // The panel is back where the page puts it, so the pin has nothing left to
+  // say. It goes quietly rather than blinking out from under the pointer.
+  retirePin() {
+    if (!this.hasPinTarget || this.pinTarget.hidden) return;
+    const built = window.bootstrap ? bootstrap.Tooltip.getInstance(this.pinTarget) : null;
+    if (built) built.hide();
+    this.pinTarget.classList.remove("is-arriving");
+    this.pinTarget.classList.add("is-leaving");
+    clearTimeout(this.pinLeaving);
+    this.pinLeaving = setTimeout(() => {
+      this.pinTarget.classList.remove("is-leaving");
+      this.refreshPin();
+    }, SEARCH_PIN_LEAVING_MS);
   }
 
   // Pressing the pin is the whole of it: the panel goes back where the page

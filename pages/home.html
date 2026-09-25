@@ -1317,6 +1317,15 @@
                       pointerup->ottoman-keyboard#endDrag
                       pointercancel->ottoman-keyboard#endDrag">
       <span class="keyboard-bar-left">
+        <!-- Feather has no pushpin, so it is drawn here, as the cite mark is
+             drawn in js/app.js. It appears only once the panel has been
+             moved: a keyboard nobody has touched has no place to keep. -->
+        <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
+                data-action="pointerdown->ottoman-keyboard#togglePin"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardPinKeep" title="Always open it here"
+                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
+                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
         <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
                 data-action="pointerdown->ottoman-keyboard#clearAll"
                 data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
@@ -1333,15 +1342,6 @@
       <span class="wildcard-row" data-ottoman-keyboard-target="wildcardRow"></span>
 
       <span class="keyboard-bar-right">
-        <!-- Feather has no pushpin, so it is drawn here, as the cite mark is
-             drawn in js/app.js. It appears only once the panel has been
-             moved: a keyboard nobody has touched has no place to keep. -->
-        <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
-                data-action="pointerdown->ottoman-keyboard#togglePin"
-                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
-                data-i18n-title="keyboardPinKeep" title="Always open it here"
-                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
-                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
         <button type="button" class="btn keyboard-backspace"
                 data-action="pointerdown->ottoman-keyboard#backspace"
                 data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip keyboard-tip-nowrap"
@@ -1388,6 +1388,15 @@
                       pointermove->search-keyboard#moveDrag
                       pointerup->search-keyboard#endDrag
                       pointercancel->search-keyboard#endDrag">
+      <span class="search-keyboard-buttons-left">
+        <!-- Feather has no pushpin; see the note on the decoder's own pin -->
+        <button type="button" class="btn keyboard-pin" data-search-keyboard-target="pin"
+                data-action="pointerdown->search-keyboard#togglePin"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardPinKeep" title="Always open it here"
+                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
+                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
+      </span>
       <span class="search-keyboard-teach">
         <span class="search-keyboard-demo" aria-hidden="true">
           <span class="search-keyboard-demo-key">K</span>
@@ -1400,13 +1409,6 @@
         </span>
       </span>
       <span class="search-keyboard-buttons">
-        <!-- Feather has no pushpin; see the note on the decoder's own pin -->
-        <button type="button" class="btn keyboard-pin" data-search-keyboard-target="pin"
-                data-action="pointerdown->search-keyboard#togglePin"
-                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
-                data-i18n-title="keyboardPinKeep" title="Always open it here"
-                aria-label="Always open it here" data-i18n-aria="keyboardPinKeep"
-                aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
         <button type="button" class="btn search-keyboard-button search-keyboard-backspace"
                 data-action="pointerdown->search-keyboard#backspace"
                 data-bs-toggle="tooltip" data-i18n-title="keyboardBackspace" title="Delete character"

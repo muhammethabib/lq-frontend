@@ -795,6 +795,42 @@ body.has-panel-room::after {
   border-color: #fda4af;
   color: var(--lq-claret);
 }
+/* Arriving. A control that simply appears in a corner is a control nobody
+   sees, so it is put there: it pops in, and two claret rings go out from it
+   before it settles. Only on the drop that first brings it -- opening a
+   keyboard that already has a place kept is not news. */
+.keyboard-pin.is-arriving {
+  /* Claret while it is new, easing back to the bar's grey when the class
+     goes: the rings say look here, the colour says this one is new. */
+  border-color: #fda4af;
+  color: var(--lq-claret);
+  animation:
+    keyboard-pin-in .36s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    keyboard-pin-ring 1.15s ease-out .18s 2 both;
+}
+
+@keyframes keyboard-pin-in {
+  0% { opacity: 0; transform: scale(.4); }
+  70% { opacity: 1; transform: scale(1.16); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes keyboard-pin-ring {
+  0% { box-shadow: 0 0 0 0 rgba(157, 28, 81, .5); }
+  70% { box-shadow: 0 0 0 11px rgba(157, 28, 81, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(157, 28, 81, 0); }
+}
+
+/* The ring is the whole point of the effect, so where movement is not
+   welcome the colour says it instead of the motion. */
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-pin.is-arriving {
+    animation: none;
+    border-color: var(--lq-claret);
+    color: var(--lq-claret);
+  }
+}
+
 /* Kept: the panel opens here every visit until the reader says otherwise, so
    the control reads as on rather than as one more grey key. */
 .keyboard-pin.is-kept {
@@ -810,8 +846,8 @@ body.has-panel-room::after {
   position: absolute;
   top: calc(100% + 10px);
   /* Under the pin rather than under the middle of the panel: the card is
-     about that control, and the reader's eye goes to one from the other. */
-  right: 0;
+     about that control, and the reader's eye goes from one to the other. */
+  left: 0;
   z-index: 1;
   display: flex;
   align-items: center;

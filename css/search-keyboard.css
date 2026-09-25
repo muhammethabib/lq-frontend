@@ -135,6 +135,16 @@
   gap: 5px;
 }
 
+/* The line in the middle keeps clear of both corners, so the pin stands in
+   the left one the way the delete and close keys stand in the right. */
+.search-keyboard-buttons-left {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: flex;
+  gap: 5px;
+}
+
 .search-keyboard-button {
   display: flex;
   align-items: center;

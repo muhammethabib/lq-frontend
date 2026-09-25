@@ -35,6 +35,10 @@ const KEYBOARD_PLACE = "decoder";
 // The room the card that offers to keep a place needs below the panel.
 const KEYBOARD_RECALL_ROOM_PX = 86;
 
+// How long the pin wears the class that pops it in and sends its two rings
+// out: the stylesheet's own animations, run to the end.
+const KEYBOARD_PIN_ARRIVAL_MS = 2500;
+
 // The face of the key that leads to the other keyboard, and the arrows that
 // say which way it goes.
 const KEYBOARD_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
@@ -392,8 +396,12 @@ class OttomanKeyboardController extends Stimulus.Controller {
       this.goHome();
       return;
     }
+    // Whether the control is about to arrive rather than already standing
+    // there, which is the only moment worth drawing an eye to.
+    const arriving = this.hasPinTarget && this.pinTarget.hidden;
     window.LQ_PLACEMENT.hold(KEYBOARD_PLACE, spot);
     this.refreshPin();
+    if (arriving) this.flashPin();
     this.offerRecall();
   }
 
@@ -424,6 +432,17 @@ class OttomanKeyboardController extends Stimulus.Controller {
       : this.translate("keyboardPinKeep", "Always open it here");
     window.LQ.retitle(this.pinTarget, label);
     this.pinTarget.setAttribute("aria-label", label);
+  }
+
+  // A control that appears quietly in a corner is a control nobody sees.
+  flashPin() {
+    if (!this.hasPinTarget || this.pinTarget.hidden) return;
+    this.pinTarget.classList.remove("is-arriving");
+    // Restarting the class within the same frame would not replay it.
+    void this.pinTarget.offsetWidth;
+    this.pinTarget.classList.add("is-arriving");
+    clearTimeout(this.pinArrival);
+    this.pinArrival = setTimeout(() => this.pinTarget.classList.remove("is-arriving"), KEYBOARD_PIN_ARRIVAL_MS);
   }
 
   togglePin(event) {

@@ -1356,11 +1356,16 @@
           <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
         </button>
 
-        <!-- Where the panel is fixed. The pin shows only once the reader has
-             parked it, and pressing it puts the panel back: nothing else. Its
-             tooltip is written by the controller, the only place that knows the
-             panel is parked. Feather has no pushpin, so it is drawn here, as the
-             cite mark is drawn in js/app.js. -->
+        <!-- Puts the panel back where the page had it. It shows only once the
+             reader has parked it somewhere of their own, and pressing it does
+             that one thing. A U-turn rather than a pushpin: a pin says where
+             the panel stands, which the reader already knows, and in most
+             software pressing a filled one means unpin, which is a different
+             promise. A turn says go back the way you came, and says it as a
+             manoeuvre rather than a bearing, so it stays true wherever home
+             happens to lie. Its tooltip is written by the controller, the only
+             place that knows the panel is parked; the mark is drawn here, as
+             the cite mark is drawn in js/app.js. -->
         <span class="keyboard-pin-wrap">
           <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
                   data-action="pointerdown->ottoman-keyboard#togglePin
@@ -1368,7 +1373,7 @@
                                mouseleave->ottoman-keyboard#unpeekHome"
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
-                  aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
+                  aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.4 3.1h8.2a7 7 0 0 1 0 14H5.2"/><polyline points="9 13.3 5.2 17.1 9 20.9"/></svg></button>
           <!-- The word that confirms a parking, centred on the pin it belongs
                to. Two lines: the pin stands in the panel's corner, and one
                line centred on it would hang off the edge. -->
@@ -1416,11 +1421,16 @@
                       pointerup->search-keyboard#endDrag
                       pointercancel->search-keyboard#endDrag">
       <span class="search-keyboard-buttons-left">
-        <!-- Where the panel is fixed. The pin shows only once the reader has
-             parked it, and pressing it puts the panel back: nothing else. Its
-             tooltip is written by the controller, the only place that knows the
-             panel is parked. Feather has no pushpin, so it is drawn here, as the
-             cite mark is drawn in js/app.js. -->
+        <!-- Puts the panel back where the page had it. It shows only once the
+             reader has parked it somewhere of their own, and pressing it does
+             that one thing. A U-turn rather than a pushpin: a pin says where
+             the panel stands, which the reader already knows, and in most
+             software pressing a filled one means unpin, which is a different
+             promise. A turn says go back the way you came, and says it as a
+             manoeuvre rather than a bearing, so it stays true wherever home
+             happens to lie. Its tooltip is written by the controller, the only
+             place that knows the panel is parked; the mark is drawn here, as
+             the cite mark is drawn in js/app.js. -->
         <span class="keyboard-pin-wrap">
           <button type="button" class="btn keyboard-pin" data-search-keyboard-target="pin"
                   data-action="pointerdown->search-keyboard#togglePin
@@ -1428,7 +1438,7 @@
                                mouseleave->search-keyboard#unpeekHome"
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
-                  aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
+                  aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.4 3.1h8.2a7 7 0 0 1 0 14H5.2"/><polyline points="9 13.3 5.2 17.1 9 20.9"/></svg></button>
           <!-- The word that confirms a parking, centred on the pin it belongs
                to. Two lines: the pin stands in the panel's corner, and one
                line centred on it would hang off the edge. -->

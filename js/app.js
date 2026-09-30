@@ -235,13 +235,13 @@ window.LQ = {
     return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
   },
 
-  // What the pin on a floating keyboard says when the pointer reaches it.
-  // Only what a press would do. That the panel is fixed where the reader put
-  // it is not news to them -- they put it there, and the pin standing in the
-  // corner says so without a word. The mouse in front is drawn by the
-  // stylesheet, since Bootstrap's tooltip strips an svg out of its own
-  // markup, and the verb sits alone in a chip so it reads as the thing to do
-  // rather than more description.
+  // What the control on a floating keyboard says when the pointer reaches it.
+  // Only what a press would do. That the panel is standing where the reader
+  // put it is not news to them -- they put it there, and the panel sitting
+  // somewhere the page never puts it says so without a word. The mouse in
+  // front is drawn by the stylesheet, since Bootstrap's tooltip strips an svg
+  // out of its own markup, and the verb sits alone in a chip so it reads as
+  // the thing to do rather than more description.
   pinTip() {
     const safe = this.escape;
     return '<span class="pin-tip-do"><em>' +

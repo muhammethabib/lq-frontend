@@ -885,35 +885,25 @@ body.has-panel-room::after {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* What the pin says when the pointer reaches it. Bootstrap's tooltip, but
-   two blocks rather than one grey line: what is true now, and -- set apart,
-   under a rule, behind a mouse -- what a press would do. Both centred on the
-   pin they belong to. */
+/* What the pin says when the pointer reaches it: one line, behind a mouse,
+   naming what a press would do. It used to carry a second block saying the
+   panel was fixed, which the reader knew -- they fixed it. With that gone
+   there is nothing to set apart, so the rule and the second size go with it
+   and the line stands at full strength rather than as an aside. */
 .keyboard-pin-tip .tooltip-inner {
   max-width: 250px;
-  padding: 8px 12px 9px;
+  padding: 7px 11px 8px;
   text-align: center;
-}
-
-.pin-tip-now {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: .01em;
-  color: #fff;
 }
 
 .pin-tip-do {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  margin-top: 7px;
-  padding-top: 6px;
-  border-top: 1px solid rgba(255, 255, 255, .13);
-  font-size: 10.5px;
+  gap: 6px;
+  font-size: 11.5px;
   font-weight: 500;
-  color: #a7b4c6;
+  color: #e2e8f0;
 }
 /* Drawn here rather than written into the tooltip: Bootstrap strips an svg
    out of its own markup before it reaches the screen. */
@@ -928,8 +918,8 @@ body.has-panel-room::after {
 .pin-tip-do em {
   padding: 1px 6px 2px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .14);
-  font-size: 9.5px;
+  background: rgba(255, 255, 255, .16);
+  font-size: 10px;
   font-style: normal;
   font-weight: 800;
   letter-spacing: .07em;

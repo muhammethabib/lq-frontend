@@ -203,24 +203,23 @@ window.LQ = {
   },
 
   // What the pin on a floating keyboard says when the pointer reaches it.
-  // What is true, and under a rule what a press would do -- the second line
-  // behind a mouse, drawn by the stylesheet since Bootstrap's tooltip strips
-  // an svg out of its own markup, with the verb alone in a chip so it reads
-  // as the thing to do rather than more description.
+  // Only what a press would do. That the panel is fixed where the reader put
+  // it is not news to them -- they put it there, and the pin standing in the
+  // corner says so without a word. The mouse in front is drawn by the
+  // stylesheet, since Bootstrap's tooltip strips an svg out of its own
+  // markup, and the verb sits alone in a chip so it reads as the thing to do
+  // rather than more description.
   pinTip() {
     const safe = this.escape;
-    return '<span class="pin-tip-now">' +
-      safe(this.translate("keyboardPinnedState", "Pinned")) + '</span>' +
-      '<span class="pin-tip-do"><em>' +
+    return '<span class="pin-tip-do"><em>' +
       safe(this.translate("keyboardPinDo", "click")) + '</em>' +
       safe(this.translate("keyboardPinUndo", "to put it back")) + '</span>';
   },
 
-  // The same in one line, for a reader who is hearing it rather than seeing it
+  // The same for a reader who is hearing it rather than seeing it, where a
+  // button is named by what it does.
   pinTipText() {
-    return this.translate("keyboardPinnedState", "Pinned") + ". " +
-      this.translate("keyboardPinDo", "click") + " " +
-      this.translate("keyboardPinUndo", "to put it back");
+    return this.translate("keyboardPinBack", "Put the keyboard back");
   },
 
   // A dictionary is shown with its publication year where one is known.

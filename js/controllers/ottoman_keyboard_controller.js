@@ -481,6 +481,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // follows the boxes again from here.
   goHome() {
     const wasParked = !!this.placedSpot();
+    window.LQ.hideHome();
     window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
     this.hideFlag();
     if (wasParked) this.retirePin(); else this.refreshPin();
@@ -501,6 +502,20 @@ class OttomanKeyboardController extends Stimulus.Controller {
     if (!spot) return null;
     return window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
   }
+
+  // The pin is the one control on either panel whose mark says where the
+  // panel stands rather than what pressing it would do, and a reader has to
+  // reach it before the words under it can explain. So reaching it is enough:
+  // the old place lights up behind the panel, drawn the way it is drawn while
+  // the panel is carried back by hand, already armed because a press lands it
+  // exactly there. Nothing is said, and the one moment of curiosity a small
+  // mark in a corner earns is paid back at once.
+  peekHome() {
+    if (!this.home || !this.placedSpot()) return;
+    window.LQ.showHome(this.home, this.element.offsetWidth, this.element.offsetHeight, 1, true);
+  }
+
+  unpeekHome() { window.LQ.hideHome(); }
 
   // ==================== the pin ====================
 

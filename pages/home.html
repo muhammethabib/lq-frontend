@@ -1363,7 +1363,9 @@
              cite mark is drawn in js/app.js. -->
         <span class="keyboard-pin-wrap">
           <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
-                  data-action="pointerdown->ottoman-keyboard#togglePin"
+                  data-action="pointerdown->ottoman-keyboard#togglePin
+                               mouseenter->ottoman-keyboard#peekHome
+                               mouseleave->ottoman-keyboard#unpeekHome"
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>
@@ -1421,7 +1423,9 @@
              cite mark is drawn in js/app.js. -->
         <span class="keyboard-pin-wrap">
           <button type="button" class="btn keyboard-pin" data-search-keyboard-target="pin"
-                  data-action="pointerdown->search-keyboard#togglePin"
+                  data-action="pointerdown->search-keyboard#togglePin
+                               mouseenter->search-keyboard#peekHome
+                               mouseleave->search-keyboard#unpeekHome"
                   data-bs-toggle="tooltip" data-bs-html="true"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.6 2.6h6.8a1 1 0 0 1 0 2h-.7l.8 5.2 2.2 1.8a1 1 0 0 1-.6 1.8h-4.1v5.4l-1 2.6-1-2.6v-5.4H6.9a1 1 0 0 1-.6-1.8l2.2-1.8.8-5.2h-.7a1 1 0 0 1 0-2z"/></svg></button>

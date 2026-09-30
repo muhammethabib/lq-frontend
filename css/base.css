@@ -885,6 +885,31 @@ body.has-panel-room::after {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* The place a carried panel came from, drawn behind it while the reader
+   brings it back. Dashed and faint on the way in, solid and claret once
+   letting go would land it there, so the magnet announces itself instead of
+   surprising the reader. It sits under the panel and over the page, takes no
+   presses, and is read by nobody. */
+.keyboard-home-ghost {
+  position: fixed;
+  z-index: 1079;
+  pointer-events: none;
+  border: 2px dashed var(--lq-line-strong);
+  border-radius: 16px;
+  background: rgba(148, 163, 184, .06);
+  opacity: var(--lq-ghost, 0);
+  transition: opacity .12s ease, border-color .12s ease, background-color .12s ease;
+}
+.keyboard-home-ghost.is-armed {
+  border-style: solid;
+  border-color: var(--lq-claret);
+  background: rgba(157, 28, 81, .06);
+}
+.keyboard-home-ghost[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-home-ghost { transition: none; }
+}
+
 /* What the pin says when the pointer reaches it: one line, behind a mouse,
    naming what a press would do. It used to carry a second block saying the
    panel was fixed, which the reader knew -- they fixed it. With that gone
@@ -937,6 +962,7 @@ body.has-panel-room::after {
    there is nowhere to move them to, so none of this has anything to say. */
 @media (max-width: 767.98px) {
   .keyboard-pin-wrap,
+  .keyboard-home-ghost,
   .keyboard-pin-flag { display: none; }
 }
 

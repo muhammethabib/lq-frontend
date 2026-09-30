@@ -30,6 +30,12 @@ const SEARCH_ECHO_MS = 170;
 // there, not being placed somewhere new.
 const SEARCH_SNAP_PX = 40;
 
+// How near home the panel has to be carried before its old place is drawn
+// behind it. Wider than the magnet by a good margin: the outline is what
+// tells the reader a magnet is there at all, so it has to arrive before
+// they have already passed it.
+const SEARCH_HOME_REACH = 190;
+
 // The name this panel's place is held under, and the width below which the
 // stylesheet docks it to the foot of the screen instead.
 const SEARCH_KEYBOARD_PLACE = "search";
@@ -322,11 +328,33 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.element.classList.remove("is-springing");
     this.element.classList.add("is-dragging");
     this.hideFlag();
+    this.leftHome = false;
+    window.LQ.hideHome();
   }
 
   moveDrag(event) {
     if (!this.drag) return;
-    this.moveTo(this.dragSpot(event));
+    const spot = this.dragSpot(event);
+    this.moveTo(spot);
+    this.markHome(spot);
+  }
+
+  // The old place, drawn behind the panel on the way back to it. It waits
+  // until the reader has carried the panel clear away first: picking it up
+  // and setting it down again is not a journey home, and an outline under a
+  // panel that never left would be answering a question nobody asked.
+  markHome(spot) {
+    if (!this.home) return;
+    const away = Math.hypot(spot.left - this.home.left, spot.top - this.home.top);
+    if (away > SEARCH_HOME_REACH) { this.leftHome = true; window.LQ.hideHome(); return; }
+    if (!this.leftHome) return;
+    const armed = away < SEARCH_SNAP_PX;
+    // Faint at the edge of its reach and full by the time the magnet takes
+    // over, so the outline grows as the panel is brought in rather than
+    // appearing all at once.
+    const near = armed ? 1 : Math.round((1 - (away - SEARCH_SNAP_PX) /
+      (SEARCH_HOME_REACH - SEARCH_SNAP_PX)) * 70 + 30) / 100;
+    window.LQ.showHome(this.home, this.element.offsetWidth, this.element.offsetHeight, near, armed);
   }
 
   // Where the pointer has taken the panel, never past an edge of the window:
@@ -347,6 +375,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     const spot = this.dragSpot(event);
     this.drag = null;
     this.element.classList.remove("is-dragging");
+    window.LQ.hideHome();
     if (this.home && Math.hypot(spot.left - this.home.left, spot.top - this.home.top) < SEARCH_SNAP_PX) {
       this.goHome();
       return;

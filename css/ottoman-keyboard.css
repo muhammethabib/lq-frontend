@@ -61,6 +61,31 @@
   z-index: -1;
 }
 
+/* ...and it shows its grip. The dots fill the stretch the bar is actually
+   held by -- everything between Clear and the delete key, with the wildcards
+   standing over the middle of it -- so the marking is the graspable area
+   rather than a badge stuck beside it. Nothing at rest: a permanent field of
+   grey dots in an empty strip reads as something missing, where the same
+   field arriving under a hand reads as an answer. Ends faded, so it is the
+   bar's own surface changing and not a box laid on top of it. */
+.ottoman-keyboard .keyboard-bar-left::after {
+  content: "";
+  flex: 1;
+  align-self: stretch;
+  margin: 5px 10px;
+  opacity: 0;
+  transition: opacity .15s ease;
+  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
+  background-size: 9px 9px;
+  background-repeat: space;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.ottoman-keyboard .keyboard-bar:hover .keyboard-bar-left::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard .keyboard-bar-left::after { transition: none; }
+}
+
 /* The panel answers a hand that arrives on its bar: it lifts, the way a loose
    object does when a hand comes near it. Nothing is drawn and nothing moves --
    the shadow alone says the panel is resting on the page rather than set into
@@ -87,7 +112,8 @@
    there is nowhere to drag it to. */
 @media (max-width: 767px) {
   .ottoman-keyboard .keyboard-bar { cursor: default; }
-  .ottoman-keyboard .keyboard-bar::before { content: none; }
+  .ottoman-keyboard .keyboard-bar::before,
+  .ottoman-keyboard .keyboard-bar-left::after { content: none; }
 }
 .ottoman-keyboard .keyboard-bar-left {
   flex: 1;

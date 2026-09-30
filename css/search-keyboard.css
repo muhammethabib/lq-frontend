@@ -61,6 +61,54 @@
 /* The controls in the bar are pressed, not dragged. */
 .search-keyboard-bar button { cursor: pointer; }
 
+/* ...and it shows its grip, in whatever the bar has free at the time. The
+   teaching line is not taken away to make room for it: while that line is up
+   the dots fill the two stretches either side of it, and once the reader has
+   typed and the line has gone they fill the middle it leaves behind. Nothing
+   at rest, so an empty strip is never a strip of grey dots waiting to be
+   explained; ends faded, so it is the bar's surface changing rather than a
+   box laid on it. */
+.search-keyboard-teach::before,
+.search-keyboard-teach::after,
+.search-keyboard.is-learned .search-keyboard-bar::after {
+  content: "";
+  flex: 1;
+  align-self: stretch;
+  opacity: 0;
+  transition: opacity .15s ease;
+  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
+  background-size: 9px 9px;
+  background-repeat: space;
+}
+.search-keyboard-teach::before {
+  margin: 1px 10px 1px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 34%);
+  mask-image: linear-gradient(to right, transparent, #000 34%);
+}
+.search-keyboard-teach::after {
+  margin: 1px 0 1px 10px;
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 34%);
+  mask-image: linear-gradient(to left, transparent, #000 34%);
+}
+/* Once the line has gone the bar has no children left in the flow, so the
+   mark keeps itself clear of the two corners the controls stand in. */
+.search-keyboard.is-learned .search-keyboard-bar::after {
+  /* Up into the panel's own top padding, which is handle as well: the bar
+     alone is too short to hold the pattern, and a single row of dots reads
+     as a rule drawn between things rather than a surface to hold. */
+  margin: -14px 62px 0 40px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.search-keyboard-bar:hover .search-keyboard-teach::before,
+.search-keyboard-bar:hover .search-keyboard-teach::after,
+.search-keyboard.is-learned .search-keyboard-bar:hover::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .search-keyboard-teach::before,
+  .search-keyboard-teach::after,
+  .search-keyboard.is-learned .search-keyboard-bar::after { transition: none; }
+}
+
 /* The handle reaches the panel's own edges. The padding above the bar and to
    either side of it belongs to nothing else, so a hand that arrives at the
    top of the panel is already on the handle rather than a few pixels short of
@@ -336,7 +384,10 @@
 
 @media (max-width: 767.98px) {
   /* Pinned to the foot of the screen, with nowhere to drag it to. */
-  .search-keyboard-bar::before { content: none; }
+  .search-keyboard-bar::before,
+  .search-keyboard-teach::before,
+  .search-keyboard-teach::after,
+  .search-keyboard.is-learned .search-keyboard-bar::after { content: none; }
   .search-keyboard {
     left: 0 !important;
     top: auto !important;

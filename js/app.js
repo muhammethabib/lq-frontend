@@ -27,6 +27,10 @@ const PANEL_LIFT = 16;
 // panel whose own row is off the top has lost what it is for.
 const PANEL_HEADROOM = 24;
 
+// The one outline that shows a carried panel where it came from. There is
+// never more than one panel in hand, so there is never more than one.
+const HOME_GHOST_ID = "lq-home-ghost";
+
 window.LQ = {
   refreshDynamicContent(root = document) {
     feather.replace();
@@ -193,6 +197,35 @@ window.LQ = {
     if (!this.waitingForTop) return;
     window.removeEventListener("scroll", this.waitingForTop);
     this.waitingForTop = null;
+  },
+
+  // The place a carried panel came from, drawn behind it while the reader
+  // brings it back. A panel that snaps home from somewhere near it is a
+  // kindness nobody can use if they cannot see where near is: the outline
+  // says where to aim, and firms up once letting go would land it there.
+  // Nothing can be pressed on it and nothing reads it aloud -- it is a mark
+  // on the page, not a control.
+  showHome(spot, width, height, near, armed) {
+    let ghost = document.getElementById(HOME_GHOST_ID);
+    if (!ghost) {
+      ghost = document.createElement("div");
+      ghost.id = HOME_GHOST_ID;
+      ghost.className = "keyboard-home-ghost";
+      ghost.setAttribute("aria-hidden", "true");
+      document.body.appendChild(ghost);
+    }
+    ghost.style.left = `${Math.round(spot.left)}px`;
+    ghost.style.top = `${Math.round(spot.top)}px`;
+    ghost.style.width = `${Math.round(width)}px`;
+    ghost.style.height = `${Math.round(height)}px`;
+    ghost.style.setProperty("--lq-ghost", String(near));
+    ghost.classList.toggle("is-armed", !!armed);
+    ghost.hidden = false;
+  },
+
+  hideHome() {
+    const ghost = document.getElementById(HOME_GHOST_ID);
+    if (ghost) ghost.hidden = true;
   },
 
   // The mark on every button that opens the citation window. It is a pair of

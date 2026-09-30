@@ -61,29 +61,44 @@
   z-index: -1;
 }
 
-/* ...and it shows its grip. The dots fill the stretch the bar is actually
-   held by -- everything between Clear and the delete key, with the wildcards
-   standing over the middle of it -- so the marking is the graspable area
-   rather than a badge stuck beside it. Nothing at rest: a permanent field of
-   grey dots in an empty strip reads as something missing, where the same
-   field arriving under a hand reads as an answer. Ends faded, so it is the
-   bar's own surface changing and not a box laid on top of it. */
-.ottoman-keyboard .keyboard-bar-left::after {
+/* ...and it shows its grip while a hand is on it: two fields of dots, one in
+   each stretch the bar is actually held by, stopping short of the wildcards
+   rather than running behind them. They hang off the wildcard row, so they
+   find the keys' own edges at any panel width, and their outer margins match
+   so the keys stay centred on the bar -- 88px clears Clear in either
+   language, and the pin, when it is out, stands over the few pixels it
+   reaches past.
+
+   Nothing at rest. A permanent field of grey dots in an empty strip reads as
+   something missing, a page still loading, where the same field arriving
+   under a hand reads as an answer; and the strip stays exactly as clean as it
+   is today until somebody reaches for it. */
+.ottoman-keyboard .wildcard-row::before,
+.ottoman-keyboard .wildcard-row::after {
   content: "";
   flex: 1;
-  align-self: stretch;
-  margin: 5px 10px;
+  height: 20px;
   opacity: 0;
   transition: opacity .15s ease;
   background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
   background-size: 9px 9px;
   background-repeat: space;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
-.ottoman-keyboard .keyboard-bar:hover .keyboard-bar-left::after { opacity: 1; }
+.ottoman-keyboard .wildcard-row::before {
+  margin: 0 8px 0 88px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 34%);
+  mask-image: linear-gradient(to right, transparent, #000 34%);
+}
+.ottoman-keyboard .wildcard-row::after {
+  margin: 0 88px 0 8px;
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 34%);
+  mask-image: linear-gradient(to left, transparent, #000 34%);
+}
+.ottoman-keyboard .keyboard-bar:hover .wildcard-row::before,
+.ottoman-keyboard .keyboard-bar:hover .wildcard-row::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .ottoman-keyboard .keyboard-bar-left::after { transition: none; }
+  .ottoman-keyboard .wildcard-row::before,
+  .ottoman-keyboard .wildcard-row::after { transition: none; }
 }
 
 /* The panel answers a hand that arrives on its bar: it lifts, the way a loose
@@ -113,7 +128,8 @@
 @media (max-width: 767px) {
   .ottoman-keyboard .keyboard-bar { cursor: default; }
   .ottoman-keyboard .keyboard-bar::before,
-  .ottoman-keyboard .keyboard-bar-left::after { content: none; }
+  .ottoman-keyboard .wildcard-row::before,
+  .ottoman-keyboard .wildcard-row::after { content: none; }
 }
 .ottoman-keyboard .keyboard-bar-left {
   flex: 1;

@@ -95,8 +95,9 @@
 .search-keyboard.is-learned .search-keyboard-bar::after {
   /* Up into the panel's own top padding, which is handle as well: the bar
      alone is too short to hold the pattern, and a single row of dots reads
-     as a rule drawn between things rather than a surface to hold. */
-  margin: -14px 62px 0 40px;
+     as a rule drawn between things rather than a surface to hold. Out to the
+     panel's edges too, with the two keys standing over the far end. */
+  margin: -14px 34px 0 28px;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
@@ -129,7 +130,11 @@
   justify-content: center;
   gap: 8px;
   min-width: 0;
-  padding: 0 76px;
+  /* The line keeps its distance from the corners; the grip that shares this
+     box reaches past it to the panel's own edge, where the pin and the two
+     keys -- both opaque -- stand over the last of it. The two sides match, so
+     the line stays centred on the panel whatever the grip does. */
+  padding: 0 34px;
 }
 
 .search-keyboard-teach-text {

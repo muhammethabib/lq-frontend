@@ -50,16 +50,44 @@
 .ottoman-keyboard.is-dragging .keyboard-bar { cursor: var(--lq-cursor-grabbing); }
 .ottoman-keyboard .keyboard-bar button { cursor: pointer; }
 
+/* ...and it reaches the panel's own edges. The padding above the bar and to
+   either side of it belongs to nothing else, so a hand that arrives at the
+   top of the panel is already on the handle rather than a few pixels short
+   of it. Drawn behind everything in the bar, which keeps its own answer. */
+.ottoman-keyboard .keyboard-bar::before {
+  content: "";
+  position: absolute;
+  inset: -14px -16px 0;
+  z-index: -1;
+}
+
+/* The panel answers a hand that arrives on its bar: it lifts, the way a loose
+   object does when a hand comes near it. Nothing is drawn and nothing moves --
+   the shadow alone says the panel is resting on the page rather than set into
+   it, which is the whole of what a reader needs to guess they can pick it up.
+   The lift stays for the length of the drag, where the pointer has long since
+   left the bar. */
+.ottoman-keyboard { transition: box-shadow .16s ease; }
+.ottoman-keyboard:has(.keyboard-bar:hover),
+.ottoman-keyboard.is-dragging {
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, .26);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard { transition: none; }
+}
+
 /* Springing back to the place the page picked. Only then: a panel that eased
    into place while it was being dragged would lag behind the pointer. */
 .ottoman-keyboard.is-springing {
-  transition: left .35s cubic-bezier(0.34, 1.56, 0.64, 1), top .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: left .35s cubic-bezier(0.34, 1.56, 0.64, 1), top .35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow .16s ease;
 }
 
 /* Below the width at which the panel is pinned to the foot of the screen
    there is nowhere to drag it to. */
 @media (max-width: 767px) {
   .ottoman-keyboard .keyboard-bar { cursor: default; }
+  .ottoman-keyboard .keyboard-bar::before { content: none; }
 }
 .ottoman-keyboard .keyboard-bar-left {
   flex: 1;

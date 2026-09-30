@@ -97,7 +97,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.onResize = () => {
       if (!this.openValue) return;
       this.place();
-      if (!this.placedSpot()) window.LQ.makeRoomFor(this.element);
+      if (!this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor);
     };
     window.addEventListener("resize", this.onResize);
 
@@ -243,7 +243,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     // Tried again a few times: the panel's own height is not final until its
     // keys have been drawn, and a measurement taken before that is short.
     if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
-      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element);
+      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor);
     }, delay));
   }
 

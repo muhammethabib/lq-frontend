@@ -554,7 +554,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
       return;
     }
-    window.LQ.makeRoomFor(this.element);
+    window.LQ.makeRoomFor(this.element, this.below || this.anchor);
   }
 
   // ==================== helpers ====================

@@ -10,6 +10,15 @@ const application = Stimulus.Application.start();
 // feather.replace() has no scoped form, so it always sweeps the whole document;
 // it only touches elements that still carry data-feather, so re-running it is
 // cheap. The root argument scopes the tooltip pass, which does support it.
+// How much of the window is left under a panel once the page has been brought
+// to it. Enough that the panel plainly ends above the fold rather than sitting
+// against it, so a reader can see there is nothing below it they are missing.
+const PANEL_TAIL = 72;
+
+// ...and how near the top of the window the row a panel belongs to may be
+// pulled. A panel with its own row off the top has lost what it is for.
+const PANEL_HEADROOM = 24;
+
 window.LQ = {
   refreshDynamicContent(root = document) {
     feather.replace();
@@ -84,7 +93,7 @@ window.LQ = {
   // panel following the row it belongs to is always reachable, whatever the
   // reader does with the scrollbar.
   roomFor(panel) {
-    const past = panel.getBoundingClientRect().bottom + 16 - window.innerHeight;
+    const past = panel.getBoundingClientRect().bottom + PANEL_TAIL - window.innerHeight;
     if (past <= 0) { this.releaseRoom(); return 0; }
     // A release still waiting for the top of the page would take the room
     // away the moment the reader got there, with the panel still needing it.
@@ -109,9 +118,20 @@ window.LQ = {
   // The room, and the page brought to the panel. Only where the reader has
   // not just scrolled the page themselves: on opening, and when the window
   // has been resized under an open panel.
-  makeRoomFor(panel) {
+  //
+  // It goes the whole way rather than the least it can: a panel that only
+  // just clears the fold is a panel the reader is not sure has finished, and
+  // the scroll is what makes it plain that the panel belongs under the row
+  // and not beside it. The row it serves is passed in so the page is never
+  // carried so far that the row itself goes off the top.
+  makeRoomFor(panel, row) {
     const past = this.roomFor(panel);
-    if (past > 0) window.scrollBy({ top: past, behavior: "smooth" });
+    if (past <= 0) return;
+    const limit = row && row.isConnected
+      ? Math.max(0, row.getBoundingClientRect().top - PANEL_HEADROOM)
+      : past;
+    const step = Math.min(past, limit);
+    if (step > 0) window.scrollBy({ top: step, behavior: "smooth" });
   },
 
   // Taking the room back moves everything under the pointer, and a press that

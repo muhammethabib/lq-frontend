@@ -97,7 +97,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.onResize = () => {
       if (!this.openValue) return;
       this.place();
-      if (!this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor);
+      if (!this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
     };
     window.addEventListener("resize", this.onResize);
 
@@ -243,7 +243,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     // Tried again a few times: the panel's own height is not final until its
     // keys have been drawn, and a measurement taken before that is short.
     if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
-      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor);
+      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
     }, delay));
   }
 
@@ -384,6 +384,11 @@ class SearchKeyboardController extends Stimulus.Controller {
     if (!spot) return null;
     return window.LQ_PLACEMENT.clamp(spot, this.element.offsetWidth, this.element.offsetHeight);
   }
+
+  // The strip the page is brought to: the tabs above the card, which keep the
+  // other side of the page within reach while the reader works on this one.
+  // Missing, the row itself is all the page is brought to.
+  lift() { return document.querySelector(".search-tabs"); }
 
   // ==================== the pin ====================
 

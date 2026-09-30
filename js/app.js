@@ -13,10 +13,18 @@ const application = Stimulus.Application.start();
 // How much of the window is left under a panel once the page has been brought
 // to it. Enough that the panel plainly ends above the fold rather than sitting
 // against it, so a reader can see there is nothing below it they are missing.
+// It is also what decides whether the page moves at all: a panel that already
+// has this much under it is a panel nothing is wrong with.
 const PANEL_TAIL = 72;
 
-// ...and how near the top of the window the row a panel belongs to may be
-// pulled. A panel with its own row off the top has lost what it is for.
+// Where the strip above the row -- the tabs -- lands when the page is brought
+// to the panel. The row, the panel and the tabs then read as one block at the
+// top of the window, the same block at every size that has room for it.
+const PANEL_LIFT = 16;
+
+// ...and how near the top of the window the row itself may be pulled, when
+// the window is too short to have the tabs as well. The row goes last: a
+// panel whose own row is off the top has lost what it is for.
 const PANEL_HEADROOM = 24;
 
 window.LQ = {
@@ -95,43 +103,70 @@ window.LQ = {
   roomFor(panel) {
     const past = panel.getBoundingClientRect().bottom + PANEL_TAIL - window.innerHeight;
     if (past <= 0) { this.releaseRoom(); return 0; }
+    this.roomToScroll(past);
+    return past;
+  },
+
+  // The page made long enough to be scrolled by a given distance. The panel
+  // is fixed, so it adds nothing to the page's own height and the page may
+  // have nowhere to scroll to; what is wanted is not the overlap but the
+  // scroll range the page is short of, and only once that is made up is
+  // there anywhere to scroll.
+  roomToScroll(want) {
+    if (want <= 0) { this.releaseRoom(); return; }
     // A release still waiting for the top of the page would take the room
     // away the moment the reader got there, with the panel still needing it.
     this.stopWaitingForTop();
-    // The panel is fixed, so it adds nothing to the page's own height and the
-    // page may have nowhere to scroll to. What is wanted is not the overlap
-    // but the scroll range the page is short of: the room makes up that
-    // difference, and only then is there anywhere to scroll.
     const current = parseFloat(
       getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
     const reach = document.documentElement.scrollHeight - window.innerHeight;
-    const short = (window.scrollY + past) - reach;
+    const short = (window.scrollY + want) - reach;
     document.body.classList.add("has-panel-room");
     if (short > 0) {
       document.body.style.setProperty("--lq-panel-room", `${Math.ceil(current + short + 20)}px`);
     } else if (!current) {
       document.body.style.setProperty("--lq-panel-room", "0px");
     }
-    return past;
   },
 
-  // The room, and the page brought to the panel. Only where the reader has
-  // not just scrolled the page themselves: on opening, and when the window
-  // has been resized under an open panel.
+  // The room, and the page brought to the panel.
   //
-  // It goes the whole way rather than the least it can: a panel that only
-  // just clears the fold is a panel the reader is not sure has finished, and
-  // the scroll is what makes it plain that the panel belongs under the row
-  // and not beside it. The row it serves is passed in so the page is never
-  // carried so far that the row itself goes off the top.
-  makeRoomFor(panel, row) {
-    const past = this.roomFor(panel);
-    if (past <= 0) return;
-    const limit = row && row.isConnected
-      ? Math.max(0, row.getBoundingClientRect().top - PANEL_HEADROOM)
-      : past;
-    const step = Math.min(past, limit);
-    if (step > 0) window.scrollBy({ top: step, behavior: "smooth" });
+  // Whether it moves at all is one question: a panel that already has its
+  // tail of window under it is a panel nothing is wrong with, and the page
+  // stays where it is -- on a tall window, and equally where the reader has
+  // already scrolled somewhere that works. Nobody is argued with.
+  //
+  // How far it moves is the other, and it is not "the least it can". A panel
+  // that only just clears the fold is a panel the reader is not sure has
+  // finished, and they start dragging it about to see the rest. So the page
+  // goes all the way: the strip above the row to the top of the window, the
+  // row under it, the panel under that, the same block at every size with
+  // room for it. Where there is not room, the lift gives way first and the
+  // row last -- it may come no nearer the top than its own headroom.
+  makeRoomFor(panel, row, lift) {
+    const past = panel.getBoundingClientRect().bottom + PANEL_TAIL - window.innerHeight;
+    if (past <= 0) { this.releaseRoom(); return; }
+    if (!row || !row.isConnected) {
+      this.roomToScroll(past);
+      window.scrollBy({ top: past, behavior: "smooth" });
+      return;
+    }
+
+    const rowBox = row.getBoundingClientRect();
+    const block = panel.getBoundingClientRect().bottom - rowBox.top;
+    // Where the row lands if the strip above it is brought to the top
+    const wanted = lift && lift.isConnected
+      ? rowBox.top - lift.getBoundingClientRect().top + PANEL_LIFT
+      : PANEL_HEADROOM;
+    const target = Math.max(PANEL_HEADROOM,
+      Math.min(wanted, window.innerHeight - PANEL_TAIL - block));
+    const step = Math.round(rowBox.top - target);
+    if (step <= 0) return;
+    // Room for the whole journey, not just the overlap: without it the scroll
+    // runs out of page and the block lands somewhere in between, which is the
+    // wandering this was meant to put a stop to.
+    this.roomToScroll(step);
+    window.scrollBy({ top: step, behavior: "smooth" });
   },
 
   // Taking the room back moves everything under the pointer, and a press that

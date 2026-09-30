@@ -554,8 +554,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
       if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
       return;
     }
-    window.LQ.makeRoomFor(this.element, this.below || this.anchor);
+    window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
   }
+
+  // The strip the page is brought to: the tabs above the card, which keep the
+  // other side of the page within reach while the reader works on this one.
+  // Missing, the row itself is all the page is brought to.
+  lift() { return document.querySelector(".search-tabs"); }
 
   // ==================== helpers ====================
 

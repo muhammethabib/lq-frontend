@@ -774,7 +774,16 @@ body.has-panel-room::after {
 
 /* The pin shows only once the panel has been parked, and it is claret the
    whole time it is there: while it shows, this panel is fixed where the
-   reader left it, and pressing it is how it goes back. */
+   reader left it, and pressing it is how it goes back.
+
+   Claret as the ink, not as the ground. Filled, it was the only solid block
+   of colour in a bar of outlines -- Clear, the wildcards, delete, close are
+   all a line on paper -- so the eye read it as a mass rather than as a
+   control, and its mark makes that worse by drawing the button's own square
+   again inside it. It is still the one claret thing in the panel, and it
+   still only exists while the panel is parked, so the state reads; it simply
+   sits at the weight of the control beside it. The fill is spent on the
+   hover, where the emphasis is earned. */
 .keyboard-pin {
   position: relative;
   display: inline-flex;
@@ -785,16 +794,17 @@ body.has-panel-room::after {
   padding: 0;
   border: 1px solid var(--lq-claret);
   border-radius: 6px;
-  background: var(--lq-claret);
-  color: var(--lq-paper);
-  transition: background .12s, border-color .12s;
+  background: var(--lq-paper);
+  color: var(--lq-claret);
+  transition: background .12s, border-color .12s, color .12s;
 }
 .keyboard-pin svg { width: 12px; height: 12px; }
 /* The attribute has to be spelled out: the browser's own [hidden] rule loses
    to any author rule that sets display, and this one sets one. */
 .keyboard-pin[hidden] { display: none; }
-/* The colour is spelled out again: Bootstrap's own .btn:hover sets one, and
-   it outranks the plain class that put the white there. */
+/* Pressed into service: the fill the button does not wear at rest. The
+   colour is spelled out again because Bootstrap's own .btn:hover sets one,
+   and it outranks the plain class. */
 .keyboard-pin:hover {
   background: var(--lq-claret-hover);
   border-color: var(--lq-claret-hover);

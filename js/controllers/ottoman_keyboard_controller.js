@@ -377,10 +377,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // A place the reader chose is kept only while it still leaves them the
   // boxes. The panel is fixed to the window and the boxes are not, so a place
   // that cleared them when it was chosen covers them at another scroll
-  // position, or on the next visit -- and it is written down for the next
-  // visit. Then pressing a box opens the panel over, or level with, the very
-  // thing being filled in, and the page has nowhere to go because a parked
-  // panel asks for nothing.
+  // position. Then pressing a box opens the panel over, or level with, the
+  // very thing being filled in.
   //
   // So the rule the panel is built on holds over the place as well: the
   // panel belongs under the boxes. A place below them is the reader's and is
@@ -618,10 +616,12 @@ class OttomanKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.fix(KEYBOARD_PLACE, spot);
     this.refreshPin();
     this.flashPin();
-    // Once a visit, counting both keyboards as one. A word that says what the
+    // Once a page, counting both keyboards as one. A word that says what the
     // control does has one moment worth saying it in; after that the reader
     // knows, and the other keyboard's pin is the same pin doing the same job,
-    // so saying it again there would be nagging rather than telling.
+    // so saying it again there would be nagging rather than telling. A reader
+    // who reloads is starting again, as far as anything here can tell, and
+    // starting again is when being told things is useful.
     if (arriving && !window.LQ_PLACEMENT.toldAlready()) {
       window.LQ_PLACEMENT.markTold();
       this.showFlag();
@@ -682,7 +682,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   }
 
   // One blink, on every drop. The panel has a new place, and this is the
-  // control that takes it back; the words beside it are said once a visit and
+  // control that takes it back; the words beside it are said once a page and
   // then never again, so after that first time this is all there is to say
   // that the place was taken. It wears, for a moment, the fill it otherwise
   // only wears under the pointer.

@@ -8,80 +8,69 @@
 // holds that decision instead, and the keyboards ask it before they place
 // themselves.
 //
-// Parking a keyboard is the reader saying where it belongs, so it is written
-// down and honoured on the next visit as well. Pressing the pin it leaves
-// behind is what takes it back, and nothing else does.
-
-// One entry per keyboard. The two float in different places and are different
-// sizes, so a place found for one says nothing about the other.
-const PLACEMENT_PREFIX = "lq.keyboard-place.";
+// It holds it for this page and no longer. Nothing here is written down.
+//
+// That is a decision rather than an omission. Moving the keyboard is not a
+// preference, it is an answer to something in the way: show me what is under
+// it. The answer stops being wanted about as soon as the obstruction does, and
+// a place chosen for one afternoon is the wrong place a fortnight later, on a
+// window of a different size, over a page with different things on it. A place
+// kept past its moment has to be watched for going stale -- which is why the
+// keyboards check, on every opening, that the place they remember still leaves
+// the boxes visible. Keeping it only while the reader is on the page makes the
+// question much smaller, and the cost of letting it go is one drag.
 
 // Nothing may sit closer than this to an edge of the window: a keyboard half
 // off the screen cannot be dragged back on.
 const PLACEMENT_MARGIN = 8;
 
-// Whether the reader has been told what the pin is for. One key for both
-// keyboards: the line says one thing -- press this and the keyboard goes back
-// where it was -- and that is the same thing on either of them, so the second
-// telling teaches nothing and only gets in the way of the parking that earned
-// it. Kept for the visit rather than for good: a reader coming back days later
-// is being reminded, not nagged.
-const PLACEMENT_TOLD = "lq.keyboard-told";
-
 window.LQ_PLACEMENT = {
-  // This session's places, written down as well. A page with no storage at
-  // all still honours a move for as long as the reader is here.
+  // This page's places, one entry per keyboard. The two float in different
+  // places and are different sizes, so a place found for one says nothing
+  // about the other.
   moves: {},
 
   // ==================== reading and writing ====================
 
   // The place this keyboard should open at, or null for the page's own.
   spot(name) {
-    if (name in this.moves) return this.moves[name];
-    const fixed = this.read(`${PLACEMENT_PREFIX}${name}`);
-    return fixed && typeof fixed.left === "number" && typeof fixed.top === "number" ? fixed : null;
+    return name in this.moves ? this.moves[name] : null;
   },
 
-  // The reader has parked the keyboard here. It stays, this visit and the
-  // next, until they put it back themselves: that was the whole point of
-  // asking, and a place that lasted only until the tab closed would be the
-  // page having its way again by the back door.
+  // The reader has parked the keyboard here. It stays until they put it back
+  // themselves, or until the page is loaded again.
   fix(name, spot) {
     this.moves[name] = { left: Math.round(spot.left), top: Math.round(spot.top) };
-    this.write(`${PLACEMENT_PREFIX}${name}`, this.moves[name]);
   },
 
   // The keyboard is back where the page would have put it: there is no
-  // decision left to honour, here or in storage.
+  // decision left to honour.
   release(name) {
     delete this.moves[name];
-    this.remove(`${PLACEMENT_PREFIX}${name}`);
   },
 
   // ==================== the one telling ====================
 
-  // Said already this visit, on either keyboard?
+  // Whether the reader has been told what the pin is for. One record for both
+  // keyboards: the line says one thing -- press this and the keyboard goes
+  // back where it was -- and that is the same thing on either of them, so the
+  // second telling teaches nothing and only gets in the way of the parking
+  // that earned it.
+  //
+  // It lasts exactly as long as the page does. A reader who reloads is, as far
+  // as anyone can tell from here, starting again, and starting again is when
+  // being told things is useful.
   told: false,
 
-  toldAlready() {
-    if (this.told) return true;
-    try { return window.sessionStorage.getItem(PLACEMENT_TOLD) === "1"; }
-    catch (error) { return false; }
-  },
+  toldAlready() { return this.told; },
 
-  // It has been said. Written down as well as remembered, so moving to
-  // another page and parking a keyboard there does not say it again. A page
-  // with no storage at all still holds it for as long as the reader stays.
-  markTold() {
-    this.told = true;
-    try { window.sessionStorage.setItem(PLACEMENT_TOLD, "1"); } catch (error) { /* this page only */ }
-  },
+  markTold() { this.told = true; },
 
   // ==================== staying on the screen ====================
 
-  // A window can be made smaller, or turned, between one visit and the next.
-  // A place is only worth honouring while it is still reachable, so it is
-  // pulled back inside the window rather than dropped.
+  // A window can be made smaller, or turned, while the panel is parked. A
+  // place is only worth honouring while it is still reachable, so it is pulled
+  // back inside the window rather than dropped.
   clamp(spot, width, height) {
     const right = window.innerWidth - width - PLACEMENT_MARGIN;
     const bottom = window.innerHeight - height - PLACEMENT_MARGIN;
@@ -89,24 +78,5 @@ window.LQ_PLACEMENT = {
       left: Math.round(Math.max(PLACEMENT_MARGIN, Math.min(spot.left, Math.max(PLACEMENT_MARGIN, right)))),
       top: Math.round(Math.max(PLACEMENT_MARGIN, Math.min(spot.top, Math.max(PLACEMENT_MARGIN, bottom))))
     };
-  },
-
-  // ==================== storage, which may not be there ====================
-
-  // A private window, or a reader who has turned site data off, throws on the
-  // first touch. That costs them the keeping across visits and nothing else.
-  read(key) {
-    try {
-      const raw = window.localStorage.getItem(key);
-      return raw === null ? null : JSON.parse(raw);
-    } catch (error) { return null; }
-  },
-
-  write(key, value) {
-    try { window.localStorage.setItem(key, JSON.stringify(value)); } catch (error) { /* session only */ }
-  },
-
-  remove(key) {
-    try { window.localStorage.removeItem(key); } catch (error) { /* nothing to remove */ }
   }
 };

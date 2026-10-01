@@ -395,10 +395,12 @@ class SearchKeyboardController extends Stimulus.Controller {
     window.LQ_PLACEMENT.fix(SEARCH_KEYBOARD_PLACE, spot);
     this.refreshPin();
     this.flashPin();
-    // Once a visit, counting both keyboards as one. A word that says what the
+    // Once a page, counting both keyboards as one. A word that says what the
     // control does has one moment worth saying it in; after that the reader
     // knows, and the other keyboard's pin is the same pin doing the same job,
-    // so saying it again there would be nagging rather than telling.
+    // so saying it again there would be nagging rather than telling. A reader
+    // who reloads is starting again, as far as anything here can tell, and
+    // starting again is when being told things is useful.
     if (arriving && !window.LQ_PLACEMENT.toldAlready()) {
       window.LQ_PLACEMENT.markTold();
       this.showFlag();
@@ -464,7 +466,7 @@ class SearchKeyboardController extends Stimulus.Controller {
   }
 
   // One blink, on every drop. The panel has a new place, and this is the
-  // control that takes it back; the words beside it are said once a visit and
+  // control that takes it back; the words beside it are said once a page and
   // then never again, so after that first time this is all there is to say
   // that the place was taken. It wears, for a moment, the fill it otherwise
   // only wears under the pointer.

@@ -47,8 +47,8 @@
   user-select: none;
   cursor: var(--lq-cursor-grab);
 }
-.ottoman-keyboard.is-dragging .keyboard-bar { cursor: var(--lq-cursor-grabbing); }
 .ottoman-keyboard .keyboard-bar button { cursor: pointer; }
+
 
 /* ...and it reaches the panel's own edges. The padding above the bar and to
    either side of it belongs to nothing else, so a hand that arrives at the
@@ -131,7 +131,6 @@
    different places and the raggedness moves with the language and the
    window. */
 .ottoman-keyboard .keyboard-row { cursor: var(--lq-cursor-grab); }
-.ottoman-keyboard.is-dragging .keyboard-row { cursor: var(--lq-cursor-grabbing); }
 .ottoman-keyboard .keyboard-row .key,
 .ottoman-keyboard .keyboard-row .panel-switch { cursor: pointer; }
 .ottoman-keyboard .keyboard-panel { position: relative; }
@@ -615,3 +614,19 @@
   line-height: 1.5;
   color: #fff;
 }
+
+/* The hand closes over the whole panel while it is being carried, not just
+   over the part it was picked up by. The panel is held by the bar, by the
+   empty space beside the keys and by the gaps between the rows, and a hand
+   that stays open on two of the three says those two are not really holding
+   it. Nothing inside can be pressed mid-carry anyway, so the keys close their
+   hand too rather than offering a press that will not happen.
+
+   Last in the file, and each of the keys that names itself named again here:
+   the rules this has to beat are as particular as it is, and a tie goes to
+   whichever was written last. */
+.ottoman-keyboard.is-dragging,
+.ottoman-keyboard.is-dragging *,
+.ottoman-keyboard.is-dragging .keyboard-bar button,
+.ottoman-keyboard.is-dragging .keyboard-row .key,
+.ottoman-keyboard.is-dragging .keyboard-row .panel-switch { cursor: var(--lq-cursor-grabbing); }

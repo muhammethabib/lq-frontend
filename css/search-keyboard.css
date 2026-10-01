@@ -56,7 +56,7 @@
   user-select: none;
 }
 
-.search-keyboard.is-dragging .search-keyboard-bar { cursor: var(--lq-cursor-grabbing); }
+
 
 /* The controls in the bar are pressed, not dragged. */
 .search-keyboard-bar button { cursor: pointer; }
@@ -420,3 +420,11 @@
   .search-key { width: 34px; height: 40px; }
   .search-key-ottoman { font-size: 15px; }
 }
+
+/* The hand closes over the whole panel while it is being carried, not just
+   over the part it was picked up by. Nothing inside can be pressed mid-carry,
+   so the keys close their hand too rather than offering a press that will not
+   happen. Last in the file, so it beats the rules it has to beat. */
+.search-keyboard.is-dragging,
+.search-keyboard.is-dragging *,
+.search-keyboard.is-dragging .search-keyboard-bar button { cursor: var(--lq-cursor-grabbing); }

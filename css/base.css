@@ -876,10 +876,10 @@ body.has-panel-room::after {
   bottom: calc(100% + 9px);
   left: 50%;
   z-index: 2;
-  /* Two lines rather than one. Centred on the pin, and the pin stands in the
-     panel's corner, so the sentence on one line would reach past the corner
-     and off the panel; broken in two it sits over the button it belongs to.
-     The controller nudges it right if even that would leave the window. */
+  /* As wide as the words, and no wider than the panel's own corner can carry.
+     It is an order of three words now rather than a sentence, so it fits on
+     one line and sits square over the button it belongs to; the controller
+     nudges it right only if that would take it off the window. */
   width: max-content;
   max-width: 104px;
   padding: 4px 9px 5px;

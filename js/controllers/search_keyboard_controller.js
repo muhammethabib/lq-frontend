@@ -489,12 +489,13 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.flagTarget.classList.toggle("is-below", this.element.getBoundingClientRect().top < SEARCH_FLAG_ROOM_PX);
     this.flagTarget.style.marginLeft = "";
     this.flagTarget.hidden = false;
-    // Centred on a button that stands in the panel's corner, so left to
-    // itself it hangs off that corner -- and off the window as well, on a
-    // panel parked hard against the edge. It stops at whichever it meets
-    // first: the line the panel is drawn to, or the window's own.
-    const edge = Math.max(6, this.element.getBoundingClientRect().left);
-    const past = edge - this.flagTarget.getBoundingClientRect().left;
+    // Centred on the button it belongs to, and the button stands in the
+    // panel's corner, so a few pixels of it hang off that corner. That is the
+    // right way round: a label that sits square over its control and overlaps
+    // the corner reads as pointing at the control, while one pushed inside
+    // the panel to keep its edges tidy reads as pointing at nothing in
+    // particular. It stops at the window, which it cannot hang off at all.
+    const past = 6 - this.flagTarget.getBoundingClientRect().left;
     if (past > 0) this.flagTarget.style.marginLeft = `${Math.round(past)}px`;
     clearTimeout(this.flagTimer);
     this.flagTimer = setTimeout(() => this.hideFlag(), SEARCH_FLAG_MS);

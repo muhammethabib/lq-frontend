@@ -420,10 +420,17 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // area there, not a pile of strips, and a mark that lights a strip at a
   // time says the panel is held by rows, which it is not.
   //
-  // Each room is as wide as the narrowest row it spans, so it never reaches
-  // under a key, and it is measured rather than written down: the two layouts
-  // are ragged in different places, and the raggedness moves with the
-  // language and the window.
+  // A room is cut to the shape of the space rather than to the rectangle that
+  // fits inside it. Cut to a rectangle it stopped at the narrowest row, and
+  // the wider rows kept a margin of room that dragged the panel and showed
+  // nothing for it: the hand said hold me and the panel said nothing back.
+  // The cut does both jobs at once, since what is clipped away is neither
+  // drawn nor hovered, so the mark and the area that answers are the same
+  // shape to the pixel.
+  //
+  // It is measured rather than written down: the two layouts are ragged in
+  // different places, and the raggedness moves with the language and the
+  // window.
   markRooms() {
     const panel = this.activePanel();
     if (!panel) return;
@@ -432,34 +439,49 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const box = panel.getBoundingClientRect();
     if (!box.width) return;
 
-    const edges = Array.from(panel.querySelectorAll(".keyboard-row")).map((row) => {
+    const rows = Array.from(panel.querySelectorAll(".keyboard-row"));
+    const edges = rows.map((row, i) => {
       const keys = Array.from(row.children);
       if (!keys.length) return null;
       const bounds = row.getBoundingClientRect();
+      const next = rows[i + 1];
       return {
         top: bounds.top - box.top,
-        bottom: bounds.bottom - box.top,
-        gap: Math.min(...keys.map((key) => key.getBoundingClientRect().left)) - box.left,
+        // Down to where the next row starts, so the space between two rows of
+        // one room belongs to the room rather than falling out of it.
+        bottom: (next ? next.getBoundingClientRect().top : bounds.bottom) - box.top,
+        room: Math.min(...keys.map((key) => key.getBoundingClientRect().left))
+          - box.left - KEYBOARD_ROOM_EDGE,
       };
     });
 
     let run = [];
     const close = () => {
-      const width = run.length
-        ? Math.min(...run.map((edge) => edge.gap)) - KEYBOARD_ROOM_EDGE : 0;
-      if (width >= KEYBOARD_ROOM_MIN) {
+      if (run.length) {
+        const top = run[0].top;
+        const height = run[run.length - 1].bottom - top;
+        const widest = Math.max(...run.map((edge) => edge.room));
+        // Clockwise: along the top, down the ragged right edge a row at a
+        // time, then back along the bottom and up the left.
+        const points = [[0, 0]];
+        run.forEach((edge) => {
+          points.push([edge.room, edge.top - top], [edge.room, edge.bottom - top]);
+        });
+        points.push([0, height]);
         const room = document.createElement("span");
         room.className = "keyboard-room";
         room.setAttribute("aria-hidden", "true");
-        room.style.width = `${Math.round(width)}px`;
-        room.style.top = `${Math.round(run[0].top)}px`;
-        room.style.height = `${Math.round(run[run.length - 1].bottom - run[0].top)}px`;
+        room.style.top = `${Math.round(top)}px`;
+        room.style.width = `${Math.round(widest)}px`;
+        room.style.height = `${Math.round(height)}px`;
+        room.style.clipPath = `polygon(${points
+          .map(([x, y]) => `${Math.round(x)}px ${Math.round(y)}px`).join(", ")})`;
         panel.appendChild(room);
       }
       run = [];
     };
     edges.forEach((edge) => {
-      if (edge && edge.gap - KEYBOARD_ROOM_EDGE >= KEYBOARD_ROOM_MIN) run.push(edge);
+      if (edge && edge.room >= KEYBOARD_ROOM_MIN) run.push(edge);
       else close();
     });
     close();

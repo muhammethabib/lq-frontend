@@ -123,6 +123,15 @@ window.LQ = {
   // nothing to the page's own height and the page may have nowhere to scroll
   // to; this is what makes somewhere.
   //
+  // It is never taken back. A panel that closes has no more use for the room,
+  // but taking it away moves everything under the pointer, and a press that
+  // lands on one thing and lets go over another is a press that never
+  // happened. What is left behind is a tail of empty page below the content,
+  // which costs a reader who scrolls down to the very end a moment's
+  // puzzlement and costs everyone else nothing -- and the next opening asks
+  // for the same line again rather than a line further down, so it does not
+  // build up.
+  //
   // Down the document, not from where the reader happens to be standing. A
   // room measured from the current scroll grows every time it is asked for,
   // because the reader scrolling into the room it just added makes the page
@@ -130,9 +139,6 @@ window.LQ = {
   // follows its row, so the line it needs is the same line however far the
   // page has been scrolled, and asking twice gives the same answer.
   roomDownTo(line) {
-    // A release still waiting for the top of the page would take the room
-    // away the moment the reader got there, with the panel still needing it.
-    this.stopWaitingForTop();
     const current = parseFloat(
       getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
     // The page's own height, with the room taken back out of it
@@ -205,32 +211,6 @@ window.LQ = {
     // where things will be rather than where they are: the scroll is smooth
     // and has not happened yet.
     return step;
-  },
-
-  // Taking the room back moves everything under the pointer, and a press that
-  // lands on one thing and lets go over another is a press that never
-  // happened. So the room goes only when the page is back at the top, which
-  // is the one moment nothing moves.
-  releaseRoom() {
-    if (window.scrollY > 0) {
-      if (this.waitingForTop) return;
-      this.waitingForTop = () => {
-        if (window.scrollY > 0) return;
-        this.stopWaitingForTop();
-        this.releaseRoom();
-      };
-      window.addEventListener("scroll", this.waitingForTop, { passive: true });
-      return;
-    }
-    this.stopWaitingForTop();
-    document.body.classList.remove("has-panel-room");
-    document.body.style.removeProperty("--lq-panel-room");
-  },
-
-  stopWaitingForTop() {
-    if (!this.waitingForTop) return;
-    window.removeEventListener("scroll", this.waitingForTop);
-    this.waitingForTop = null;
   },
 
   // The place a carried panel came from, drawn behind it while the reader

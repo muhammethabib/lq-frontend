@@ -261,6 +261,26 @@
   font-family: 'Apple Symbols', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif;
   font-size: 12px;
 }
+
+/* The hand that drags the bar is drawn eleven pixels either side of the
+   pointer and twenty above it, so it covers these two long before the pointer
+   reaches them -- and a button you can see the hand over but cannot press is a
+   broken button. Clear and the wildcard keys do not have the problem: Clear
+   has its own patch, and the wildcards stand a whole key tall, far too big for
+   the hand to cover before the pointer is on them. These two are small, and
+   the handle runs right up to both: to the left of delete, and past close to
+   the panel's edge. So each answers to a patch reaching into the handle on the
+   side the hand comes from, and far enough towards its neighbour that the gap
+   between them does not show the hand either. */
+.ottoman-keyboard .keyboard-backspace,
+.ottoman-keyboard .keyboard-close { position: relative; }
+.ottoman-keyboard .keyboard-backspace::before,
+.ottoman-keyboard .keyboard-close::before {
+  content: "";
+  position: absolute;
+}
+.ottoman-keyboard .keyboard-backspace::before { inset: -9px -3px -13px -16px; }
+.ottoman-keyboard .keyboard-close::before { inset: -9px -16px -13px -3px; }
 .ottoman-keyboard .keyboard-close:hover,
 .ottoman-keyboard .keyboard-backspace:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 .ottoman-keyboard .keyboard-close svg,

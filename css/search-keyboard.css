@@ -247,6 +247,20 @@
 }
 
 .search-keyboard-button:hover { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
+/* The same patch the other board's delete and close keys wear, for the same
+   reason: the hand that drags the bar is drawn eleven pixels either side of
+   the pointer, so it covers a key this small long before the pointer reaches
+   it, and a key you can see the hand over but cannot press is a broken key.
+   The handle runs up to the left of the pair and past the right of it, so the
+   patch reaches into it on both outer sides and far enough towards the
+   neighbour that the gap between the two does not show the hand either. */
+.search-keyboard-button { position: relative; }
+.search-keyboard-button::before {
+  content: "";
+  position: absolute;
+  inset: -9px -3px -13px -16px;
+}
+.search-keyboard-button:last-child::before { inset: -9px -16px -13px -3px; }
 
 /* The rows read from the right, as the alphabet is recited. The label over
    each key is the key on the reader's own board that writes it. */

@@ -390,7 +390,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.anchor = null;
     this.below = null;
     this.owner = null;
-    window.LQ.releaseRoom();
+    // The room the page was given stays: see roomDownTo in js/app.js.
     // Whoever was typing needs to know: the Clear that was hidden behind the
     // panel comes back, and the row's hint is allowed again.
     document.dispatchEvent(new CustomEvent("ottoman-keyboard:closed"));

@@ -265,7 +265,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.hideFlag();
     this.anchor = null;
     this.below = null;
-    window.LQ.releaseRoom();
+    // The room the page was given stays: see roomDownTo in js/app.js.
     document.dispatchEvent(new CustomEvent("search-keyboard:closed"));
   }
 

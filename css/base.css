@@ -771,6 +771,11 @@ body.has-panel-room::after {
 
 /* The word below is measured from here, so that it centres on the pin */
 .keyboard-pin-wrap { position: relative; display: inline-flex; }
+/* Away, the wrap stands down rather than standing empty. A flex item still
+   costs its row the gap at no width at all, and in the decoder's bar the pin
+   now comes first: an empty wrap would hold Clear a notch in from the corner
+   with nothing there to explain it. */
+.keyboard-pin-wrap:has(.keyboard-pin[hidden]) { display: none; }
 
 /* The pin shows only once the panel has been parked, and it is claret the
    whole time it is there: while it shows, this panel is fixed where the

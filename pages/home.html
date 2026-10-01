@@ -1341,21 +1341,14 @@
   <div class="ottoman-keyboard" data-controller="ottoman-keyboard"
        role="group" aria-label="Ottoman keyboard" data-i18n-aria="keyboardLabel">
     <!-- The bar is the handle wherever it is not a control: the stretch
-         between Clear and the wildcards, and the one after them. -->
+         between Clear and the wildcards, and the one after them. The pin and
+         Clear share the left corner, the pin first. -->
     <div class="keyboard-bar" data-ottoman-keyboard-target="bar"
          data-action="pointerdown->ottoman-keyboard#startDrag
                       pointermove->ottoman-keyboard#moveDrag
                       pointerup->ottoman-keyboard#endDrag
                       pointercancel->ottoman-keyboard#endDrag">
       <span class="keyboard-bar-left">
-        <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
-                data-action="pointerdown->ottoman-keyboard#clearAll"
-                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
-                data-i18n-title="keyboardClearAll" title="Clear all boxes"
-                aria-label="Clear all boxes" data-i18n-aria="keyboardClearAll">
-          <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
-        </button>
-
         <!-- Puts the panel back where the page had it. It shows only once the
              reader has parked it somewhere of their own, and pressing it does
              that one thing. Its mark is the outline the page draws behind the
@@ -1366,13 +1359,21 @@
              corners are kept. The mark names the place rather than the
              journey, which is the right division of labour here: reaching the
              control already lights that same outline up on the page at full
-             size, and the words under it say the verb. Its tooltip is written
-             by the controller, the only
-             place that knows it. It carries no tooltip: a hover on it already
-             lights the old place up on the page, and a second answer to the
-             same gesture, in words, over the top of the first, is noise. Its
-             name is still said for a reader hearing the page. The mark is
-             drawn here, as the cite mark is drawn in js/app.js. -->
+             size, and the words under it say the verb. It carries no
+             tooltip: a hover on it already lights the old place up on the
+             page, and a second answer to the same gesture, in words, over the
+             top of the first, is noise. Its name is still said for a reader
+             hearing the page. The mark is drawn here, as the cite mark is
+             drawn in js/app.js.
+
+             It stands in the corner, before Clear, because the panel's two
+             top corners are the panel's own: close in one, put-this-back in
+             the other, and everything between them is about the typing. The
+             other keyboard's pin already stands in that corner, having
+             nothing beside it to come after. Clear holds the corner while the
+             pin is away and steps aside when it arrives -- which only ever
+             happens as the panel itself is flying across the page, so the
+             step costs nothing to watch. -->
         <span class="keyboard-pin-wrap">
           <button type="button" class="btn keyboard-pin" data-ottoman-keyboard-target="pin"
                   data-action="pointerdown->ottoman-keyboard#togglePin
@@ -1384,12 +1385,20 @@
                the panel is the one moment their eye is certainly on this
                corner, and spending it on a word for what they have only just
                done would waste it. That the panel stayed where they dropped
-               it, and that a control arrived flashing beside Clear, is the
+               it, and that a control arrived in the corner, is the
                confirmation. Two lines: the control stands in the panel's
                corner, and one line centred on it would hang off the edge. -->
           <span class="keyboard-pin-flag" data-ottoman-keyboard-target="flag" role="status"
                 data-i18n="keyboardPinSay" hidden>Click to put it back</span>
         </span>
+
+        <button type="button" class="btn keyboard-clear" data-ottoman-keyboard-target="clear"
+                data-action="pointerdown->ottoman-keyboard#clearAll"
+                data-bs-toggle="tooltip" data-bs-custom-class="keyboard-tip"
+                data-i18n-title="keyboardClearAll" title="Clear all boxes"
+                aria-label="Clear all boxes" data-i18n-aria="keyboardClearAll">
+          <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
+        </button>
       </span>
 
       <!-- The two keys stand a whole key tall in the middle of a bar of small

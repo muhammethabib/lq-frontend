@@ -234,7 +234,14 @@ window.LQ = {
     const bottom = typeof foot === "number" ? foot : panelBox.bottom;
     const past = bottom + PANEL_TAIL - window.innerHeight;
     this.roomFor(panel);
-    if (past <= 0 && !asked) return 0;
+    // Nothing to carry when the window is tall enough to hold it all already:
+    // the row stands whole on the screen, and the panel's foot, with its tail
+    // of page beneath it, is above the bottom edge. Asking is for the page
+    // that has to travel, not for the page that is already where it is being
+    // asked to go -- a page that jumps on a screen with room to spare is the
+    // same complaint from the other side.
+    const rowTop = row && row.isConnected ? row.getBoundingClientRect().top : 0;
+    if (past <= 0 && (!asked || rowTop >= 0)) return 0;
     if (!row || !row.isConnected) {
       if (past > 0) window.scrollBy({ top: past, behavior: "smooth" });
       return Math.max(0, past);

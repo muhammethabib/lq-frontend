@@ -910,46 +910,16 @@ body.has-panel-room::after {
   .keyboard-home-ghost { transition: none; }
 }
 
-/* What the pin says when the pointer reaches it: one line, behind a mouse,
-   naming what a press would do. It used to carry a second block saying the
-   panel was fixed, which the reader knew -- they fixed it. With that gone
-   there is nothing to set apart, so the rule and the second size go with it
-   and the line stands at full strength rather than as an aside. */
+/* What the control says when the pointer reaches it. One plain line: the
+   mouse drawn in front of it and the chip around the verb were there to set
+   an action apart from a second block that said where the panel stood, and
+   there is no second block. */
 .keyboard-pin-tip .tooltip-inner {
-  max-width: 250px;
-  padding: 7px 11px 8px;
-  text-align: center;
-}
-
-.pin-tip-do {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  max-width: 220px;
+  padding: 6px 10px 7px;
   font-size: 11.5px;
   font-weight: 500;
-  color: #e2e8f0;
-}
-/* Drawn here rather than written into the tooltip: Bootstrap strips an svg
-   out of its own markup before it reaches the screen. */
-.pin-tip-do::before {
-  content: "";
-  flex: none;
-  width: 12px;
-  height: 12px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2.1' stroke-linecap='round'%3E%3Crect x='6' y='2.6' width='12' height='18.8' rx='6'/%3E%3Cline x1='12' y1='6.6' x2='12' y2='10'/%3E%3C/svg%3E") no-repeat center / contain;
-}
-/* The verb, not another word of description */
-.pin-tip-do em {
-  padding: 1px 6px 2px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .16);
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: #fff;
+  letter-spacing: .01em;
 }
 
 @media (prefers-reduced-motion: reduce) {

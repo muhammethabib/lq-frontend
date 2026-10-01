@@ -235,22 +235,23 @@ window.LQ = {
     return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
   },
 
-  // What the control on a floating keyboard says when the pointer reaches it.
-  // Only what a press would do. That the panel is standing where the reader
-  // put it is not news to them -- they put it there, and the panel sitting
-  // somewhere the page never puts it says so without a word. The mouse in
-  // front is drawn by the stylesheet, since Bootstrap's tooltip strips an svg
-  // out of its own markup, and the verb sits alone in a chip so it reads as
-  // the thing to do rather than more description.
+  // What the control on a floating keyboard says, in the one line it says
+  // everywhere. The reader meets it once by itself, the moment the control
+  // arrives under their hand, and meets it again here if they come back later
+  // and need reminding; the same words both times, since a reminder that is
+  // worded differently is a second thing to learn.
+  //
+  // It is a plain line now. The mouse in front of it and the chip around the
+  // verb were there to set the action apart from a second block that said
+  // where the panel stood -- there is no second block, and no reason to
+  // decorate four words. The outline that lights up on the page behind the
+  // panel is the explanation; this is only its caption.
   pinTip() {
-    const safe = this.escape;
-    return '<span class="pin-tip-do"><em>' +
-      safe(this.translate("keyboardPinDo", "click")) + '</em>' +
-      safe(this.translate("keyboardPinUndo", "to put it back")) + '</span>';
+    return this.translate("keyboardPinSay", "Click to put it back");
   },
 
-  // The same for a reader who is hearing it rather than seeing it, where a
-  // button is named by what it does.
+  // The button's own name, for a reader hearing the page: named by what it
+  // does, as a button is.
   pinTipText() {
     return this.translate("keyboardPinBack", "Put the keyboard back");
   },

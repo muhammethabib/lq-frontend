@@ -1375,14 +1375,19 @@
                   data-action="pointerdown->ottoman-keyboard#togglePin
                                mouseenter->ottoman-keyboard#peekHome
                                mouseleave->ottoman-keyboard#unpeekHome"
-                  data-bs-toggle="tooltip" data-bs-html="true"
+                  data-bs-toggle="tooltip"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.4 9.6V5.6a3 3 0 0 1 3-3h4"/><path d="M21.6 9.6V5.6a3 3 0 0 0-3-3h-4"/><path d="M21.6 14.4v4a3 3 0 0 1-3 3h-4"/><path d="M2.4 14.4v4a3 3 0 0 0 3 3h4"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></button>
-          <!-- The word that confirms a parking, centred on the pin it belongs
-               to. Two lines: the pin stands in the panel's corner, and one
-               line centred on it would hang off the edge. -->
+          <!-- The one line the control says, shown by itself the first time it
+               appears and never again: the moment a reader has just parked
+               the panel is the one moment their eye is certainly on this
+               corner, and spending it on a word for what they have only just
+               done would waste it. That the panel stayed where they dropped
+               it, and that a control arrived flashing beside Clear, is the
+               confirmation. Two lines: the control stands in the panel's
+               corner, and one line centred on it would hang off the edge. -->
           <span class="keyboard-pin-flag" data-ottoman-keyboard-target="flag" role="status"
-                data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
+                data-i18n="keyboardPinSay" hidden>Click to put it back</span>
         </span>
       </span>
 
@@ -1451,14 +1456,19 @@
                   data-action="pointerdown->search-keyboard#togglePin
                                mouseenter->search-keyboard#peekHome
                                mouseleave->search-keyboard#unpeekHome"
-                  data-bs-toggle="tooltip" data-bs-html="true"
+                  data-bs-toggle="tooltip"
                   data-bs-custom-class="keyboard-pin-tip"
                   aria-label="Put the keyboard back" data-i18n-aria="keyboardPinBack" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.4 9.6V5.6a3 3 0 0 1 3-3h4"/><path d="M21.6 9.6V5.6a3 3 0 0 0-3-3h-4"/><path d="M21.6 14.4v4a3 3 0 0 1-3 3h-4"/><path d="M2.4 14.4v4a3 3 0 0 0 3 3h4"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></button>
-          <!-- The word that confirms a parking, centred on the pin it belongs
-               to. Two lines: the pin stands in the panel's corner, and one
-               line centred on it would hang off the edge. -->
+          <!-- The one line the control says, shown by itself the first time it
+               appears and never again: the moment a reader has just parked
+               the panel is the one moment their eye is certainly on this
+               corner, and spending it on a word for what they have only just
+               done would waste it. That the panel stayed where they dropped
+               it, and that a control arrived flashing beside Clear, is the
+               confirmation. Two lines: the control stands in the panel's
+               corner, and one line centred on it would hang off the edge. -->
           <span class="keyboard-pin-flag" data-search-keyboard-target="flag" role="status"
-                data-i18n="keyboardPinnedFlag" hidden>Pinned to the new position</span>
+                data-i18n="keyboardPinSay" hidden>Click to put it back</span>
         </span>
       </span>
       <span class="search-keyboard-teach">

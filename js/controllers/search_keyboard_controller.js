@@ -383,12 +383,15 @@ class SearchKeyboardController extends Stimulus.Controller {
       return;
     }
     // Whether the control is about to arrive rather than already standing
-    // there, which is the only moment worth drawing an eye to.
+    // there: the one moment worth drawing an eye to, and the one worth
+    // spending a word on.
     const arriving = this.hasPinTarget && this.pinTarget.hidden;
     window.LQ_PLACEMENT.fix(SEARCH_KEYBOARD_PLACE, spot);
     this.refreshPin();
-    if (arriving) this.flashPin();
-    this.showFlag();
+    // Only the first time. A word that says what the control does has one
+    // moment worth saying it in; after that the reader knows, and a line that
+    // came back on every drag would be nagging rather than telling.
+    if (arriving) { this.flashPin(); this.showFlag(); }
   }
 
   // Back to the place the page picked, with the decision dropped: the panel

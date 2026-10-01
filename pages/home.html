@@ -1406,11 +1406,18 @@
       </span>
     </div>
 
-    <!-- Both panels are written by the controller from js/keyboard_layout.js -->
+    <!-- Both panels are written by the controller from js/keyboard_layout.js.
+         The field is a handle too, wherever it is not a key: the rows are
+         ragged and leave wide stretches of nothing beside them, and a press
+         that lands on one carries the panel. The press is read here rather
+         than on each row, so it works between the rows as well; the drag
+         itself ignores anything that can be pressed, which is every key. -->
     <div class="keyboard-panel is-active" data-panel="basic"
-         data-ottoman-keyboard-target="basicPanel"></div>
+         data-ottoman-keyboard-target="basicPanel"
+         data-action="pointerdown->ottoman-keyboard#startDrag"></div>
     <div class="keyboard-panel" data-panel="advanced"
-         data-ottoman-keyboard-target="advancedPanel"></div>
+         data-ottoman-keyboard-target="advancedPanel"
+         data-action="pointerdown->ottoman-keyboard#startDrag"></div>
   </div>
 
 

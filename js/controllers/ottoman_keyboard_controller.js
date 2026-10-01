@@ -396,9 +396,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
     return window.LQ_PLACEMENT.spot(KEYBOARD_PLACE);
   }
 
+  // Whole pixels. A panel left on a half pixel puts everything inside it half
+  // a pixel out as well, and a mark twelve pixels across wears that: it comes
+  // out a shade heavier on one side than the other, which reads as crooked
+  // long before anyone can say why.
   moveTo(spot) {
-    this.element.style.left = `${spot.left}px`;
-    this.element.style.top = `${spot.top}px`;
+    this.element.style.left = `${Math.round(spot.left)}px`;
+    this.element.style.top = `${Math.round(spot.top)}px`;
   }
 
   // ==================== moving it out of the way ====================
@@ -416,7 +420,6 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.element.classList.remove("is-springing");
     this.element.classList.add("is-dragging");
     this.hideFlag();
-    this.leftHome = false;
     window.LQ.hideHome();
   }
 
@@ -427,15 +430,14 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.markHome(spot);
   }
 
-  // The old place, drawn behind the panel on the way back to it. It waits
-  // until the reader has carried the panel clear away first: picking it up
-  // and setting it down again is not a journey home, and an outline under a
-  // panel that never left would be answering a question nobody asked.
+  // The old place, drawn behind the panel whenever the panel is near it --
+  // on the way back from far away, and equally on a short move that never
+  // left the neighbourhood, where the reader most needs to know the magnet
+  // is about to take the panel out of their hands.
   markHome(spot) {
     if (!this.home) return;
     const away = Math.hypot(spot.left - this.home.left, spot.top - this.home.top);
-    if (away > KEYBOARD_HOME_REACH) { this.leftHome = true; window.LQ.hideHome(); return; }
-    if (!this.leftHome) return;
+    if (away > KEYBOARD_HOME_REACH) { window.LQ.hideHome(); return; }
     const armed = away < KEYBOARD_SNAP_PX;
     // Faint at the edge of its reach and full by the time the magnet takes
     // over, so the outline grows as the panel is brought in rather than

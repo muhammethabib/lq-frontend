@@ -171,7 +171,15 @@
 /* Raised over the grip. The field of dots hangs off the wildcard row, which
    is positioned and therefore paints above this group; in Turkish, where
    Clear is wider, the field reaches under the control beside it and would be
-   drawn on top of it. */
+   drawn on top of it.
+
+   Raised for the drawing only. The left group runs the whole width of the
+   bar to push the group beside it to the far end, so nearly all of it is
+   empty -- and once it is raised, that emptiness lies over the wildcard keys
+   and takes the presses meant for them. So the group itself answers to
+   nothing and its controls answer for themselves: the drawing keeps its
+   order, and a press lands on whatever is drawn where the reader is looking.
+   What falls through reaches the bar underneath, which is the handle. */
 .ottoman-keyboard .keyboard-bar-left {
   flex: 1;
   display: flex;
@@ -179,6 +187,7 @@
   gap: 5px;
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
 .ottoman-keyboard .keyboard-bar-right {
   display: flex;
@@ -186,6 +195,11 @@
   gap: 5px;
   position: relative;
   z-index: 1;
+  pointer-events: none;
+}
+.ottoman-keyboard .keyboard-bar-left > *,
+.ottoman-keyboard .keyboard-bar-right > * {
+  pointer-events: auto;
 }
 
 /* A whole key tall in a bar of small controls, so it is lifted out of the row

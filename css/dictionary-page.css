@@ -446,7 +446,7 @@
 .dictionary-page-modal .scan-cite-btn:hover { border-color: #bfdbfe; background: #eff6ff; color: var(--lq-sapphire); }
 .dictionary-page-modal .scan-cite-btn svg { width: 15px; height: 15px; flex: none; }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .dictionary-page-modal .scan-stage { grid-template-columns: 32px minmax(0, 1fr) 32px; }
   .dictionary-page-modal .scan-arrow { width: 32px; height: 32px; }
 

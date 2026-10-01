@@ -1675,7 +1675,7 @@
   .home-surface .result-row .word-latin { width: auto; max-width: 100%; justify-content: flex-start; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .home-surface .search-card { padding-left: 20px; padding-right: 20px; }
   .home-surface .results-term { font-size: 34px; }
 }

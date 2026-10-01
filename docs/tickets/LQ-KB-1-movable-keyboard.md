@@ -236,9 +236,13 @@ move them to, so: no handle cursor, no marks, no pin, no label, no outline. A
 place found on a wide screen is **neither used nor overwritten** — a reader
 who turns their phone sideways gets their place back.
 
-> **One inconsistency to fix while implementing:** the Decoder board uses
-> `(max-width: 767px)` and the Search board `(max-width: 767.98px)`. Use
-> `767.98px` for both.
+The breakpoint is **`767.98px`** — the top of Bootstrap's md range — in
+every rule and every script that means "narrower than md". Half the project
+spelled it `767px`, which left a sliver where one keyboard still floated
+while the shared chrome around it had already gone and the other keyboard
+was already docked. Fixed in this repository; worth checking on the way in,
+since the two spellings behave identically at every integer width and the
+difference only shows on a fractional one.
 
 ## 10. Reference implementation
 

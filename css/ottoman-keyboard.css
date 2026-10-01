@@ -161,7 +161,7 @@
 
 /* Below the width at which the panel is pinned to the foot of the screen
    there is nowhere to drag it to. */
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .ottoman-keyboard .keyboard-bar { cursor: default; }
   .ottoman-keyboard .keyboard-bar::before,
   .ottoman-keyboard .wildcard-row::before,
@@ -503,8 +503,9 @@
 }
 
 /* Too narrow to float: the keyboard takes the bottom of the screen. The
-   controller checks the same width before positioning it. */
-@media (max-width: 767px) {
+   controller checks the same width before positioning it, and the figure is
+   the top of Bootstrap's md breakpoint, as everywhere else in the project. */
+@media (max-width: 767.98px) {
   .ottoman-keyboard {
     --key-size: 40px;
     left: 0 !important;

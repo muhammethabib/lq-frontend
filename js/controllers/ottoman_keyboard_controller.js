@@ -20,7 +20,13 @@
 
 // Below this width the stylesheet docks the keyboard to the bottom of the
 // screen; the same query lives in css/ottoman-keyboard.css.
-const KEYBOARD_DOCK_QUERY = "(max-width: 767px)";
+//
+// 767.98 and not 767: it is the top of Bootstrap's md breakpoint, and every
+// other rule in the project that means "narrower than md" is written that
+// way. Written 767 here, the stretch between the two left this keyboard
+// floating while the shared chrome around it -- its pin, its label -- had
+// already gone, and while the other keyboard was docked.
+const KEYBOARD_DOCK_QUERY = "(max-width: 767.98px)";
 
 // How long a key stays down after the reader's own key wrote its letter.
 const KEY_ECHO_MS = 170;

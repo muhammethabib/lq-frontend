@@ -1049,7 +1049,7 @@
   .word-decoder-surface .result-row.is-nested > td:first-child { padding-left: 44px; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .word-decoder-surface .decoder-card { padding: 20px; }
   .word-decoder-surface {
     --decoder-slot-height: 52px;

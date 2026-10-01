@@ -304,10 +304,20 @@
   gap: 5px;
   width: 100%;
 }
-/* The last row carries the key that leads to the other board. The letters
-   stay packed against the right, where the row begins, and the free space
-   falls between them and that key, as the reference has it. */
-.ottoman-keyboard .keyboard-row:last-child .panel-switch { margin-right: auto; }
+/* The bottom row carries the key that leads to the other board, and it
+   stands in the corner that row ends in. The letters stay packed against the
+   right, where the row begins; the slack falls between them and that key, so
+   it sits hard against the panel's own edge rather than a stride inside it.
+   The row runs right to left, so the slack is taken on the right, which is
+   the side the letters are on.
+
+   The row is named by what it holds rather than by being last. The panel's
+   rooms -- the marks on the empty space beside the keys -- are written into
+   it after the rows, so the bottom row stopped being the last child of
+   anything and this stopped applying at all: the key lost its margin and
+   stood wherever the row's own packing left it, which was a stride in from
+   the corner and a different stride in each language. */
+.ottoman-keyboard .keyboard-row:has(.panel-switch) .panel-switch { margin-right: auto; }
 
 /* ---------- keys ---------- */
 
@@ -507,7 +517,7 @@
     padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
   }
   .ottoman-keyboard .keyboard-row { justify-content: center; }
-  .ottoman-keyboard .keyboard-row:last-child { justify-content: center; }
+  .ottoman-keyboard .keyboard-row:has(.panel-switch) { justify-content: center; }
   .ottoman-keyboard .key { font-size: 18px; }
 }
 

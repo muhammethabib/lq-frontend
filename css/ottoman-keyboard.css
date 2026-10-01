@@ -116,48 +116,40 @@
   .ottoman-keyboard { transition: none; }
 }
 
-/* The key field is laid out right to left and the rows are ragged, so each
-   one leaves a stretch of nothing at its left -- two wide ones above and
-   below the row that reaches furthest. Nothing else wants that room, so the
-   panel can be held by it, and each row shows its own stretch when a hand is
-   over that row rather than lighting the whole field at once: what answers
-   is what the hand is actually on.
+/* The key field is laid out right to left and the rows end ragged, so the
+   nothing at their left ends stacks up into one or two tall rooms -- above
+   and below the row that reaches furthest across. Nothing else wants that
+   space, so the panel can be held by it, and each room shows itself when a
+   hand is over it: what answers is the area the hand is in, not the strip it
+   happens to be level with.
 
-   The marks hang off the rows themselves, so they find each row's own ragged
-   edge at any panel width and in either layout, and a row with no room to
-   spare draws nothing at all. */
+   Sparser than the grip in the bar. That one is a strip twenty pixels deep
+   and the same spacing reads as a texture there; spread over a room ten
+   times the area it reads as a fill, so the dots stand further apart and
+   lighter, and the room fades away at its edges rather than ending. The
+   controller measures and places these, since the two layouts are ragged in
+   different places and the raggedness moves with the language and the
+   window. */
 .ottoman-keyboard .keyboard-row { cursor: var(--lq-cursor-grab); }
 .ottoman-keyboard.is-dragging .keyboard-row { cursor: var(--lq-cursor-grabbing); }
 .ottoman-keyboard .keyboard-row .key,
 .ottoman-keyboard .keyboard-row .panel-switch { cursor: pointer; }
-.ottoman-keyboard .keyboard-row::after {
-  content: "";
-  flex: 1 1 0;
-  min-width: 0;
-  align-self: stretch;
-  /* No width of its own, in either direction: the rows are what set the
-     panel's width, and a mark that asked for margins would push every key
-     along and make the whole panel wider. It keeps its distance from the key
-     beside it by fading, in pixels rather than parts, so a narrow stretch
-     simply fades away to nothing instead of showing a crowded sliver. */
-  /* The row's own gap would still count it as an item and push the keys along
-     by five pixels, so it takes those five back. */
-  margin: 3px -5px 3px 0;
+.ottoman-keyboard .keyboard-panel { position: relative; }
+.ottoman-keyboard .keyboard-room {
+  position: absolute;
+  left: 0;
   opacity: 0;
   transition: opacity .15s ease;
-  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
-  background-size: 9px 9px;
+  background-image: radial-gradient(circle, #cbd5e1 1.05px, transparent 1.25px);
+  background-size: 13px 13px;
   background-repeat: space;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 18px), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 18px), transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 46%, transparent 92%);
+  mask-image: radial-gradient(ellipse at center, #000 46%, transparent 92%);
+  cursor: var(--lq-cursor-grab);
 }
-/* The last row keeps its room for the layout switch standing in it: that
-   button holds its corner with an auto margin, and an auto margin is only
-   given what is left after anything that can grow has grown. */
-.ottoman-keyboard .keyboard-row:last-child::after { flex: none; }
-.ottoman-keyboard .keyboard-row:hover::after { opacity: 1; }
+.ottoman-keyboard .keyboard-room:hover { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .ottoman-keyboard .keyboard-row::after { transition: none; }
+  .ottoman-keyboard .keyboard-room { transition: none; }
 }
 
 /* Springing back to the place the page picked. Only then: a panel that eased
@@ -173,8 +165,7 @@
   .ottoman-keyboard .keyboard-bar { cursor: default; }
   .ottoman-keyboard .keyboard-bar::before,
   .ottoman-keyboard .wildcard-row::before,
-  .ottoman-keyboard .wildcard-row::after,
-  .ottoman-keyboard .keyboard-row::after { content: none; }
+  .ottoman-keyboard .wildcard-row::after { content: none; }
   .ottoman-keyboard .keyboard-row { cursor: default; }
 }
 /* Raised over the grip. The field of dots hangs off the wildcard row, which

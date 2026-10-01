@@ -35,6 +35,11 @@ const KEYBOARD_SNAP_PX = 40;
 // they have already passed it.
 const KEYBOARD_HOME_REACH = 190;
 
+// A stretch of nothing beside the keys has to be this wide before it is
+// worth calling a room, and it keeps this much clear of the key it ends at.
+const KEYBOARD_ROOM_MIN = 60;
+const KEYBOARD_ROOM_EDGE = 9;
+
 // The name this panel's place is held under.
 const KEYBOARD_PLACE = "decoder";
 
@@ -99,6 +104,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.onResize = () => {
       if (!this.openValue) return;
       this.place();
+      this.markRooms();
       if (!this.placedSpot()) this.scrollIntoReach();
     };
     window.addEventListener("resize", this.onResize);
@@ -275,6 +281,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
   showPanel(name) {
     this.basicPanelTarget.classList.toggle("is-active", name === "basic");
     this.advancedPanelTarget.classList.toggle("is-active", name === "advanced");
+    this.markRooms();
   }
 
   // ==================== keys ====================
@@ -323,6 +330,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.openValue = true;
     this.element.classList.add("is-open");
     this.place();
+    this.markRooms();
     this.refreshPin();
     // A panel the reader has parked is already inside the window and is not
     // worth moving the page for. Every other opening is under the boxes, and
@@ -403,6 +411,64 @@ class OttomanKeyboardController extends Stimulus.Controller {
   moveTo(spot) {
     this.element.style.left = `${Math.round(spot.left)}px`;
     this.element.style.top = `${Math.round(spot.top)}px`;
+  }
+
+  // The room the keys leave beside them. The rows run right to left and end
+  // ragged, so the nothing at their left ends stacks up into one or two tall
+  // stretches -- above and below the row that reaches furthest across. They
+  // are one room each rather than one per row: a reader sees a single empty
+  // area there, not a pile of strips, and a mark that lights a strip at a
+  // time says the panel is held by rows, which it is not.
+  //
+  // Each room is as wide as the narrowest row it spans, so it never reaches
+  // under a key, and it is measured rather than written down: the two layouts
+  // are ragged in different places, and the raggedness moves with the
+  // language and the window.
+  markRooms() {
+    const panel = this.activePanel();
+    if (!panel) return;
+    panel.querySelectorAll(".keyboard-room").forEach((room) => room.remove());
+    if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) return;
+    const box = panel.getBoundingClientRect();
+    if (!box.width) return;
+
+    const edges = Array.from(panel.querySelectorAll(".keyboard-row")).map((row) => {
+      const keys = Array.from(row.children);
+      if (!keys.length) return null;
+      const bounds = row.getBoundingClientRect();
+      return {
+        top: bounds.top - box.top,
+        bottom: bounds.bottom - box.top,
+        gap: Math.min(...keys.map((key) => key.getBoundingClientRect().left)) - box.left,
+      };
+    });
+
+    let run = [];
+    const close = () => {
+      const width = run.length
+        ? Math.min(...run.map((edge) => edge.gap)) - KEYBOARD_ROOM_EDGE : 0;
+      if (width >= KEYBOARD_ROOM_MIN) {
+        const room = document.createElement("span");
+        room.className = "keyboard-room";
+        room.setAttribute("aria-hidden", "true");
+        room.style.width = `${Math.round(width)}px`;
+        room.style.top = `${Math.round(run[0].top)}px`;
+        room.style.height = `${Math.round(run[run.length - 1].bottom - run[0].top)}px`;
+        panel.appendChild(room);
+      }
+      run = [];
+    };
+    edges.forEach((edge) => {
+      if (edge && edge.gap - KEYBOARD_ROOM_EDGE >= KEYBOARD_ROOM_MIN) run.push(edge);
+      else close();
+    });
+    close();
+  }
+
+  activePanel() {
+    if (!this.hasBasicPanelTarget) return null;
+    return this.advancedPanelTarget.classList.contains("is-active")
+      ? this.advancedPanelTarget : this.basicPanelTarget;
   }
 
   // ==================== moving it out of the way ====================

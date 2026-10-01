@@ -383,10 +383,14 @@ class SearchKeyboardController extends Stimulus.Controller {
     const arriving = this.hasPinTarget && this.pinTarget.hidden;
     window.LQ_PLACEMENT.fix(SEARCH_KEYBOARD_PLACE, spot);
     this.refreshPin();
-    // Only the first time. A word that says what the control does has one
-    // moment worth saying it in; after that the reader knows, and a line that
-    // came back on every drag would be nagging rather than telling.
-    if (arriving) this.showFlag();
+    // Once a visit, counting both keyboards as one. A word that says what the
+    // control does has one moment worth saying it in; after that the reader
+    // knows, and the other keyboard's pin is the same pin doing the same job,
+    // so saying it again there would be nagging rather than telling.
+    if (arriving && !window.LQ_PLACEMENT.toldAlready()) {
+      window.LQ_PLACEMENT.markTold();
+      this.showFlag();
+    }
   }
 
   // Back to the place the page picked, with the decision dropped: the panel

@@ -20,6 +20,14 @@ const PLACEMENT_PREFIX = "lq.keyboard-place.";
 // off the screen cannot be dragged back on.
 const PLACEMENT_MARGIN = 8;
 
+// Whether the reader has been told what the pin is for. One key for both
+// keyboards: the line says one thing -- press this and the keyboard goes back
+// where it was -- and that is the same thing on either of them, so the second
+// telling teaches nothing and only gets in the way of the parking that earned
+// it. Kept for the visit rather than for good: a reader coming back days later
+// is being reminded, not nagged.
+const PLACEMENT_TOLD = "lq.keyboard-told";
+
 window.LQ_PLACEMENT = {
   // This session's places, written down as well. A page with no storage at
   // all still honours a move for as long as the reader is here.
@@ -48,6 +56,25 @@ window.LQ_PLACEMENT = {
   release(name) {
     delete this.moves[name];
     this.remove(`${PLACEMENT_PREFIX}${name}`);
+  },
+
+  // ==================== the one telling ====================
+
+  // Said already this visit, on either keyboard?
+  told: false,
+
+  toldAlready() {
+    if (this.told) return true;
+    try { return window.sessionStorage.getItem(PLACEMENT_TOLD) === "1"; }
+    catch (error) { return false; }
+  },
+
+  // It has been said. Written down as well as remembered, so moving to
+  // another page and parking a keyboard there does not say it again. A page
+  // with no storage at all still holds it for as long as the reader stays.
+  markTold() {
+    this.told = true;
+    try { window.sessionStorage.setItem(PLACEMENT_TOLD, "1"); } catch (error) { /* this page only */ }
   },
 
   // ==================== staying on the screen ====================

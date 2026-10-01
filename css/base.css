@@ -815,20 +815,11 @@ body.has-panel-room::after {
   inset: -9px -20px -13px -5px;
 }
 
-/* Arriving. A control that appears quietly in a corner is a control nobody
-   sees, so it pops in and sends two rings out. Only on the drop that first
-   brings it: reopening a panel that already has a place is not news. */
-.keyboard-pin.is-arriving {
-  animation:
-    keyboard-pin-in .36s cubic-bezier(0.34, 1.56, 0.64, 1) both,
-    keyboard-pin-ring 1.15s ease-out .18s 2 both;
-}
-
-@keyframes keyboard-pin-in {
-  0% { opacity: 0; transform: scale(.4); }
-  70% { opacity: 1; transform: scale(1.16); }
-  100% { opacity: 1; transform: scale(1); }
-}
+/* Arriving, it does nothing at all. It used to pop in and send two rings
+   out, on the reasoning that a control appearing quietly in a corner is a
+   control nobody sees -- but it does not appear alone: the words that say
+   what to do with it appear over it in the same moment, and they are what
+   the eye goes to. A second thing moving under them only pulls at it. */
 
 /* Leaving. The panel is back where the page puts it, so the pin has nothing
    left to say -- and a control that blinks out from under the pointer reads
@@ -842,12 +833,6 @@ body.has-panel-room::after {
   0% { opacity: 1; transform: scale(1); }
   35% { opacity: .85; transform: scale(1.04); }
   100% { opacity: 0; transform: scale(.72); }
-}
-
-@keyframes keyboard-pin-ring {
-  0% { box-shadow: 0 0 0 0 rgba(157, 28, 81, .5); }
-  70% { box-shadow: 0 0 0 11px rgba(157, 28, 81, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(157, 28, 81, 0); }
 }
 
 /* The word for what just happened, over the pin that now stands for it. */
@@ -911,7 +896,6 @@ body.has-panel-room::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .keyboard-pin.is-arriving,
   .keyboard-pin.is-leaving,
   .keyboard-pin-flag { animation: none; }
 }

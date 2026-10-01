@@ -449,8 +449,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     if (!this.hasPinTarget || this.pinTarget.classList.contains("is-leaving")) return;
     this.pinTarget.hidden = !this.placedSpot();
     if (this.pinTarget.hidden) { this.hideFlag(); return; }
-    window.LQ.retitle(this.pinTarget, window.LQ.pinTip());
-    this.pinTarget.setAttribute("aria-label", window.LQ.pinTipText());
+    this.pinTarget.setAttribute("aria-label", window.LQ.pinName());
   }
 
   // A control that appears quietly in a corner is a control nobody sees.

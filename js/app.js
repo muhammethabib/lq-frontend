@@ -235,24 +235,12 @@ window.LQ = {
     return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
   },
 
-  // What the control on a floating keyboard says, in the one line it says
-  // everywhere. The reader meets it once by itself, the moment the control
-  // arrives under their hand, and meets it again here if they come back later
-  // and need reminding; the same words both times, since a reminder that is
-  // worded differently is a second thing to learn.
-  //
-  // It is a plain line now. The mouse in front of it and the chip around the
-  // verb were there to set the action apart from a second block that said
-  // where the panel stood -- there is no second block, and no reason to
-  // decorate four words. The outline that lights up on the page behind the
-  // panel is the explanation; this is only its caption.
-  pinTip() {
-    return this.translate("keyboardPinSay", "Click to put it back");
-  },
-
   // The button's own name, for a reader hearing the page: named by what it
-  // does, as a button is.
-  pinTipText() {
+  // does, as a button is. It is all this control says in words now -- the
+  // line that teaches it is shown once when it arrives, and a hover on it
+  // lights the old place up on the page, which says it better than a tooltip
+  // could and does not talk over itself.
+  pinName() {
     return this.translate("keyboardPinBack", "Put the keyboard back");
   },
 

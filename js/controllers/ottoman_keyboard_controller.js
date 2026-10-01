@@ -335,8 +335,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.openValue = true;
     this.element.classList.add("is-open");
     this.place();
-    this.markRooms();
     this.refreshPin();
+    // The marks on the empty space wait a frame. They are a hover decoration
+    // and nobody can be hovering a panel that has not appeared yet, while the
+    // frame they would be cut in is the frame the panel appears on and the
+    // page sets off -- the busiest of the whole opening, and the one that
+    // drops if anything else is asked of it.
+    requestAnimationFrame(() => { if (this.openValue) this.markRooms(); });
     // The page comes to the boxes on every press, parked panel or not: a
     // press on a box is a reader saying they want to fill it in, and what
     // they get should not depend on where the panel was left or where the
@@ -348,14 +353,25 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // been drawn, and a measurement taken before that is short -- and because
     // a place is only worth judging once the page has settled under it.
     window.LQ.forgetScrollAim();
-    [0, 80, 320, 700].forEach((delay) => setTimeout(() => {
+    // The first ask goes now, in the same breath as the opening, so the page
+    // sets off on the very frame the panel appears on. Left to a timer it
+    // went a hundred milliseconds later, and a panel that pops into place and
+    // then waits for the page to follow reads as two events rather than one
+    // movement -- which is the stutter, not the scrolling itself.
+    //
+    // The place is judged against where the boxes are about to be, not where
+    // they are: the page is still travelling, and a place judged against a
+    // row in mid-air is judged against nothing.
+    const bring = () => {
       if (!this.openValue) return;
-      // The place is judged against where the boxes are about to be, not
-      // where they are: the page is still travelling, and a place judged
-      // against a row in mid-air is judged against nothing.
       this.dropStalePlace(this.scrollIntoReach(true));
       this.place();
-    }, delay));
+    };
+    bring();
+    // And again a few times, because the panel's own height is not final
+    // until its marks have been drawn and a measurement taken before that is
+    // short. Each repeat is nothing where the first was right.
+    [80, 320, 700].forEach((delay) => setTimeout(bring, delay));
   }
 
   // A place the reader chose is kept only while it still leaves them the

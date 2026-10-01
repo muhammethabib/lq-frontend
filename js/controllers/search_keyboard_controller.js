@@ -249,10 +249,13 @@ class SearchKeyboardController extends Stimulus.Controller {
     // keys have been drawn, and a measurement taken before that is short.
     window.LQ.forgetScrollAim();
     if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
+      // Not asked for, unlike the decoder's. This board opens under the search
+      // bar, which is already near the top of the page, so it is in view
+      // without the page moving at all on anything but a short window -- and
+      // a page that jumps for no visible gain is worse than a page that
+      // stays. It moves only when the board is short of its tail.
       if (this.openValue && !this.placedSpot()) {
-        // Asked for: the reader pressed the bar, so the board lands in the
-        // same place every time rather than wherever the page was standing.
-        window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift(), true);
+        window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
       }
     }, delay));
   }

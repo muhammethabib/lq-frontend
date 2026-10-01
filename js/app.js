@@ -40,6 +40,15 @@ const PANEL_SLACK = 140;
 // the panel settling into its final height.
 const PANEL_AIM_SLACK = 12;
 
+// How long the page takes to travel, and the least it will ever take. The
+// browser's own smooth scroll eases in as well as out, so for the first
+// eighty milliseconds it moves less than a pixel -- and a panel that has
+// already appeared, over a page that has not yet started, reads as two
+// events rather than one movement. This one leaves at once and arrives
+// gently, which is the shape of a thing being carried rather than nudged.
+const PANEL_GLIDE_MS = 320;
+const PANEL_GLIDE_MIN_MS = 180;
+
 // The one outline that shows a carried panel where it came from. There is
 // never more than one panel in hand, so there is never more than one.
 const HOME_GHOST_ID = "lq-home-ghost";
@@ -49,8 +58,22 @@ window.LQ = {
   // when it is not travelling anywhere. See makeRoomFor.
   scrollAim: null,
 
-  // A fresh journey: the next ask is not a repeat of the last one.
-  forgetScrollAim() { this.scrollAim = null; },
+  // How far the page has already been made to reach. See roomToReach.
+  reached: -Infinity,
+
+  // The animation frame the page is being carried on, and the listener that
+  // hands it back to the reader. See glideTo.
+  gliding: 0,
+  glideAim: null,
+  glideOff: null,
+
+  // A fresh journey: the next ask is not a repeat of the last one, and what
+  // the page reaches is worked out again rather than remembered -- the panel
+  // may be a different one, and the page under it a different length.
+  forgetScrollAim() {
+    this.scrollAim = null;
+    this.reached = -Infinity;
+  },
 
   refreshDynamicContent(root = document) {
     feather.replace();
@@ -156,14 +179,26 @@ window.LQ = {
   // nothing -- and the next opening asks to reach the same line rather than a
   // line further down, so it does not build up.
   roomToReach(reach) {
+    // Asked for on every scroll event, so the cheap answer matters: a line
+    // already reached is a line already reached, and saying so costs nothing.
+    // Measuring it instead means reading the page's height straight after the
+    // panel has been moved, which makes the browser work the whole layout out
+    // there and then -- seventeen times across a scroll, and the frame it
+    // lands in is the frame that drops.
+    // Whole pixels throughout. Rounded up at the moment it is written but
+    // compared as it was asked for, the room gains a pixel on each opening
+    // and the page quietly lengthens over a session.
+    const want = Math.ceil(reach);
+    if (want <= this.reached) return;
     for (let turn = 0; turn < 3; turn += 1) {
-      const short = reach - (document.documentElement.scrollHeight - window.innerHeight);
-      if (short <= 0) return;
+      const short = want - (document.documentElement.scrollHeight - window.innerHeight);
+      if (short <= 0) break;
       const current = parseFloat(
         getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
       document.body.classList.add("has-panel-room");
       document.body.style.setProperty("--lq-panel-room", `${Math.ceil(current + short)}px`);
     }
+    this.reached = want;
   },
 
   // The room, and the page brought to the panel.
@@ -234,12 +269,69 @@ window.LQ = {
     const aim = Math.round(window.scrollY + step);
     if (this.scrollAim === null || Math.abs(aim - this.scrollAim) > PANEL_AIM_SLACK) {
       this.scrollAim = aim;
-      window.scrollBy({ top: step, behavior: "smooth" });
+      this.glideTo(aim);
     }
     // How far the page is about to travel, for a caller that has to judge
     // where things will be rather than where they are: the scroll is smooth
     // and has not happened yet.
     return step;
+  },
+
+  // The page carried to a line, by hand rather than by the browser.
+  //
+  // Two reasons not to leave it to the browser. It eases in, so the first
+  // stretch of the journey is invisible and the page looks stuck while the
+  // panel sits there already open; and a second request throws the first away
+  // and starts again from a standstill, which is felt as a stumble. This one
+  // leaves at its fastest and slows into the mark, and a second request for
+  // the same mark is let go before it ever gets here.
+  //
+  // The reader wins. A wheel, a touch or a key during the journey ends it
+  // where it stands: a page that argues with the hand on it is worse than a
+  // page that never moved. And where motion is not wanted at all, it simply
+  // arrives.
+  glideTo(aim) {
+    // Already on the way there. The opening can be announced more than once --
+    // the field asks, the page forwards -- and a second telling must not throw
+    // away a journey already under way and start it again from a standstill.
+    if (this.gliding && this.glideAim === aim) return;
+    this.stopGlide();
+    this.glideAim = aim;
+    const from = window.scrollY;
+    const far = aim - from;
+    if (!far) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.scrollTo({ top: aim, behavior: "instant" });
+      return;
+    }
+    const ms = Math.max(PANEL_GLIDE_MIN_MS,
+      Math.min(PANEL_GLIDE_MS, Math.abs(far) * 1.1));
+    const start = performance.now();
+    this.glideOff = () => this.stopGlide();
+    ["wheel", "touchstart", "keydown"].forEach((name) =>
+      window.addEventListener(name, this.glideOff, { passive: true, once: true }));
+    const step = (now) => {
+      if (!this.gliding) return;
+      const part = Math.min(1, (now - start) / ms);
+      // Out of the gate at full speed, and settling rather than stopping.
+      const eased = 1 - Math.pow(1 - part, 3);
+      // Spelled out, because the page itself asks for smooth scrolling: left
+      // to the stylesheet every frame of this would start its own little
+      // animation and none of them would arrive.
+      window.scrollTo({ top: Math.round(from + far * eased), behavior: "instant" });
+      if (part < 1) this.gliding = requestAnimationFrame(step); else this.stopGlide();
+    };
+    this.gliding = requestAnimationFrame(step);
+  },
+
+  stopGlide() {
+    if (this.gliding) cancelAnimationFrame(this.gliding);
+    this.gliding = 0;
+    this.glideAim = null;
+    if (!this.glideOff) return;
+    ["wheel", "touchstart", "keydown"].forEach((name) =>
+      window.removeEventListener(name, this.glideOff));
+    this.glideOff = null;
   },
 
   // The place a carried panel came from, drawn behind it while the reader

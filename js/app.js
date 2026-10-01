@@ -35,11 +35,23 @@ const PANEL_HEADROOM = 24;
 // to drag instead.
 const PANEL_SLACK = 140;
 
+// How far the line being scrolled to may move before the page is sent after
+// it a second time. Smaller than any real change of destination, larger than
+// the panel settling into its final height.
+const PANEL_AIM_SLACK = 12;
+
 // The one outline that shows a carried panel where it came from. There is
 // never more than one panel in hand, so there is never more than one.
 const HOME_GHOST_ID = "lq-home-ghost";
 
 window.LQ = {
+  // The line down the document the page is currently travelling to, or null
+  // when it is not travelling anywhere. See makeRoomFor.
+  scrollAim: null,
+
+  // A fresh journey: the next ask is not a repeat of the last one.
+  forgetScrollAim() { this.scrollAim = null; },
+
   refreshDynamicContent(root = document) {
     feather.replace();
     root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
@@ -114,40 +126,44 @@ window.LQ = {
   // reader does with the scrollbar.
   roomFor(panel) {
     const box = panel.getBoundingClientRect();
-    this.roomDownTo(window.scrollY + box.bottom + PANEL_TAIL + PANEL_SLACK);
+    this.roomToReach(window.scrollY + box.bottom + PANEL_TAIL + PANEL_SLACK - window.innerHeight);
     return Math.max(0, box.bottom + PANEL_TAIL - window.innerHeight);
   },
 
-  // The page made long enough to reach a given line, measured down the
-  // document rather than down the window. The panel is fixed, so it adds
-  // nothing to the page's own height and the page may have nowhere to scroll
-  // to; this is what makes somewhere.
+  // The page made long enough to be scrolled as far as a given line. The panel
+  // is fixed, so it adds nothing to the page's own height and the page may
+  // have nowhere to scroll to; this is what makes somewhere.
+  //
+  // It asks the page how far it reaches rather than working it out, and tops
+  // the room up until the answer is far enough. Working it out needs the
+  // page's natural height, which is its height now less the room already
+  // given -- and the height now is whatever the browser last settled on,
+  // which in the same breath as adding the room is a height from before the
+  // room existed. Reading it back is also what makes the browser settle the
+  // new height, so each turn of the loop both corrects the last guess and
+  // makes the next reading true. It takes one or two turns and stops.
+  //
+  // The line is a line down the document, not a distance from where the
+  // reader happens to be standing. A room measured from the current scroll
+  // grows every time it is asked for, because scrolling into the room it has
+  // just added makes the page short again -- and this is asked for on every
+  // scroll event.
   //
   // It is never taken back. A panel that closes has no more use for the room,
-  // but taking it away moves everything under the pointer, and a press that
-  // lands on one thing and lets go over another is a press that never
-  // happened. What is left behind is a tail of empty page below the content,
-  // which costs a reader who scrolls down to the very end a moment's
-  // puzzlement and costs everyone else nothing -- and the next opening asks
-  // for the same line again rather than a line further down, so it does not
-  // build up.
-  //
-  // Down the document, not from where the reader happens to be standing. A
-  // room measured from the current scroll grows every time it is asked for,
-  // because the reader scrolling into the room it just added makes the page
-  // short again -- and this is asked for on every scroll event. The panel
-  // follows its row, so the line it needs is the same line however far the
-  // page has been scrolled, and asking twice gives the same answer.
-  roomDownTo(line) {
-    const current = parseFloat(
-      getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
-    // The page's own height, with the room taken back out of it
-    const bare = document.documentElement.scrollHeight - current;
-    document.body.classList.add("has-panel-room");
-    // Never less than it already is: taking the room back out from under a
-    // reader standing on it drops them up the page.
-    document.body.style.setProperty("--lq-panel-room",
-      `${Math.max(current, Math.ceil(line - bare), 0)}px`);
+  // but taking it away moves everything under the pointer. What is left
+  // behind is a tail of empty page below the content, which costs a reader
+  // who scrolls to the very end a moment's puzzlement and costs everyone else
+  // nothing -- and the next opening asks to reach the same line rather than a
+  // line further down, so it does not build up.
+  roomToReach(reach) {
+    for (let turn = 0; turn < 3; turn += 1) {
+      const short = reach - (document.documentElement.scrollHeight - window.innerHeight);
+      if (short <= 0) return;
+      const current = parseFloat(
+        getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
+      document.body.classList.add("has-panel-room");
+      document.body.style.setProperty("--lq-panel-room", `${Math.ceil(current + short)}px`);
+    }
   },
 
   // The room, and the page brought to the panel.
@@ -205,8 +221,21 @@ window.LQ = {
     // it, so the page the reader lands on still answers the wheel. The line is
     // where the journey ends, which is a line down the document and the same
     // one however often this is asked.
-    this.roomDownTo(window.scrollY + step + window.innerHeight + PANEL_SLACK);
-    window.scrollBy({ top: step, behavior: "smooth" });
+    this.roomToReach(window.scrollY + step + PANEL_SLACK);
+    // Asked for once, not once per measurement. This is worked out again a few
+    // times while the panel finishes drawing, and each time it is asked for
+    // the browser throws away the smooth scroll in flight and starts a fresh
+    // one from a standstill -- so the page sets off, stops, sets off again.
+    // The line being aimed at is a line down the document and does not move
+    // while the page travels towards it, so a second ask for the same line is
+    // the same ask and is let go. A dozen pixels of slack covers the panel
+    // turning out slightly taller than it first measured; anything more than
+    // that is a different destination and is worth interrupting for.
+    const aim = Math.round(window.scrollY + step);
+    if (this.scrollAim === null || Math.abs(aim - this.scrollAim) > PANEL_AIM_SLACK) {
+      this.scrollAim = aim;
+      window.scrollBy({ top: step, behavior: "smooth" });
+    }
     // How far the page is about to travel, for a caller that has to judge
     // where things will be rather than where they are: the scroll is smooth
     // and has not happened yet.

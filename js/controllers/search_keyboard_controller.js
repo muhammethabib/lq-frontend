@@ -247,6 +247,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     // that no longer holds, so this reads the settled answer.
     // Tried again a few times: the panel's own height is not final until its
     // keys have been drawn, and a measurement taken before that is short.
+    window.LQ.forgetScrollAim();
     if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
       if (this.openValue && !this.placedSpot()) {
         // Asked for: the reader pressed the bar, so the board lands in the

@@ -549,14 +549,12 @@
 
 /* Where the key that leads to the other keyboard leads: the lead-in above,
    the name of the keyboard below. */
-/* The keyboard's own controls take the tooltip the old site gives them: as
-   narrow as its longest word, up to three hundred pixels, so a short label
-   comes up as a small block rather than a long strip. The three labels the
-   old site marks nowrap -- the two wildcards and the erase key -- stay on
-   one line, and then the same rule makes the tooltip exactly as wide as
-   the words. */
-.tooltip.keyboard-tip .tooltip-inner { width: min-content; }
-.tooltip.keyboard-tip-nowrap .tooltip-inner { white-space: nowrap; }
+/* One line, all of them. The old site sets these as narrow as their longest
+   word, which turns a three-word label into a three-line stack over a
+   twenty-two pixel button -- taller than the keyboard's own bar, and read
+   downwards for something that is four words of plain help. None of these
+   labels is long enough to need breaking: the widest is twenty characters. */
+.tooltip.keyboard-tip .tooltip-inner { white-space: nowrap; }
 
 .tooltip .switch-tip-lead {
   display: block;

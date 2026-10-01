@@ -173,7 +173,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       return `<button type="button" class="btn wildcard-key" data-wildcard="${this.escape(name)}"
         data-action="pointerdown->ottoman-keyboard#pressWildcard"
         data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(label)}"
-        data-bs-custom-class="keyboard-tip keyboard-tip-nowrap"
+        data-bs-custom-class="keyboard-tip"
         aria-label="${this.escape(spoken)}">${wildcard.mark || this.escape(wildcard.symbol)}</button>`;
     }).join("");
   }
@@ -347,6 +347,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     // times because the panel's own height is not final until its marks have
     // been drawn, and a measurement taken before that is short -- and because
     // a place is only worth judging once the page has settled under it.
+    window.LQ.forgetScrollAim();
     [0, 80, 320, 700].forEach((delay) => setTimeout(() => {
       if (!this.openValue) return;
       // The place is judged against where the boxes are about to be, not

@@ -1,11 +1,11 @@
 # LQ-KB-1 — The floating keyboards can be moved, and say so
 
-**Area:** Search page (`pages/home.html`) — the Search board and the Word
-Decoder board
-**Type:** Feature + UI correction
-**Depends on:** nothing
-**Related:** LQ-KB-2 (the page scroll when a board opens). The two tickets
-touch the same panels; LQ-KB-2 owns everything about the page moving.
+- **Area:** Search page (`pages/home.html`) — the Search board and the Word
+  Decoder board
+- **Type:** Feature + UI correction
+- **Depends on:** nothing
+- **Related:** LQ-KB-2 (the page scroll when a board opens). The two tickets
+  touch the same panels; LQ-KB-2 owns everything about the page moving.
 
 ---
 

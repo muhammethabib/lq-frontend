@@ -1,11 +1,11 @@
 # LQ-KB-2 — A press on a box always brings the page to the keyboard
 
-**Area:** Search page (`pages/home.html`) — the Word Decoder board and the
-Search board
-**Type:** Bug + behaviour specification
-**Depends on:** nothing
-**Related:** LQ-KB-1 (moving the boards). §4 here settles when a remembered
-place is judged; LQ-KB-1 §4 settles what makes a place worth keeping.
+- **Area:** Search page (`pages/home.html`) — the Word Decoder board and the
+  Search board
+- **Type:** Bug + behaviour specification
+- **Depends on:** nothing
+- **Related:** LQ-KB-1 (moving the boards). §4 here settles when a remembered
+  place is judged; LQ-KB-1 §4 settles what makes a place worth keeping.
 
 ---
 

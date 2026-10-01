@@ -50,6 +50,9 @@ const KEYBOARD_FLAG_ROOM_PX = 44;
 // How long the pin takes to fade out when the panel goes back to the
 // place the page picks: the stylesheet's own animation, run to the end.
 const KEYBOARD_PIN_LEAVING_MS = 620;
+// How long the pin wears the class that blinks it once on a drop: the
+// stylesheet's own animation, run to the end.
+const KEYBOARD_PIN_FLASH_MS = 620;
 const KEYBOARD_FLAG_MS = 1900;
 
 // The face of the key that leads to the other keyboard, and the arrows that
@@ -328,16 +331,48 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.place();
     this.markRooms();
     this.refreshPin();
-    // A panel the reader has parked is already inside the window and is not
-    // worth moving the page for. Every other opening is under the boxes, and
-    // the page comes to it -- place() has already given up a parked place
-    // that no longer holds, so this reads the settled answer.
-    if (this.placedSpot()) return;
+    // The page comes to the boxes on every press, parked panel or not: a
+    // press on a box is a reader saying they want to fill it in, and what
+    // they get should not depend on where the panel was left or where the
+    // page happened to be standing.
+    //
     // Only on opening: doing it from place() would make the page scroll
     // itself every time the scroll listener fired. It is tried again a few
     // times because the panel's own height is not final until its marks have
-    // been drawn, and a measurement taken before that is short.
-    [0, 80, 320, 700].forEach((delay) => setTimeout(() => this.scrollIntoReach(), delay));
+    // been drawn, and a measurement taken before that is short -- and because
+    // a place is only worth judging once the page has settled under it.
+    [0, 80, 320, 700].forEach((delay) => setTimeout(() => {
+      if (!this.openValue) return;
+      // The place is judged against where the boxes are about to be, not
+      // where they are: the page is still travelling, and a place judged
+      // against a row in mid-air is judged against nothing.
+      this.dropStalePlace(this.scrollIntoReach(true));
+      this.place();
+    }, delay));
+  }
+
+  // A place the reader chose is kept only while it still leaves them the
+  // boxes. The panel is fixed to the window and the boxes are not, so a place
+  // that cleared them when it was chosen covers them at another scroll
+  // position, or on the next visit -- and it is written down for the next
+  // visit. Then pressing a box opens the panel over, or level with, the very
+  // thing being filled in, and the page has nowhere to go because a parked
+  // panel asks for nothing.
+  //
+  // So the rule the panel is built on holds over the place as well: the
+  // panel belongs under the boxes. A place below them is the reader's and is
+  // kept; a place beside or above them has stopped being a place, and is let
+  // go rather than honoured. What they lose is a park level with the boxes,
+  // which hid what they were typing into; what they get back is that pressing
+  // a box always puts the keyboard under it.
+  dropStalePlace(coming) {
+    if (!window.LQ_PLACEMENT.spot(KEYBOARD_PLACE)) return;
+    const spot = this.usableSpot();
+    const row = this.below && this.below.isConnected ? this.below : this.anchor;
+    if (!spot || !row || !row.isConnected) return;
+    if (spot.top >= row.getBoundingClientRect().bottom - (coming || 0)) return;
+    window.LQ_PLACEMENT.release(KEYBOARD_PLACE);
+    this.refreshPin();
   }
 
   close(event) {
@@ -559,6 +594,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const arriving = this.hasPinTarget && this.pinTarget.hidden;
     window.LQ_PLACEMENT.fix(KEYBOARD_PLACE, spot);
     this.refreshPin();
+    this.flashPin();
     // Once a visit, counting both keyboards as one. A word that says what the
     // control does has one moment worth saying it in; after that the reader
     // knows, and the other keyboard's pin is the same pin doing the same job,
@@ -622,6 +658,21 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.pinTarget.setAttribute("aria-label", window.LQ.pinName());
   }
 
+  // One blink, on every drop. The panel has a new place, and this is the
+  // control that takes it back; the words beside it are said once a visit and
+  // then never again, so after that first time this is all there is to say
+  // that the place was taken. It wears, for a moment, the fill it otherwise
+  // only wears under the pointer.
+  flashPin() {
+    if (!this.hasPinTarget || this.pinTarget.hidden) return;
+    this.pinTarget.classList.remove("is-flash");
+    // Restarting the class within the same frame would not replay it.
+    void this.pinTarget.offsetWidth;
+    this.pinTarget.classList.add("is-flash");
+    clearTimeout(this.pinFlash);
+    this.pinFlash = setTimeout(() => this.pinTarget.classList.remove("is-flash"), KEYBOARD_PIN_FLASH_MS);
+  }
+
   // The word for what just happened, over the pin it happened to. Above the
   // panel where there is room, under the pin where there is not. Said on the
   // parking and nowhere else: going back to the place the page picks is what
@@ -652,6 +703,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     if (!this.hasPinTarget || this.pinTarget.hidden) return;
     const built = window.bootstrap ? bootstrap.Tooltip.getInstance(this.pinTarget) : null;
     if (built) built.hide();
+    this.pinTarget.classList.remove("is-flash");
     this.pinTarget.classList.add("is-leaving");
     clearTimeout(this.pinLeaving);
     this.pinLeaving = setTimeout(() => {
@@ -670,17 +722,21 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // narrow screen it can cover the field, so the page moves the field clear
   // of it; on a wide screen it opens under the box and can fall past the
   // bottom edge, so the page moves it into view instead.
-  scrollIntoReach() {
-    if (!this.anchor || !this.anchor.isConnected) return;
+  scrollIntoReach(asked) {
+    if (!this.anchor || !this.anchor.isConnected) return 0;
     if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) {
       const gap = 16;
       const bounds = this.anchor.getBoundingClientRect();
       const keyboardTop = window.innerHeight - (this.element.offsetHeight || 0);
       const overlap = bounds.bottom + gap - keyboardTop;
       if (overlap > 0) window.scrollBy({ top: overlap, behavior: "smooth" });
-      return;
+      return 0;
     }
-    window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
+    // The foot of the panel at the place the page picks, which is the block
+    // the page is brought to even when the reader has carried the panel off
+    // somewhere else of their own.
+    const foot = this.home ? this.home.top + this.element.offsetHeight : undefined;
+    return window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift(), asked, foot);
   }
 
   // The strip the page is brought to: the tabs above the card, which keep the

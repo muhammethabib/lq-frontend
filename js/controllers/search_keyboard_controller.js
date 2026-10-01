@@ -48,6 +48,9 @@ const SEARCH_FLAG_ROOM_PX = 44;
 // How long the pin takes to fade out when the panel goes back to the
 // place the page picks: the stylesheet's own animation, run to the end.
 const SEARCH_PIN_LEAVING_MS = 620;
+// How long the pin wears the class that blinks it once on a drop: the
+// stylesheet's own animation, run to the end.
+const SEARCH_PIN_FLASH_MS = 620;
 const SEARCH_FLAG_MS = 1900;
 
 class SearchKeyboardController extends Stimulus.Controller {
@@ -245,7 +248,11 @@ class SearchKeyboardController extends Stimulus.Controller {
     // Tried again a few times: the panel's own height is not final until its
     // keys have been drawn, and a measurement taken before that is short.
     if (!this.placedSpot()) [0, 80, 320].forEach((delay) => setTimeout(() => {
-      if (this.openValue && !this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
+      if (this.openValue && !this.placedSpot()) {
+        // Asked for: the reader pressed the bar, so the board lands in the
+        // same place every time rather than wherever the page was standing.
+        window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift(), true);
+      }
     }, delay));
   }
 
@@ -383,6 +390,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     const arriving = this.hasPinTarget && this.pinTarget.hidden;
     window.LQ_PLACEMENT.fix(SEARCH_KEYBOARD_PLACE, spot);
     this.refreshPin();
+    this.flashPin();
     // Once a visit, counting both keyboards as one. A word that says what the
     // control does has one moment worth saying it in; after that the reader
     // knows, and the other keyboard's pin is the same pin doing the same job,
@@ -451,6 +459,21 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.pinTarget.setAttribute("aria-label", window.LQ.pinName());
   }
 
+  // One blink, on every drop. The panel has a new place, and this is the
+  // control that takes it back; the words beside it are said once a visit and
+  // then never again, so after that first time this is all there is to say
+  // that the place was taken. It wears, for a moment, the fill it otherwise
+  // only wears under the pointer.
+  flashPin() {
+    if (!this.hasPinTarget || this.pinTarget.hidden) return;
+    this.pinTarget.classList.remove("is-flash");
+    // Restarting the class within the same frame would not replay it.
+    void this.pinTarget.offsetWidth;
+    this.pinTarget.classList.add("is-flash");
+    clearTimeout(this.pinFlash);
+    this.pinFlash = setTimeout(() => this.pinTarget.classList.remove("is-flash"), SEARCH_PIN_FLASH_MS);
+  }
+
   // The word for what just happened, over the pin it happened to. Above the
   // panel where there is room, under the pin where there is not. Said on the
   // parking and nowhere else: going back to the place the page picks is what
@@ -481,6 +504,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     if (!this.hasPinTarget || this.pinTarget.hidden) return;
     const built = window.bootstrap ? bootstrap.Tooltip.getInstance(this.pinTarget) : null;
     if (built) built.hide();
+    this.pinTarget.classList.remove("is-flash");
     this.pinTarget.classList.add("is-leaving");
     clearTimeout(this.pinLeaving);
     this.pinLeaving = setTimeout(() => {

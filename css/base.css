@@ -830,11 +830,31 @@ body.has-panel-room::after {
   inset: -9px -20px -13px -5px;
 }
 
-/* Arriving, it does nothing at all. It used to pop in and send two rings
-   out, on the reasoning that a control appearing quietly in a corner is a
-   control nobody sees -- but it does not appear alone: the words that say
-   what to do with it appear over it in the same moment, and they are what
-   the eye goes to. A second thing moving under them only pulls at it. */
+/* Arriving, it does not announce itself: it used to pop in and send two rings
+   out, but the words that say what to do with it appear over it in the same
+   moment, and they are what the eye goes to.
+
+   Parked, it blinks once. The words are said once a visit; this is said on
+   every drop, because every drop is a new place and this is the control that
+   undoes it. One blink of the fill it otherwise only wears under the pointer:
+   the control saying that was me, in its own colour, and then going quiet
+   again. It is brief enough to be over before a reader could turn to look at
+   it, which is the point -- it is caught out of the corner of the eye, where
+   a thing that is merely confirming belongs. */
+.keyboard-pin.is-flash { animation: keyboard-pin-flash .6s ease-out both; }
+
+@keyframes keyboard-pin-flash {
+  0%, 40% {
+    background: var(--lq-claret);
+    border-color: var(--lq-claret);
+    color: var(--lq-paper);
+  }
+  100% {
+    background: var(--lq-paper);
+    border-color: var(--lq-claret);
+    color: var(--lq-claret);
+  }
+}
 
 /* Leaving. The panel is back where the page puts it, so the pin has nothing
    left to say -- and a control that blinks out from under the pointer reads
@@ -911,6 +931,7 @@ body.has-panel-room::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .keyboard-pin.is-flash,
   .keyboard-pin.is-leaving,
   .keyboard-pin-flag { animation: none; }
 }

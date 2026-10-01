@@ -27,6 +27,14 @@ const PANEL_LIFT = 16;
 // panel whose own row is off the top has lost what it is for.
 const PANEL_HEADROOM = 24;
 
+// Slack. While a panel is open the page carries this much scroll beyond
+// whatever the panel itself needs, so there is always somewhere further down
+// to go. A page that ends exactly where the panel does answers a flick of the
+// wheel with nothing, which reads as the page being stuck rather than
+// finished, and a reader who cannot move the page goes looking for something
+// to drag instead.
+const PANEL_SLACK = 140;
+
 // The one outline that shows a carried panel where it came from. There is
 // never more than one panel in hand, so there is never more than one.
 const HOME_GHOST_ID = "lq-home-ghost";
@@ -105,32 +113,35 @@ window.LQ = {
   // panel following the row it belongs to is always reachable, whatever the
   // reader does with the scrollbar.
   roomFor(panel) {
-    const past = panel.getBoundingClientRect().bottom + PANEL_TAIL - window.innerHeight;
-    if (past <= 0) { this.releaseRoom(); return 0; }
-    this.roomToScroll(past);
-    return past;
+    const box = panel.getBoundingClientRect();
+    this.roomDownTo(window.scrollY + box.bottom + PANEL_TAIL + PANEL_SLACK);
+    return Math.max(0, box.bottom + PANEL_TAIL - window.innerHeight);
   },
 
-  // The page made long enough to be scrolled by a given distance. The panel
-  // is fixed, so it adds nothing to the page's own height and the page may
-  // have nowhere to scroll to; what is wanted is not the overlap but the
-  // scroll range the page is short of, and only once that is made up is
-  // there anywhere to scroll.
-  roomToScroll(want) {
-    if (want <= 0) { this.releaseRoom(); return; }
+  // The page made long enough to reach a given line, measured down the
+  // document rather than down the window. The panel is fixed, so it adds
+  // nothing to the page's own height and the page may have nowhere to scroll
+  // to; this is what makes somewhere.
+  //
+  // Down the document, not from where the reader happens to be standing. A
+  // room measured from the current scroll grows every time it is asked for,
+  // because the reader scrolling into the room it just added makes the page
+  // short again -- and this is asked for on every scroll event. The panel
+  // follows its row, so the line it needs is the same line however far the
+  // page has been scrolled, and asking twice gives the same answer.
+  roomDownTo(line) {
     // A release still waiting for the top of the page would take the room
     // away the moment the reader got there, with the panel still needing it.
     this.stopWaitingForTop();
     const current = parseFloat(
       getComputedStyle(document.body).getPropertyValue("--lq-panel-room")) || 0;
-    const reach = document.documentElement.scrollHeight - window.innerHeight;
-    const short = (window.scrollY + want) - reach;
+    // The page's own height, with the room taken back out of it
+    const bare = document.documentElement.scrollHeight - current;
     document.body.classList.add("has-panel-room");
-    if (short > 0) {
-      document.body.style.setProperty("--lq-panel-room", `${Math.ceil(current + short + 20)}px`);
-    } else if (!current) {
-      document.body.style.setProperty("--lq-panel-room", "0px");
-    }
+    // Never less than it already is: taking the room back out from under a
+    // reader standing on it drops them up the page.
+    document.body.style.setProperty("--lq-panel-room",
+      `${Math.max(current, Math.ceil(line - bare), 0)}px`);
   },
 
   // The room, and the page brought to the panel.
@@ -147,17 +158,33 @@ window.LQ = {
   // row under it, the panel under that, the same block at every size with
   // room for it. Where there is not room, the lift gives way first and the
   // row last -- it may come no nearer the top than its own headroom.
-  makeRoomFor(panel, row, lift) {
-    const past = panel.getBoundingClientRect().bottom + PANEL_TAIL - window.innerHeight;
-    if (past <= 0) { this.releaseRoom(); return; }
+  //
+  // Asked for outright -- the reader has just pressed a box -- it goes
+  // whether or not the panel is short of its tail. The panel landing in the
+  // same place every time is worth more than the page being left alone: a
+  // keyboard that sometimes appears under the boxes and sometimes wherever
+  // the page happened to be standing is a keyboard the reader has to look
+  // for, and looking for it is what the whole arrangement is meant to spare
+  // them.
+  //
+  // The foot it is brought to can be given rather than measured. A panel the
+  // reader has carried off somewhere is still opened by a press on the boxes,
+  // and what that press asks for is the boxes -- so the page is brought to
+  // where the panel's foot would be if it were standing where the page puts
+  // it, not to wherever the panel has been left.
+  makeRoomFor(panel, row, lift, asked, foot) {
+    const panelBox = panel.getBoundingClientRect();
+    const bottom = typeof foot === "number" ? foot : panelBox.bottom;
+    const past = bottom + PANEL_TAIL - window.innerHeight;
+    this.roomFor(panel);
+    if (past <= 0 && !asked) return 0;
     if (!row || !row.isConnected) {
-      this.roomToScroll(past);
-      window.scrollBy({ top: past, behavior: "smooth" });
-      return;
+      if (past > 0) window.scrollBy({ top: past, behavior: "smooth" });
+      return Math.max(0, past);
     }
 
     const rowBox = row.getBoundingClientRect();
-    const block = panel.getBoundingClientRect().bottom - rowBox.top;
+    const block = bottom - rowBox.top;
     // Where the row lands if the strip above it is brought to the top
     const wanted = lift && lift.isConnected
       ? rowBox.top - lift.getBoundingClientRect().top + PANEL_LIFT
@@ -165,12 +192,19 @@ window.LQ = {
     const target = Math.max(PANEL_HEADROOM,
       Math.min(wanted, window.innerHeight - PANEL_TAIL - block));
     const step = Math.round(rowBox.top - target);
-    if (step <= 0) return;
+    if (step <= 0) return 0;
     // Room for the whole journey, not just the overlap: without it the scroll
     // runs out of page and the block lands somewhere in between, which is the
-    // wandering this was meant to put a stop to.
-    this.roomToScroll(step);
+    // wandering this was meant to put a stop to. And the slack past the end of
+    // it, so the page the reader lands on still answers the wheel. The line is
+    // where the journey ends, which is a line down the document and the same
+    // one however often this is asked.
+    this.roomDownTo(window.scrollY + step + window.innerHeight + PANEL_SLACK);
     window.scrollBy({ top: step, behavior: "smooth" });
+    // How far the page is about to travel, for a caller that has to judge
+    // where things will be rather than where they are: the scroll is smooth
+    // and has not happened yet.
+    return step;
   },
 
   // Taking the room back moves everything under the pointer, and a press that

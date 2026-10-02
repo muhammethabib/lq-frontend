@@ -71,7 +71,8 @@ the keyboard and flashes once.
 
 The first time in a visit, a short label appears over that button: "Put it
 back". It stays for about two seconds and then goes. It is shown once —
-moving the keyboard again does not repeat it.
+moving the keyboard again does not repeat it — until the page is reloaded:
+after F5, the first move shows it again.
 
 *Fareyi butonun üstüne getir, sayfadaki çerçeveyi göster.*
 

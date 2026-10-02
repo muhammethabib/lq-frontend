@@ -146,7 +146,7 @@
   opacity: 0;
   transition: opacity .15s ease;
   background-image: radial-gradient(circle, #bfcad8 1.15px, transparent 1.35px);
-  background-size: 15px 15px;
+  background-size: 13px 13px;
   background-repeat: space;
   -webkit-mask-image: radial-gradient(ellipse at center, #000 42%, transparent 90%);
   mask-image: radial-gradient(ellipse at center, #000 42%, transparent 90%);

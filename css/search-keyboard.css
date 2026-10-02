@@ -41,6 +41,7 @@
 .search-keyboard { transition: box-shadow 0.16s ease; }
 .search-keyboard:has(.search-keyboard-bar:hover),
 .search-keyboard:has(.search-keyboard-rim:hover),
+.search-keyboard:has(.search-keyboard-room:hover),
 .search-keyboard.is-dragging {
   box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.26);
 }
@@ -178,8 +179,24 @@
   mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
 }
 
+/* The stretch at either end of a short row: the controller measures and
+   places these. They answer like the rim they run into. */
+.search-keyboard-room {
+  position: absolute;
+  opacity: 0;
+  transition: opacity .15s ease;
+  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
+  background-size: 9px 9px;
+  background-repeat: space;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
+  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
+  cursor: var(--lq-cursor-grab);
+}
+.search-keyboard-room:hover { opacity: 1; }
+
 @media (prefers-reduced-motion: reduce) {
-  .search-keyboard-rim { transition: none; }
+  .search-keyboard-rim,
+  .search-keyboard-room { transition: none; }
 }
 
 /* The line keeps clear of both corners, so it is centred on the panel and
@@ -470,7 +487,8 @@
   .search-keyboard-teach::before,
   .search-keyboard-teach::after,
   .search-keyboard.is-learned .search-keyboard-bar::after { content: none; }
-  .search-keyboard-rim { display: none; }
+  .search-keyboard-rim,
+  .search-keyboard-room { display: none; }
   .search-keyboard {
     left: 0 !important;
     top: auto !important;

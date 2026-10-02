@@ -40,6 +40,10 @@ const SEARCH_HOME_REACH = 190;
 // stylesheet docks it to the foot of the screen instead.
 const SEARCH_KEYBOARD_PLACE = "search";
 const SEARCH_KEYBOARD_DOCK_QUERY = "(max-width: 767.98px)";
+// A stretch of nothing at the end of a short row is handle once it is wider
+// than the gap between two keys, and keeps this far from the nearest key.
+const SEARCH_ROOM_MIN = 12;
+const SEARCH_ROOM_EDGE = 6;
 
 // The room the word that says the panel is fixed needs above it, and how
 // long it stays before it has been read.
@@ -79,7 +83,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     // one the interface language implies.
     // The pin's label says which of its two states it is in, so it is written
     // again rather than left with the one the markup carries.
-    this.onLanguageChange = () => { this.render(); this.refreshPin(); };
+    this.onLanguageChange = () => { this.render(); this.refreshPin(); if (this.openValue) this.markRooms(); };
     document.addEventListener("language:changed", this.onLanguageChange);
 
     // The panel is fixed to the window, so scrolling the page does not carry
@@ -102,6 +106,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.onResize = () => {
       if (!this.openValue) return;
       this.place();
+      this.markRooms();
       if (!this.placedSpot()) window.LQ.makeRoomFor(this.element, this.below || this.anchor, this.lift());
     };
     window.addEventListener("resize", this.onResize);
@@ -143,6 +148,47 @@ class SearchKeyboardController extends Stimulus.Controller {
         ${cells.join("")}
       </div>`).join("");
     window.LQ.refreshDynamicContent(this.element);
+  }
+
+  // The rows are centred, so a row shorter than the rest leaves a stretch of
+  // nothing at either end of it -- the two bottom corners, on this layout.
+  // Those stretches are handle too, like the rim round the keys they run
+  // into. Measured rather than written down, since the rows change with the
+  // window; one per line, should a row ever wrap.
+  markRooms() {
+    if (!this.hasRowsTarget) return;
+    const body = this.rowsTarget.parentElement;
+    body.querySelectorAll(".search-keyboard-room").forEach((room) => room.remove());
+    if (window.matchMedia(SEARCH_KEYBOARD_DOCK_QUERY).matches) return;
+    const box = body.getBoundingClientRect();
+    if (!box.width) return;
+    const lines = new Map();
+    this.rowsTarget.querySelectorAll(".search-key").forEach((key) => {
+      const bounds = key.getBoundingClientRect();
+      const at = Math.round(bounds.top);
+      if (!lines.has(at)) lines.set(at, []);
+      lines.get(at).push(bounds);
+    });
+    lines.forEach((keys) => {
+      const top = keys[0].top - box.top;
+      const height = keys[0].height;
+      const left = Math.min(...keys.map((k) => k.left)) - box.left - SEARCH_ROOM_EDGE;
+      const right = box.right - Math.max(...keys.map((k) => k.right)) - SEARCH_ROOM_EDGE;
+      if (left >= SEARCH_ROOM_MIN) this.addRoom(body, 0, top, left, height);
+      if (right >= SEARCH_ROOM_MIN) this.addRoom(body, box.width - right, top, right, height);
+    });
+  }
+
+  addRoom(body, left, top, width, height) {
+    const room = document.createElement("span");
+    room.className = "search-keyboard-room";
+    room.setAttribute("aria-hidden", "true");
+    room.dataset.action = "pointerdown->search-keyboard#startDrag";
+    room.style.left = `${Math.round(left)}px`;
+    room.style.top = `${Math.round(top)}px`;
+    room.style.width = `${Math.round(width)}px`;
+    room.style.height = `${Math.round(height)}px`;
+    body.appendChild(room);
   }
 
   alphabet() {
@@ -241,6 +287,7 @@ class SearchKeyboardController extends Stimulus.Controller {
     this.element.classList.add("is-open");
     this.place();
     this.refreshPin();
+    requestAnimationFrame(() => { if (this.openValue) this.markRooms(); });
     // A panel the reader has parked is already inside the window and is not
     // worth moving the page for. Every other opening is under the bar, and
     // the page comes to it -- place() has already given up a parked place

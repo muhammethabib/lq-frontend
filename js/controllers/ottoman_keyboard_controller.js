@@ -45,6 +45,9 @@ const KEYBOARD_HOME_REACH = 190;
 // worth calling a room, and it keeps this much clear of the key it ends at.
 const KEYBOARD_ROOM_MIN = 60;
 const KEYBOARD_ROOM_EDGE = 9;
+// The stretch inside the Advanced / Basic key's row is narrower than the
+// rooms at the ends of the rows, and still far wider than a gap between keys.
+const KEYBOARD_GAP_ROOM_MIN = 24;
 
 // The name this panel's place is held under.
 const KEYBOARD_PLACE = "decoder";
@@ -552,6 +555,31 @@ class OttomanKeyboardController extends Stimulus.Controller {
       else close();
     });
     close();
+
+    // The row the Advanced / Basic key stands in is ragged on the inside as
+    // well: the key holds the corner and the letters keep to the right, with
+    // a stretch of nothing between them. That is a room like the others.
+    if (key) {
+      const row = key.closest(".keyboard-row");
+      const letters = Array.from(row.children).filter((el) => el !== key && !el.classList.contains("keyboard-room"));
+      if (letters.length) {
+        const own = key.getBoundingClientRect();
+        const left = own.right - box.left + KEYBOARD_ROOM_EDGE;
+        const width = Math.min(...letters.map((el) => el.getBoundingClientRect().left))
+          - box.left - KEYBOARD_ROOM_EDGE - left;
+        if (width >= KEYBOARD_GAP_ROOM_MIN) {
+          const bounds = row.getBoundingClientRect();
+          const room = document.createElement("span");
+          room.className = "keyboard-room";
+          room.setAttribute("aria-hidden", "true");
+          room.style.left = `${Math.round(left)}px`;
+          room.style.top = `${Math.round(bounds.top - box.top)}px`;
+          room.style.width = `${Math.round(width)}px`;
+          room.style.height = `${Math.round(bounds.height)}px`;
+          panel.appendChild(room);
+        }
+      }
+    }
   }
 
   activePanel() {

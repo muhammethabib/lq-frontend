@@ -1,7 +1,7 @@
-# LQ-KB-1 — A keyboard the user can move
+# LQ-KB-1 — Moving the keyboard
 
 - **Area:** Search page — the Word Decoder tab and the Search tab
-- **Type:** Feature
+- **Type:** Behaviour
 - **Affects:** Every window wide enough for the keyboard to float (768px and up)
 - **Front-end only:** this is about what the page does on screen; nothing here
   asks for a change on the server.
@@ -10,83 +10,100 @@
 
 ## Summary
 
-The on-screen keyboard floats above the page, so sooner or later it covers
-something the user wants to read. They should be able to pick it up and move
-it out of the way, see that they can before they try, and put it back in one
-press.
+Both on-screen keyboards float above the page, so sooner or later they cover
+something the user wants to read. The user should be able to pick a keyboard
+up and move it out of the way, see where to take hold of it before trying, and
+put it back in one press. A moved keyboard should stay where it was put while
+the page is open — and only then.
 
-## Why
+## Problem
 
-A floating panel that cannot be moved reads as an obstruction, and the only
-thing the user can do about it is close it — which also takes away the
-keyboard they were using. Three things follow: the handle has to be visible
-before the pointer is on it, a move has to be undoable in one press, and a
-keyboard the user has moved has to stay where they put it.
+On the live site the keyboard can already be dragged, but the place it is
+dragged to is written to the browser's memory for the site. It comes back on
+every later press and on every later visit, and a hard reload —
+`Ctrl+Shift+R` or `Ctrl+F5` — does not clear it. This is also what breaks the
+keyboard's opening position described in LQ-KB-2.
+
+This ticket sets out the whole of the moving behaviour as it should be.
 
 ## What should happen
 
-### Picking it up
+### Taking hold of it
 
-1. The keyboard can be carried by its top bar — the strip holding Clear, the
-   wildcards and the close key — and by the empty space beside the key rows.
+1. The Word Decoder keyboard can be carried by its top bar — the strip holding
+   Clear, the wildcards and the close key — by the empty space beside the key
+   rows, and by the narrow gaps between the keys and between the rows.
 
-2. Hovering either of those areas shows a field of small dots there and lifts
-   the panel slightly off the page, so the user can see where to take hold of
-   it before trying. The dots follow the real shape of the empty space.
+2. The Search keyboard can be carried by its top bar and by its left, right
+   and bottom edges — the margin around the keys.
 
-3. The cursor is an open hand over those areas and a closed hand while the
-   keyboard is being carried.
+3. Hovering any of those areas shows a faint field of small dots there and
+   lifts the panel slightly off the page, so the user can see where to take
+   hold of it before trying. The cursor is an open hand. At rest the dots are
+   not shown at all.
 
-4. Every key, and every button on the bar, still takes its own press. None of
-   them starts a move.
+4. Every key, and every button on the bar, still takes its own press. On the
+   Search keyboard the gaps between the keys are not part of the handle, so a
+   press that just misses a key does not carry the keyboard away.
 
-5. While it is being carried the keyboard follows the pointer exactly, and it
-   is never allowed to leave the window.
+5. While it is being carried the cursor is a closed hand, the keyboard follows
+   the pointer exactly, and it is never allowed to leave the window.
 
-### Putting it back
+### Putting it down
 
 1. When the keyboard is dropped somewhere new, a small button appears in its
-   top-left corner and flashes once. Pressing that button returns the keyboard
-   to its usual place under the boxes, and the button fades away.
+   top-left corner and flashes once.
 
-2. The first time the user moves the keyboard in a visit, a short label
-   appears over that button — *Put it back* — for about two seconds. It is
-   shown once; moving the keyboard again does not repeat it. A reload starts
-   the visit over, so it is shown again.
+2. The first time the user moves a keyboard in a visit, a short label appears
+   over that button — *Put it back* — for about two seconds. It is shown once,
+   counting both keyboards as one; moving a keyboard again does not repeat it.
+   After a reload it is shown again.
 
 3. Hovering the button draws an outline on the page showing where the keyboard
    will return to.
 
-4. While the keyboard is being carried back towards its usual place, a dashed
+4. Pressing the button returns the keyboard to its usual place, and the button
+   fades away.
+
+5. While the keyboard is being carried back towards its usual place, a dashed
    outline of that place appears behind it and grows clearer as it nears.
    Dropped close enough, the keyboard settles into that place by itself and
    the button disappears.
 
 ### Keeping the place
 
-1. A keyboard the user has moved stays where they put it for as long as the
+1. A keyboard the user has moved stays where it was put for as long as the
    page is open. Closing it and opening it again brings it back to the same
    place.
 
-2. The place is not remembered between visits. After a reload the keyboard
-   opens under the boxes again.
+2. The place is never written to the browser's memory for the site. After a
+   reload — an ordinary one; a hard reload is not needed — the keyboard opens
+   in its usual place again.
 
-3. A place that would put the keyboard level with or above the boxes it
-   belongs to is let go rather than used, and the keyboard opens under them.
+3. On the Word Decoder, a kept place that would put the keyboard level with or
+   above the boxes is let go, and the keyboard opens under the boxes instead.
 
 ### The panel itself
 
-1. The Advanced / Basic key sits in the bottom-left corner of the panel,
-   flush with its left edge and its foot, in both languages and on both
-   tabs.
-
-2. Everything above applies to the Search tab's keyboard in the same way.
+1. On the Word Decoder keyboard, the Advanced / Basic key sits in the
+   bottom-left corner of the panel, flush with its left edge and its foot, in
+   both languages.
 
 ### Phone-size windows
 
 1. Below 768px the keyboard sits along the bottom of the screen. There is
    nowhere to move it to, so none of the above applies: no dots, no hand
    cursor, no button, no label.
+
+## The same result every time
+
+Moving a keyboard and putting it back should behave the same way:
+
+1. On the Word Decoder keyboard and on the Search keyboard.
+
+2. In both languages.
+
+3. In Edge, Chrome and Firefox.
 
 ---
 
@@ -110,32 +127,37 @@ Where a distance or a duration is needed:
 - The dots are decorative and are not announced.
 - Every animation here is turned off for users who have asked for reduced
   motion.
-- Moving the keyboard is a pointer gesture by choice. The keyboard is fully
-  usable without it, and closing it is always one press away.
+- Moving the keyboard is a pointer gesture. The keyboard is fully usable
+  without it, and closing it is always one press away.
 
 ## Acceptance
 
-Check in both languages, on both tabs, at a window around 1400px wide.
+Check in Edge, Chrome and Firefox, in both languages, at a window around
+1400px wide.
 
-- [ ] Hovering the top bar, and the empty space beside the keys, shows the
-      dots there and lifts the panel.
+- [ ] Word Decoder: hovering the top bar, and the empty space beside the keys,
+      shows the dots there and lifts the panel. A press in the gaps between
+      keys or rows carries it as well.
+- [ ] Search: hovering the top bar, and the left, right and bottom edges,
+      shows the dots there and lifts the panel.
 - [ ] The cursor is an open hand over those areas and a closed hand while
-      dragging.
-- [ ] Every key and every button on the bar still takes its own press.
+      carrying.
+- [ ] Every key and every button on the bar still takes its own press. On the
+      Search keyboard, a press in the gap between two keys does not move it.
+- [ ] The keyboard cannot be carried out of the window.
 - [ ] A drop in a new place shows the button in the top-left corner and
       flashes it once.
-- [ ] The label appears over the button once in a visit, and again after a
-      reload.
+- [ ] The label appears over the button once in a visit, across both
+      keyboards, and again after a reload.
 - [ ] Hovering the button outlines the usual place on the page.
+- [ ] Pressing the button returns the keyboard and removes the button.
 - [ ] Carrying the keyboard back shows the dashed outline, and a drop close
       enough settles it home and removes the button.
-- [ ] Pressing the button returns the keyboard and removes the button.
-- [ ] A moved keyboard survives a close and reopen, and returns to its usual
-      place after a reload.
-- [ ] The Advanced / Basic key is flush with the panel's bottom-left corner.
+- [ ] A moved keyboard survives a close and reopen.
+- [ ] After an ordinary reload the keyboard opens in its usual place, and
+      nothing about its place is left in the browser's memory.
 - [ ] Below 768px the keyboard is docked, with no dots, no hand cursor and no
       button.
-- [ ] No errors in the browser console through any of the above.
 
 ## Not in this ticket
 

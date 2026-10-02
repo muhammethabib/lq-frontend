@@ -41,7 +41,6 @@
 .search-keyboard { transition: box-shadow 0.16s ease; }
 .search-keyboard:has(.search-keyboard-bar:hover),
 .search-keyboard:has(.search-keyboard-rim:hover),
-.search-keyboard:has(.search-keyboard-room:hover),
 .search-keyboard.is-dragging {
   box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.26);
 }
@@ -180,23 +179,16 @@
 }
 
 /* The stretch at either end of a short row: the controller measures and
-   places these. They answer like the rim they run into. */
+   places these. They carry the panel and show the hand, and nothing else --
+   no dots, no lift; the corners are small, and a mark there would read as
+   something drawn in them rather than room to hold. */
 .search-keyboard-room {
   position: absolute;
-  opacity: 0;
-  transition: opacity .15s ease;
-  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
-  background-size: 9px 9px;
-  background-repeat: space;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
-  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
   cursor: var(--lq-cursor-grab);
 }
-.search-keyboard-room:hover { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .search-keyboard-rim,
-  .search-keyboard-room { transition: none; }
+  .search-keyboard-rim { transition: none; }
 }
 
 /* The line keeps clear of both corners, so it is centred on the panel and

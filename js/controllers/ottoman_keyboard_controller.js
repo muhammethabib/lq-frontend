@@ -525,11 +525,35 @@ class OttomanKeyboardController extends Stimulus.Controller {
       };
     });
 
+    // The row the Advanced / Basic key stands in is ragged on the inside as
+    // well: the key holds the corner and the letters keep to the right, with
+    // a stretch of nothing between them.
+    let gap = null;
+    if (key) {
+      const row = key.closest(".keyboard-row");
+      const letters = Array.from(row.children).filter((el) => el !== key);
+      if (letters.length) {
+        const own = key.getBoundingClientRect();
+        const bounds = row.getBoundingClientRect();
+        const left = own.right - box.left + KEYBOARD_ROOM_EDGE;
+        const right = Math.min(...letters.map((el) => el.getBoundingClientRect().left))
+          - box.left - KEYBOARD_ROOM_EDGE;
+        if (right - left >= KEYBOARD_GAP_ROOM_MIN) {
+          gap = { left, right, top: bounds.top - box.top, bottom: bounds.bottom - box.top };
+        }
+      }
+    }
+
     let run = [];
     const close = () => {
       if (run.length) {
         const top = run[0].top;
-        const height = run[run.length - 1].bottom - top;
+        const last = run[run.length - 1];
+        // Where the room above runs straight down into that stretch, the two
+        // are one stretch of nothing and are one room: the outline steps down
+        // into the gap on its way back along the bottom.
+        const joins = gap && Math.abs(last.bottom - gap.top) < 1 && gap.right <= last.room;
+        const height = (joins ? gap.bottom : last.bottom) - top;
         const widest = Math.max(...run.map((edge) => edge.room));
         // Clockwise: along the top, down the ragged right edge a row at a
         // time, then back along the bottom and up the left.
@@ -537,7 +561,12 @@ class OttomanKeyboardController extends Stimulus.Controller {
         run.forEach((edge) => {
           points.push([edge.room, edge.top - top], [edge.room, edge.bottom - top]);
         });
-        points.push([0, height]);
+        if (joins) {
+          points.push([gap.right, gap.top - top], [gap.right, gap.bottom - top],
+            [gap.left, gap.bottom - top], [gap.left, gap.top - top]);
+          gap = null;
+        }
+        points.push([0, last.bottom - top]);
         const room = document.createElement("span");
         room.className = "keyboard-room";
         room.setAttribute("aria-hidden", "true");
@@ -556,29 +585,16 @@ class OttomanKeyboardController extends Stimulus.Controller {
     });
     close();
 
-    // The row the Advanced / Basic key stands in is ragged on the inside as
-    // well: the key holds the corner and the letters keep to the right, with
-    // a stretch of nothing between them. That is a room like the others.
-    if (key) {
-      const row = key.closest(".keyboard-row");
-      const letters = Array.from(row.children).filter((el) => el !== key && !el.classList.contains("keyboard-room"));
-      if (letters.length) {
-        const own = key.getBoundingClientRect();
-        const left = own.right - box.left + KEYBOARD_ROOM_EDGE;
-        const width = Math.min(...letters.map((el) => el.getBoundingClientRect().left))
-          - box.left - KEYBOARD_ROOM_EDGE - left;
-        if (width >= KEYBOARD_GAP_ROOM_MIN) {
-          const bounds = row.getBoundingClientRect();
-          const room = document.createElement("span");
-          room.className = "keyboard-room";
-          room.setAttribute("aria-hidden", "true");
-          room.style.left = `${Math.round(left)}px`;
-          room.style.top = `${Math.round(bounds.top - box.top)}px`;
-          room.style.width = `${Math.round(width)}px`;
-          room.style.height = `${Math.round(bounds.height)}px`;
-          panel.appendChild(room);
-        }
-      }
+    // Nothing above to join: the stretch is a room of its own.
+    if (gap) {
+      const room = document.createElement("span");
+      room.className = "keyboard-room";
+      room.setAttribute("aria-hidden", "true");
+      room.style.left = `${Math.round(gap.left)}px`;
+      room.style.top = `${Math.round(gap.top)}px`;
+      room.style.width = `${Math.round(gap.right - gap.left)}px`;
+      room.style.height = `${Math.round(gap.bottom - gap.top)}px`;
+      panel.appendChild(room);
     }
   }
 

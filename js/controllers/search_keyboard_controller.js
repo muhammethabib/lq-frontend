@@ -332,6 +332,8 @@ class SearchKeyboardController extends Stimulus.Controller {
     // and then parking the panel again where it had just been unparked.
     if (event.target.closest("button")) return;
     event.preventDefault();
+    // Held by the bar wherever it was picked up, so a press that starts on the
+    // rim round the keys is carried by the bar's own move and release.
     this.hintTarget.setPointerCapture(event.pointerId);
     const bounds = this.element.getBoundingClientRect();
     this.drag = { x: event.clientX, y: event.clientY, left: bounds.left, top: bounds.top };

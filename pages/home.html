@@ -1505,8 +1505,23 @@
       </span>
     </div>
 
-    <!-- Written by the controller from js/search_keyboard_layout.js -->
-    <div class="search-keyboard-rows" data-search-keyboard-target="rows"></div>
+    <!-- The rows are written by the controller from
+         js/search_keyboard_layout.js. Around them, the panel's own margin is
+         handle as well: the strip down either side and the strip along the
+         foot, so a hand that reaches for the panel by its edge has hold of
+         it, wherever on the edge it lands. The gaps between the keys are not
+         -- a press that misses a key by a pixel is a press for the key, and
+         carrying the panel off instead would be the worst answer to it. The
+         strips pass the press to the bar, which carries the rest. -->
+    <div class="search-keyboard-body">
+      <div class="search-keyboard-rows" data-search-keyboard-target="rows"></div>
+      <span class="search-keyboard-rim search-keyboard-rim-left" aria-hidden="true"
+            data-action="pointerdown->search-keyboard#startDrag"></span>
+      <span class="search-keyboard-rim search-keyboard-rim-right" aria-hidden="true"
+            data-action="pointerdown->search-keyboard#startDrag"></span>
+      <span class="search-keyboard-rim search-keyboard-rim-foot" aria-hidden="true"
+            data-action="pointerdown->search-keyboard#startDrag"></span>
+    </div>
   </div>
 
 

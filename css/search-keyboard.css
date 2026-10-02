@@ -10,10 +10,16 @@
   z-index: 1080;
   display: none;
   flex-direction: column;
-  gap: 8px;
   width: max-content;
   max-width: calc(100vw - 32px);
-  padding: 16px 20px 14px;
+  /* Named, because the handle around the keys is cut to exactly this margin
+     and has to follow it as it narrows with the window. */
+  --kb-pad-t: 16px;
+  --kb-pad-x: 20px;
+  --kb-pad-b: 14px;
+  --kb-gap: 8px;
+  gap: var(--kb-gap);
+  padding: var(--kb-pad-t) var(--kb-pad-x) var(--kb-pad-b);
   border: 1px solid var(--lq-line);
   border-radius: 16px;
   background: var(--lq-paper);
@@ -34,6 +40,7 @@
    left the bar. */
 .search-keyboard { transition: box-shadow 0.16s ease; }
 .search-keyboard:has(.search-keyboard-bar:hover),
+.search-keyboard:has(.search-keyboard-rim:hover),
 .search-keyboard.is-dragging {
   box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.26);
 }
@@ -117,8 +124,62 @@
 .search-keyboard-bar::before {
   content: "";
   position: absolute;
-  inset: -16px -20px 0;
+  inset: calc(-1 * var(--kb-pad-t)) calc(-1 * var(--kb-pad-x)) 0;
   z-index: -1;
+}
+
+/* ---------------------------------------------------- the rim */
+
+/* The margin round the keys is handle too: the strip down either side, from
+   the bar to the foot, and the strip along the foot between them. Each is cut
+   to the margin exactly, so the hand turns up the moment the pointer is off
+   the keys and onto the panel's edge, and nowhere else.
+
+   It answers as the bar does -- the panel lifts, and the same faint dots come
+   up in it -- and like the bar's, the dots are nothing at rest and fade out at
+   their ends, so it is the edge of the panel changing under the hand rather
+   than a frame drawn round it. One line of dots down each side and one along
+   the foot: the margin is too narrow for a field, and a single seam reads as
+   the panel's own edge. */
+.search-keyboard-body { position: relative; }
+
+.search-keyboard-rim {
+  position: absolute;
+  opacity: 0;
+  transition: opacity .15s ease;
+  background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
+  background-size: 9px 9px;
+  background-position: center;
+  cursor: var(--lq-cursor-grab);
+}
+.search-keyboard-rim:hover { opacity: 1; }
+
+.search-keyboard-rim-left,
+.search-keyboard-rim-right {
+  /* From the foot of the bar, whose own handle runs down to there, to the
+     panel's own foot -- the corner below belongs to the side. */
+  top: calc(-1 * var(--kb-gap));
+  bottom: calc(-1 * var(--kb-pad-b));
+  width: var(--kb-pad-x);
+  background-repeat: no-repeat space;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+}
+.search-keyboard-rim-left { left: calc(-1 * var(--kb-pad-x)); border-bottom-left-radius: 15px; }
+.search-keyboard-rim-right { right: calc(-1 * var(--kb-pad-x)); border-bottom-right-radius: 15px; }
+
+.search-keyboard-rim-foot {
+  left: 0;
+  right: 0;
+  bottom: calc(-1 * var(--kb-pad-b));
+  height: var(--kb-pad-b);
+  background-repeat: space no-repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 25%, #000 75%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-keyboard-rim { transition: none; }
 }
 
 /* The line keeps clear of both corners, so it is centred on the panel and
@@ -394,12 +455,12 @@
 /* ---------------------------------------------------- narrow screens */
 
 @media (max-width: 1100px) {
-  .search-keyboard { padding: 14px 14px 12px; gap: 7px; }
+  .search-keyboard { --kb-pad-t: 14px; --kb-pad-x: 14px; --kb-pad-b: 12px; --kb-gap: 7px; }
   .search-key { width: 44px; height: 44px; }
 }
 
 @media (max-width: 900px) {
-  .search-keyboard { padding: 12px 12px 10px; }
+  .search-keyboard { --kb-pad-t: 12px; --kb-pad-x: 12px; --kb-pad-b: 10px; }
   .search-key-row { gap: 5px; }
 }
 
@@ -409,6 +470,7 @@
   .search-keyboard-teach::before,
   .search-keyboard-teach::after,
   .search-keyboard.is-learned .search-keyboard-bar::after { content: none; }
+  .search-keyboard-rim { display: none; }
   .search-keyboard {
     left: 0 !important;
     top: auto !important;

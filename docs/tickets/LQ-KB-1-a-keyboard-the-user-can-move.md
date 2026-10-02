@@ -63,18 +63,22 @@ This ticket sets out the whole of the moving behaviour as it should be.
 1. When the keyboard is dropped somewhere new, a small button appears in its
    top-left corner and flashes once.
 
-2. The first time the user moves a keyboard in a visit, a short label appears
+2. The button flashes once again every time the keyboard is moved and dropped
+   in another place, not only the first time — each drop is a new place, and
+   the flash confirms it.
+
+3. The first time the user moves a keyboard in a visit, a short label appears
    over that button — *Put it back* — for about two seconds. It is shown once,
    counting both keyboards as one; moving a keyboard again does not repeat it.
    After a reload it is shown again.
 
-3. Hovering the button draws an outline on the page showing where the keyboard
+4. Hovering the button draws an outline on the page showing where the keyboard
    will return to.
 
-4. Pressing the button returns the keyboard to its usual place, and the button
+5. Pressing the button returns the keyboard to its usual place, and the button
    fades away.
 
-5. While the keyboard is being carried back towards its usual place, a dashed
+6. While the keyboard is being carried back towards its usual place, a dashed
    outline of that place appears behind it and grows clearer as it nears.
    Dropped close enough, the keyboard settles into that place by itself and
    the button disappears.
@@ -175,6 +179,7 @@ Check in Edge, Chrome and Firefox, in both languages, at a window around
 - [ ] The keyboard cannot be carried out of the window.
 - [ ] A drop in a new place shows the button in the top-left corner and
       flashes it once.
+- [ ] Every later drop in another place flashes the button once again.
 - [ ] The label appears over the button once in a visit, across both
       keyboards, and again after a reload.
 - [ ] Hovering the button outlines the usual place on the page.

@@ -117,13 +117,27 @@ once more.
 The Advanced and Basic key sits in the bottom-left corner of the panel, flush
 with its left edge and its foot.
 
-*Arama sekmesine geç ve arama kutusuna tıklayarak klavyeyi aç. Fareyi sırayla
-üst çubuğa, sol kenara, sağ kenara ve alt kenara getir.*
+*Arama sekmesine geç ve arama kutusuna tıklayarak klavyeyi aç. Henüz hiçbir
+harf yazma. Fareyi üst çubuğa getir.*
 
-The keyboard on the Search tab works in the same way. Here the handle is its
-top bar and the margin around the keys — the left edge, the right edge and
-the bottom edge. Each of them shows the dots and the open hand when the
-pointer is on it.
+The keyboard on the Search tab works in the same way, with one difference in
+its top bar. Until the user has typed anything, the bar carries a short line
+that teaches the keyboard: "Use your own keyboard or click the keys below".
+The line stays where it is, and the dots come up in the two stretches either
+side of it.
+
+*Bir tuşa bas, sonra fareyi tekrar üst çubuğa getir.*
+
+As soon as the user has typed anything — on this keyboard or on their own —
+the line has done its work and goes. From then on the dots fill the middle of
+the bar that the line leaves behind. The line comes back only after the page
+is reloaded.
+
+*Fareyi sırayla sol kenara, sağ kenara ve alt kenara getir.*
+
+Here the handle is the top bar and the margin around the keys — the left
+edge, the right edge and the bottom edge. Each of them shows the dots and the
+open hand when the pointer is on it.
 
 *Fareyi iki tuşun arasındaki boşluğa getir.*
 

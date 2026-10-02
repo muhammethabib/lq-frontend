@@ -42,11 +42,18 @@ This ticket sets out the whole of the moving behaviour as it should be.
    hold of it before trying. The cursor is an open hand. At rest the dots are
    not shown at all.
 
-4. Every key, and every button on the bar, still takes its own press. On the
+4. On the Search keyboard, until the user has typed anything — on this
+   keyboard or on their own — the top bar carries a short line that teaches
+   the keyboard: *Use your own keyboard or click the keys below*. While the
+   line is there, the dots come up in the two stretches either side of it.
+   Once the user has typed, the line goes and the dots fill the middle of the
+   bar instead. The line comes back after a reload.
+
+5. Every key, and every button on the bar, still takes its own press. On the
    Search keyboard the gaps between the keys are not part of the handle, so a
    press that just misses a key does not carry the keyboard away.
 
-5. While it is being carried the cursor is a closed hand, the keyboard follows
+6. While it is being carried the cursor is a closed hand, the keyboard follows
    the pointer exactly, and it is never allowed to leave the window.
 
 ### Putting it down
@@ -140,6 +147,9 @@ Check in Edge, Chrome and Firefox, in both languages, at a window around
       keys or rows carries it as well.
 - [ ] Search: hovering the top bar, and the left, right and bottom edges,
       shows the dots there and lifts the panel.
+- [ ] Search: before anything is typed, the bar's dots sit either side of the
+      teaching line; after the first letter the line is gone and the dots fill
+      the middle of the bar. After a reload the line is back.
 - [ ] The cursor is an open hand over those areas and a closed hand while
       carrying.
 - [ ] Every key and every button on the bar still takes its own press. On the

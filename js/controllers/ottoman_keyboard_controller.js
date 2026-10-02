@@ -44,7 +44,11 @@ const KEYBOARD_HOME_REACH = 190;
 // A stretch of nothing beside the keys has to be this wide before it is
 // worth calling a room, and it keeps this much clear of the key it ends at.
 const KEYBOARD_ROOM_MIN = 60;
-const KEYBOARD_ROOM_EDGE = 9;
+const KEYBOARD_ROOM_EDGE = 14;
+// How far a room keeps from the keys above and below it, as the edge above
+// keeps it from the keys beside it: a room whose dots run up to a key reads
+// as part of the key.
+const KEYBOARD_ROOM_LID = 8;
 // The stretch inside the Advanced / Basic key's row is narrower than the
 // rooms at the ends of the rows, and still far wider than a gap between keys.
 const KEYBOARD_GAP_ROOM_MIN = 24;
@@ -555,18 +559,26 @@ class OttomanKeyboardController extends Stimulus.Controller {
         const joins = gap && Math.abs(last.bottom - gap.top) < 1 && gap.right <= last.room;
         const height = (joins ? gap.bottom : last.bottom) - top;
         const widest = Math.max(...run.map((edge) => edge.room));
+        // Kept clear of the keys of the row above and the row below, where
+        // there are any.
+        const lid = run[0] !== edges.find(Boolean) ? KEYBOARD_ROOM_LID : 0;
+        const sill = last !== edges[edges.length - 1] ? KEYBOARD_ROOM_LID : 0;
         // Clockwise: along the top, down the ragged right edge a row at a
         // time, then back along the bottom and up the left.
-        const points = [[0, 0]];
-        run.forEach((edge) => {
-          points.push([edge.room, edge.top - top], [edge.room, edge.bottom - top]);
+        const points = [[0, lid]];
+        run.forEach((edge, i) => {
+          const from = i === 0 ? lid : edge.top - top;
+          const to = edge === last ? edge.bottom - top - sill : edge.bottom - top;
+          points.push([edge.room, from], [edge.room, to]);
         });
         if (joins) {
-          points.push([gap.right, gap.top - top], [gap.right, gap.bottom - top],
-            [gap.left, gap.bottom - top], [gap.left, gap.top - top]);
+          const step = gap.top - top - KEYBOARD_ROOM_LID;
+          points.push([gap.right, step], [gap.right, gap.bottom - top],
+            [gap.left, gap.bottom - top], [gap.left, step], [0, step]);
           gap = null;
+        } else {
+          points.push([0, last.bottom - top - sill]);
         }
-        points.push([0, last.bottom - top]);
         const room = document.createElement("span");
         room.className = "keyboard-room";
         room.setAttribute("aria-hidden", "true");

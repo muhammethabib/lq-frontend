@@ -145,11 +145,11 @@
   left: 0;
   opacity: 0;
   transition: opacity .15s ease;
-  background-image: radial-gradient(circle, #cbd5e1 1.05px, transparent 1.25px);
-  background-size: 13px 13px;
+  background-image: radial-gradient(circle, #d6dee8 .95px, transparent 1.15px);
+  background-size: 15px 15px;
   background-repeat: space;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 46%, transparent 92%);
-  mask-image: radial-gradient(ellipse at center, #000 46%, transparent 92%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 34%, transparent 84%);
+  mask-image: radial-gradient(ellipse at center, #000 34%, transparent 84%);
   cursor: var(--lq-cursor-grab);
 }
 .ottoman-keyboard .keyboard-room:hover { opacity: 1; }

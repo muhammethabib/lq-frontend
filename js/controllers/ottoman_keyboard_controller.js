@@ -49,6 +49,9 @@ const KEYBOARD_ROOM_EDGE = 14;
 // keeps it from the keys beside it: a room whose dots run up to a key reads
 // as part of the key.
 const KEYBOARD_ROOM_LID = 8;
+// The same, at a step in the room's outline, where the keys stand right over
+// or under the room rather than across the row gap from it.
+const KEYBOARD_ROOM_STEP = 14;
 
 // A room's dots are drawn through its own outline, drawn in a little and
 // blurred: even all through the middle, fading away only at the edges, and
@@ -592,11 +595,18 @@ class OttomanKeyboardController extends Stimulus.Controller {
         const sill = last !== edges[edges.length - 1] ? KEYBOARD_ROOM_LID : 0;
         // Clockwise: along the top, down the ragged right edge a row at a
         // time, then back along the bottom and up the left.
+        // Where the room steps out under a row that reaches further left, or
+        // in over one, the step keeps the same distance from those keys as the
+        // top and foot do.
         const points = [[0, lid]];
+        let from = lid;
         run.forEach((edge, i) => {
-          const from = i === 0 ? lid : edge.top - top;
-          const to = edge === last ? edge.bottom - top - sill : edge.bottom - top;
+          const next = run[i + 1];
+          let to = edge === last ? edge.bottom - top - sill : edge.bottom - top;
+          if (next && next.room > edge.room) to += KEYBOARD_ROOM_STEP;
+          if (next && next.room < edge.room) to -= KEYBOARD_ROOM_STEP;
           points.push([edge.room, from], [edge.room, to]);
+          from = to;
         });
         if (joins) {
           const step = gap.top - top - KEYBOARD_ROOM_LID;

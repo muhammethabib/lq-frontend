@@ -31,8 +31,8 @@ This ticket sets out the whole of the moving behaviour as it should be.
 ### Taking hold of it
 
 1. The Word Decoder keyboard can be carried by its top bar — the strip holding
-   Clear, the wildcards and the close key — by the empty space beside the key
-   rows, and by the narrow gaps between the keys and between the rows.
+   Clear, the wildcards and the close key — and by the empty space beside the
+   key rows.
 
 2. The Search keyboard can be carried by its top bar and by its left, right
    and bottom edges — the margin around the keys.
@@ -49,9 +49,10 @@ This ticket sets out the whole of the moving behaviour as it should be.
    Once the user has typed, the line goes and the dots fill the middle of the
    bar instead. The line comes back after a reload.
 
-5. Every key, and every button on the bar, still takes its own press. On the
-   Search keyboard the gaps between the keys are not part of the handle, so a
-   press that just misses a key does not carry the keyboard away.
+5. Every key, and every button on the bar, still takes its own press. On both
+   keyboards the narrow gaps between the keys and between the rows are not
+   part of the handle, so a press that just misses a key does not carry the
+   keyboard away.
 
 6. While it is being carried the cursor is a closed hand, the keyboard follows
    the pointer exactly, and it is never allowed to leave the window.
@@ -143,8 +144,7 @@ Check in Edge, Chrome and Firefox, in both languages, at a window around
 1400px wide.
 
 - [ ] Word Decoder: hovering the top bar, and the empty space beside the keys,
-      shows the dots there and lifts the panel. A press in the gaps between
-      keys or rows carries it as well.
+      shows the dots there and lifts the panel.
 - [ ] Search: hovering the top bar, and the left, right and bottom edges,
       shows the dots there and lifts the panel.
 - [ ] Search: before anything is typed, the bar's dots sit either side of the
@@ -152,8 +152,9 @@ Check in Edge, Chrome and Firefox, in both languages, at a window around
       the middle of the bar. After a reload the line is back.
 - [ ] The cursor is an open hand over those areas and a closed hand while
       carrying.
-- [ ] Every key and every button on the bar still takes its own press. On the
-      Search keyboard, a press in the gap between two keys does not move it.
+- [ ] Every key and every button on the bar still takes its own press, and a
+      press in the gap between two keys or two rows does not move the
+      keyboard.
 - [ ] The keyboard cannot be carried out of the window.
 - [ ] A drop in a new place shows the button in the top-left corner and
       flashes it once.

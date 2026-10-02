@@ -548,10 +548,14 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // ==================== moving it out of the way ====================
 
   // The bar is the handle wherever it is not a control: the stretch between
-  // Clear and the wildcards, and the one between them and the delete key.
+  // Clear and the wildcards, and the one between them and the delete key. In
+  // the key field only the rooms are: the narrow gaps between keys and between
+  // rows are where a press that just missed a key lands, and that press is
+  // for the key, not a reason to carry the panel off.
   startDrag(event) {
     if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) return;
     if (event.target.closest("button")) return;
+    if (event.currentTarget !== this.barTarget && !event.target.closest(".keyboard-room")) return;
     event.preventDefault();
     this.barTarget.setPointerCapture(event.pointerId);
     const bounds = this.element.getBoundingClientRect();

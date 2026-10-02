@@ -130,7 +130,6 @@
    controller measures and places these, since the two layouts are ragged in
    different places and the raggedness moves with the language and the
    window. */
-.ottoman-keyboard .keyboard-row { cursor: var(--lq-cursor-grab); }
 .ottoman-keyboard .keyboard-row .key,
 .ottoman-keyboard .keyboard-row .panel-switch { cursor: pointer; }
 .ottoman-keyboard .keyboard-panel { position: relative; }
@@ -165,7 +164,6 @@
   .ottoman-keyboard .keyboard-bar::before,
   .ottoman-keyboard .wildcard-row::before,
   .ottoman-keyboard .wildcard-row::after { content: none; }
-  .ottoman-keyboard .keyboard-row { cursor: default; }
 }
 /* Raised over the grip. The field of dots hangs off the wildcard row, which
    is positioned and therefore paints above this group; in Turkish, where

@@ -48,12 +48,14 @@ and where.
 
 The empty space beside the key rows does the same. The dots follow the exact
 shape of that space, so wherever they appear, the keyboard can be carried
-from there. On this keyboard the narrow gaps between the keys and between the
-rows carry it too.
+from there.
 
-*Bir tuşa bas ve harfin yazıldığını göster.*
+*Bir tuşa bas ve harfin yazıldığını göster. Sonra iki tuşun arasındaki dar
+boşluğu tutup sürüklemeyi dene.*
 
-The keys themselves are not handles: each one still takes its own press.
+The keys themselves are not handles: each one still takes its own press. Nor
+are the narrow gaps between them, so a press that just misses a key does not
+carry the keyboard away.
 
 *Klavyeyi üst çubuğundan tutup sayfada gezdir, ama henüz bırakma. Sonra
 pencerenin kenarına doğru it.*
@@ -141,8 +143,7 @@ open hand when the pointer is on it.
 
 *Fareyi iki tuşun arasındaki boşluğa getir.*
 
-On this keyboard the gaps between the keys are not part of the handle, so a
-press that just misses a key does not carry the keyboard away.
+Here too, the gaps between the keys are not part of the handle.
 
 *Klavyeyi sol kenarından tutup taşı ve bırak, sonra köşedeki butona bas.*
 

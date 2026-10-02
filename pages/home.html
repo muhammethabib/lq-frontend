@@ -1422,11 +1422,11 @@
     </div>
 
     <!-- Both panels are written by the controller from js/keyboard_layout.js.
-         The field is a handle too, wherever it is not a key: the rows are
-         ragged and leave wide stretches of nothing beside them, and a press
-         that lands on one carries the panel. The press is read here rather
-         than on each row, so it works between the rows as well; the drag
-         itself ignores anything that can be pressed, which is every key. -->
+         The rows are ragged and leave wide stretches of nothing beside them,
+         and those stretches -- the rooms the controller draws -- are a handle
+         too. Only those: the narrow gaps between keys and between rows are
+         left to the keys, so a press that just misses one is not taken for a
+         reach for the panel. -->
     <div class="keyboard-panel is-active" data-panel="basic"
          data-ottoman-keyboard-target="basicPanel"
          data-action="pointerdown->ottoman-keyboard#startDrag"></div>

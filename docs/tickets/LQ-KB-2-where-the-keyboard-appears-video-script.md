@@ -28,10 +28,26 @@ boxes, and everything that should be on screen is on screen.
 
 *Aynı basışı bir daha yap ve açılıştaki gecikmeyi göster.*
 
-There is one thing to fix here: a short lag. Between the press and the
-keyboard appearing there is a noticeable pause, and the page's movement
-stutters rather than running as one motion. The keyboard should appear at
-once, and the page should move in one go.
+There is one thing to fix here: a short lag, and it comes with the scroll.
+Between the press and the keyboard appearing there is a noticeable pause, and
+the page's movement stutters rather than running as one motion.
+
+*Klavyeyi kapat, sayfayı olduğu yerde bırak (scroll aşağıda kalsın) ve bir
+kutuya tekrar bas.*
+
+It only happens when the page actually has to scroll. Here it does not — the
+keyboard was closed while the page was still scrolled down, so this press can
+show the whole keyboard without moving the page. The keyboard appears cleanly,
+with no stutter.
+
+*Sayfayı yukarı kaydır, sonra bir kutuya bas.*
+
+But scrolled back up, on a page an earlier press has already given its
+scrollbar, the keyboard no longer fits in view. This press has to scroll down
+again, and the same stutter comes back.
+
+The keyboard should appear at once in both cases, and where the page does have
+to move, it should move in one go.
 
 *Klavyeyi tutup sayfanın başka bir yerine taşı.*
 
@@ -73,9 +89,16 @@ same behaviour in all three.
 ve bir kutuya bas. Klavyenin alt kenarını göster.*
 
 Firefox has one more fault of its own, and this one is there even on a clean
-browser. With the bookmarks bar shown, the visible area is shorter and the
-page does not make up the difference. All the keys are on screen, but the
-bottom edge of the keyboard is below it, and there is nothing left underneath.
+browser. With the bookmarks bar shown, all the keys are on screen but the
+bottom edge of the keyboard is not, and there is nothing left underneath it.
+
+*Yer imleri çubuğunu kapat ve bir kutuya tekrar bas.*
+
+Hide the bookmarks bar and the bottom edge comes back. So the page is working
+from the height of the window rather than from the area the browser is
+actually leaving it. The bar takes a strip of that area away, and the page
+does not account for it. It should: a bookmarks bar is the user's own setting,
+and turning it on should make no difference to where the keyboard ends up.
 
 ---
 
@@ -98,10 +121,11 @@ page below the keyboard, the page stays where it is. Otherwise it scrolls
 until all of it comes into view.
 
 The whole keyboard is visible — its bottom edge as well as its keys — with a
-gap of empty page below it. The page makes that room for itself: it measures
-the area the browser is actually showing, so a bookmarks bar, a toolbar or a
-changed zoom level makes no difference to where things end up. From there the
-page can still be scrolled down a little.
+gap of empty page below it. The page makes that room for itself, and it
+measures the area the browser is actually leaving it rather than the height of
+the window — so a bookmarks bar, a toolbar or a changed zoom level makes no
+difference to where things end up. From there the page can still be scrolled
+down a little.
 
 A press always starts from the keyboard's usual place under the boxes. A
 position the user chose earlier may be kept while the page is open, but it is

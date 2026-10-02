@@ -22,10 +22,17 @@ the screen.
 
 ## Problem
 
-**1. A short lag on the first press.** There is a noticeable pause between the
-press and the keyboard appearing, and the page's movement stutters rather than
-running as one motion. Everything ends up in the right place; it just does not
-feel immediate.
+**1. A short lag whenever the page has to scroll.** There is a noticeable
+pause between the press and the keyboard appearing, and the page's movement
+stutters rather than running as one motion. Everything ends up in the right
+place; it just does not feel immediate.
+
+It only happens when the page actually has to scroll. If it does not — say the
+keyboard was closed while the page was still scrolled down, so the next press
+can show the whole keyboard without moving the page — the keyboard appears
+cleanly, with no stutter. But scroll back up, even on a page an earlier press
+has already given its scrollbar, and the keyboard no longer fits in view: the
+press has to scroll down again, and the same stutter comes back.
 
 **2. A position the user chose is remembered, and breaks the rest.** The
 moment the user drags the keyboard somewhere, that position goes into the
@@ -38,12 +45,13 @@ one of two things:
 - the page does scroll down, but the keyboard is still not under the boxes,
   and the user has to drag it there again.
 
-**3. In Firefox, the keyboard's bottom edge is still cut off.** With the
-browser's bookmarks bar shown, the visible area is shorter and the page does
-not make up the difference. All the keys are on screen, but the bottom edge of
-the panel is below it, and there is nothing left underneath. This one is
-separate from the two above: it is there on a clean browser too, and only in
-Firefox.
+**3. In Firefox, the bookmarks bar eats into the keyboard.** With the bar
+shown, all the keys are on screen but the bottom edge of the keyboard is below
+it, with nothing left underneath. Hiding the bar brings the bottom edge back,
+which shows what is wrong: the page is working from the height of the window
+rather than from the area the browser is actually leaving it, so the strip the
+bar takes is never made up for. This one is separate from the two above — it
+is there on a clean browser, and only in Firefox.
 
 The first two were reproduced in Edge, Chrome and Firefox alike.
 
@@ -51,9 +59,9 @@ The first two were reproduced in Edge, Chrome and Firefox alike.
 
 1. The user presses a letter box.
 
-2. The keyboard appears at once. There is no pause between the press and the
-   keyboard, and the page's movement is one smooth motion rather than a
-   series of small jumps.
+2. The keyboard appears at once, whether or not the page has to scroll, and
+   where it does have to scroll the movement is one smooth motion rather than
+   a series of small jumps.
 
 3. The keyboard opens directly under the boxes, at any window size, without
    the user having to move it there.
@@ -64,9 +72,10 @@ The first two were reproduced in Edge, Chrome and Firefox alike.
 5. Otherwise the page scrolls until all of it comes into view.
 
 6. The whole keyboard is visible — its bottom edge as well as its keys — with
-   a gap of empty page below it. The page makes that room for itself: it
-   measures the area the browser is actually showing, so a bookmarks bar, a
-   toolbar or a changed zoom level makes no difference to where things end up.
+   a gap of empty page below it. The page makes that room for itself, and it
+   measures the area the browser is actually leaving it rather than the height
+   of the window — so a bookmarks bar, a toolbar or a changed zoom level makes
+   no difference to where things end up.
    If the window changes height while the keyboard is open, the keyboard is
    still whole on the screen afterwards.
 
@@ -101,8 +110,8 @@ in each of these:
 Check in Edge, Chrome and Firefox, at a window around 1400px tall, around
 900px, and around 700px.
 
-- [ ] The keyboard appears the moment a box is pressed, with no pause, and the
-      page moves in one motion.
+- [ ] The keyboard appears the moment a box is pressed, both where the page
+      has to scroll and where it does not, and any scroll runs as one motion.
 - [ ] The keyboard opens directly under the boxes, and the user never has to
       move it there.
 - [ ] Where the boxes and the whole keyboard already fit on the screen, the

@@ -1427,12 +1427,27 @@
          too. Only those: the narrow gaps between keys and between rows are
          left to the keys, so a press that just misses one is not taken for a
          reach for the panel. -->
-    <div class="keyboard-panel is-active" data-panel="basic"
-         data-ottoman-keyboard-target="basicPanel"
-         data-action="pointerdown->ottoman-keyboard#startDrag"></div>
-    <div class="keyboard-panel" data-panel="advanced"
-         data-ottoman-keyboard-target="advancedPanel"
-         data-action="pointerdown->ottoman-keyboard#startDrag"></div>
+    <!-- Round the field, the panel's own margin is handle as well, as on the
+         search bar's keyboard: a strip down either side, from the bar to the
+         foot, and one along the foot. The strips hand the press to the bar,
+         which carries the rest. The corner the Advanced / Basic key stands in
+         is kept for the key: see .keyboard-corner. -->
+    <div class="keyboard-body">
+      <div class="keyboard-panel is-active" data-panel="basic"
+           data-ottoman-keyboard-target="basicPanel"
+           data-action="pointerdown->ottoman-keyboard#startDrag"></div>
+      <div class="keyboard-panel" data-panel="advanced"
+           data-ottoman-keyboard-target="advancedPanel"
+           data-action="pointerdown->ottoman-keyboard#startDrag"></div>
+      <span class="keyboard-rim keyboard-rim-left" aria-hidden="true"
+            data-action="pointerdown->ottoman-keyboard#startDrag"></span>
+      <span class="keyboard-rim keyboard-rim-right" aria-hidden="true"
+            data-action="pointerdown->ottoman-keyboard#startDrag"></span>
+      <span class="keyboard-rim keyboard-rim-foot" aria-hidden="true"
+            data-action="pointerdown->ottoman-keyboard#startDrag"></span>
+      <span class="keyboard-corner" aria-hidden="true"
+            data-action="pointerdown->ottoman-keyboard#pressCorner"></span>
+    </div>
   </div>
 
 

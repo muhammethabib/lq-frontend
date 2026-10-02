@@ -50,6 +50,19 @@ The empty space beside the key rows does the same. The dots follow the exact
 shape of that space, so wherever they appear, the keyboard can be carried
 from there.
 
+*Fareyi sırayla klavyenin sol, sağ ve alt kenarına getir.*
+
+The keyboard's left, right and bottom edges are handles too, just as on the
+Search keyboard, so the two keyboards are held the same way.
+
+*Fareyi sol alt köşede, Gelişmiş tuşunun hemen yanındaki kenar boşluğuna
+getir ve bas.*
+
+The one exception is the corner beside the Advanced key. That margin belongs
+to the key: the key lights up when the pointer is there, and a press switches
+the board instead of moving the keyboard. A press that just misses the key
+still reaches it.
+
 *Bir tuşa bas ve harfin yazıldığını göster. Sonra iki tuşun arasındaki dar
 boşluğu tutup sürüklemeyi dene.*
 
@@ -64,10 +77,12 @@ While it is being carried, the cursor is a closed hand and the keyboard
 follows the pointer exactly. It stops at the edge of the window — it can
 never be carried out of sight.
 
-*Klavyeyi bir yere bırak.*
+*Klavyeyi bir yere bırak. Sol üst köşeye, Clear (Temizle) butonuna dikkat
+çek.*
 
 As soon as it is dropped, a small button appears in the top-left corner of
-the keyboard and flashes once.
+the keyboard and flashes once. That corner is where the Clear button usually
+stands, so Clear steps a little to the right to make room for it.
 
 *Butonun üstünde beliren yazıyı göster, kaybolana kadar bekle.*
 
@@ -81,10 +96,10 @@ after F5, the first move shows it again.
 Hovering the button draws an outline on the page, showing where the keyboard
 will go back to.
 
-*Butona bas.*
+*Butona bas ve Clear butonunun köşeye geri döndüğünü göster.*
 
 Pressing it sends the keyboard back to its usual place, and the button fades
-away.
+away. Clear moves back into the corner.
 
 *Klavyeyi tekrar taşı, sonra tutup ilk yerinin yakınına doğru getir, ama
 henüz bırakma.*

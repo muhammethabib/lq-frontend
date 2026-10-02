@@ -283,6 +283,14 @@ class OttomanKeyboardController extends Stimulus.Controller {
     this.showPanel(event.currentTarget.dataset.panel);
   }
 
+  // A press in the margin round the Advanced / Basic key is a press that
+  // just missed the key, and it is the key's.
+  pressCorner(event) {
+    event.preventDefault();
+    const key = this.activePanel() && this.activePanel().querySelector(".panel-switch");
+    if (key) this.showPanel(key.dataset.panel);
+  }
+
   showPanel(name) {
     this.basicPanelTarget.classList.toggle("is-active", name === "basic");
     this.advancedPanelTarget.classList.toggle("is-active", name === "advanced");
@@ -486,6 +494,13 @@ class OttomanKeyboardController extends Stimulus.Controller {
   markRooms() {
     const panel = this.activePanel();
     if (!panel) return;
+    // The corner kept for the Advanced / Basic key is cut to the key, whose
+    // name -- and so its width -- changes with the board and the language.
+    const key = panel.querySelector(".panel-switch");
+    if (key) {
+      this.element.style.setProperty("--switch-w", `${key.offsetWidth}px`);
+      this.element.style.setProperty("--switch-h", `${key.offsetHeight}px`);
+    }
     panel.querySelectorAll(".keyboard-room").forEach((room) => room.remove());
     if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) return;
     const box = panel.getBoundingClientRect();
@@ -548,14 +563,16 @@ class OttomanKeyboardController extends Stimulus.Controller {
   // ==================== moving it out of the way ====================
 
   // The bar is the handle wherever it is not a control: the stretch between
-  // Clear and the wildcards, and the one between them and the delete key. In
-  // the key field only the rooms are: the narrow gaps between keys and between
-  // rows are where a press that just missed a key lands, and that press is
+  // Clear and the wildcards, and the one between them and the delete key.
+  // Below it, the rooms beside the rows and the rim round the field are
+  // handle too; the narrow gaps between keys and between rows are not --
+  // they are where a press that just missed a key lands, and that press is
   // for the key, not a reason to carry the panel off.
   startDrag(event) {
     if (window.matchMedia(KEYBOARD_DOCK_QUERY).matches) return;
     if (event.target.closest("button")) return;
-    if (event.currentTarget !== this.barTarget && !event.target.closest(".keyboard-room")) return;
+    if (event.currentTarget !== this.barTarget &&
+        !event.target.closest(".keyboard-room, .keyboard-rim")) return;
     event.preventDefault();
     this.barTarget.setPointerCapture(event.pointerId);
     const bounds = this.element.getBoundingClientRect();

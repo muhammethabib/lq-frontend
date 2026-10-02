@@ -31,11 +31,12 @@ This ticket sets out the whole of the moving behaviour as it should be.
 ### Taking hold of it
 
 1. The Word Decoder keyboard can be carried by its top bar — the strip holding
-   Clear, the wildcards and the close key — and by the empty space beside the
-   key rows.
+   Clear, the wildcards and the close key — by the empty space beside the key
+   rows, and by its left, right and bottom edges.
 
 2. The Search keyboard can be carried by its top bar and by its left, right
-   and bottom edges — the margin around the keys.
+   and bottom edges — the margin around the keys. The two keyboards are held
+   the same way.
 
 3. Hovering any of those areas shows a faint field of small dots there and
    lifts the panel slightly off the page, so the user can see where to take
@@ -97,6 +98,16 @@ This ticket sets out the whole of the moving behaviour as it should be.
    bottom-left corner of the panel, flush with its left edge and its foot, in
    both languages.
 
+2. The margin beside and below that key belongs to the key, not to the edges
+   that carry the keyboard. The key lights up while the pointer is there, and
+   a press there switches the board rather than moving the keyboard, so a
+   press that just misses the key still reaches it.
+
+3. On the Word Decoder keyboard the top-left corner is where Clear stands.
+   When the keyboard is moved and the button that puts it back arrives in
+   that corner, Clear steps a little to the right to make room for it, and
+   returns to the corner when the button goes.
+
 ### Phone-size windows
 
 1. Below 768px the keyboard sits along the bottom of the screen. There is
@@ -143,8 +154,14 @@ Where a distance or a duration is needed:
 Check in Edge, Chrome and Firefox, in both languages, at a window around
 1400px wide.
 
-- [ ] Word Decoder: hovering the top bar, and the empty space beside the keys,
-      shows the dots there and lifts the panel.
+- [ ] Word Decoder: hovering the top bar, the empty space beside the keys,
+      and the left, right and bottom edges, shows the dots there and lifts the
+      panel.
+- [ ] Word Decoder: the margin beside and below the Advanced / Basic key lights
+      the key, and a press there switches the board without moving the
+      keyboard.
+- [ ] Word Decoder: Clear steps aside when the button arrives in the corner,
+      and returns when it goes.
 - [ ] Search: hovering the top bar, and the left, right and bottom edges,
       shows the dots there and lifts the panel.
 - [ ] Search: before anything is typed, the bar's dots sit either side of the

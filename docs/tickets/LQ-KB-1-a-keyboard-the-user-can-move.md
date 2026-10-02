@@ -81,7 +81,7 @@
 ### Keeping the place
 
 1. **While the page is open**, a moved keyboard **stays where it was put** —
-   also after it is closed and opened again.
+   also after the keyboard is closed and opened again.
 
 2. **After a reload** (an ordinary one; no hard reload needed) the keyboard
    opens in its **usual place**. The place is **never written to the

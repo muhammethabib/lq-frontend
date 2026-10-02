@@ -16,7 +16,9 @@ On a clean browser this works: the page scrolls, the keyboard appears under
 the boxes, and everything that should be on screen is on screen. But as soon
 as the user moves the keyboard once, that position is remembered, and from
 then on the keyboard no longer appears where it should — and clearing the page
-with a hard reload does not undo it.
+with a hard reload does not undo it. In Firefox there is a second, separate
+fault: with the bookmarks bar shown, the bottom edge of the keyboard is below
+the screen.
 
 ## Problem
 
@@ -36,7 +38,14 @@ one of two things:
 - the page does scroll down, but the keyboard is still not under the boxes,
   and the user has to drag it there again.
 
-Both were reproduced in Edge, Chrome and Firefox.
+**3. In Firefox, the keyboard's bottom edge is still cut off.** With the
+browser's bookmarks bar shown, the visible area is shorter and the page does
+not make up the difference. All the keys are on screen, but the bottom edge of
+the panel is below it, and there is nothing left underneath. This one is
+separate from the two above: it is there on a clean browser too, and only in
+Firefox.
+
+The first two were reproduced in Edge, Chrome and Firefox alike.
 
 ## What should happen, in order
 
@@ -55,8 +64,11 @@ Both were reproduced in Edge, Chrome and Firefox.
 5. Otherwise the page scrolls until all of it comes into view.
 
 6. The whole keyboard is visible — its bottom edge as well as its keys — with
-   a gap of empty page below it, and the page makes that room for itself
-   whatever the height of the window.
+   a gap of empty page below it. The page makes that room for itself: it
+   measures the area the browser is actually showing, so a bookmarks bar, a
+   toolbar or a changed zoom level makes no difference to where things end up.
+   If the window changes height while the keyboard is open, the keyboard is
+   still whole on the screen afterwards.
 
 7. The page can still be scrolled down a little from there.
 
@@ -98,6 +110,8 @@ Check in Edge, Chrome and Firefox, at a window around 1400px tall, around
 - [ ] Where they do not fit, the page scrolls until they do, and the keyboard
       is whole on the screen — bottom edge included — with a gap of empty page
       below it.
+- [ ] In Firefox, turning the bookmarks bar on changes nothing about that: the
+      bottom edge of the keyboard is still on screen, with the gap below it.
 - [ ] After that scroll the page still answers the wheel and moves down a
       little further.
 - [ ] Moving the keyboard by hand and then reloading opens it under the boxes

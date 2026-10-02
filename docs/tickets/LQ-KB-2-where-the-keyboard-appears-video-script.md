@@ -69,6 +69,14 @@ putting the keyboard under the boxes.
 And the same in Firefox. This is not one browser behaving oddly — it is the
 same behaviour in all three.
 
+*Firefox'ta önbelleği tekrar temizle, yer imleri çubuğunu aç, sayfayı yenile
+ve bir kutuya bas. Klavyenin alt kenarını göster.*
+
+Firefox has one more fault of its own, and this one is there even on a clean
+browser. With the bookmarks bar shown, the visible area is shorter and the
+page does not make up the difference. All the keys are on screen, but the
+bottom edge of the keyboard is below it, and there is nothing left underneath.
+
 ---
 
 ## What should happen
@@ -90,9 +98,10 @@ page below the keyboard, the page stays where it is. Otherwise it scrolls
 until all of it comes into view.
 
 The whole keyboard is visible — its bottom edge as well as its keys — with a
-gap of empty page below it, and the page makes that room for itself whatever
-the height of the window. From there the page can still be scrolled down a
-little.
+gap of empty page below it. The page makes that room for itself: it measures
+the area the browser is actually showing, so a bookmarks bar, a toolbar or a
+changed zoom level makes no difference to where things end up. From there the
+page can still be scrolled down a little.
 
 A press always starts from the keyboard's usual place under the boxes. A
 position the user chose earlier may be kept while the page is open, but it is

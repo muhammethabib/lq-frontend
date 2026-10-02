@@ -50,11 +50,31 @@ const KEYBOARD_ROOM_EDGE = 14;
 // as part of the key.
 const KEYBOARD_ROOM_LID = 8;
 
-// One soft patch of a room's cloud: full in the middle, gone at its rim.
-function cloudPatch(x, y, rx, ry, strength) {
-  const ink = strength >= 1 ? "#000" : `rgba(0, 0, 0, ${strength})`;
-  return `radial-gradient(${Math.max(1, Math.round(rx))}px ${Math.max(1, Math.round(ry))}px ` +
-    `at ${Math.round(x)}px ${Math.round(y)}px, ${ink} 30%, transparent 100%)`;
+// A room's dots are drawn through its own outline, drawn in a little and
+// blurred: even all through the middle, fading away only at the edges, and
+// gone before they reach a key.
+const KEYBOARD_CLOUD_DRAW_IN = 10;
+const KEYBOARD_CLOUD_SOFTEN = 6;
+function cloudMask(points, width, height) {
+  const w = Math.max(1, Math.round(width));
+  const h = Math.max(1, Math.round(height));
+  const shape = points.map(([x, y]) => `${Math.round(x)},${Math.round(y)}`).join(" ");
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>` +
+    `<filter id='c' x='-50%' y='-50%' width='200%' height='200%'>` +
+    `<feMorphology operator='erode' radius='${KEYBOARD_CLOUD_DRAW_IN}'/>` +
+    `<feGaussianBlur stdDeviation='${KEYBOARD_CLOUD_SOFTEN}'/></filter>` +
+    `<polygon points='${shape}' fill='black' filter='url(#c)'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
+function applyCloud(room, points, width, height) {
+  const mask = cloudMask(points, width, height);
+  for (const prefix of ["webkitM", "m"]) {
+    room.style[`${prefix}askImage`] = mask;
+    room.style[`${prefix}askRepeat`] = "no-repeat";
+    room.style[`${prefix}askSize`] = `${Math.round(width)}px ${Math.round(height)}px`;
+    room.style[`${prefix}askPosition`] = "0 0";
+  }
 }
 // The stretch inside the Advanced / Basic key's row is narrower than the
 // rooms at the ends of the rows, and still far wider than a gap between keys.
@@ -589,17 +609,8 @@ class OttomanKeyboardController extends Stimulus.Controller {
         room.className = "keyboard-room";
         room.setAttribute("aria-hidden", "true");
         // The dots fade out before they reach the keys rather than stopping in
-        // a line along them: one soft patch per row, the patches running
-        // together into a cloud, and a fainter one in the step down beside
-        // the Advanced / Basic key.
-        const patches = run.map((edge) => cloudPatch(
-          edge.room / 2, (edge.top + edge.bottom) / 2 - top,
-          edge.room / 2, (edge.bottom - edge.top) * 0.7, 1));
-        if (joins) {
-          patches.push(cloudPatch((gap.left + gap.right) / 2, (gap.top + gap.bottom) / 2 - top,
-            (gap.right - gap.left) / 2, (gap.bottom - gap.top) * 0.6, 0.55));
-        }
-        room.style.webkitMaskImage = room.style.maskImage = patches.join(", ");
+        // a line along them.
+        applyCloud(room, points, widest, height);
         room.style.top = `${Math.round(top)}px`;
         room.style.width = `${Math.round(widest)}px`;
         room.style.height = `${Math.round(height)}px`;
@@ -625,9 +636,9 @@ class OttomanKeyboardController extends Stimulus.Controller {
       room.style.top = `${Math.round(gap.top)}px`;
       room.style.width = `${Math.round(gap.right - gap.left)}px`;
       room.style.height = `${Math.round(gap.bottom - gap.top)}px`;
-      room.style.webkitMaskImage = room.style.maskImage = cloudPatch(
-        (gap.right - gap.left) / 2, (gap.bottom - gap.top) / 2,
-        (gap.right - gap.left) / 2, (gap.bottom - gap.top) * 0.6, 1);
+      const w = gap.right - gap.left;
+      const h = gap.bottom - gap.top;
+      applyCloud(room, [[0, 0], [w, 0], [w, h], [0, h]], w, h);
       panel.appendChild(room);
     }
   }

@@ -2865,6 +2865,10 @@ body.story-armed:not(.tool-focus)::-webkit-scrollbar {
   background: linear-gradient(180deg, #1a6136, #0f4526);
 }
 
+.innovations .book-stage.mv-red::before {
+  background: linear-gradient(180deg, #7f1d1d, #450a0a);
+}
+
 .innovations .vol-n {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.45em;

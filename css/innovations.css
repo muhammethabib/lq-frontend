@@ -1509,9 +1509,14 @@
   white-space: nowrap;
 }
 
+/* "6 VOLUMES" is wider than the single-volume box, so a multi-volume box
+   grows to its words and keeps them centred. */
 .innovations .ic-vol-box.vol-multi {
-  padding-left: 6px;
-  padding-right: 6px;
+  width: auto;
+  min-width: 60%;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
 }
 
 .innovations .ic-year {

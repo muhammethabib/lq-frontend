@@ -1504,6 +1504,14 @@
   letter-spacing: 2px;
   color: var(--ic-text-color);
   text-transform: uppercase;
+  /* The inside page is narrow: the count stays on one line, so it never
+     reaches down into the year. */
+  white-space: nowrap;
+}
+
+.innovations .ic-vol-box.vol-multi {
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .innovations .ic-year {
@@ -2908,6 +2916,12 @@ body.story-armed:not(.tool-focus)::-webkit-scrollbar {
 
 .innovations .book-7 .book-back::after {
   background-image: url('../assets/innovations/page-scan-5.jpg');
+}
+
+/* Its author runs to two lines on the inside page, so its title keeps
+   closer to it and the volume count stays clear of the year. */
+.innovations .book-8 .ic-title {
+  margin-bottom: 6px;
 }
 
 .innovations .book-8 .book-back {

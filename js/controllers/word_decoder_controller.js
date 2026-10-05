@@ -16,6 +16,9 @@
 // The characters that mean "a letter I cannot read" on the reader's own
 // keyboard: the star they have, and the Arabic one they may be typing.
 const WILDCARD_KEYS = ["*", "\u066D"];
+// The zero-width space: invisible by nature, so a box holding it shows its
+// key's sign instead, while the pattern and the search get the character.
+const DECODER_ZWS = "\u200B";
 
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
@@ -601,6 +604,7 @@ class WordDecoderController extends Stimulus.Controller {
       return;
     }
     if (input.value) { this.forgetMark(cell); delete cell.dataset.offered; }
+    this.showZws(cell);
     this.refreshClear();
     if (!input.value) return;
     this.afterWrite(input);
@@ -693,10 +697,12 @@ class WordDecoderController extends Stimulus.Controller {
     if (content.char) {
       input.value = content.char;
       this.forgetMark(cell);
+      this.showZws(cell);
       return;
     }
 
     input.value = "";
+    this.showZws(cell);
     if (content.wildcard) {
       // The box wears the face the key wore: the star is the same drawn star,
       // in the claret of the box rather than the green of the key. The other
@@ -730,6 +736,13 @@ class WordDecoderController extends Stimulus.Controller {
   clearCell(cell) {
     cell.querySelector(".slot-input").value = "";
     this.forgetMark(cell);
+    this.showZws(cell);
+  }
+
+  // The box shows the sign; the field underneath keeps the character, so the
+  // caret, typing over it and the pattern all work as for any letter.
+  showZws(cell) {
+    cell.toggleAttribute("data-zws", cell.querySelector(".slot-input").value === DECODER_ZWS);
   }
 
   cellIsFilled(cell) {
@@ -788,6 +801,7 @@ class WordDecoderController extends Stimulus.Controller {
   // Called after every change to the strip, so the chains are read off the
   // letters here as well as the Clear button off whether anything is written.
   refreshClear() {
+    this.stripTarget.querySelectorAll(".slot-cell").forEach((cell) => this.showZws(cell));
     this.refreshJoins();
     const dirty = this.isDirty();
     // Its place in the row is kept whether it is on screen or not: a button

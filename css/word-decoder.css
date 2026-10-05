@@ -142,6 +142,25 @@
 
 /* A wildcard or a bare skeleton is drawn over the field, which stays empty so
    the caret still shows and typing replaces it. */
+/* A box holding the zero-width space shows its key's sign: the character
+   itself draws nothing, and an empty-looking box would read as unfilled.
+   Drawn over the field, which still holds the character underneath. */
+.word-decoder-surface .slot-cell[data-zws]::after {
+  content: "][";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--lq-claret);
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
 .word-decoder-surface .slot-mark {
   position: absolute;
   inset: 0;

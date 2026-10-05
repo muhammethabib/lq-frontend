@@ -126,7 +126,7 @@ window.LQ_TRANSLATIONS = {
     keyboardPinSay: "İlk yerine al",
     keyboardPinBack: "Klavyeyi ilk yerine al",
     keyMatches: "Şu harfleri arar",
-    keyboardZws: "Birleşmesi gereken harfler arasında boşluk var, ama aynı kelime",
+    keyboardZws: "Birleşmesi gereken harfler arasında\nboşluk var, ama aynı kelime",
     wildcardAny: "Bu harfi okuyamıyorum",
     wildcardMany: "Kaç harf var bilmiyorum",
 

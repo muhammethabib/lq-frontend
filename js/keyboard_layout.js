@@ -210,7 +210,7 @@ window.LQ_KEYBOARD_LAYOUT = {
       // The zero-width space: two letters that would join are kept apart
       // although they belong to one word. Its sign is drawn, not typed.
       { type: "letter", char: "\u200B", mark: "zws", labelKey: "keyboardZws",
-        label: "Letters that should connect have a space between them, but same word" }
+        label: "Letters that should connect have\na space between them, but same word" }
     ]
   ]
 };

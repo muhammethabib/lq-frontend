@@ -269,7 +269,9 @@ class OttomanKeyboardController extends Stimulus.Controller {
       ? `<span class="key-matches-label">${this.escape(this.translate("keyMatches", "Matches"))}</span>` +
         `<span class="key-matches">${key.matches.map((letter) =>
           `<span class="key-match">${this.escape(letter)}</span>`).join("")}</span>`
-      : (key.labelKey ? this.escape(this.translate(key.labelKey, key.label || key.face || key.char)) : "");
+      : (key.labelKey
+          ? this.escape(this.translate(key.labelKey, key.label || key.face || key.char)).replace(/\n/g, "<br>")
+          : "");
 
     const families = (window.LQ_KEYBOARD_LAYOUT || {}).families || {};
     const family = families[key.char] || "";
@@ -278,7 +280,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const spoken = key.mark
       ? (key.matches
           ? `${this.translate("keyMatches", "Matches")}: ${key.matches.join(" ")}`
-          : (key.labelKey ? this.translate(key.labelKey, key.label) : (key.face || key.char)))
+          : (key.labelKey ? this.translate(key.labelKey, key.label).replace(/\n/g, " ") : (key.face || key.char)))
       : "";
 
     return `<button type="button" class="btn key"
@@ -288,6 +290,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
       ${spoken ? `aria-label="${this.escape(spoken)}"` : ""}
       data-action="pointerdown->ottoman-keyboard#press"
       ${title ? `data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="${this.escape(title)}"` : ""}
+      ${title && /\n/.test(key.label || "") ? 'data-bs-custom-class="keyboard-tip"' : ""}
       >${face}</button>`;
   }
 

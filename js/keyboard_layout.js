@@ -206,7 +206,11 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ۀ" },
       { type: "letter", char: "ة" },
       { type: "letter", char: "ى" },
-      { type: "letter", char: "ئ" }
+      { type: "letter", char: "ئ" },
+      // The zero-width space: two letters that would join are kept apart
+      // although they belong to one word. Its sign is drawn, not typed.
+      { type: "letter", char: "\u200B", mark: "zws", labelKey: "keyboardZws",
+        label: "Letters that should connect have a space between them, but same word" }
     ]
   ]
 };

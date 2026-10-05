@@ -278,7 +278,7 @@ class OttomanKeyboardController extends Stimulus.Controller {
     const spoken = key.mark
       ? (key.matches
           ? `${this.translate("keyMatches", "Matches")}: ${key.matches.join(" ")}`
-          : (key.face || key.char))
+          : (key.labelKey ? this.translate(key.labelKey, key.label) : (key.face || key.char)))
       : "";
 
     return `<button type="button" class="btn key"

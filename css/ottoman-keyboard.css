@@ -554,6 +554,19 @@
 }
 
 
+/* The zero-width space's sign, drawn as the old board drew it: two brackets
+   in the interface face, left to right, in the claret of the letters. */
+.ottoman-keyboard .key-zws {
+  display: inline-block;
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--lq-claret);
+  direction: ltr;
+  unicode-bidi: bidi-override;
+  letter-spacing: 0;
+}
+
 /* The one key on the board that is not a letter: it leads to the other
    keyboard. It is drawn as a keyboard rather than as a letter, stands apart
    in the blue of the interface rather than the claret of the letters, and

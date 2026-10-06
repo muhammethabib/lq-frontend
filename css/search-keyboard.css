@@ -408,10 +408,12 @@
 
 .search-key:hover { background: #fff1f2; border-color: #fda4af; }
 
-/* Held down, and lit after a press: claret ground, white letter. Both are
-   written with the board's own class in front, so that they outweigh the
-   family grounds above and a family key lights like any other. */
-.search-keyboard .search-key:active {
+/* Held down, and lit after a press: claret ground, white letter. A family
+   key carries its own hover ground, named as particularly as a press, and the
+   hand is always over a key while it presses it -- so both this and the lit
+   rule below name the key's class three times, which outweighs every family
+   ground and hover, and every key lights alike. */
+.search-keyboard .search-key.search-key.search-key:active {
   transform: scale(0.92);
   background: var(--lq-claret);
   border-color: var(--lq-claret);
@@ -443,7 +445,7 @@
    the two boards read as one.
    --------------------------------------------------------------- */
 
-.search-keyboard .search-key.is-echo {
+.search-keyboard .search-key.search-key.search-key.is-echo {
   background: var(--lq-claret);
   border-color: var(--lq-claret);
   animation: search-key-echo 170ms ease-out;
@@ -457,7 +459,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .search-keyboard .search-key.is-echo { animation: none; }
+  .search-keyboard .search-key.search-key.search-key.is-echo { animation: none; }
   .search-keyboard.is-springing { transition: none; }
 }
 

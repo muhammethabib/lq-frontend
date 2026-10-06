@@ -37,7 +37,7 @@ window.LQ_KEYBOARD_LAYOUT = {
     "\u0643": "kef", "\u06af": "kef", "\u06ad": "kef",
     "\u0648": "vav", "\u0624": "vav",
     "\u0647": "he", "\u0629": "he", "\u06c0": "he", "\u06be": "he", "\u06d5": "he",
-    "\u0649": "ye", "\u0626": "ye"
+    "\u0649": "ye", "\u06cc": "ye", "\u0626": "ye"
   },
 
   // Which letters another letter can be written on to. A chain between two
@@ -131,7 +131,7 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ن" },
       { type: "letter", char: "و" },
       { type: "letter", char: "ه", matches: ["ە", "ه", "ة"] },
-      { type: "letter", char: "ى" }
+      { type: "letter", char: "ی" }
     ]
   ],
 
@@ -205,7 +205,7 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ە" },
       { type: "letter", char: "ۀ" },
       { type: "letter", char: "ة" },
-      { type: "letter", char: "ى" },
+      { type: "letter", char: "ی" },
       { type: "letter", char: "ئ" },
       // The zero-width space: two letters that would join are kept apart
       // although they belong to one word. Its sign is drawn, not typed.

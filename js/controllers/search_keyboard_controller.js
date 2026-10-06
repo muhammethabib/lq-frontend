@@ -230,7 +230,7 @@ class SearchKeyboardController extends Stimulus.Controller {
 
   // A ye wears no dots until a letter follows it, and the key writes the bare
   // one, so the bare one is what the key shows.
-  face(letter) { return letter === "_ye_" ? "\u0649" : letter; }
+  face(letter) { return letter === "_ye_" ? "\u06CC" : letter; }
 
   press(event) {
     // Stops the press from taking focus away from the bar.

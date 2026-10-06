@@ -7,8 +7,13 @@
 const OTTOMAN_ALLOWED = /[\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/u;
 const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/gu;
 const ARABIC_LETTER = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
-const YE_DOTTED = "\u064A";
-const YE_BARE = "\u0649";
+// Every ye is written as the Persian ye, U+06CC, the one the dictionary
+// uses. The face gives it its dots inside a word and leaves them off at the
+// end, so the letter itself never has to change with its place. A ye that
+// arrives in either of the other two forms -- typed on an Arabic board, or
+// pasted -- is brought to it.
+const YE = "\u06CC";
+const YE_OTHERS = /[\u064A\u0649]/g;
 // Keys that move around the field rather than write in it.
 const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp",
   "ArrowDown", "Home", "End", "Tab", "Enter", "Escape"];
@@ -230,6 +235,8 @@ class HomeController extends Stimulus.Controller {
     // it is a word that will never be found. It is taken back out and the
     // bar says why.
     if (this.isOttomanSide()) this.keepOttomanOnly();
+    // A ye typed on an Arabic board arrives in one of the other two forms
+    this.settleYe();
     if (this.inputTarget.value) this.markKeyboardLearned();
   }
 
@@ -310,7 +317,7 @@ class HomeController extends Stimulus.Controller {
 
   insertOttoman(char) {
     const input = this.inputTarget;
-    const letter = char === "_ye_" ? YE_BARE : char;
+    const letter = char === "_ye_" ? YE : char;
     const start = input.selectionStart == null ? input.value.length : input.selectionStart;
     const end = input.selectionEnd == null ? start : input.selectionEnd;
     input.value = input.value.slice(0, start) + letter + input.value.slice(end);
@@ -401,22 +408,12 @@ class HomeController extends Stimulus.Controller {
     this.settleYe();
   }
 
-  // A ye keeps its dots only where a letter follows it; on its own, or at the
-  // end of a word, it is written bare. The field is read right to left, so
-  // "follows" is the character after it in the string.
+  // Any ye in the field is brought to the Persian ye, which shows its dots
+  // or drops them by itself according to where it stands in the word.
   settleYe() {
     const input = this.inputTarget;
     const value = input.value;
-    let settled = "";
-    for (let at = 0; at < value.length; at += 1) {
-      const letter = value[at];
-      if (letter === YE_DOTTED || letter === YE_BARE) {
-        const after = at < value.length - 1 ? value[at + 1] : "";
-        settled += after && ARABIC_LETTER.test(after) ? YE_DOTTED : YE_BARE;
-      } else {
-        settled += letter;
-      }
-    }
+    const settled = value.replace(YE_OTHERS, YE);
     if (settled === value) return;
     const caret = input.selectionStart;
     input.value = settled;

@@ -17,9 +17,9 @@
 // Both say which key on the reader's own board writes a letter, which is what
 // each key of the board prints over its letter.
 //
-// "_ye_" is not a letter but a decision: a ye is written without its dots
-// until a letter follows it, and js/controllers/home_controller.js settles
-// which of the two it ends up as.
+// "_ye_" is the ye key: it writes the Persian ye, U+06CC, which the face
+// draws with its dots inside a word and without them at the end
+// (js/controllers/home_controller.js).
 //
 // `alphabetical` is the board itself: the Ottoman alphabet as it is recited,
 // elif, be, pe, te..., three rows read from the right. It is the alphabet, so
@@ -49,7 +49,7 @@ window.LQ_SEARCH_KEYBOARD = {
     "ك": "kef", "گ": "kef", "ڭ": "kef",
     "و": "vav", "ؤ": "vav",
     "ه": "he", "ة": "he", "ۀ": "he",
-    "ى": "ye", "_ye_": "ye", "ئ": "ye"
+    "ى": "ye", "ی": "ye", "_ye_": "ye", "ئ": "ye"
   },
 
   alphabetical: {

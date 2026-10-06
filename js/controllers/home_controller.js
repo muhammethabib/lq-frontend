@@ -2,10 +2,10 @@
 // The main page: the search bar, the filters and the result list.
 
 // The Ottoman side of the bar takes Arabic script, the marks that go with it,
-// the two joiners, a space and the wildcard; nothing else belongs in a word
-// that is going to be looked for.
-const OTTOMAN_ALLOWED = /[\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/u;
-const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/gu;
+// the two joiners, the zero-width space, a space and the wildcard; nothing
+// else belongs in a word that is going to be looked for.
+const OTTOMAN_ALLOWED = /[\p{Script=Arabic}\p{Mn}\u200b\u200c\u200d \u00a0*]/u;
+const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200b\u200c\u200d \u00a0*]/gu;
 const ARABIC_LETTER = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
 // Every ye is written as the Persian ye, U+06CC, the one the dictionary
 // uses. The face gives it its dots inside a word and leaves them off at the

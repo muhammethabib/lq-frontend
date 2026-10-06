@@ -19,9 +19,12 @@ const WILDCARD_KEYS = ["*", "\u066D"];
 // The zero-width space: invisible by nature, so a box holding it shows its
 // key's sign instead, while the pattern and the search get the character.
 const DECODER_ZWS = "\u200B";
-// A ye typed on an Arabic board, in either of its other forms, is written as
-// the Persian ye the dictionary uses; the face dots it inside a word.
-const DECODER_YE_OTHERS = /[\u064A\u0649]/g;
+// Letters the dictionary writes in one form only, as on the search bar: a ye
+// typed on an Arabic board in either of its other forms becomes the Persian
+// ye, which the face dots inside a word; the round te becomes the Ottoman
+// one, and the two-eyed he the plain one.
+const DECODER_FORMS = { "\u064A": "\u06CC", "\u0649": "\u06CC", "\u0629": "\u06C3", "\u06BE": "\u0647" };
+const DECODER_OTHERS = /[\u064A\u0649\u0629\u06BE]/g;
 
 class WordDecoderController extends Stimulus.Controller {
   static targets = [
@@ -599,8 +602,8 @@ class WordDecoderController extends Stimulus.Controller {
   handleInput(event) {
     const input = event.currentTarget;
     const cell = input.closest(".slot-cell");
-    const ye = input.value.replace(DECODER_YE_OTHERS, "\u06CC");
-    if (ye !== input.value) input.value = ye;
+    const settled = input.value.replace(DECODER_OTHERS, (letter) => DECODER_FORMS[letter]);
+    if (settled !== input.value) input.value = settled;
     // A star that arrives any other way -- pasted, or from a board that
     // writes it itself -- becomes the same drawn mark.
     if (WILDCARD_KEYS.includes(input.value)) {

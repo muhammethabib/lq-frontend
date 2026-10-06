@@ -36,7 +36,7 @@ window.LQ_KEYBOARD_LAYOUT = {
     "\u0641": "fe", "\u0642": "fe", "\u06a1": "fe",
     "\u0643": "kef", "\u06af": "kef", "\u06ad": "kef",
     "\u0648": "vav", "\u0624": "vav",
-    "\u0647": "he", "\u0629": "he", "\u06c0": "he", "\u06be": "he", "\u06d5": "he",
+    "\u0647": "he", "\u0629": "he", "\u06c3": "he", "\u06c0": "he", "\u06be": "he", "\u06d5": "he",
     "\u0649": "ye", "\u06cc": "ye", "\u0626": "ye"
   },
 
@@ -51,7 +51,7 @@ window.LQ_KEYBOARD_LAYOUT = {
   // gives the letters, which is what every Arabic face is cut to.
   joining: {
     dual: "\u0626\u0628\u062a\u062b\u062c\u062d\u062e\u0633\u0634\u0635\u0636\u0637\u0638\u0639\u063a\u0641\u0642\u0643\u0644\u0645\u0646\u0647\u0649\u066e\u067e\u0686\u06a1\u06ad\u06af\u06be\u06cc",
-    right: "\u0622\u0623\u0624\u0625\u0627\u0629\u062f\u0630\u0631\u0632\u0648\u0698\u06c0\u06d5",
+    right: "\u0622\u0623\u0624\u0625\u0627\u0629\u06c3\u062f\u0630\u0631\u0632\u0648\u0698\u06c0\u06d5",
     none: "\u0621"
   },
 
@@ -130,7 +130,7 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "م" },
       { type: "letter", char: "ن" },
       { type: "letter", char: "و" },
-      { type: "letter", char: "ه", matches: ["ە", "ه", "ة"] },
+      { type: "letter", char: "ه", matches: ["ە", "ه", "ۃ"] },
       { type: "letter", char: "ی" }
     ]
   ],
@@ -201,10 +201,10 @@ window.LQ_KEYBOARD_LAYOUT = {
       { type: "letter", char: "ؤ" }
     ],
     [
-      { type: "letter", char: "ھ" },
+      { type: "letter", char: "ه" },
       { type: "letter", char: "ە" },
       { type: "letter", char: "ۀ" },
-      { type: "letter", char: "ة" },
+      { type: "letter", char: "ۃ" },
       { type: "letter", char: "ی" },
       { type: "letter", char: "ئ" },
       // The zero-width space: two letters that would join are kept apart
@@ -235,7 +235,7 @@ window.LQ_OTTOMAN_KEYMAP = {
     a: ["ا", "ء"],
     s: ["س", "ش", "ص"],
     d: ["د", "ض"],
-    h: ["ه", "ح", "ة"],
+    h: ["ه", "ح", "ۃ"],
     k: ["ك", "گ"],
     n: ["ن", "ڭ"],
     z: ["ز", "ظ", "ذ"]

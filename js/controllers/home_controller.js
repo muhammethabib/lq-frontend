@@ -9,11 +9,13 @@ const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200c\u200d \u00a0*]/gu;
 const ARABIC_LETTER = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
 // Every ye is written as the Persian ye, U+06CC, the one the dictionary
 // uses. The face gives it its dots inside a word and leaves them off at the
-// end, so the letter itself never has to change with its place. A ye that
-// arrives in either of the other two forms -- typed on an Arabic board, or
-// pasted -- is brought to it.
+// end, so the letter itself never has to change with its place.
 const YE = "\u06CC";
-const YE_OTHERS = /[\u064A\u0649]/g;
+// Letters the dictionary writes in one form only. Whatever arrives in
+// another -- typed on an Arabic board, or pasted -- is brought to it: both
+// other ye, the round te to the Ottoman one, the two-eyed he to the plain.
+const LETTER_FORMS = { "\u064A": YE, "\u0649": YE, "\u0629": "\u06C3", "\u06BE": "\u0647" };
+const LETTER_OTHERS = /[\u064A\u0649\u0629\u06BE]/g;
 // Keys that move around the field rather than write in it.
 const PASSED_THROUGH = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp",
   "ArrowDown", "Home", "End", "Tab", "Enter", "Escape"];
@@ -235,8 +237,8 @@ class HomeController extends Stimulus.Controller {
     // it is a word that will never be found. It is taken back out and the
     // bar says why.
     if (this.isOttomanSide()) this.keepOttomanOnly();
-    // A ye typed on an Arabic board arrives in one of the other two forms
-    this.settleYe();
+    // A letter typed on an Arabic board may arrive in a form the dictionary does not use
+    this.settleLetters();
     if (this.inputTarget.value) this.markKeyboardLearned();
   }
 
@@ -322,7 +324,7 @@ class HomeController extends Stimulus.Controller {
     const end = input.selectionEnd == null ? start : input.selectionEnd;
     input.value = input.value.slice(0, start) + letter + input.value.slice(end);
     input.setSelectionRange(start + 1, start + 1);
-    this.settleYe();
+    this.settleLetters();
     this.updatePlaceholders();
     this.markKeyboardLearned();
     input.focus();
@@ -339,7 +341,7 @@ class HomeController extends Stimulus.Controller {
       input.value = input.value.slice(0, start - 1) + input.value.slice(start);
       input.setSelectionRange(start - 1, start - 1);
     }
-    this.settleYe();
+    this.settleLetters();
     this.updatePlaceholders();
     input.focus();
   }
@@ -405,15 +407,16 @@ class HomeController extends Stimulus.Controller {
     input.value = value.replace(NOT_OTTOMAN, "");
     input.setSelectionRange(caret, caret);
     this.warnScript();
-    this.settleYe();
+    this.settleLetters();
   }
 
-  // Any ye in the field is brought to the Persian ye, which shows its dots
-  // or drops them by itself according to where it stands in the word.
-  settleYe() {
+  // Any letter in the field written in a form the dictionary does not use is
+  // brought to the one it does; the Persian ye then shows its dots or drops
+  // them by itself according to where it stands in the word.
+  settleLetters() {
     const input = this.inputTarget;
     const value = input.value;
-    const settled = value.replace(YE_OTHERS, YE);
+    const settled = value.replace(LETTER_OTHERS, (letter) => LETTER_FORMS[letter]);
     if (settled === value) return;
     const caret = input.selectionStart;
     input.value = settled;

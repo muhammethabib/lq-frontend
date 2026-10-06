@@ -1028,6 +1028,14 @@ class WordDecoderController extends Stimulus.Controller {
     pattern.slots.forEach((slot, index) => {
       if (slot.kind === "empty") { openRun = null; return; }
       const chained = index > 0 && pattern.joins[index - 1] === "connected";
+      // The zero-width space keeps the letters either side of it apart, even
+      // where the reader has chained it: on its own, the character does not
+      // stop two letters joining, so it is given a run of its own.
+      if (slot.kind === "letter" && slot.letters[0] === DECODER_ZWS) {
+        runs.push({ slot, letters: [DECODER_ZWS] });
+        openRun = null;
+        return;
+      }
       if (slot.kind === "letter" && chained && openRun) {
         openRun.letters.push(slot.letters[0]);
         return;

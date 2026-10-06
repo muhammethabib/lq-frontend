@@ -509,28 +509,11 @@
   --family-deep: #eedeb3; --family-deep-hover: #e6d19b;
 }
 
-/* A key held down is claret while it is held, wherever it sits. */
-.ottoman-keyboard .key.key:active { background: var(--key-pressed); border-color: var(--key-pressed); color: #fff; transform: scale(.92); }
-
-/* A key that has just written a letter is lit: claret ground, white letter,
-   and a small dip, exactly as the old site lights a key held down. It lights
-   whether the letter came from this board or from the reader's own keyboard.
-   Both this and the rule above name the key's class twice, so that they
-   outweigh the family grounds and the deeper skeleton ground above and every
-   key lights alike. */
-.ottoman-keyboard .key.key.is-echo {
-  background: var(--key-pressed);
-  border-color: var(--key-pressed);
-  color: #fff;
-  animation: keyboard-key-echo 170ms ease-out;
-}
 @keyframes keyboard-key-echo {
   0% { transform: scale(.92); }
   100% { transform: none; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .ottoman-keyboard .key.key.is-echo { animation: none; }
-}
+
 
 /* A skeleton outside every family -- a shape no other letter shares --
    keeps the plain blue of the interface. */
@@ -555,13 +538,14 @@
 
 
 /* The zero-width space's sign, drawn as the old board drew it: two brackets
-   in the interface face, left to right, in the claret of the letters. */
+   in the interface face, left to right, in the ink of the letters. */
 .ottoman-keyboard .key-zws {
   display: inline-block;
   font-family: Inter, sans-serif;
   font-size: 15px;
   font-weight: 400;
-  color: var(--lq-claret);
+  /* The key's own ink: claret at rest, white when the key is held or lit */
+  color: inherit;
   direction: ltr;
   unicode-bidi: bidi-override;
   letter-spacing: 0;
@@ -709,6 +693,31 @@
   font-weight: 700;
   line-height: 1.5;
   color: #fff;
+}
+
+/* A key held down is claret while it is held, and a key that has just
+   written a letter is lit the same way -- claret ground, white letter, a
+   small dip -- exactly as the old site lights a key held down. It lights
+   whether the letter came from this board or from the reader's own keyboard.
+
+   Every key lights alike: plain letters, family grounds, and the asterisked
+   skeletons on their deeper grounds. Those carry hover rules as particular as
+   these, and the hand is always over a key while it presses it, so these come
+   late in the file and name the key's class three times to outweigh them. */
+.ottoman-keyboard .key.key.key:active {
+  background: var(--key-pressed);
+  border-color: var(--key-pressed);
+  color: #fff;
+  transform: scale(.92);
+}
+.ottoman-keyboard .key.key.key.is-echo {
+  background: var(--key-pressed);
+  border-color: var(--key-pressed);
+  color: #fff;
+  animation: keyboard-key-echo 170ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ottoman-keyboard .key.key.key.is-echo { animation: none; }
 }
 
 /* The hand closes over the whole panel while it is being carried, not just

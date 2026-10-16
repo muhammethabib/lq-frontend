@@ -721,6 +721,63 @@
   margin-top: 34px;
 }
 .home-surface.state-results .library-row { display: none; }
+
+/* This week's news: a quiet green card, its title on a band of its own.
+   The whole card is the link, so it lifts a little under the pointer. */
+.home-surface .weekly-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+}
+.home-surface .weekly-row[hidden],
+.home-surface.state-results .weekly-row { display: none; }
+.home-surface .weekly-row:not([hidden]) + .library-row { margin-top: 20px; }
+
+.home-surface .weekly-card {
+  display: block;
+  width: min(540px, 100%);
+  overflow: hidden;
+  border: 1px solid #bcd6c8;
+  border-radius: 8px;
+  background: #f1f7f3;
+  color: #16231d;
+  text-decoration: none;
+  transition: border-color .15s, background-color .15s, box-shadow .15s;
+}
+.home-surface .weekly-card:hover {
+  border-color: #7fae96;
+  background: #e9f3ed;
+  box-shadow: 0 4px 12px -8px rgba(12, 74, 56, .45);
+}
+.home-surface .weekly-card:focus-visible { outline: 2px solid #0c4a38; outline-offset: 3px; }
+
+.home-surface .weekly-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px 9px;
+  background: #e4f0e9;
+}
+.home-surface .weekly-title { font-size: 13.5px; font-weight: 700; color: #0c4a38; }
+.home-surface .weekly-dates { font-size: 12.5px; color: #557a69; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.home-surface .weekly-lines { padding: 10px 20px 0; }
+.home-surface .weekly-line { font-size: 14.5px; line-height: 1.6; }
+.home-surface .weekly-line b { font-weight: 600; }
+
+.home-surface .weekly-next {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 20px 13px;
+  font-size: 13.5px;
+  color: #3d4a44;
+}
+.home-surface .weekly-next[hidden] { display: none; }
+.home-surface .weekly-card:has(.weekly-next[hidden]) .weekly-lines { padding-bottom: 13px; }
+.home-surface .weekly-next-mark { flex: none; align-self: center; margin-right: -1px; fill: #4f7f69; }
+.home-surface .weekly-next-label { font-weight: 600; color: #16231d; }
 /* The list keeps the reference's 32px under its foot. With nothing listed,
    the answer carries its own room instead. */
 .home-surface.state-results:not(.state-no-matches) .results-surface { padding-bottom: 32px; }

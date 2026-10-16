@@ -52,6 +52,8 @@ window.LQ_TRANSLATIONS = {
     placeholderEnglish: "İngilizce tanımları arayın...",
     placeholderOttoman: "عثمانلی حرفلریلە آرە...",
     librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",
+    weeklyTitle: "Bu hafta LexiQamus’ta",
+    weeklyNext: "Sıradaki:",
 
     // --- filters ---
     filtersLabel: "Filtreler",

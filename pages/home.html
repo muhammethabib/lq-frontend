@@ -48,6 +48,7 @@
   <script src="../js/morphology_sample.js" defer></script>
   <script src="../js/cognates_sample.js" defer></script>
   <script src="../js/redhouse_sample.js" defer></script>
+  <script src="../js/weekly_update.js" defer></script>
   <script src="../js/keyboard_marks.js" defer></script>
   <script src="../js/keyboard_layout.js" defer></script>
   <script src="../js/search_keyboard_layout.js" defer></script>
@@ -60,6 +61,7 @@
   <script src="../js/controllers/page_chrome_controller.js" defer></script>
   <script src="../js/controllers/view_switcher_controller.js" defer></script>
   <script src="../js/controllers/announcement_controller.js" defer></script>
+  <script src="../js/controllers/weekly_update_controller.js" defer></script>
   <script src="../js/controllers/home_controller.js" defer></script>
   <script src="../js/controllers/word_decoder_controller.js" defer></script>
   <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
@@ -802,6 +804,24 @@
     </section>
 
     </div>
+  </div>
+
+  <!-- This week's news, under the search card. The whole card is one link;
+       what it says comes from js/weekly_update.js. Like the library question
+       below it, it belongs to the landing screen and steps aside for results. -->
+  <div class="weekly-row" data-controller="weekly-update" hidden>
+    <a class="weekly-card" data-weekly-update-target="card" href="#">
+      <div class="weekly-head">
+        <span class="weekly-title" data-i18n="weeklyTitle">This week on LexiQamus</span>
+        <span class="weekly-dates" data-weekly-update-target="dates"></span>
+      </div>
+      <div class="weekly-lines" data-weekly-update-target="lines"></div>
+      <div class="weekly-next" data-weekly-update-target="nextRow">
+        <svg class="weekly-next-mark" width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M1 1 7 5 1 9Z"/></svg>
+        <span class="weekly-next-label" data-i18n="weeklyNext">Next:</span>
+        <span data-weekly-update-target="next"></span>
+      </div>
+    </a>
   </div>
 
   <!-- The same question on the landing screen, where there is no list for it

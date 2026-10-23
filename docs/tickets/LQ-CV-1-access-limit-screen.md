@@ -114,15 +114,6 @@ does not need it.
 | Turkish text | `js/translations.js` — the `limit…` keys |
 | To see it | the view switcher on the main page → **Access Limit**, or open `pages/home.html?state=access-limit` |
 
-## Still to decide
-
-- **Where *Recommend LexiQamus to your library* goes.** The link has no
-  target yet (`#`). The *Does My Library Subscribe?* button on the main page
-  has no target either; the two should probably lead to the same place.
-- **"in a minute" / "1 dakikada".** This is only true if sign-up, including
-  the e-mail confirmation, really takes about a minute. If it does not, the
-  words should change.
-
 ## Done when
 
 - [ ] A visitor over the limit sees the new screen, with the word they

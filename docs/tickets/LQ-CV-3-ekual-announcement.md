@@ -86,12 +86,6 @@ check there:
 | Turkish text | `js/translations.js` — `ekualTitle`, `ekualBody`, `ekualHow`, `ekualCta` (the `ekualPill`, `ekualOff…` and `ekualOn…` keys are removed) |
 | To see it | the view switcher on the main page → **Home – New Visitor** |
 
-## Still to decide
-
-- **"in a minute" / "1 dakikada".** This is only true if sign-up, including
-  the e-mail confirmation, really takes about a minute. If it does not, the
-  words should change.
-
 ## Done when
 
 - [ ] The window shows the badge, the new title and the two new lines, and

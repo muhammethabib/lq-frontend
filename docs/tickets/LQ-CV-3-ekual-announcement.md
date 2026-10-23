@@ -2,7 +2,7 @@
 
 - **Area:** The announcement window a first-time visitor sees (TÜBİTAK ULAKBİM EKUAL)
 - **Type:** Wording and layout change
-- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6`, `56a4234` and `4f4807e`)
+- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6`, `56a4234`, `4f4807e` and `99858fd`)
 - **Server:** nothing
 
 ---
@@ -50,16 +50,17 @@ Copy these exactly. Bold parts are marked with `<b>…</b>`.
 | Part | English | Turkish |
 |------|----------|----------|
 | Badge *(unchanged)* | `TÜBİTAK ULAKBİM · EKUAL` | `TÜBİTAK ULAKBİM · EKUAL` |
-| Title | `LexiQamus is free with your university email.` | `Üniversite e-postanla LexiQamus ücretsiz.` |
+| Title | `LexiQamus is free with your university email.` | `Üniversite e-postanızla LexiQamus ücretsiz.` |
 | What is included | `Dozens of volumes of Ottoman Turkish dictionaries, unlimited searching, every entry.` | `Onlarca cilt Osmanlıca sözlük, sınırsız arama, tüm içerik.` |
-| How to sign up | `For universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address.` | `<b>.edu.tr</b> adresinle 1 dakikada kaydol.` |
+| How to sign up | `For universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address.` | `<b>.edu.tr</b> adresinizle 1 dakikada kaydolun.` |
 | Button | `Create a free account` | `Ücretsiz Hesap Oluştur` |
 | Second button *(unchanged)* | `Later` | `Daha sonra` |
 | Corner link *(unchanged)* | `Don't show again` | `Bir daha gösterme` |
 
 The English line says who the offer is for (*For universities in Türkiye and
 the TRNC*), because most English readers are outside Türkiye. The Turkish
-line does not need it.
+line does not need it. The Turkish text addresses the reader as *siz*, as the
+rest of the site does.
 
 *"Dozens of volumes"* is used instead of a number so it stays true as
 volumes are added and never needs updating.
@@ -74,7 +75,7 @@ check there:
   the bar *and* this window, they are told the same thing twice. Show one or
   the other — for example the bar only after this window has been closed.
 - **The bar's wording can follow this window:** one line, such as
-  *Üniversite e-postanla LexiQamus ücretsiz. Hemen kaydol →* /
+  *Üniversite e-postanızla LexiQamus ücretsiz. Hemen kaydolun →* /
   *LexiQamus is free with your university email. Sign up →*
 
 ## In the new front end

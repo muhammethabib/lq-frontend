@@ -2,7 +2,7 @@
 
 - **Area:** Search page — what a visitor sees when their free searches are used up
 - **Type:** Change to an existing screen (wording, layout and one new field from the server)
-- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6` and `4f4807e`)
+- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6`, `4f4807e` and `99858fd`)
 - **Server:** one new field on the search response, and a decision on what results are sent while it is set (see *What the server needs to do*)
 
 ---
@@ -65,20 +65,21 @@ Copy these exactly. Bold parts are marked with `<b>…</b>`.
 
 | Part | English | Turkish |
 |------|----------|----------|
-| Title | `Carry on free and without limits with your university email.` | `Üniversite e-postanla ücretsiz ve sınırsız devam et.` |
+| Title | `Carry on free and without limits with your university email.` | `Üniversite e-postanızla ücretsiz ve sınırsız devam edin.` |
 | Before the word | `The results for` | *(empty)* |
 | After the word | `are ready.` | `için sonuçlar hazır.` |
-| How to get them | `Universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address and search dozens of volumes of Ottoman Turkish dictionaries without limits.` | `<b>.edu.tr</b> adresinle 1 dakikada kaydol, onlarca cilt Osmanlıca sözlükte sınırsız ara.` |
+| How to get them | `Universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address and search dozens of volumes of Ottoman Turkish dictionaries without limits.` | `<b>.edu.tr</b> adresinizle 1 dakikada kaydolun, onlarca cilt Osmanlıca sözlükte sınırsız arayın.` |
 | Button | `Create a free account` | `Ücretsiz Hesap Oluştur` |
-| Sign-in line | `Already have an account?` | `Hesabın var mı?` |
-| Sign-in link | `Sign in` | `Giriş yap` |
-| Footer, question | `No university address?` | `Üniversite adresin yok mu?` |
-| Footer, link | `Recommend LexiQamus to your library` | `LexiQamus’u kütüphanene öner` |
+| Sign-in line | `Already have an account?` | `Hesabınız var mı?` |
+| Sign-in link | `Sign in` | `Giriş yapın` |
+| Footer, question | `No university address?` | `Üniversite adresiniz yok mu?` |
+| Footer, link | `Recommend LexiQamus to your library` | `LexiQamus’u kütüphanenize önerin` |
 | Footer, credit | `Under TÜBİTAK ULAKBİM EKUAL` | `TÜBİTAK ULAKBİM EKUAL kapsamında` |
 
 The English line says who the offer is for (*Universities in Türkiye and the
 TRNC*), because most English readers are outside Türkiye. The Turkish line
-does not need it.
+does not need it. The Turkish text addresses the reader as *siz*, as the rest
+of the site does.
 
 ## What the server needs to do
 

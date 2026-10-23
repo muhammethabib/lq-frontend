@@ -254,7 +254,7 @@ window.LQ_PAGE_CHROME = `
                 <label for="signUpPersonal" data-i18n="authPersonalEmail">Personal email</label>
                 <input type="email" id="signUpPersonal" class="form-control" autocomplete="email"
                        aria-describedby="signUpPersonalHint signUpPersonalError">
-                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">Some university mail servers hold back our confirmation email. If it does not reach you, we can send it here, and this is where our support team can reach you.</p>
+                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">A backup address. We can send your confirmation link here as well if you like, and our support team can reach you here.</p>
                 <p class="auth-error" id="signUpPersonalError" aria-live="polite" hidden>
                   <span data-auth-error="missing" data-i18n="authPersonalMissing">Please add a personal email as well.</span>
                   <span data-auth-error="university" data-i18n="authPersonalUniversity">Use an address outside your university, such as Gmail or Outlook.</span>
@@ -309,7 +309,7 @@ window.LQ_PAGE_CHROME = `
               <p class="auth-hint" data-i18n="authSentOpen">Open it to finish creating your account.</p>
 
               <div class="auth-sent-fallback" data-auth-fallback hidden>
-                <p class="auth-hint" data-i18n="authSentMissing">Not there after a few minutes? Check your spam folder. Some university mail servers hold it back.</p>
+                <p class="auth-hint" data-i18n="authSentMissing">Not there in a few minutes? Check your spam folder, or have the link sent to your personal address.</p>
                 <button type="button" class="btn auth-secondary" data-auth-send-personal>
                   <span data-i18n="authSendPersonal">Send it to my personal address</span>
                   <span class="auth-secondary-address" data-auth-personal-to></span>

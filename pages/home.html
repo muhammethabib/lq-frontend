@@ -806,9 +806,14 @@
     </div>
   </div>
 
-  <!-- This week's news, under the search card. The whole card is one link;
-       what it says comes from js/weekly_update.js. Like the library question
-       below it, it belongs to the landing screen and steps aside for results. -->
+  <!-- What sits under the search card on the landing screen: this week's
+       news in the middle, the library question beside it. Both belong to the
+       landing screen and step aside once a search has been run; the results
+       surface carries its own library question. -->
+  <div class="landing-row">
+
+  <!-- This week's news. The whole card is one link; what it says comes from
+       js/weekly_update.js. -->
   <div class="weekly-row" data-controller="weekly-update" hidden>
     <a class="weekly-card" data-weekly-update-target="card" href="#">
       <div class="weekly-head">
@@ -819,11 +824,12 @@
     </a>
   </div>
 
-  <!-- The same question on the landing screen, where there is no list for it
-       to sit under. The results surface carries its own, so this one steps
-       out of the way as soon as a search has been run. -->
+  <!-- The library question, to the right of the news. With no news that
+       week it takes the middle itself. -->
   <div class="library-row">
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+  </div>
+
   </div>
 
   <!-- The only way into the 2026 story. It sits at the foot of the screen and

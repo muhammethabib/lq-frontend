@@ -126,10 +126,6 @@
 .announcement-modal .announcement-never svg { width: 14px; height: 14px; }
 
 @media (max-width: 620px) {
-  .announcement-modal .announcement-never { margin-left: 0; }
-}
-
-@media (max-width: 620px) {
   .announcement-modal .modal-content { padding: 28px 22px 22px; }
-  .announcement-modal .announcement-cards { grid-template-columns: 1fr; }
+  .announcement-modal .announcement-never { margin-left: 0; }
 }

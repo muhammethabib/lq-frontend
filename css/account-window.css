@@ -91,6 +91,54 @@ body:has(.auth-modal.show) .modal-backdrop {
 .auth-modal .auth-error [hidden] { display: none; }
 .auth-modal .form-control[aria-invalid="true"] { border-color: #b42318; }
 
+/* A likely slip, offered back: the corrected address is the button. */
+.auth-modal .auth-suggest { margin: 0; font-size: 12.5px; font-weight: 600; color: #8a5a12; }
+.auth-modal .auth-suggest[hidden] { display: none; }
+.auth-modal .auth-suggest-fix {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--lq-sapphire);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  vertical-align: baseline;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- before the account is made ---------- */
+
+/* The addresses as large as the window allows, so a slip shows. */
+.auth-modal .auth-confirm { display: grid; gap: 14px; text-align: center; }
+.auth-modal .auth-confirm-list { display: grid; gap: 10px; }
+.auth-modal .auth-confirm-item {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid #d2d9ee;
+  border-radius: 12px;
+  background: #eef2fc;
+}
+.auth-modal .auth-confirm-item[hidden],
+.auth-modal .auth-confirm-label[hidden] { display: none; }
+.auth-modal .auth-confirm-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--lq-ink-soft);
+}
+.auth-modal .auth-confirm-address {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--lq-ink);
+  overflow-wrap: anywhere;
+}
+.auth-modal .auth-confirm-ask { margin: 2px 0 4px; font-size: 14px; line-height: 1.55; color: #334155; }
+.auth-modal .auth-confirm-ask b { display: block; color: var(--lq-ink); }
+
 /* ---------- after sign-up ---------- */
 
 .auth-modal .auth-sent { display: grid; justify-items: center; gap: 10px; text-align: center; }
@@ -107,35 +155,6 @@ body:has(.auth-modal.show) .modal-backdrop {
 .auth-modal .auth-sent-mark svg { width: 26px; height: 26px; }
 .auth-modal .auth-sent-lead { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: #334155; overflow-wrap: anywhere; }
 .auth-modal .auth-sent-lead b { color: var(--lq-ink); }
-.auth-modal .auth-sent-fallback {
-  display: grid;
-  justify-items: center;
-  gap: 10px;
-  width: 100%;
-  margin-top: 8px;
-  padding: 16px;
-  border: 1px solid var(--lq-line);
-  border-radius: 12px;
-  background: var(--lq-paper-soft);
-}
-.auth-modal .auth-sent-fallback[hidden] { display: none; }
-.auth-modal .auth-secondary {
-  display: grid;
-  gap: 2px;
-  padding: 10px 18px;
-  border: 1.5px solid var(--lq-sapphire);
-  border-radius: 10px;
-  background: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--lq-sapphire);
-}
-.auth-modal .auth-secondary:hover { background: #eef2fc; color: var(--lq-sapphire); }
-.auth-modal .auth-secondary:disabled { opacity: .55; }
-.auth-modal .auth-secondary-address { font-size: 12.5px; font-weight: 500; overflow-wrap: anywhere; }
-.auth-modal .auth-sent-note { margin: 0; font-size: 12.5px; font-weight: 600; line-height: 1.5; color: #0f6b4f; }
-.auth-modal .auth-sent-note[hidden] { display: none; }
-.auth-modal .auth-sent-note svg { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; }
 .auth-modal .auth-resend {
   padding: 4px;
   border: 0;

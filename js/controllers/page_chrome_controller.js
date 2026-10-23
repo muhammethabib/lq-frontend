@@ -17,6 +17,60 @@
 // agreement covers: anything ending in .edu.tr after the @.
 const UNIVERSITY_ADDRESS = /@([a-z0-9-]+\.)*edu\.tr$/i;
 
+// The shape of an email address: something, an @, and a domain with a dot.
+const EMAIL_SHAPE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i;
+
+// The mail providers people mistype most. A domain a letter or two away
+// from one of these is taken for a slip and offered back corrected.
+const COMMON_MAIL_DOMAINS = [
+  "gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "icloud.com",
+  "yandex.com", "live.com", "hotmail.com.tr", "outlook.com.tr", "yandex.com.tr"
+];
+// Real domains that sit close to one of those, and so are never "corrected".
+const OTHER_MAIL_DOMAINS = [
+  "mail.com", "ymail.com", "gmx.com", "gmx.de", "gmx.net", "me.com", "mac.com",
+  "aol.com", "msn.com", "proton.me", "protonmail.com", "yandex.ru", "mail.ru",
+  "email.com", "ttmail.com"
+];
+// The usual slips at the end of a university address.
+const UNIVERSITY_SLIPS = [[/edutr$/i, "edu.tr"], [/edu\.rt$/i, "edu.tr"], [/\.edu\.t$/i, ".edu.tr"],
+  [/\.edu\.trr$/i, ".edu.tr"], [/\.eud\.tr$/i, ".edu.tr"], [/\.ude\.tr$/i, ".edu.tr"]];
+
+// How many single-letter changes turn one word into the other.
+function editDistance(a, b) {
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let previous = row[0];
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const kept = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (a[i - 1] === b[j - 1] ? 0 : 1));
+      previous = kept;
+    }
+  }
+  return row[b.length];
+}
+
+// The address as it was probably meant, or null when it looks right.
+function correctedAddress(address) {
+  const at = address.lastIndexOf("@");
+  if (at < 1) return null;
+  const local = address.slice(0, at);
+  const domain = address.slice(at + 1).toLowerCase();
+  for (const [slip, fix] of UNIVERSITY_SLIPS) {
+    if (slip.test(domain)) return `${local}@${domain.replace(slip, fix)}`;
+  }
+  if (COMMON_MAIL_DOMAINS.includes(domain) || OTHER_MAIL_DOMAINS.includes(domain)) return null;
+  if (domain.length < 5 || UNIVERSITY_ADDRESS.test(address)) return null;
+  let best = null;
+  let bestDistance = 3;
+  COMMON_MAIL_DOMAINS.forEach((known) => {
+    const distance = editDistance(domain, known);
+    if (distance > 0 && distance < bestDistance) { best = known; bestDistance = distance; }
+  });
+  return best ? `${local}@${best}` : null;
+}
+
 class PageChromeController extends Stimulus.Controller {
   static values = { page: String }
 
@@ -92,65 +146,123 @@ class PageChromeController extends Stimulus.Controller {
   // A university address is what makes the account free, so the line under
   // the field says so the moment one is typed, and a second field opens for
   // a personal address: some university mail servers hold back the
-  // confirmation email, and that address is the way round it. It is asked
-  // for only then; anyone else is already giving their own address.
+  // confirmation email, so a link goes to that address too. It is asked for
+  // only then; anyone else is already giving their own address.
   //
-  // Sending the form shows where the confirmation went. Until the backend
-  // answers, that is all it does.
+  // Each address is checked for its shape and for the usual slips before
+  // the form can go on, and then shown back large to be read once more:
+  // a mistyped address is one the link never reaches. Until the backend
+  // answers, the steps after that are all the form does.
   wireSignUp(container) {
     const form = container.querySelector("#signUpPane form");
     const email = container.querySelector("#signUpEmail");
     const hint = container.querySelector("#signUpEmailHint");
     const personalField = container.querySelector("#signUpPersonalField");
     const personal = container.querySelector("#signUpPersonal");
-    const error = container.querySelector("#signUpPersonalError");
     if (!form || !email || !personal) return;
 
     const isUniversity = (address) => UNIVERSITY_ADDRESS.test(address.trim());
-    const showError = (kind) => {
+    const field = (input) => input.closest(".auth-field");
+    const showError = (input, kind) => {
+      const error = field(input).querySelector(".auth-error");
       error.hidden = !kind;
       error.querySelectorAll("[data-auth-error]").forEach((line) => { line.hidden = line.dataset.authError !== kind; });
-      personal.setAttribute("aria-invalid", String(Boolean(kind)));
+      input.setAttribute("aria-invalid", String(Boolean(kind)));
     };
-
-    email.addEventListener("input", () => {
+    const showSuggestion = (input, suggestion) => {
+      const box = field(input).querySelector(".auth-suggest");
+      box.hidden = !suggestion;
+      box.querySelector("[data-auth-suggest-fix]").textContent = suggestion || "";
+      if (suggestion) input.setAttribute("aria-invalid", "true");
+    };
+    const settleUniversity = () => {
       const university = isUniversity(email.value);
       hint.classList.toggle("is-edu", university);
       personalField.hidden = !university;
       personal.required = university;
-      if (!university) showError(null);
+      if (!university) { showError(personal, null); showSuggestion(personal, null); }
+    };
+    // An address that is not right yet: what is wrong is said under it.
+    const problem = (input) => {
+      const address = input.value.trim();
+      if (!address) return input === personal ? "missing" : "format";
+      if (!EMAIL_SHAPE.test(address)) return "format";
+      if (correctedAddress(address)) return "slip";
+      if (input === personal && isUniversity(address)) return "university";
+      return null;
+    };
+    const report = (input) => {
+      const kind = problem(input);
+      showError(input, kind === "slip" ? null : kind);
+      showSuggestion(input, kind === "slip" ? correctedAddress(input.value.trim()) : null);
+      return !kind;
+    };
+
+    [email, personal].forEach((input) => {
+      input.addEventListener("input", () => {
+        showError(input, null);
+        showSuggestion(input, null);
+        if (input === email) settleUniversity();
+      });
+      // Said as soon as the reader leaves the field, not only on sending.
+      input.addEventListener("blur", () => { if (input.value.trim()) report(input); });
+      field(input).querySelector("[data-auth-suggest-fix]").addEventListener("click", (event) => {
+        input.value = event.currentTarget.textContent;
+        showSuggestion(input, null);
+        showError(input, null);
+        if (input === email) settleUniversity();
+        input.focus();
+      });
     });
-    personal.addEventListener("input", () => showError(null));
 
     form.addEventListener("submit", () => {
-      if (!email.value.trim()) { email.focus(); return; }
-      const university = isUniversity(email.value);
-      if (university) {
-        if (!personal.value.trim()) { showError("missing"); personal.focus(); return; }
-        if (isUniversity(personal.value)) { showError("university"); personal.focus(); return; }
-      }
-      this.showSent(container, email.value.trim(), university ? personal.value.trim() : "");
+      const emailOk = report(email);
+      const university = emailOk && isUniversity(email.value);
+      const personalOk = !university || report(personal);
+      if (!emailOk) { email.focus(); return; }
+      if (!personalOk) { personal.focus(); return; }
+      this.confirmAddresses(container, email.value.trim(), university ? personal.value.trim() : "");
     });
   }
 
-  // Where the confirmation went, in place of the form.
-  showSent(container, address, personalAddress) {
-    const title = container.querySelector("[data-auth-title]");
-    title.dataset.i18n = "authSentTitle";
-    title.textContent = window.LQ.translate("authSentTitle", "Check your inbox");
-    container.querySelector("[data-auth-sent-to]").textContent = address;
-    const fallback = container.querySelector("[data-auth-fallback]");
-    fallback.hidden = !personalAddress;
-    container.querySelector("[data-auth-personal-to]").textContent = personalAddress;
-    const sendPersonal = container.querySelector("[data-auth-send-personal]");
-    sendPersonal.onclick = () => {
-      sendPersonal.disabled = true;
-      container.querySelector("[data-auth-personal-sent]").hidden = false;
+  // The addresses, large, before the account is made.
+  confirmAddresses(container, address, personalAddress) {
+    const two = Boolean(personalAddress);
+    container.querySelector("[data-auth-confirm-main]").textContent = address;
+    container.querySelector("[data-auth-confirm-personal]").textContent = personalAddress;
+    container.querySelector("[data-auth-confirm-second]").hidden = !two;
+    container.querySelector("[data-auth-confirm-label]").hidden = !two;
+    this.showAuthPane(container, "signUpConfirmPane",
+      two ? "authConfirmTitleTwo" : "authConfirmTitleOne",
+      two ? "Check your email addresses" : "Check your email address");
+    container.querySelector("[data-auth-confirm-yes]").onclick = () => this.showSent(container, address, personalAddress);
+    container.querySelector("[data-auth-confirm-fix]").onclick = () => {
+      this.showAuthPane(container, "signUpPane", "menuSignUp", "Sign up");
+      container.querySelector("#signUpEmail").focus();
     };
-    ["signUpPane", "signUpSentPane"].forEach((id) => {
-      const pane = container.querySelector(`#${id}`);
-      pane.classList.toggle("show", id === "signUpSentPane");
-      pane.classList.toggle("active", id === "signUpSentPane");
+  }
+
+  // Where the confirmation links went, in place of the form.
+  showSent(container, address, personalAddress) {
+    const two = Boolean(personalAddress);
+    container.querySelector("[data-auth-sent-to]").textContent = address;
+    container.querySelector("[data-auth-sent-main]").textContent = address;
+    container.querySelector("[data-auth-sent-personal]").textContent = personalAddress;
+    container.querySelector("[data-auth-lead-one]").hidden = two;
+    container.querySelector("[data-auth-lead-two]").hidden = !two;
+    container.querySelector("[data-auth-open-one]").hidden = two;
+    container.querySelector("[data-auth-open-two]").hidden = !two;
+    this.showAuthPane(container, "signUpSentPane", "authSentTitle", "Check your inbox");
+  }
+
+  // One pane of the account window at a time, under its own title.
+  showAuthPane(container, id, titleKey, fallback) {
+    const title = container.querySelector("[data-auth-title]");
+    title.dataset.i18n = titleKey;
+    title.textContent = window.LQ.translate(titleKey, fallback);
+    container.querySelectorAll(".tab-pane").forEach((pane) => {
+      pane.classList.toggle("show", pane.id === id);
+      pane.classList.toggle("active", pane.id === id);
     });
   }
 

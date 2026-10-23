@@ -235,7 +235,7 @@ window.LQ_PAGE_CHROME = `
               <div class="auth-field">
                 <label for="signUpEmail" data-i18n="authEmail">Email</label>
                 <input type="email" id="signUpEmail" class="form-control" autocomplete="email"
-                       aria-describedby="signUpEmailHint" required>
+                       aria-describedby="signUpEmailHint signUpEmailError" required>
                 <!-- The offer, said where the address is typed. It turns into a
                      confirmation as soon as the address is a university one. -->
                 <p class="auth-hint auth-edu" id="signUpEmailHint" aria-live="polite">
@@ -245,19 +245,33 @@ window.LQ_PAGE_CHROME = `
                     <span data-i18n="authEduOk">University address: free, unlimited access.</span>
                   </span>
                 </p>
+                <p class="auth-error" id="signUpEmailError" aria-live="polite" hidden>
+                  <span data-auth-error="format" data-i18n="authEmailFormat">Enter a valid email address, such as name@gmail.com.</span>
+                </p>
+                <!-- A likely slip in the address, offered back to be taken
+                     with one press: gamil.com for gmail.com, edutr for edu.tr. -->
+                <p class="auth-suggest" aria-live="polite" hidden>
+                  <span data-i18n="authSuggest">Did you mean</span>
+                  <button type="button" class="btn auth-suggest-fix" data-auth-suggest-fix></button><span data-i18n="authSuggestAfter">?</span>
+                </p>
               </div>
               <!-- A second address, asked only of someone signing up with a
                    university one: some university mail servers hold back the
-                   confirmation email, and this is where it can go instead, and
+                   confirmation email, so a link goes here too, and this is
                    where support can write to them. -->
               <div class="auth-field" id="signUpPersonalField" hidden>
                 <label for="signUpPersonal" data-i18n="authPersonalEmail">Personal email</label>
                 <input type="email" id="signUpPersonal" class="form-control" autocomplete="email"
                        aria-describedby="signUpPersonalHint signUpPersonalError">
-                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">A backup address. We can send your confirmation link here as well if you like, and our support team can reach you here.</p>
+                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">We will send a confirmation link here too; opening either one activates your account. Our support team can also reach you here.</p>
                 <p class="auth-error" id="signUpPersonalError" aria-live="polite" hidden>
                   <span data-auth-error="missing" data-i18n="authPersonalMissing">Please add a personal email as well.</span>
+                  <span data-auth-error="format" data-i18n="authEmailFormat">Enter a valid email address, such as name@gmail.com.</span>
                   <span data-auth-error="university" data-i18n="authPersonalUniversity">Use an address outside your university, such as Gmail or Outlook.</span>
+                </p>
+                <p class="auth-suggest" aria-live="polite" hidden>
+                  <span data-i18n="authSuggest">Did you mean</span>
+                  <button type="button" class="btn auth-suggest-fix" data-auth-suggest-fix></button><span data-i18n="authSuggestAfter">?</span>
                 </p>
               </div>
               <div class="auth-field">
@@ -292,34 +306,52 @@ window.LQ_PAGE_CHROME = `
             </form>
           </div>
 
-          <!-- After sign-up: where the confirmation went, and, for a
-               university address, the way round a mail server that holds it
-               back. The addresses are filled in when the form is sent. -->
+          <!-- Before the account is made: the addresses, large, to be read
+               once more. A slip in one means the link never arrives. -->
+          <div class="tab-pane fade" id="signUpConfirmPane" role="tabpanel">
+            <div class="auth-confirm">
+              <div class="auth-confirm-list">
+                <div class="auth-confirm-item">
+                  <span class="auth-confirm-label" data-auth-confirm-label data-i18n="authUniversityEmail">University email</span>
+                  <span class="auth-confirm-address" data-auth-confirm-main></span>
+                </div>
+                <div class="auth-confirm-item" data-auth-confirm-second hidden>
+                  <span class="auth-confirm-label" data-i18n="authPersonalEmail">Personal email</span>
+                  <span class="auth-confirm-address" data-auth-confirm-personal></span>
+                </div>
+              </div>
+              <p class="auth-confirm-ask">
+                <b data-i18n="authConfirmAsk">Are you sure there is no typo?</b>
+                <span data-i18n="authConfirmWhy">Otherwise the confirmation link will not reach you.</span>
+              </p>
+              <button type="button" class="btn auth-submit" data-auth-confirm-yes data-i18n="authConfirmYes">Yes, create my account</button>
+              <button type="button" class="btn auth-resend" data-auth-confirm-fix data-i18n="authConfirmFix">Fix it</button>
+            </div>
+          </div>
+
+          <!-- After sign-up: where the confirmation links went. A university
+               sign-up gets one at each address, and either one opens the
+               account. The addresses are filled in when the form is sent. -->
           <div class="tab-pane fade" id="signUpSentPane" role="tabpanel">
             <div class="auth-sent">
               <span class="auth-sent-mark" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m3.5 6.5 8.5 6.5 8.5-6.5"></path></svg>
               </span>
               <!-- English puts the address after the words and Turkish before
-                   them, so the line has a slot on each side. -->
-              <p class="auth-sent-lead">
+                   them, so each line has a slot on each side. -->
+              <p class="auth-sent-lead" data-auth-lead-one>
                 <span data-i18n="authSentBefore">We sent a confirmation link to</span>
                 <b data-auth-sent-to></b><span data-i18n="authSentAfter">.</span>
               </p>
-              <p class="auth-hint" data-i18n="authSentOpen">Open it to finish creating your account.</p>
-
-              <div class="auth-sent-fallback" data-auth-fallback hidden>
-                <p class="auth-hint" data-i18n="authSentMissing">Not there in a few minutes? Check your spam folder, or have the link sent to your personal address.</p>
-                <button type="button" class="btn auth-secondary" data-auth-send-personal>
-                  <span data-i18n="authSendPersonal">Send it to my personal address</span>
-                  <span class="auth-secondary-address" data-auth-personal-to></span>
-                </button>
-                <p class="auth-sent-note" data-auth-personal-sent aria-live="polite" hidden>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                  <span data-i18n="authPersonalSent">Sent to your personal address too. Use whichever arrives first.</span>
-                </p>
-              </div>
-
+              <p class="auth-sent-lead" data-auth-lead-two hidden>
+                <span data-i18n="authSentBothBefore">We sent a confirmation link to</span>
+                <b data-auth-sent-main></b>
+                <span data-i18n="authSentBothAnd">and to</span>
+                <b data-auth-sent-personal></b><span data-i18n="authSentBothAfter">.</span>
+              </p>
+              <p class="auth-hint" data-auth-open-one data-i18n="authSentOpen">Open it to finish creating your account.</p>
+              <p class="auth-hint" data-auth-open-two hidden data-i18n="authSentOpenEither">Open either one to finish creating your account.</p>
+              <p class="auth-hint" data-i18n="authSentMissing">Not there in a few minutes? Check your spam folder.</p>
               <button type="button" class="btn auth-resend" data-auth-resend data-i18n="authResend">Send it again</button>
             </div>
           </div>

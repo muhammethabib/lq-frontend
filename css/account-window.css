@@ -85,6 +85,67 @@ body:has(.auth-modal.show) .modal-backdrop {
 .auth-modal .auth-edu.is-edu .auth-edu-offer { display: none; }
 .auth-modal .auth-edu.is-edu .auth-edu-ok { display: inline-flex; }
 
+.auth-modal .auth-field[hidden] { display: none; }
+.auth-modal .auth-error { margin: 0; font-size: 12px; font-weight: 600; color: #b42318; }
+.auth-modal .auth-error[hidden],
+.auth-modal .auth-error [hidden] { display: none; }
+.auth-modal .form-control[aria-invalid="true"] { border-color: #b42318; }
+
+/* ---------- after sign-up ---------- */
+
+.auth-modal .auth-sent { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.auth-modal .auth-sent-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #eef2fc;
+  color: var(--lq-sapphire);
+}
+.auth-modal .auth-sent-mark svg { width: 26px; height: 26px; }
+.auth-modal .auth-sent-lead { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: #334155; overflow-wrap: anywhere; }
+.auth-modal .auth-sent-lead b { color: var(--lq-ink); }
+.auth-modal .auth-sent-fallback {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 16px;
+  border: 1px solid var(--lq-line);
+  border-radius: 12px;
+  background: var(--lq-paper-soft);
+}
+.auth-modal .auth-sent-fallback[hidden] { display: none; }
+.auth-modal .auth-secondary {
+  display: grid;
+  gap: 2px;
+  padding: 10px 18px;
+  border: 1.5px solid var(--lq-sapphire);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lq-sapphire);
+}
+.auth-modal .auth-secondary:hover { background: #eef2fc; color: var(--lq-sapphire); }
+.auth-modal .auth-secondary:disabled { opacity: .55; }
+.auth-modal .auth-secondary-address { font-size: 12.5px; font-weight: 500; overflow-wrap: anywhere; }
+.auth-modal .auth-sent-note { margin: 0; font-size: 12.5px; font-weight: 600; line-height: 1.5; color: #0f6b4f; }
+.auth-modal .auth-sent-note[hidden] { display: none; }
+.auth-modal .auth-sent-note svg { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; }
+.auth-modal .auth-resend {
+  padding: 4px;
+  border: 0;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lq-claret);
+}
+.auth-modal .auth-resend:hover { text-decoration: underline; color: var(--lq-claret); }
+
 .auth-modal .auth-forgot {
   justify-self: start;
   font-size: .84rem;

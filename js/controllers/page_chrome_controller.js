@@ -87,6 +87,73 @@ class PageChromeController extends Stimulus.Controller {
     if (this.onHome()) event.preventDefault();
   }
 
+  // The sign-up form, beyond what the markup does on its own.
+  //
+  // A university address is what makes the account free, so the line under
+  // the field says so the moment one is typed, and a second field opens for
+  // a personal address: some university mail servers hold back the
+  // confirmation email, and that address is the way round it. It is asked
+  // for only then; anyone else is already giving their own address.
+  //
+  // Sending the form shows where the confirmation went. Until the backend
+  // answers, that is all it does.
+  wireSignUp(container) {
+    const form = container.querySelector("#signUpPane form");
+    const email = container.querySelector("#signUpEmail");
+    const hint = container.querySelector("#signUpEmailHint");
+    const personalField = container.querySelector("#signUpPersonalField");
+    const personal = container.querySelector("#signUpPersonal");
+    const error = container.querySelector("#signUpPersonalError");
+    if (!form || !email || !personal) return;
+
+    const isUniversity = (address) => UNIVERSITY_ADDRESS.test(address.trim());
+    const showError = (kind) => {
+      error.hidden = !kind;
+      error.querySelectorAll("[data-auth-error]").forEach((line) => { line.hidden = line.dataset.authError !== kind; });
+      personal.setAttribute("aria-invalid", String(Boolean(kind)));
+    };
+
+    email.addEventListener("input", () => {
+      const university = isUniversity(email.value);
+      hint.classList.toggle("is-edu", university);
+      personalField.hidden = !university;
+      personal.required = university;
+      if (!university) showError(null);
+    });
+    personal.addEventListener("input", () => showError(null));
+
+    form.addEventListener("submit", () => {
+      if (!email.value.trim()) { email.focus(); return; }
+      const university = isUniversity(email.value);
+      if (university) {
+        if (!personal.value.trim()) { showError("missing"); personal.focus(); return; }
+        if (isUniversity(personal.value)) { showError("university"); personal.focus(); return; }
+      }
+      this.showSent(container, email.value.trim(), university ? personal.value.trim() : "");
+    });
+  }
+
+  // Where the confirmation went, in place of the form.
+  showSent(container, address, personalAddress) {
+    const title = container.querySelector("[data-auth-title]");
+    title.dataset.i18n = "authSentTitle";
+    title.textContent = window.LQ.translate("authSentTitle", "Check your inbox");
+    container.querySelector("[data-auth-sent-to]").textContent = address;
+    const fallback = container.querySelector("[data-auth-fallback]");
+    fallback.hidden = !personalAddress;
+    container.querySelector("[data-auth-personal-to]").textContent = personalAddress;
+    const sendPersonal = container.querySelector("[data-auth-send-personal]");
+    sendPersonal.onclick = () => {
+      sendPersonal.disabled = true;
+      container.querySelector("[data-auth-personal-sent]").hidden = false;
+    };
+    ["signUpPane", "signUpSentPane"].forEach((id) => {
+      const pane = container.querySelector(`#${id}`);
+      pane.classList.toggle("show", id === "signUpSentPane");
+      pane.classList.toggle("active", id === "signUpSentPane");
+    });
+  }
+
   // A menu entry names the page it leads to. Entries start without an href
   // and marked unavailable, because most of those pages are not rebuilt yet;
   // the ones listed as built become ordinary links.
@@ -126,21 +193,12 @@ class PageChromeController extends Stimulus.Controller {
     }, { once: true });
     bootstrap.Modal.getOrCreateInstance(container).show();
 
-    // A university address is what makes the account free, so the line under
-    // the field says so the moment one is typed.
-    const email = container.querySelector("#signUpEmail");
-    const hint = container.querySelector("#signUpEmailHint");
-    if (email && hint) {
-      email.addEventListener("input", () => {
-        hint.classList.toggle("is-edu", UNIVERSITY_ADDRESS.test(email.value.trim()));
-      });
-    }
-
     // Nothing is submitted anywhere yet; the forms stand for the screens the
     // backend will render.
     container.querySelectorAll("form").forEach((form) => {
       form.addEventListener("submit", (submitted) => submitted.preventDefault());
     });
+    this.wireSignUp(container);
 
     // The side menu is open behind the window on a narrow screen
     const menu = this.element.querySelector("#sideMenu");

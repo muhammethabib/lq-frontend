@@ -246,6 +246,20 @@ window.LQ_PAGE_CHROME = `
                   </span>
                 </p>
               </div>
+              <!-- A second address, asked only of someone signing up with a
+                   university one: some university mail servers hold back the
+                   confirmation email, and this is where it can go instead, and
+                   where support can write to them. -->
+              <div class="auth-field" id="signUpPersonalField" hidden>
+                <label for="signUpPersonal" data-i18n="authPersonalEmail">Personal email</label>
+                <input type="email" id="signUpPersonal" class="form-control" autocomplete="email"
+                       aria-describedby="signUpPersonalHint signUpPersonalError">
+                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">Some university mail servers hold back our confirmation email. If it does not reach you, we can send it here, and this is where our support team can reach you.</p>
+                <p class="auth-error" id="signUpPersonalError" aria-live="polite" hidden>
+                  <span data-auth-error="missing" data-i18n="authPersonalMissing">Please add a personal email as well.</span>
+                  <span data-auth-error="university" data-i18n="authPersonalUniversity">Use an address outside your university, such as Gmail or Outlook.</span>
+                </p>
+              </div>
               <div class="auth-field">
                 <label for="signUpPassword" data-i18n="authPassword">Password</label>
                 <input type="password" id="signUpPassword" class="form-control"
@@ -276,6 +290,38 @@ window.LQ_PAGE_CHROME = `
 
               <button type="submit" class="btn auth-submit" data-i18n="authCreate">Create account</button>
             </form>
+          </div>
+
+          <!-- After sign-up: where the confirmation went, and, for a
+               university address, the way round a mail server that holds it
+               back. The addresses are filled in when the form is sent. -->
+          <div class="tab-pane fade" id="signUpSentPane" role="tabpanel">
+            <div class="auth-sent">
+              <span class="auth-sent-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="m3.5 6.5 8.5 6.5 8.5-6.5"></path></svg>
+              </span>
+              <!-- English puts the address after the words and Turkish before
+                   them, so the line has a slot on each side. -->
+              <p class="auth-sent-lead">
+                <span data-i18n="authSentBefore">We sent a confirmation link to</span>
+                <b data-auth-sent-to></b><span data-i18n="authSentAfter">.</span>
+              </p>
+              <p class="auth-hint" data-i18n="authSentOpen">Open it to finish creating your account.</p>
+
+              <div class="auth-sent-fallback" data-auth-fallback hidden>
+                <p class="auth-hint" data-i18n="authSentMissing">Not there after a few minutes? Check your spam folder. Some university mail servers hold it back.</p>
+                <button type="button" class="btn auth-secondary" data-auth-send-personal>
+                  <span data-i18n="authSendPersonal">Send it to my personal address</span>
+                  <span class="auth-secondary-address" data-auth-personal-to></span>
+                </button>
+                <p class="auth-sent-note" data-auth-personal-sent aria-live="polite" hidden>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span data-i18n="authPersonalSent">Sent to your personal address too. Use whichever arrives first.</span>
+                </p>
+              </div>
+
+              <button type="button" class="btn auth-resend" data-auth-resend data-i18n="authResend">Send it again</button>
+            </div>
           </div>
         </div>
       </div>

@@ -705,44 +705,56 @@
   .home-surface .fuzzy-row .library-button { position: static; transform: none; }
 }
 
-/* Under the search card on the landing screen: the week's news in the
-   middle and the library question to its right, on one line, so the
-   invitation to the 2026 story still fits on the first screen. The news
-   stays centred on the page whatever the question measures. With no news
-   that week the question takes the middle, where it always stood. Where
-   the two do not fit side by side, the question goes under the news. */
+/* Under the search card on the landing screen: the week's news, centred.
+   Where the window is too narrow for the library question to stand in the
+   corner at the foot, the question comes here, under the news, or in the
+   middle on its own in a week with no news. */
 .home-surface .landing-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  column-gap: 24px;
+  gap: 18px;
   margin-top: 22px;
 }
-.home-surface.state-results .landing-row { display: none; }
 .home-surface .landing-row:has(.weekly-row[hidden]) { margin-top: 34px; }
+.home-surface .library-row { display: flex; justify-content: center; }
 
-.home-surface .library-row { display: flex; grid-column: 3; justify-self: start; }
-.home-surface .landing-row:has(.weekly-row[hidden]) .library-row { grid-column: 2; }
-
-@media (max-width: 1199.98px) {
-  .home-surface .landing-row { grid-template-columns: 1fr; row-gap: 18px; }
-  .home-surface .library-row,
-  .home-surface .landing-row:has(.weekly-row[hidden]) .library-row { grid-column: 1; justify-self: center; }
+/* The foot of the first screen, as wide as the search card: the invitation
+   in the middle, the library question in the right-hand corner with its
+   middle on the line of the invitation's words. */
+.home-surface .landing-foot {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: var(--home-card-width);
+  margin-inline: auto;
+}
+.home-surface .landing-foot .innovations-prompt { grid-column: 2; grid-row: 1; }
+.home-surface .library-row.library-corner {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
+  margin-bottom: 39px;
 }
 
-/* This week's news: a quiet green card, its title on a band of its own.
-   It is as wide as its longest line. The whole card is the link, so it
-   lifts a little under the pointer. */
-.home-surface .weekly-row { display: flex; justify-content: center; grid-column: 2; min-width: 0; }
+.home-surface.state-results .landing-row,
+.home-surface.state-results .library-row.library-corner { display: none; }
+
+@media (min-width: 1200px) {
+  .home-surface .library-row.library-under,
+  .home-surface .landing-row:has(.weekly-row[hidden]) { display: none; }
+}
+@media (max-width: 1199.98px) {
+  .home-surface .library-row.library-corner { display: none; }
+}
+
+.home-surface .weekly-row { display: flex; justify-content: center; max-width: 100%; }
 .home-surface .weekly-row[hidden] { display: none; }
-@media (max-width: 1199.98px) {
-  .home-surface .weekly-row { grid-column: 1; }
-}
 
 /* The news card makes the landing screen taller. On a short window the
    tabs come up, by as much as the window falls short, so the invitation to
    the 2026 story stays on the first screen; a window with the room is left
-   alone. A narrower window, where the library question drops under the news,
+   alone. A narrower window, where the library question comes under the news,
    needs the room sooner. */
 @media (max-height: 720px) {
   .home-surface.state-landing:has(.weekly-row:not([hidden])) .search-tabs { margin-top: max(20px, calc(16vh - (720px - 100vh))); }
@@ -789,7 +801,7 @@
    come right up and the card and the question sit closer together. */
 @media (max-width: 575.98px) {
   .home-surface.state-landing:has(.weekly-row:not([hidden])) .search-tabs { margin-top: 12px; }
-  .home-surface .landing-row { margin-top: 14px; row-gap: 12px; }
+  .home-surface .landing-row { margin-top: 14px; gap: 12px; }
   .home-surface .weekly-head { padding: 6px 16px 5px; }
   .home-surface .weekly-lines { padding: 6px 16px 9px; }
   .home-surface .weekly-line { font-size: 13.5px; line-height: 1.45; }

@@ -807,9 +807,8 @@
   </div>
 
   <!-- What sits under the search card on the landing screen: this week's
-       news in the middle, the library question beside it. Both belong to the
-       landing screen and step aside once a search has been run; the results
-       surface carries its own library question. -->
+       news. It belongs to the landing screen and steps aside once a search
+       has been run. -->
   <div class="landing-row">
 
   <!-- This week's news. The whole card is one link; what it says comes from
@@ -824,13 +823,19 @@
     </a>
   </div>
 
-  <!-- The library question, to the right of the news. With no news that
-       week it takes the middle itself. -->
-  <div class="library-row">
+  <!-- The library question, under the news, where the window is too narrow
+       for it to stand in the corner below. -->
+  <div class="library-row library-under">
     <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
   </div>
 
   </div>
+
+  <!-- The foot of the first screen: the invitation in the middle and, on a
+       wide window, the library question in the right-hand corner, level with
+       it. The results surface carries its own library question, so this one
+       steps aside once a search has been run. -->
+  <div class="landing-foot">
 
   <!-- The only way into the 2026 story. It sits at the foot of the screen and
        waits to be pressed; nothing below it can be reached any other way. -->
@@ -844,6 +849,10 @@
       <span class="innovations-chevron"></span>
     </span>
   </button>
+  <div class="library-row library-corner">
+    <button type="button" class="btn library-button" data-i18n="librarySubscriptionButton">Does My Library Subscribe?</button>
+  </div>
+  </div>
 
   <!-- Result-group copy. It lives in the markup so the English text sits with
        the rest of the page and the language sweep translates it; the controller

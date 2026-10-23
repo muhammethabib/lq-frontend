@@ -1,114 +1,171 @@
-# LQ-CV-2 — Sign-up with a university address: the offer, a personal address, and the inbox step
+# LQ-CV-2 — Sign-up with a university address: two addresses, two links, one account
 
-- **Area:** The sign-up window, and a new step shown after it is sent
-- **Type:** Change to the form, plus one new step
-- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6`, `901fded` and `99858fd`)
-- **Server:** store a second address, send the confirmation to either address, and record newsletter consent correctly (see *What the server needs to do*)
+- **Area:** The sign-up window, and two new steps shown after it
+- **Type:** Change to the form, two new steps, and new account rules on the server
+- **Front end:** done in the new front end (`muhammethabib/lq-frontend`, commits `850b9c6`, `901fded`, `99858fd` and `6816be7`)
+- **Server:** a second address on the account, a confirmation link to each address, address checks, and a review list for support (see *What the server needs to do*)
 
 ---
 
 ## Summary
 
-Accounts made with a `.edu.tr` address get free, unlimited access. The
-sign-up form today never says so, and it gives no way out when the
-confirmation email does not reach a university address — the person is
-left stuck and drops out.
+Accounts made with a `.edu.tr` address get free, unlimited access. Today the
+sign-up form never says so, and when the confirmation email does not reach a
+university address — which happens: university mail systems block or delay
+it — the person is stuck and drops out.
 
-Four changes:
+The new flow:
 
-1. **A line under the email field** offers the free access, and turns into a
-   green confirmation as soon as a university address is typed.
-2. **A "Personal email" field** opens under it for a university address. It
-   is required for them. It is a backup: the confirmation link can be sent
-   there, and support can reach the person there.
-3. **A "Check your inbox" step** replaces the form once it is sent. It says
-   where the link went, and — for a university address — offers to send it
-   to the personal address with one press.
-4. **The newsletter box starts unticked.** Today it is ticked in advance.
+1. **The form says a university address makes it free**, and turns that line
+   green as soon as one is typed.
+2. **A university address also asks for a personal address.** Both are
+   checked for typos before the form can go on.
+3. **The addresses are shown large** before the account is made, with the
+   question *Are you sure there is no typo?* — a mistyped address is one the
+   link never reaches.
+4. **A confirmation link goes to each address.** There is one account, and
+   **either link opens it**, with full access.
+5. **Support follows up** on accounts whose university address was never
+   confirmed: writes to the person, asks for institution, programme and year,
+   and blocks the account if the university address turns out to be made up.
+6. **The newsletter box starts unticked.** Today it is ticked in advance.
    Under KVKK and the GDPR, consent to marketing mail has to be given by the
    user; a box that is already ticked does not count as consent.
 
+## Decisions already taken
+
+- **One account, two addresses.** The university address is the main one; the
+  personal address is the second one.
+- **A separate confirmation link to each address,** sent at the same time.
+- **Clicking a link confirms that address.**
+- **Either link opens the account, with full access.** There is no waiting
+  period and no time limit. University mail is often blocked, and a real
+  student or teacher must not be locked out because of it.
+- **Typos are caught on the form.** An address that is not an email address,
+  or that has a common typo (`gamil` for `gmail`), does not create an account.
+- **Support checks unconfirmed university addresses afterwards** and blocks
+  the account if the address is made up. Such cases are few.
+
 ## Today
 
-The newsletter box is already ticked, nothing mentions `.edu.tr`, and there
-is no second address.
+The newsletter box is already ticked, nothing mentions `.edu.tr`, there is no
+second address and no check before the account is made.
 
 ![The sign-up form on the live site today](img/cv2-today.png)
 
 ## New
 
-### 1. The form, before an address is typed
+### 1. The form
 
 The line under *Email* is new; the newsletter box is unticked.
 
 ![The new sign-up form, English](img/cv2-form-en.png)
 
-With a non-university address, the line stays as the offer:
+### 2. Address checks
 
-![Hint with a gmail address, Turkish](img/cv2-plain-tr.png)
+**Not an email address** — refused, with an example:
 
-### 2. A university address is typed
+![Format error, Turkish](img/cv2-format-tr.png)
 
-The line turns green, and the *Personal email* field opens below it.
+**A likely typo** — the corrected address is offered back; one press puts it
+in the field. The form does not go on until the address is fixed:
 
-![The form with a .edu.tr address and the personal email field, Turkish](img/cv2-personal-tr.png)
+![Typo suggestion, Turkish](img/cv2-suggest-tr.png)
 
-If the personal email is left empty, or is another university address, the
-form says so under the field and does not go on:
+![Typo suggestion, English](img/cv2-suggest-en.png)
 
-![The error under the personal email field, Turkish](img/cv2-error-tr.png)
+### 3. A university address is typed
 
-### 3. After *Create account*: check your inbox
+The line turns green and the *Personal email* field opens below it. It is
+required:
 
-**Signed up with a university address** — the link went to the university
-address; the box offers the personal one. After the button is pressed, a
-green line confirms it:
+![The form with a university address and the personal email, Turkish](img/cv2-personal-tr.png)
 
-![Check your inbox, university address, Turkish](img/cv2-sent-tr.png)
+The personal email cannot be another university address:
 
-![Check your inbox, university address, English](img/cv2-sent-en.png)
+![The personal email error, Turkish](img/cv2-error-tr.png)
 
-**Signed up with a personal address** — only where the link went, and
-*Send it again*:
+### 4. After *Create account*: the addresses, large
 
-![Check your inbox, personal address, Turkish](img/cv2-sentplain-tr.png)
+**University sign-up** — both addresses, labelled:
+
+![Check your email addresses, Turkish](img/cv2-confirm-tr.png)
+
+![Check your email addresses, English](img/cv2-confirm-en.png)
+
+**Personal-address sign-up** — the one address:
+
+![Check your email address, Turkish](img/cv2-confirmone-tr.png)
+
+### 5. After *Yes, create my account*: check your inbox
+
+**University sign-up** — a link went to each address; either one opens the
+account:
+
+![Check your inbox, two addresses, Turkish](img/cv2-sent-tr.png)
+
+![Check your inbox, two addresses, English](img/cv2-sent-en.png)
+
+**Personal-address sign-up:**
+
+![Check your inbox, one address, Turkish](img/cv2-sentone-tr.png)
 
 ## How it behaves
 
 1. When the form opens, the line under *Email* shows the offer. The
    *Personal email* field is not shown.
 2. As the person types, the page checks the address after every key press.
-   If the part after `@` ends in `edu.tr` (for example `ogr.ankara.edu.tr`,
-   `metu.edu.tr`):
+   If the part after `@` ends in `edu.tr`:
    - the offer is swapped for a green tick and the confirmation;
-   - the *Personal email* field appears below and becomes required.
-3. If the address is changed so that it no longer ends in `edu.tr`, the offer
-   comes back and the *Personal email* field goes away again.
-4. On *Create account*, for a university address:
-   - an empty personal email shows *Please add a personal email as well.*;
-   - a personal email that is also a university address shows *Use an
-     address outside your university, such as Gmail or Outlook.*
-   - in both cases the form stays, with the cursor in that field.
-5. When the form is sent, the window's title becomes *Check your inbox* and
-   it shows the address the link went to.
-6. For a university address only, a box below says what to do if it does not
-   arrive, with the button **Send it to my personal address** and the
-   personal address under it. Pressing it sends the link there, greys the
-   button out and shows the green confirmation line.
-7. *Send it again* sends the link to the main address again.
-8. The newsletter box is unticked when the form opens.
-9. Screen readers hear the changing lines (the hint, the error and the
-   confirmation are polite live regions).
+   - the *Personal email* field appears and becomes required.
 
-The university-address check, as written in the front end:
+   If the address is changed so that it no longer ends in `edu.tr`, the
+   offer comes back and the field goes away again.
+3. **Each address is checked when the person leaves the field, and again on
+   *Create account*:**
+   - no `@`, or no proper domain → *Enter a valid email address, such as
+     name@gmail.com.*
+   - a likely typo → *Did you mean …?* with the corrected address as a button;
+   - the personal email empty → *Please add a personal email as well.*
+   - the personal email is also a university address → *Use an address
+     outside your university, such as Gmail or Outlook.*
+
+   While any of these is showing, *Create account* does not go on, and the
+   cursor goes to that field.
+4. **The typo check** catches:
+   - a domain one or two letters away from a common provider: `gmail.com`,
+     `hotmail.com`, `outlook.com`, `yahoo.com`, `icloud.com`, `yandex.com`,
+     `live.com`, `hotmail.com.tr`, `outlook.com.tr`, `yandex.com.tr`
+     (so `gamil.com`, `gmial.com`, `gmail.con`, `hotmial.com`, `outlok.com`);
+   - a broken university ending: `edutr`, `edu.rt`, `.edu.t`, `.edu.trr`,
+     `.eud.tr`, `.ude.tr` → `.edu.tr`.
+
+   Real domains that sit close to a common provider are never "corrected":
+   `mail.com`, `email.com`, `ymail.com`, `gmx.com`, `gmx.de`, `gmx.net`,
+   `me.com`, `mac.com`, `aol.com`, `msn.com`, `proton.me`, `protonmail.com`,
+   `yandex.ru`, `mail.ru`, `ttmail.com`.
+5. **Create account** shows the addresses large, with *Are you sure there is
+   no typo? Otherwise the confirmation link will not reach you.*
+   - *Yes, create my account* creates the account and goes to the inbox step.
+   - *Fix it* goes back to the form, with everything still filled in.
+6. **The inbox step** names the address (or both addresses) the links went
+   to, says that either one opens the account, and offers *Send it again*.
+7. The newsletter box is unticked when the form opens.
+8. Screen readers hear the changing lines (the hint, the errors and the
+   suggestion are polite live regions).
+
+The checks, as written in the front end:
 
 ```js
+// a university address in Türkiye or the TRNC
 /@([a-z0-9-]+\.)*edu\.tr$/i
+// the shape of an email address
+/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i
 ```
 
 The *Personal email* field is asked only of university addresses: anyone
 signing up with Gmail, Outlook and so on is already giving a personal
-address, and a second field would only slow them down.
+address.
 
 ## New text
 
@@ -122,77 +179,133 @@ addresses the reader as *siz*, as the rest of the site does.
 | Offer (before a university address is typed) | `Universities in Türkiye and the TRNC: sign up with your <b>.edu.tr</b> address to use LexiQamus free and without limits.` | `<b>.edu.tr</b> adresinizle kaydolun, LexiQamus’u ücretsiz ve sınırsız kullanın.` |
 | Confirmation (after one is typed) | `University address: free, unlimited access.` | `Üniversite adresi: ücretsiz ve sınırsız erişim.` |
 | Personal email, label | `Personal email` | `Kişisel e-posta` |
-| Personal email, hint | `A backup address. We can send your confirmation link here as well if you like, and our support team can reach you here.` | `Yedek adresiniz. Doğrulama bağlantısını isterseniz buraya da göndeririz; destek ekibimiz de size bu adresten ulaşır.` |
-| Error, empty | `Please add a personal email as well.` | `Kişisel e-posta adresinizi de yazın.` |
-| Error, a university address | `Use an address outside your university, such as Gmail or Outlook.` | `Üniversite dışı bir adres yazın; örneğin Gmail ya da Outlook.` |
+| Personal email, hint | `We will send a confirmation link here too; opening either one activates your account. Our support team can also reach you here.` | `Doğrulama bağlantısını bu adrese de göndereceğiz; hangisini açarsanız hesabınız açılır. Destek ekibimiz de size bu adresten ulaşabilir.` |
+| Error, not an email address | `Enter a valid email address, such as name@gmail.com.` | `Geçerli bir e-posta adresi yazın; örneğin ad@gmail.com.` |
+| Error, personal email empty | `Please add a personal email as well.` | `Kişisel e-posta adresinizi de yazın.` |
+| Error, personal email is a university one | `Use an address outside your university, such as Gmail or Outlook.` | `Üniversite dışı bir adres yazın; örneğin Gmail ya da Outlook.` |
+| Typo, before the address | `Did you mean` | `Bunu mu demek istediniz:` |
+| Typo, after the address | `?` | `?` |
+
+**Before the account is made**
+
+| Part | English | Turkish |
+|------|----------|----------|
+| Title, one address | `Check your email address` | `E-posta adresinizi kontrol edin` |
+| Title, two addresses | `Check your email addresses` | `E-posta adreslerinizi kontrol edin` |
+| Label, university address | `University email` | `Üniversite e-postası` |
+| Label, personal address | `Personal email` | `Kişisel e-posta` |
+| Question | `Are you sure there is no typo?` | `Yazım hatası olmadığına emin misiniz?` |
+| Why | `Otherwise the confirmation link will not reach you.` | `Aksi halde doğrulama bağlantısı size ulaşmaz.` |
+| Main button | `Yes, create my account` | `Evet, hesabımı oluştur` |
+| Second button | `Fix it` | `Düzelt` |
 
 **The inbox step**
 
 | Part | English | Turkish |
 |------|----------|----------|
 | Title | `Check your inbox` | `E-postanızı kontrol edin` |
-| Before the address | `We sent a confirmation link to` | *(empty)* |
-| After the address | `.` | ` adresine doğrulama bağlantısı gönderdik.` *(starts with a space)* |
-| Next line | `Open it to finish creating your account.` | `Hesabınızı oluşturmayı tamamlamak için bağlantıyı açın.` |
-| If it does not arrive (university address only) | `Not there in a few minutes? Check your spam folder, or have the link sent to your personal address.` | `Birkaç dakika içinde gelmediyse spam klasörünüze bakabilir ya da bağlantıyı kişisel adresinize gönderebilirsiniz.` |
-| Button (university address only) | `Send it to my personal address` | `Kişisel adresime gönder` |
-| After the button is pressed | `Sent to your personal address too. Use whichever arrives first.` | `Kişisel adresinize de gönderdik. Hangisi önce gelirse onu kullanabilirsiniz.` |
+| One address — before it | `We sent a confirmation link to` | *(empty)* |
+| One address — after it | `.` | ` adresine doğrulama bağlantısı gönderdik.` *(starts with a space)* |
+| Two addresses — before them | `We sent a confirmation link to` | *(empty)* |
+| Two addresses — between them | `and to` | `ve` |
+| Two addresses — after them | `.` | ` adreslerine doğrulama bağlantısı gönderdik.` *(starts with a space)* |
+| Next line, one address | `Open it to finish creating your account.` | `Hesabınızı oluşturmayı tamamlamak için bağlantıyı açın.` |
+| Next line, two addresses | `Open either one to finish creating your account.` | `Hangisini açarsanız hesabınız açılır.` |
+| If it does not arrive | `Not there in a few minutes? Check your spam folder.` | `Birkaç dakika içinde gelmediyse spam klasörünüze bakın.` |
 | Link | `Send it again` | `Yeniden gönder` |
 
-English puts the address after the words and Turkish before them, so the line
-has a slot on each side.
+English puts the addresses after the words and Turkish before them, so each
+line has a slot on each side.
 
 ## What the server needs to do
 
-1. **Store the personal address** with the account, as a second email,
-   whenever one is given. It is given only with a university address.
-2. **Check it on the server too:** required when the main address ends in
-   `edu.tr`, and not itself an `edu.tr` address. The front end checks this
-   already; the server should not rely on it.
-3. **Send the confirmation link to the university address first.**
-4. **"Send it to my personal address"** sends the same link (or a fresh one)
-   to the personal address. Either link confirms the account. Confirming
-   through the personal address must still give the account its university
-   access — the access comes from the university address, not from which
-   inbox the link was opened in.
-5. **"Send it again"** sends the link to the main address again. A short
-   wait between sends (for example 60 seconds) keeps it from being pressed
-   over and over.
-6. **Show the personal address to the support team** in the admin, next to
-   the main address.
-7. **Store newsletter consent only when the box was ticked.** If the server
-   sets a default anywhere (a model default, a migration, a hidden field),
-   it should default to *no*. Existing members are not affected.
-8. **The free access rule does not change.** If the server's own rule for
-   which addresses count is different from the check above, tell us and we
-   will make the front end match it.
+**The account**
+
+1. **One account, two addresses.** Store the personal address as the
+   account's second email whenever one is given (only with a university
+   address).
+2. **Each address has its own confirmation state** — for example
+   `university_email_confirmed_at` and `personal_email_confirmed_at`.
+3. **The account has its own status:** *active*, *blocked*. It becomes
+   active when either address is confirmed.
+4. **Access:** an active account with a university address gets full access,
+   whichever of the two links was clicked.
+5. **No address may belong to two accounts** — neither the university nor
+   the personal one, in either column. Otherwise the same person can open a
+   second account.
+6. **Sign-in and password reset work with either address.**
+
+**The links**
+
+7. **Send a separate confirmation link to each address,** at the same time.
+8. **Clicking a link confirms that address** and opens the account if it is
+   not open yet.
+9. **One link does not cancel the other.** After the personal link is
+   clicked, the university link stays valid, so the university address can
+   still be confirmed later. Give the links a long life (for example 7 days).
+10. **Send it again** sends a fresh link to each address that is not confirmed
+    yet. Keep a short wait between sends (for example 60 seconds).
+11. **Account settings offer *Send the confirmation link again*** for a
+    university address that is still not confirmed.
+
+**The checks**
+
+12. **Repeat the form's checks on the server** (shape, personal address
+    required with a university address, personal address not a university
+    one). The front end checks them already; the server should not rely on
+    it.
+13. **Check that each domain can receive mail** (an MX record lookup). This
+    also catches made-up university domains on its own. A made-up name on a
+    real university domain can only be caught by the follow-up below.
+
+**Support**
+
+14. **A list in the admin of active accounts whose university address is not
+    confirmed,** with both addresses, so support knows whom to write to.
+15. **Support writes to the personal address,** asks for institution,
+    programme and year, and confirms the person — or blocks the account if
+    the university address turns out to be made up.
+16. **Support can mark a university address as confirmed by hand,** and can
+    block an account.
+
+**Consent**
+
+17. **Store newsletter consent only when the box was ticked.** If the server
+    sets a default anywhere (a model default, a migration, a hidden field),
+    it should default to *no*. Existing members are not affected.
 
 ## In the new front end
 
 | What | Where |
 |----|------------|
-| Markup | `js/page_chrome.js` — `authTemplate`: `#signUpEmailHint`, `#signUpPersonalField`, and the new `#signUpSentPane` |
-| Behaviour | `js/controllers/page_chrome_controller.js` — `UNIVERSITY_ADDRESS`, `wireSignUp()` and `showSent()` |
-| Look | `css/account-window.css` — `.auth-edu`, `.auth-error` and the *after sign-up* section |
-| Turkish text | `js/translations.js` — `authEdu…`, `authPersonal…`, `authSent…`, `authSendPersonal`, `authResend` |
+| Markup | `js/page_chrome.js` — `authTemplate`: `#signUpEmailHint`, `#signUpEmailError`, `#signUpPersonalField`, `#signUpConfirmPane`, `#signUpSentPane` |
+| Behaviour | `js/controllers/page_chrome_controller.js` — `UNIVERSITY_ADDRESS`, `EMAIL_SHAPE`, `COMMON_MAIL_DOMAINS`, `OTHER_MAIL_DOMAINS`, `UNIVERSITY_SLIPS`, `correctedAddress()`, `wireSignUp()`, `confirmAddresses()`, `showSent()` |
+| Look | `css/account-window.css` — `.auth-edu`, `.auth-error`, `.auth-suggest`, and the *before the account is made* and *after sign-up* sections |
+| Turkish text | `js/translations.js` — `authEdu…`, `authPersonal…`, `authEmailFormat`, `authSuggest…`, `authUniversityEmail`, `authConfirm…`, `authSent…`, `authResend` |
 | To see it | side menu → **Sign up** |
 
-In the front end the inbox step is shown as soon as the form is sent, and its
-two buttons only change what is on screen. The real sending, and anything
-the server says back (an address already in use, a password that is too
-weak), is for the integration.
+In the front end the steps after the form are shown as soon as it is sent,
+and *Send it again* does nothing yet. The real sending, and anything the
+server says back (an address already in use, a password that is too weak),
+is for the integration.
 
 ## Done when
 
 - [ ] The offer line shows under *Email* when the form opens.
 - [ ] Typing a `.edu.tr` address turns it green and opens the required
       *Personal email* field; changing it back hides the field again.
+- [ ] An address without `@` or a proper domain is refused; a common typo
+      is offered back corrected and the form does not go on until it is
+      fixed — on the page and on the server.
 - [ ] An empty or university personal email is refused, on the page and on
       the server.
-- [ ] After sign-up the inbox step names the address the link went to.
-- [ ] For a university address, *Send it to my personal address* sends the
-      link there, and confirming from either inbox gives university access.
-- [ ] Support can see the personal address.
+- [ ] *Create account* shows the addresses large; *Fix it* goes back with the
+      form still filled in.
+- [ ] A university sign-up sends a link to each address; either one opens
+      the account with full access, and the other stays valid.
+- [ ] No address can be used by two accounts.
+- [ ] Support has a list of active accounts with an unconfirmed university
+      address, can confirm one by hand, and can block an account.
 - [ ] The newsletter box is unticked when the form opens, and the server
       records consent only when it is ticked.
 - [ ] Turkish and English text match the tables above.

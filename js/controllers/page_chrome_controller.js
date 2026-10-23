@@ -13,6 +13,10 @@
 // link and drops its "soon" badge:
 //   <div data-controller="page-chrome language" data-page-chrome-page-value="about"></div>
 
+// An address at a university in Türkiye or the TRNC, the ones the EKUAL
+// agreement covers: anything ending in .edu.tr after the @.
+const UNIVERSITY_ADDRESS = /@([a-z0-9-]+\.)*edu\.tr$/i;
+
 class PageChromeController extends Stimulus.Controller {
   static values = { page: String }
 
@@ -121,6 +125,16 @@ class PageChromeController extends Stimulus.Controller {
       if (first) first.focus();
     }, { once: true });
     bootstrap.Modal.getOrCreateInstance(container).show();
+
+    // A university address is what makes the account free, so the line under
+    // the field says so the moment one is typed.
+    const email = container.querySelector("#signUpEmail");
+    const hint = container.querySelector("#signUpEmailHint");
+    if (email && hint) {
+      email.addEventListener("input", () => {
+        hint.classList.toggle("is-edu", UNIVERSITY_ADDRESS.test(email.value.trim()));
+      });
+    }
 
     // Nothing is submitted anywhere yet; the forms stand for the screens the
     // backend will render.

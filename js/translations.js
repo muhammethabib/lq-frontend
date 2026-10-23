@@ -493,6 +493,8 @@ window.LQ_TRANSLATIONS = {
     authForgot: "Şifrenizi mi unuttunuz?",
     authSignIn: "Giriş Yap",
     authCreate: "Kaydol",
+    authEduHint: "<b>.edu.tr</b> adresinle kaydol, LexiQamus’u ücretsiz ve sınırsız kullan.",
+    authEduOk: "Üniversite adresi: ücretsiz ve sınırsız erişim.",
     authNewsletter: "LexiQamus ile ilgili gelişmelerden e-posta yoluyla haberdar olmak istiyorum.",
     authTerms: "<a href=\"#\">Üyelik sözleşmesini</a> okudum ve kabul ediyorum.",
     authVerified: "Doğrulandı",
@@ -614,6 +616,18 @@ window.LQ_TRANSLATIONS = {
     // language does not use is left empty and drops out of the line.
     noResultsFor: "",
     noResultsForAfter: "için sonuç bulunamadı.",
+
+    // --- access limit ---
+    limitTitle: "Üniversite e-postanla ücretsiz ve sınırsız devam et.",
+    limitReadyBefore: "",
+    limitReadyAfter: "için sonuçlar hazır.",
+    limitHow: "<b>.edu.tr</b> adresinle 1 dakikada kaydol, tüm sözlüklere sınırsız eriş.",
+    limitCta: "Ücretsiz Hesap Oluştur",
+    limitHaveAccount: "Hesabın var mı?",
+    limitSignIn: "Giriş yap",
+    limitNoUniversity: "Üniversite adresin yok mu?",
+    limitRecommend: "LexiQamus’u kütüphanene öner",
+    limitEkual: "TÜBİTAK ULAKBİM EKUAL kapsamında",
     didYouMean: "Şunlardan birini mi aradınız?",
     // --- The 2026 innovations, read under the main page ---
     innovationsLabel: "2026 yenilikleri",
@@ -1415,19 +1429,16 @@ window.LQ_TRANSLATIONS = {
     viewNewVisitor: "Ana Sayfa – Yeni Ziyaretçi",
     viewNoResults: "Sonuç Yok",
     viewResults: "Sonuçlar",
+    viewAccessLimit: "Erişim Sınırı",
     viewPopup: "Madde Penceresi",
     viewRedhouse: "Redhouse",
 
     // --- Announcement ---
     ekualBadge: "TÜBİTAK ULAKBİM · EKUAL",
-    ekualTitle: "Müjde: Türkiye ve KKTC'deki Tüm Üniversiteler için Tam Erişim!",
-    ekualBody: "LexiQamus, 2026 yılı başından itibaren <b>TÜBİTAK ULAKBİM EKUAL Projesi</b> kapsamında Türkiye ve KKTC'deki tüm üniversitelerin erişimine açılmıştır. Okunması zor kelimelerin çözümünden farklı sözlüklerdeki anlamlarına kadar tüm içeriklerden sınırsız olarak yararlanabilirsiniz.",
-    ekualPill: "VPN ve proxy gerekmez",
-    ekualOffTitle: "Kurum dışından",
-    ekualOffText: "Kurumsal yetkilendirmeyle uğraşmadan <b>.edu.tr</b> e-posta adresinizle bir kez kaydolun.",
-    ekualOnTitle: "Kampüs ağından",
-    ekualOnText: "Kampüs ağı üzerinden bağlandığınızda hesap dahi açmadan tüm içeriklere doğrudan erişebilirsiniz.",
-    ekualCta: "Hesabınızı Oluşturun",
+    ekualTitle: "Üniversite e-postanla LexiQamus ücretsiz.",
+    ekualBody: "Osmanlıca sözlükler, sınırsız arama, tüm içerik.",
+    ekualHow: "<b>.edu.tr</b> adresinle 1 dakikada kaydol.",
+    ekualCta: "Ücretsiz Hesap Oluştur",
     ekualLater: "Daha sonra",
     ekualNever: "Bir daha gösterme"
   }

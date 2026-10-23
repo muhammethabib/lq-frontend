@@ -234,7 +234,17 @@ window.LQ_PAGE_CHROME = `
               </div>
               <div class="auth-field">
                 <label for="signUpEmail" data-i18n="authEmail">Email</label>
-                <input type="email" id="signUpEmail" class="form-control" autocomplete="email" required>
+                <input type="email" id="signUpEmail" class="form-control" autocomplete="email"
+                       aria-describedby="signUpEmailHint" required>
+                <!-- The offer, said where the address is typed. It turns into a
+                     confirmation as soon as the address is a university one. -->
+                <p class="auth-hint auth-edu" id="signUpEmailHint" aria-live="polite">
+                  <span class="auth-edu-offer" data-i18n="authEduHint" data-i18n-html="1">Universities in Türkiye and the TRNC: sign up with your <b>.edu.tr</b> address to use LexiQamus free and without limits.</span>
+                  <span class="auth-edu-ok">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span data-i18n="authEduOk">University address: free, unlimited access.</span>
+                  </span>
+                </p>
               </div>
               <div class="auth-field">
                 <label for="signUpPassword" data-i18n="authPassword">Password</label>
@@ -249,7 +259,7 @@ window.LQ_PAGE_CHROME = `
               </div>
 
               <div class="form-check auth-check">
-                <input class="form-check-input" type="checkbox" id="signUpNews" checked>
+                <input class="form-check-input" type="checkbox" id="signUpNews">
                 <label class="form-check-label" for="signUpNews" data-i18n="authNewsletter">I would like to receive news about LexiQamus by email.</label>
               </div>
               <div class="form-check auth-check">

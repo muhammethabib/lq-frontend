@@ -726,6 +726,35 @@
         </div>
       </div>
 
+      <!-- A visitor who has used up their searches. The results stay behind,
+           blurred, so it is plain they are there; the way to them is a free
+           account with a university address. -->
+      <div class="access-limit" data-home-target="accessLimit" hidden
+           role="region" aria-labelledby="accessLimitTitle">
+        <h2 class="access-limit-title" id="accessLimitTitle" data-i18n="limitTitle">Carry on free and without limits with your university email.</h2>
+        <!-- English puts the words before the term and Turkish after it, so
+             the line has a slot on each side, as the no-results line does. -->
+        <p class="access-limit-line">
+          <span data-i18n="limitReadyBefore">The results for</span>
+          <b class="access-limit-term" dir="auto" data-home-target="accessLimitTerm"></b>
+          <span data-i18n="limitReadyAfter">are ready.</span>
+          <span data-i18n="limitHow" data-i18n-html="1">Universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address and search every dictionary without limits.</span>
+        </p>
+        <button type="button" class="btn access-limit-cta" data-action="click->home#openSignUp"
+                data-i18n="limitCta">Create a free account</button>
+        <p class="access-limit-signin">
+          <span data-i18n="limitHaveAccount">Already have an account?</span>
+          <button type="button" class="btn access-limit-link" data-action="click->home#openSignIn"
+                  data-i18n="limitSignIn">Sign in</button>
+        </p>
+        <p class="access-limit-foot">
+          <span data-i18n="limitNoUniversity">No university address?</span>
+          <a class="access-limit-recommend" href="#" data-i18n="limitRecommend">Recommend LexiQamus to your library</a>
+          <span aria-hidden="true">·</span>
+          <span data-i18n="limitEkual">Under TÜBİTAK ULAKBİM EKUAL</span>
+        </p>
+      </div>
+
       <!-- Which half of a row the pointer is over, and so where a press would
            go. One element serves every row. -->
       <span class="zone-tip" data-home-target="zoneTip" aria-hidden="true"></span>
@@ -1794,36 +1823,11 @@
         </button>
 
         <p class="announcement-badge" data-i18n="ekualBadge">TÜBİTAK ULAKBİM · EKUAL</p>
-        <h2 class="announcement-title" data-i18n="ekualTitle">Great News: Full Access for All Universities in Türkiye and TRNC!</h2>
-        <p class="announcement-body" data-i18n="ekualBody" data-i18n-html="1">LexiQamus has been open to all universities in Türkiye and the TRNC since the beginning of 2026, under the <b>TÜBİTAK ULAKBİM EKUAL Project</b>. From deciphering hard-to-read words to their meanings across different dictionaries, you have unlimited access to all content.</p>
-
-        <div class="announcement-cards">
-          <article class="announcement-card is-off">
-            <span class="announcement-pill" data-i18n="ekualPill">No VPN or proxy</span>
-            <h3>
-              <!-- A university with a lock on it: the one reading that covers
-                   both halves of the offer, access and who it is for. -->
-              <span class="announcement-mark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 21V10"></path><path d="M10 21V10"></path><path d="M14 21V10"></path><path d="M18 21V10"></path><polygon points="12 3 21 8 3 8"></polygon></svg>
-                <span class="announcement-lock">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="12" width="15" height="10" rx="2.5"></rect><path d="M8 12V7.6a4.3 4.3 0 0 1 8.4-1.3"></path><circle cx="12" cy="17" r="1.35" fill="currentColor" stroke="none"></circle></svg>
-                </span>
-              </span>
-              <span data-i18n="ekualOffTitle">Off campus</span>
-            </h3>
-            <p data-i18n="ekualOffText" data-i18n-html="1">Sign up once with your <b>.edu.tr</b> e-mail, no institutional authorization needed.</p>
-          </article>
-          <article class="announcement-card is-on">
-            <h3>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 21V10"></path><path d="M10 21V10"></path><path d="M14 21V10"></path><path d="M18 21V10"></path><polygon points="12 3 21 8 3 8"></polygon></svg>
-              <span data-i18n="ekualOnTitle">On campus</span>
-            </h3>
-            <p data-i18n="ekualOnText">On the campus network you can reach everything directly, without even creating an account.</p>
-          </article>
-        </div>
+        <h2 class="announcement-title" data-i18n="ekualTitle">LexiQamus is free with your university email.</h2>
+        <p class="announcement-body" data-i18n="ekualBody">Ottoman Turkish dictionaries, unlimited searching, every entry.</p>
+        <!-- Who the offer is for is said in English, where most readers are
+             outside Türkiye; the Turkish wording does not need it. -->
+        <p class="announcement-how" data-i18n="ekualHow" data-i18n-html="1">For universities in Türkiye and the TRNC: sign up in a minute with your <b>.edu.tr</b> address.</p>
 
         <div class="announcement-actions">
           <button type="button" class="btn announcement-cta" data-action="click->announcement#signUp">
@@ -1831,7 +1835,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                    stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </span>
-            <span data-i18n="ekualCta">Create your account</span>
+            <span data-i18n="ekualCta">Create a free account</span>
           </button>
           <button type="button" class="btn announcement-later" data-bs-dismiss="modal"
                   data-i18n="ekualLater">Later</button>

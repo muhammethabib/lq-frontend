@@ -46,7 +46,8 @@ class HomeController extends Stimulus.Controller {
     "spellingRow", "pronunciationButton", "pronunciationCount",
     "jumpBar", "jumpLinks",
     "noMatches", "noMatchesLine", "noMatchesTerm",
-    "searchFailed", "suggestions", "suggestionsBlock"
+    "searchFailed", "suggestions", "suggestionsBlock",
+    "accessLimit", "accessLimitTerm"
   ]
 
   static values = {
@@ -117,16 +118,17 @@ class HomeController extends Stimulus.Controller {
     clearTimeout(this.taglineTimer);
   }
 
-  // The four screens this controller owns. The other two, the entry window
-  // and the Redhouse entry, belong to their own controllers.
+  // The screens this controller owns. The other two, the entry window and
+  // the Redhouse entry, belong to their own controllers.
   showViewState(state) {
-    if (state === "results" || state === "no-results") {
+    if (state === "results" || state === "no-results" || state === "access-limit") {
       this.sideValue = "ottoman";
       // The term goes in first: the prompts are dropped by there being text,
       // so they have to be settled after the bar has it.
       this.inputTarget.value = "نظر";
       this.applySide();
-      this.receive(state === "results" ? this.sample() : this.emptySample());
+      const results = state === "no-results" ? this.emptySample() : this.sample();
+      this.receive(state === "access-limit" ? { ...results, accessLimited: true } : results);
       return;
     }
     if (state === "home" || state === "new-visitor") this.resetToLanding();
@@ -147,6 +149,7 @@ class HomeController extends Stimulus.Controller {
     this.fitTagline();
     this.resultsSurfaceTarget.hidden = true;
     this.noMatchesTarget.hidden = true;
+    this.limitAccess(false);
   }
 
   // What the endpoint returns when a word is not in any dictionary: no rows,
@@ -576,6 +579,29 @@ class HomeController extends Stimulus.Controller {
     this.searchFailedTarget.hidden = false;
     this.noMatchesTarget.hidden = false;
     this.element.classList.add("state-no-matches");
+    this.limitAccess(false);
+  }
+
+  // A visitor whose searches are used up. The endpoint still answers, with
+  // accessLimited set, and the list it sends is shown blurred behind the
+  // offer of a free account, so the reader can see the answer is there. The
+  // blurred part is taken out of reach of the pointer, the keyboard and
+  // screen readers alike.
+  limitAccess(limited) {
+    this.element.classList.toggle("state-access-limit", limited);
+    this.accessLimitTarget.hidden = !limited;
+    if (limited) this.accessLimitTermTarget.textContent = this.inputTarget.value.trim();
+    this.resultsSurfaceTarget.querySelectorAll(".results-header-side, .results-table-scroll, .fuzzy-container")
+      .forEach((part) => { part.inert = limited; });
+  }
+
+  openSignUp() { this.openAccount("signup"); }
+  openSignIn() { this.openAccount("signin"); }
+
+  // The account window belongs to the page chrome; its own buttons open it.
+  openAccount(mode) {
+    const button = document.querySelector(`[data-mode="${mode}"]`);
+    if (button) button.click();
   }
 
   receive(results) {
@@ -594,6 +620,7 @@ class HomeController extends Stimulus.Controller {
     this.renderSpellings();
     this.renderTerm();
     this.renderResults();
+    this.limitAccess(Boolean(results.accessLimited));
   }
 
   // The sample response stands in for the endpoint. It always returns the

@@ -1,7 +1,7 @@
 // js/controllers/view_switcher_controller.js
 // The view switcher in the bottom left corner of the main page.
 //
-// The main page has six screens, and most of them are reached by searching.
+// The main page has several screens, and most of them are reached by searching.
 // This puts each of them one click away while the work is being reviewed. It
 // switches the screen in place rather than reloading, which is what the
 // reference mock does.

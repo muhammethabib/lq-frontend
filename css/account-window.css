@@ -77,6 +77,14 @@ body:has(.auth-modal.show) .modal-backdrop {
   color: var(--lq-ink-soft);
 }
 
+/* Under the address: the offer, then, once the address is a university one,
+   a green tick that says it has been taken up. */
+.auth-modal .auth-edu b { color: var(--lq-ink); font-weight: 700; }
+.auth-modal .auth-edu-ok { display: none; align-items: center; gap: 6px; font-weight: 600; color: #0f6b4f; }
+.auth-modal .auth-edu-ok svg { width: 14px; height: 14px; flex: none; }
+.auth-modal .auth-edu.is-edu .auth-edu-offer { display: none; }
+.auth-modal .auth-edu.is-edu .auth-edu-ok { display: inline-flex; }
+
 .auth-modal .auth-forgot {
   justify-self: start;
   font-size: .84rem;

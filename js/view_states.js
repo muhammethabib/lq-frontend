@@ -1,7 +1,7 @@
 // js/view_states.js
 // The states the view switcher offers, in the reference mock's own order.
 //
-// These are the six screens the main page can be in, not a list of the
+// These are the screens the main page can be in, not a list of the
 // site's pages: the side menu is how a reader moves between pages. The
 // switcher is for reviewing, so it puts each screen one click away instead
 // of making it be reached by searching.
@@ -14,6 +14,7 @@ window.LQ_VIEW_STATES = [
   { state: "new-visitor", key: "viewNewVisitor", label: "Home – New Visitor" },
   { state: "no-results", key: "viewNoResults", label: "No Results" },
   { state: "results", key: "viewResults", label: "Results" },
+  { state: "access-limit", key: "viewAccessLimit", label: "Access Limit" },
   { state: "popup", key: "viewPopup", label: "Popup" },
   { state: "redhouse", key: "viewRedhouse", label: "Redhouse" }
 ];

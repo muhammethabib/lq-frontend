@@ -27,7 +27,7 @@ class EntryWindowController extends Stimulus.Controller {
     document.addEventListener("entry:open", this.onOpen);
     this.onLanguageChange = () => { if (this.record) this.render(); };
     document.addEventListener("language:changed", this.onLanguageChange);
-    // The view switcher asks for one of the main page's six screens; this
+    // The view switcher asks for one of the main page's screens; this
     // window is the one it calls Popup. A reviewing aid: this listener comes
     // out with the switcher.
     this.onViewState = (event) => this.showViewState(event.detail.state);

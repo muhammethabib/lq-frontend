@@ -51,14 +51,9 @@ class PageChromeController extends Stimulus.Controller {
   onHome() { return this.pageValue === "home"; }
 
   // The main page carries its own wordmark, so the one in the top bar is
-  // there for the pages that do not. The way to the old site is the other way
-  // round: it belongs to the main page, and a reading page does without it.
+  // there for the pages that do not.
   settleHomeLink() {
-    if (!this.onHome()) {
-      const classic = this.element.querySelector(".classic-link");
-      if (classic) classic.remove();
-      return;
-    }
+    if (!this.onHome()) return;
     const logo = this.element.querySelector(".top-row-logo");
     if (logo) logo.remove();
   }

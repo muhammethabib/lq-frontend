@@ -12,8 +12,6 @@ window.LQ_TRANSLATIONS = {
   tr: {
     // --- page chrome ---
     subtitle: "OSMANLI TÜRKÇESİ DİLBİLİMSEL ANALİZ ARACI",
-    legacyLink: "Klasik sürüm",
-    legacyTitle: "Önceki kararlı sürümü aç",
     ariaHome: "LexiQamus ana sayfa",
     menuHeading: "Menü",
     ariaLanguage: "Dil",

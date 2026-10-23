@@ -2748,7 +2748,6 @@ html:has(body.lqs-fit) {
 
 /* while the story is open the page is the story alone: the chrome above it steps back */
 body.in-story-view #menuBtn,
-body.in-story-view .legacy-link,
 body.in-story-view #langSwitch {
   opacity: 0;
   pointer-events: none;

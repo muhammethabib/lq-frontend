@@ -621,7 +621,7 @@ window.LQ_TRANSLATIONS = {
     limitTitle: "Üniversite e-postanla ücretsiz ve sınırsız devam et.",
     limitReadyBefore: "",
     limitReadyAfter: "için sonuçlar hazır.",
-    limitHow: "<b>.edu.tr</b> adresinle 1 dakikada kaydol, tüm sözlüklere sınırsız eriş.",
+    limitHow: "<b>.edu.tr</b> adresinle 1 dakikada kaydol, onlarca cilt Osmanlıca sözlükte sınırsız ara.",
     limitCta: "Ücretsiz Hesap Oluştur",
     limitHaveAccount: "Hesabın var mı?",
     limitSignIn: "Giriş yap",
@@ -1436,7 +1436,7 @@ window.LQ_TRANSLATIONS = {
     // --- Announcement ---
     ekualBadge: "TÜBİTAK ULAKBİM · EKUAL",
     ekualTitle: "Üniversite e-postanla LexiQamus ücretsiz.",
-    ekualBody: "Osmanlıca sözlükler, sınırsız arama, tüm içerik.",
+    ekualBody: "Onlarca cilt Osmanlıca sözlük, sınırsız arama, tüm içerik.",
     ekualHow: "<b>.edu.tr</b> adresinle 1 dakikada kaydol.",
     ekualCta: "Ücretsiz Hesap Oluştur",
     ekualLater: "Daha sonra",

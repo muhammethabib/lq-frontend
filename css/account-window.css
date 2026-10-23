@@ -82,8 +82,10 @@ body:has(.auth-modal.show) .modal-backdrop {
 .auth-modal .auth-edu b { color: var(--lq-ink); font-weight: 700; }
 .auth-modal .auth-edu-ok { display: none; align-items: center; gap: 6px; font-weight: 600; color: #0f6b4f; }
 .auth-modal .auth-edu-ok svg { width: 14px; height: 14px; flex: none; }
-.auth-modal .auth-edu.is-edu .auth-edu-offer { display: none; }
-.auth-modal .auth-edu.is-edu .auth-edu-ok { display: inline-flex; }
+.auth-modal .auth-edu.is-lifetime .auth-edu-offer,
+.auth-modal .auth-edu.is-week .auth-edu-offer { display: none; }
+.auth-modal .auth-edu.is-lifetime .auth-edu-lifetime,
+.auth-modal .auth-edu.is-week .auth-edu-week { display: inline-flex; }
 
 .auth-modal .auth-field[hidden] { display: none; }
 .auth-modal .auth-error { margin: 0; font-size: 12px; font-weight: 600; color: #b42318; }
@@ -140,6 +142,11 @@ body:has(.auth-modal.show) .modal-backdrop {
 .auth-modal .auth-confirm-ask b { display: block; color: var(--lq-ink); }
 
 /* ---------- after sign-up ---------- */
+
+/* What the institutional address has already got. */
+.auth-modal .auth-sent-access { margin: 2px 0 0; font-size: 14px; font-weight: 600; line-height: 1.5; color: #0f6b4f; }
+.auth-modal .auth-sent-access[hidden] { display: none; }
+.auth-modal .auth-sent-access svg { width: 15px; height: 15px; margin-right: 4px; vertical-align: -2px; }
 
 .auth-modal .auth-sent { display: grid; justify-items: center; gap: 10px; text-align: center; }
 .auth-modal .auth-sent-mark {

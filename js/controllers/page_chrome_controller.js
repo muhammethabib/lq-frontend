@@ -13,9 +13,32 @@
 // link and drops its "soon" badge:
 //   <div data-controller="page-chrome language" data-page-chrome-page-value="about"></div>
 
-// An address at a university in Türkiye or the TRNC, the ones the EKUAL
-// agreement covers: anything ending in .edu.tr after the @.
-const UNIVERSITY_ADDRESS = /@([a-z0-9-]+\.)*edu\.tr$/i;
+// What an email address gets at sign-up, decided by its domain (the part
+// after the @, in lower case) alone. The rules are tried in order and the
+// first that matches decides: the listed institutions in
+// js/academic_domains.js (with their subdomains), then the academic
+// patterns. "lifetime" is free access with no end, "week" is free access
+// for a week, "none" is a standard account.
+const ACCESS_PATTERNS = [
+  [/\.edu\.tr$/, "lifetime"],
+  [/alumni/, "week"],
+  [/\.edu$/, "week"],
+  [/\.ac\.uk$/, "week"],
+  [/\.edu\.[a-z]{2}$/, "week"],
+  [/\.ac\.[a-z]{2}$/, "week"]
+];
+
+function emailAccess(address) {
+  const at = address.lastIndexOf("@");
+  if (at < 0) return "none";
+  const domain = address.slice(at + 1).trim().toLowerCase();
+  if (!domain) return "none";
+  const listed = (window.LQ_ACADEMIC_DOMAINS || []).find((one) =>
+    domain === one.domain || domain.endsWith(`.${one.domain}`));
+  if (listed) return listed.access;
+  const pattern = ACCESS_PATTERNS.find(([test]) => test.test(domain));
+  return pattern ? pattern[1] : "none";
+}
 
 // The shape of an email address: something, an @, and a domain with a dot.
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i;
@@ -61,7 +84,7 @@ function correctedAddress(address) {
     if (slip.test(domain)) return `${local}@${domain.replace(slip, fix)}`;
   }
   if (COMMON_MAIL_DOMAINS.includes(domain) || OTHER_MAIL_DOMAINS.includes(domain)) return null;
-  if (domain.length < 5 || UNIVERSITY_ADDRESS.test(address)) return null;
+  if (domain.length < 5 || emailAccess(address) !== "none") return null;
   let best = null;
   let bestDistance = 3;
   COMMON_MAIL_DOMAINS.forEach((known) => {
@@ -143,11 +166,12 @@ class PageChromeController extends Stimulus.Controller {
 
   // The sign-up form, beyond what the markup does on its own.
   //
-  // A university address is what makes the account free, so the line under
-  // the field says so the moment one is typed, and a second field opens for
-  // a personal address: some university mail servers hold back the
-  // confirmation email, so a link goes to that address too. It is asked for
-  // only then; anyone else is already giving their own address.
+  // An institutional address is what makes the account free, so the line
+  // under the field says what the address will get the moment it is typed,
+  // and a second field opens for a personal address: some institutional mail
+  // servers hold back the confirmation email, so a link goes to that address
+  // too. It is asked for only then; anyone else is already giving their own
+  // address.
   //
   // Each address is checked for its shape and for the usual slips before
   // the form can go on, and then shown back large to be read once more:
@@ -161,7 +185,7 @@ class PageChromeController extends Stimulus.Controller {
     const personal = container.querySelector("#signUpPersonal");
     if (!form || !email || !personal) return;
 
-    const isUniversity = (address) => UNIVERSITY_ADDRESS.test(address.trim());
+    const isInstitutional = (address) => emailAccess(address.trim()) !== "none";
     const field = (input) => input.closest(".auth-field");
     const showError = (input, kind) => {
       const error = field(input).querySelector(".auth-error");
@@ -175,12 +199,13 @@ class PageChromeController extends Stimulus.Controller {
       box.querySelector("[data-auth-suggest-fix]").textContent = suggestion || "";
       if (suggestion) input.setAttribute("aria-invalid", "true");
     };
-    const settleUniversity = () => {
-      const university = isUniversity(email.value);
-      hint.classList.toggle("is-edu", university);
-      personalField.hidden = !university;
-      personal.required = university;
-      if (!university) { showError(personal, null); showSuggestion(personal, null); }
+    const settleInstitution = () => {
+      const access = emailAccess(email.value.trim());
+      hint.classList.toggle("is-lifetime", access === "lifetime");
+      hint.classList.toggle("is-week", access === "week");
+      personalField.hidden = access === "none";
+      personal.required = access !== "none";
+      if (access === "none") { showError(personal, null); showSuggestion(personal, null); }
     };
     // An address that is not right yet: what is wrong is said under it.
     const problem = (input) => {
@@ -188,7 +213,7 @@ class PageChromeController extends Stimulus.Controller {
       if (!address) return input === personal ? "missing" : "format";
       if (!EMAIL_SHAPE.test(address)) return "format";
       if (correctedAddress(address)) return "slip";
-      if (input === personal && isUniversity(address)) return "university";
+      if (input === personal && isInstitutional(address)) return "institutional";
       return null;
     };
     const report = (input) => {
@@ -202,7 +227,7 @@ class PageChromeController extends Stimulus.Controller {
       input.addEventListener("input", () => {
         showError(input, null);
         showSuggestion(input, null);
-        if (input === email) settleUniversity();
+        if (input === email) settleInstitution();
       });
       // Said as soon as the reader leaves the field, not only on sending.
       input.addEventListener("blur", () => { if (input.value.trim()) report(input); });
@@ -210,18 +235,18 @@ class PageChromeController extends Stimulus.Controller {
         input.value = event.currentTarget.textContent;
         showSuggestion(input, null);
         showError(input, null);
-        if (input === email) settleUniversity();
+        if (input === email) settleInstitution();
         input.focus();
       });
     });
 
     form.addEventListener("submit", () => {
       const emailOk = report(email);
-      const university = emailOk && isUniversity(email.value);
-      const personalOk = !university || report(personal);
+      const institutional = emailOk && isInstitutional(email.value);
+      const personalOk = !institutional || report(personal);
       if (!emailOk) { email.focus(); return; }
       if (!personalOk) { personal.focus(); return; }
-      this.confirmAddresses(container, email.value.trim(), university ? personal.value.trim() : "");
+      this.confirmAddresses(container, email.value.trim(), institutional ? personal.value.trim() : "");
     });
   }
 
@@ -242,9 +267,13 @@ class PageChromeController extends Stimulus.Controller {
     };
   }
 
-  // Where the confirmation links went, in place of the form.
+  // Where the confirmation links went, in place of the form. Access does not
+  // wait for them: an institutional address has its free access from the
+  // moment the account is made, and the links only confirm the addresses.
   showSent(container, address, personalAddress) {
     const two = Boolean(personalAddress);
+    const access = emailAccess(address);
+    container.querySelectorAll("[data-auth-access]").forEach((line) => { line.hidden = line.dataset.authAccess !== access; });
     container.querySelector("[data-auth-sent-to]").textContent = address;
     container.querySelector("[data-auth-sent-main]").textContent = address;
     container.querySelector("[data-auth-sent-personal]").textContent = personalAddress;

@@ -1,0 +1,71 @@
+// js/academic_domains.js
+// The institutions whose email addresses get free access at sign-up although
+// their domain does not follow the usual academic patterns (.edu.tr, .edu,
+// .ac.uk, .edu.XX, .ac.XX). A listed domain also covers its subdomains.
+//
+// A copy of the "Approved Domains" sheet of Academic_Domains_Auto_Access.xlsx,
+// so the sign-up form can say what an address will get while it is typed. At
+// integration the server holds this list, and the page asks the server
+// instead; a new exception is then a new row, never a change to code.
+//
+// access is "lifetime" (institutions in Türkiye) or "week" (abroad).
+
+window.LQ_ACADEMIC_DOMAINS = [
+  { domain: "bilgiedu.net", access: "lifetime", institution: "İstanbul Bilgi Üniversitesi (students)", country: "TR" },
+  { domain: "hmb.gov.tr", access: "lifetime", institution: "Ministry of Treasury and Finance (ULAKBİM consortium member)", country: "TR" },
+  { domain: "iletisim.gov.tr", access: "lifetime", institution: "Directorate of Communications (ULAKBİM consortium member)", country: "TR" },
+  { domain: "mta.gov.tr", access: "lifetime", institution: "General Directorate of Mineral Research and Exploration, MTA (ULAKBİM consortium member)", country: "TR" },
+  { domain: "sabanciuniv.edu", access: "lifetime", institution: "Sabancı Üniversitesi", country: "TR" },
+  { domain: "sanayi.gov.tr", access: "lifetime", institution: "Ministry of Industry and Technology (ULAKBİM consortium member)", country: "TR" },
+  { domain: "sbb.gov.tr", access: "lifetime", institution: "Presidency of Strategy and Budget (ULAKBİM consortium member)", country: "TR" },
+  { domain: "ssb.gov.tr", access: "lifetime", institution: "Presidency of Defence Industries, SSB (ULAKBİM consortium member)", country: "TR" },
+  { domain: "tccb.gov.tr", access: "lifetime", institution: "Presidency of the Republic of Türkiye (ULAKBİM consortium member)", country: "TR" },
+  { domain: "tenmak.gov.tr", access: "lifetime", institution: "Turkish Energy, Nuclear and Mineral Research Agency, TENMAK (ULAKBİM consortium member)", country: "TR" },
+  { domain: "tuba.gov.tr", access: "lifetime", institution: "Turkish Academy of Sciences, TÜBA (ULAKBİM consortium member)", country: "TR" },
+  { domain: "tubitak.gov.tr", access: "lifetime", institution: "TÜBİTAK (ULAKBİM consortium member)", country: "TR" },
+  { domain: "tuseb.gov.tr", access: "lifetime", institution: "Health Institutes of Türkiye, TÜSEB (ULAKBİM consortium member)", country: "TR" },
+  { domain: "ytb.gov.tr", access: "lifetime", institution: "Presidency for Turks Abroad and Related Communities, YTB (ULAKBİM consortium member)", country: "TR" },
+  { domain: "uclouvain.be", access: "week", institution: "UCLouvain", country: "BE" },
+  { domain: "ugent.be", access: "week", institution: "Ghent University", country: "BE" },
+  { domain: "uni-sofia.bg", access: "week", institution: "Sofia University", country: "BG" },
+  { domain: "concordia.ca", access: "week", institution: "Concordia University", country: "CA" },
+  { domain: "sfu.ca", access: "week", institution: "Simon Fraser University", country: "CA" },
+  { domain: "unibas.ch", access: "week", institution: "Universität Basel", country: "CH" },
+  { domain: "unibe.ch", access: "week", institution: "Universität Bern", country: "CH" },
+  { domain: "unine.ch", access: "week", institution: "Université de Neuchâtel", country: "CH" },
+  { domain: "upol.cz", access: "week", institution: "Palacký University Olomouc", country: "CZ" },
+  { domain: "fu-berlin.de", access: "week", institution: "Freie Universität Berlin", country: "DE" },
+  { domain: "hu-berlin.de", access: "week", institution: "Humboldt-Universität zu Berlin", country: "DE" },
+  { domain: "lmu.de", access: "week", institution: "Ludwig-Maximilians-Universität München", country: "DE" },
+  { domain: "uni-bamberg.de", access: "week", institution: "Universität Bamberg", country: "DE" },
+  { domain: "uni-bonn.de", access: "week", institution: "Universität Bonn", country: "DE" },
+  { domain: "uni-duisburg-essen.de", access: "week", institution: "Universität Duisburg-Essen", country: "DE" },
+  { domain: "uni-goettingen.de", access: "week", institution: "Universität Göttingen", country: "DE" },
+  { domain: "uni-halle.de", access: "week", institution: "Universität Halle-Wittenberg", country: "DE" },
+  { domain: "uni-hamburg.de", access: "week", institution: "Universität Hamburg", country: "DE" },
+  { domain: "uni-heidelberg.de", access: "week", institution: "Universität Heidelberg", country: "DE" },
+  { domain: "uni-leipzig.de", access: "week", institution: "Universität Leipzig", country: "DE" },
+  { domain: "uni-mainz.de", access: "week", institution: "Universität Mainz", country: "DE" },
+  { domain: "uni-muenster.de", access: "week", institution: "Universität Münster", country: "DE" },
+  { domain: "unibw.de", access: "week", institution: "Universität der Bundeswehr München", country: "DE" },
+  { domain: "univ-constantine3.dz", access: "week", institution: "Université Constantine 3", country: "DZ" },
+  { domain: "college-de-france.fr", access: "week", institution: "Collège de France", country: "FR" },
+  { domain: "sciencespo.fr", access: "week", institution: "Sciences Po", country: "FR" },
+  { domain: "sorbonne-universite.fr", access: "week", institution: "Sorbonne Université", country: "FR" },
+  { domain: "univ-amu.fr", access: "week", institution: "Aix-Marseille Université", country: "FR" },
+  { domain: "univ-paris1.fr", access: "week", institution: "Université Paris 1 Panthéon-Sorbonne", country: "FR" },
+  { domain: "auth.gr", access: "week", institution: "Aristotle University of Thessaloniki", country: "GR" },
+  { domain: "duth.gr", access: "week", institution: "Democritus University of Thrace", country: "GR" },
+  { domain: "ionio.gr", access: "week", institution: "Ionian University", country: "GR" },
+  { domain: "uoa.gr", access: "week", institution: "National and Kapodistrian University of Athens", country: "GR" },
+  { domain: "uoc.gr", access: "week", institution: "University of Crete", country: "GR" },
+  { domain: "ffzg.hr", access: "week", institution: "University of Zagreb, Faculty of Humanities and Social Sciences", country: "HR" },
+  { domain: "eui.eu", access: "week", institution: "European University Institute", country: "IT" },
+  { domain: "unive.it", access: "week", institution: "Università Ca' Foscari Venezia", country: "IT" },
+  { domain: "leidenuniv.nl", access: "week", institution: "Leiden University", country: "NL" },
+  { domain: "rug.nl", access: "week", institution: "University of Groningen", country: "NL" },
+  { domain: "uu.nl", access: "week", institution: "Utrecht University", country: "NL" },
+  { domain: "uio.no", access: "week", institution: "University of Oslo", country: "NO" },
+  { domain: "lu.se", access: "week", institution: "Lund University", country: "SE" },
+  { domain: "umu.se", access: "week", institution: "Umeå University", country: "SE" }
+];

@@ -236,13 +236,18 @@ window.LQ_PAGE_CHROME = `
                 <label for="signUpEmail" data-i18n="authEmail">Email</label>
                 <input type="email" id="signUpEmail" class="form-control" autocomplete="email"
                        aria-describedby="signUpEmailHint signUpEmailError" required>
-                <!-- The offer, said where the address is typed. It turns into a
-                     confirmation as soon as the address is a university one. -->
+                <!-- The offer, said where the address is typed. It turns into
+                     what the address will get as soon as it is an
+                     institutional one: free access with no end, or for a week. -->
                 <p class="auth-hint auth-edu" id="signUpEmailHint" aria-live="polite">
                   <span class="auth-edu-offer" data-i18n="authEduHint" data-i18n-html="1">Universities in Türkiye and the TRNC: sign up with your <b>.edu.tr</b> address to use LexiQamus free and without limits.</span>
-                  <span class="auth-edu-ok">
+                  <span class="auth-edu-ok auth-edu-lifetime">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                    <span data-i18n="authEduOk">University address: free, unlimited access.</span>
+                    <span data-i18n="authAccessLifetime">Institutional address: free access with no time limit.</span>
+                  </span>
+                  <span class="auth-edu-ok auth-edu-week">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span data-i18n="authAccessWeek">Institutional address: free access for one week.</span>
                   </span>
                 </p>
                 <p class="auth-error" id="signUpEmailError" aria-live="polite" hidden>
@@ -255,19 +260,19 @@ window.LQ_PAGE_CHROME = `
                   <button type="button" class="btn auth-suggest-fix" data-auth-suggest-fix></button><span data-i18n="authSuggestAfter">?</span>
                 </p>
               </div>
-              <!-- A second address, asked only of someone signing up with a
-                   university one: some university mail servers hold back the
-                   confirmation email, so a link goes here too, and this is
+              <!-- A second address, asked only of someone signing up with an
+                   institutional one: some institutional mail servers hold back
+                   the confirmation email, so a link goes here too, and this is
                    where support can write to them. -->
               <div class="auth-field" id="signUpPersonalField" hidden>
                 <label for="signUpPersonal" data-i18n="authPersonalEmail">Personal email</label>
                 <input type="email" id="signUpPersonal" class="form-control" autocomplete="email"
                        aria-describedby="signUpPersonalHint signUpPersonalError">
-                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">We will send a confirmation link here too; opening either one activates your account. Our support team can also reach you here.</p>
+                <p class="auth-hint" id="signUpPersonalHint" data-i18n="authPersonalHint">We will send a confirmation link here too. Our support team can also reach you here.</p>
                 <p class="auth-error" id="signUpPersonalError" aria-live="polite" hidden>
                   <span data-auth-error="missing" data-i18n="authPersonalMissing">Please add a personal email as well.</span>
                   <span data-auth-error="format" data-i18n="authEmailFormat">Enter a valid email address, such as name@gmail.com.</span>
-                  <span data-auth-error="university" data-i18n="authPersonalUniversity">Use an address outside your university, such as Gmail or Outlook.</span>
+                  <span data-auth-error="institutional" data-i18n="authPersonalInstitutional">Use an address outside your institution, such as Gmail or Outlook.</span>
                 </p>
                 <p class="auth-suggest" aria-live="polite" hidden>
                   <span data-i18n="authSuggest">Did you mean</span>
@@ -312,7 +317,7 @@ window.LQ_PAGE_CHROME = `
             <div class="auth-confirm">
               <div class="auth-confirm-list">
                 <div class="auth-confirm-item">
-                  <span class="auth-confirm-label" data-auth-confirm-label data-i18n="authUniversityEmail">University email</span>
+                  <span class="auth-confirm-label" data-auth-confirm-label data-i18n="authInstitutionEmail">Institutional email</span>
                   <span class="auth-confirm-address" data-auth-confirm-main></span>
                 </div>
                 <div class="auth-confirm-item" data-auth-confirm-second hidden>
@@ -329,9 +334,10 @@ window.LQ_PAGE_CHROME = `
             </div>
           </div>
 
-          <!-- After sign-up: where the confirmation links went. A university
-               sign-up gets one at each address, and either one opens the
-               account. The addresses are filled in when the form is sent. -->
+          <!-- After sign-up: where the confirmation links went. An
+               institutional sign-up gets one at each address, and its free
+               access is open already: it does not wait for the links. The
+               addresses are filled in when the form is sent. -->
           <div class="tab-pane fade" id="signUpSentPane" role="tabpanel">
             <div class="auth-sent">
               <span class="auth-sent-mark" aria-hidden="true">
@@ -349,8 +355,16 @@ window.LQ_PAGE_CHROME = `
                 <span data-i18n="authSentBothAnd">and to</span>
                 <b data-auth-sent-personal></b><span data-i18n="authSentBothAfter">.</span>
               </p>
+              <p class="auth-sent-access" data-auth-access="lifetime" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span data-i18n="authSentLifetime">Your free access is already open, with no time limit.</span>
+              </p>
+              <p class="auth-sent-access" data-auth-access="week" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span data-i18n="authSentWeek">Your free week of access is already open.</span>
+              </p>
               <p class="auth-hint" data-auth-open-one data-i18n="authSentOpen">Open it to finish creating your account.</p>
-              <p class="auth-hint" data-auth-open-two hidden data-i18n="authSentOpenEither">Open either one to finish creating your account.</p>
+              <p class="auth-hint" data-auth-open-two hidden data-i18n="authSentOpenEither">Open either one to confirm your addresses.</p>
               <p class="auth-hint" data-i18n="authSentMissing">Not there in a few minutes? Check your spam folder.</p>
               <button type="button" class="btn auth-resend" data-auth-resend data-i18n="authResend">Send it again</button>
             </div>

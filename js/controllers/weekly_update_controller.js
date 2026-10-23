@@ -6,7 +6,7 @@
 // whenever the language changes. A week with nothing to say hides the card.
 
 class WeeklyUpdateController extends Stimulus.Controller {
-  static targets = ["card", "dates", "lines", "next", "nextRow"]
+  static targets = ["card", "dates", "lines"]
 
   connect() {
     this.onLanguageChange = (event) => this.render(event.detail.language);
@@ -35,8 +35,6 @@ class WeeklyUpdateController extends Stimulus.Controller {
       line.append(name, ` ${change}`);
       return line;
     }));
-    this.nextTarget.textContent = week.next || "";
-    this.nextRowTarget.hidden = !week.next;
   }
 }
 

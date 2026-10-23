@@ -75,15 +75,6 @@
   border-radius: 999px;
   white-space: nowrap;
 }
-.home-surface .version-badge small {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  opacity: .85;
-  margin-left: 2px;
-  text-transform: uppercase;
-}
-
 .home-surface .tagline {
   margin: 0;
   /* The slogan is locked to the wordmark above it rather than to the box the

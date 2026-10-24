@@ -548,6 +548,10 @@ class EntryWindowController extends Stimulus.Controller {
     card.style.left = `${spot.left + spot.width / 2}px`;
     card.style.top = spot.top < 160 ? `${spot.bottom + 10}px` : `${spot.top - 10}px`;
     card.classList.toggle("is-below", spot.top < 160);
+    // The flag hangs to the right of the card; where that would take it off
+    // the screen it swaps to the other side.
+    card.classList.remove("is-flipped");
+    card.classList.toggle("is-flipped", card.getBoundingClientRect().right + 40 > window.innerWidth);
 
     const phrase = this.find("[data-entry-phrase]");
     if (group.length > 1) {
@@ -558,22 +562,29 @@ class EntryWindowController extends Stimulus.Controller {
       phrase.hidden = false;
       phrase.style.left = `${spot.left + spot.width / 2}px`;
       phrase.style.top = `${spot.bottom + 10}px`;
+      phrase.classList.remove("is-flipped");
+      phrase.classList.toggle("is-flipped", phrase.getBoundingClientRect().right + 40 > window.innerWidth);
     } else {
       phrase.hidden = true;
     }
   }
 
+  // The flag that reports a misreading hangs off the line under the cursor,
+  // outside the card, so the card stays the width of the word.
   cardHtml(ottoman, latin) {
     const safe = window.LQ.escape;
+    const label = safe(window.LQ.translate("scanReport", "Report Typo"));
     const line = (text, script) => `
       <span class="entry-card-line">
         <button type="button" class="btn entry-card-word" data-entry-search="${safe(text)}"
                 data-entry-script="${script}" ${script === "ottoman" ? 'data-direction="rtl"' : ""}>${safe(text)}</button>
-        <button type="button" class="btn entry-card-report"
-                data-entry-report-ottoman="${safe(ottoman)}" data-entry-report-latin="${safe(latin)}"
-                aria-label="Report an error" data-i18n-aria="scanReport">
-          <i data-feather="alert-triangle" aria-hidden="true"></i>
-        </button>
+        <span class="entry-card-report-wrap">
+          <button type="button" class="btn entry-card-report"
+                  data-entry-report-ottoman="${safe(ottoman)}" data-entry-report-latin="${safe(latin)}"
+                  aria-label="${label}" data-tooltip="${label}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </button>
+        </span>
       </span>`;
     return line(ottoman, "ottoman") + '<span class="entry-card-divider" aria-hidden="true"></span>' + line(latin, "latin");
   }

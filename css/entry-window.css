@@ -1043,7 +1043,8 @@
   font-weight: 700;
 }
 
-.entry-surface .entry-card-word:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+/* The line stays lit while the cursor is on its flag. */
+.entry-surface .entry-card-line:hover .entry-card-word { background: rgba(255, 255, 255, 0.12); color: #fff; }
 
 .entry-surface .entry-card-divider {
   width: 85%;
@@ -1052,9 +1053,47 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.entry-surface .entry-card-report {
+/* The flag hangs off the line rather than sitting inside the card, so the
+   card stays the width of the word; it appears on the line under the cursor.
+   A strip of nothing beside the line keeps the line hovered on the way to
+   the flag. */
+.entry-surface .entry-card-line::after {
+  content: "";
   position: absolute;
-  right: 4px;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 40px;
+}
+.entry-surface .entry-card.is-flipped .entry-card-line::after { left: auto; right: 100%; }
+.entry-surface .entry-card-report-wrap {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding-left: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity 0.2s;
+}
+/* Near the right edge of the window there is no room beside the card, so
+   the flag hangs off the other side. */
+.entry-surface .entry-card.is-flipped .entry-card-report-wrap {
+  left: auto;
+  right: 100%;
+  padding-right: 8px;
+  padding-left: 0;
+}
+.entry-surface .entry-card-line:hover .entry-card-report-wrap,
+.entry-surface .entry-card-report-wrap:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+.entry-surface .entry-card-report {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1064,20 +1103,37 @@
   border: 1px solid var(--lq-line);
   border-radius: 50%;
   background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   color: #93c5fd;
-  opacity: 0;
   transition: all 0.2s ease;
 }
-
-.entry-surface .entry-card-line:hover .entry-card-report { opacity: 1; }
-
 .entry-surface .entry-card-report:hover {
-  background: var(--lq-red);
   border-color: var(--lq-red);
+  background: var(--lq-red);
   color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(190, 18, 60, 0.25);
 }
-
-.entry-surface .entry-card-report svg { width: 13px; height: 13px; }
+.entry-surface .entry-card-report svg { width: 15px; height: 15px; transition: transform 0.2s ease; }
+.entry-surface .entry-card-report:hover svg { transform: rotate(15deg); }
+/* The flag hangs beside the card, so what it says hangs beside the flag
+   rather than over it. */
+.entry-surface .entry-card-report::after {
+  bottom: 80%;
+  left: 90%;
+  margin: 0 0 4px 2px;
+  padding: 6px 12px;
+  font-size: 10px;
+  transform: translateY(4px);
+}
+.entry-surface .entry-card-report:hover::after,
+.entry-surface .entry-card-report:focus-visible::after { transform: translateY(0); }
+.entry-surface .entry-card.is-flipped .entry-card-report::after {
+  left: auto;
+  right: 90%;
+  margin-left: 0;
+  margin-right: 2px;
+}
 
 /* ---------------------------------------------------- the takeovers */
 

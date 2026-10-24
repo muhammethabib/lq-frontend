@@ -136,6 +136,123 @@
   color: var(--lq-muted);
 }
 
+/* ---------- the column as a sheet of paper ---------- */
+
+/* The column is not shrunk to fit: it is a sheet scrolled down inside the
+   window, with the ground showing above its top edge and below its foot, so
+   it is plain where the column starts and where it ends. */
+.dictionary-page-modal .scan-sheet {
+  grid-column: 2;
+  height: min(72vh, 760px);
+  padding: 28px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dictionary-page-modal .scan-sheet[hidden] { display: none; }
+.dictionary-page-modal .scan-paper {
+  width: min(500px, 100%);
+  margin-inline: auto;
+  padding-block: 56px;
+  background: var(--lq-paper);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .1), 0 0 0 1px rgba(0, 0, 0, .04);
+}
+.dictionary-page-modal .scan-sheet-frame {
+  width: 100%;
+  max-height: none;
+  box-shadow: none;
+}
+
+/* A slice is the stretch of the column one record takes. It shows itself
+   only when asked: the cursor crossing it draws its edges and a faint wash,
+   and a tag in the margin names it. The record's own slice is always
+   marked, in the entry's green. */
+.dictionary-page-modal .scan-slice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  transition: background-color .15s, border-color .15s;
+}
+.dictionary-page-modal .scan-slice:is(:hover, :focus-within) {
+  border-color: rgba(8, 37, 103, .28);
+  background: rgba(8, 37, 103, .035);
+}
+.dictionary-page-modal .scan-slice.is-current {
+  border-color: rgba(5, 150, 105, .35);
+  background: rgba(5, 150, 105, .04);
+}
+.dictionary-page-modal .scan-slice.is-current:is(:hover, :focus-within) {
+  border-color: rgba(5, 150, 105, .6);
+  background: rgba(5, 150, 105, .06);
+}
+.dictionary-page-modal .scan-slice-number {
+  position: absolute;
+  top: 6px;
+  right: calc(100% + 10px);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--lq-sapphire);
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+}
+.dictionary-page-modal .scan-slice.is-current .scan-slice-number { background: var(--lq-scan-entry); opacity: 1; }
+.dictionary-page-modal .scan-slice:is(:hover, :focus-within) .scan-slice-number { opacity: 1; }
+
+/* The words of every other slice are grey, as they are on the live page... */
+.dictionary-page-modal .scan-slice:not(.is-current) .scan-box {
+  border-color: rgba(100, 116, 139, .45);
+  background: rgba(148, 163, 184, .16);
+  box-shadow: none;
+  opacity: 1;
+  animation: none;
+}
+/* ...until the cursor reaches their slice, and then all of them take their
+   own colour at once. */
+.dictionary-page-modal .scan-slice:not(.is-current):is(:hover, :focus-within) .scan-box-entry {
+  border-color: var(--lq-scan-entry);
+  background: var(--lq-scan-entry-bg);
+}
+.dictionary-page-modal .scan-slice:not(.is-current):is(:hover, :focus-within) .scan-box-related {
+  border-color: var(--lq-scan-related);
+  background: var(--lq-scan-related-bg);
+}
+.dictionary-page-modal .scan-slice:not(.is-current):is(:hover, :focus-within) .scan-box-sub {
+  border-color: var(--lq-scan-sub);
+  background: var(--lq-scan-sub-bg);
+}
+/* The word under the cursor still lights up as it does on the slice view. */
+.dictionary-page-modal .scan-sheet .scan-slice .scan-box.scan-box-entry:is(:hover, :focus-visible) {
+  border-color: var(--lq-scan-entry);
+  background: var(--lq-scan-entry-bg-hover);
+  box-shadow: 0 0 20px rgba(5, 150, 105, .6);
+  transform: scale(1.01);
+}
+.dictionary-page-modal .scan-sheet .scan-slice .scan-box.scan-box-related:is(:hover, :focus-visible) {
+  border-color: var(--lq-scan-related);
+  background: var(--lq-scan-related-bg-hover);
+  box-shadow: inset 0 0 15px rgba(37, 99, 235, .25);
+  transform: scale(1.015);
+}
+.dictionary-page-modal .scan-sheet .scan-slice .scan-box.scan-box-sub:is(:hover, :focus-visible) {
+  border-color: var(--lq-scan-sub);
+  background: var(--lq-scan-sub-bg-hover);
+  transform: scale(1.005);
+}
+/* On a sheet the card stands over every slice. */
+.dictionary-page-modal .scan-sheet .scan-card { z-index: 80; }
+
+@media (max-width: 767.98px) {
+  .dictionary-page-modal .scan-slice-number { right: auto; left: 6px; }
+}
+
 /* ---------- a digitized word on the scan ---------- */
 
 /* A word sits in a box coloured by its category, the same three colours the

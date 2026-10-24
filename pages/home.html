@@ -1762,6 +1762,18 @@
                 </div>
               </div>
 
+              <!-- The column (and later the page) as a sheet of paper, scrolled
+                   down rather than shrunk to fit: its top and foot edges show,
+                   so it is plain where the column starts and ends. The slices
+                   are laid over it; the boxes sit inside their slice. -->
+              <div class="scan-sheet" data-scan-sheet hidden>
+                <div class="scan-paper">
+                  <div class="scan-frame scan-sheet-frame" data-scan-sheet-frame>
+                    <img alt="">
+                  </div>
+                </div>
+              </div>
+
               <p class="scan-missing" data-scan-missing hidden data-i18n="scanMissing">The scan for this view is not in the sample data. The endpoint returns one image per view.</p>
 
               <button type="button" class="btn scan-arrow scan-arrow-previous"
@@ -1772,6 +1784,7 @@
               </button>
             </div>
           </div>
+        </div>
 
         <div class="modal-footer">
           <div class="scan-views" role="group" aria-label="View" data-i18n-aria="scanViewLabel">

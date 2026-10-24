@@ -172,34 +172,102 @@ class DictionaryPageController extends Stimulus.Controller {
   drawView() {
     const view = (this.entry.views || {})[this.view] || {};
     const frame = this.element.querySelector("[data-scan-frame]");
+    const sheet = this.element.querySelector("[data-scan-sheet]");
     const missing = this.element.querySelector("[data-scan-missing]");
-    frame.hidden = !view.image;
+    const card = this.element.querySelector("[data-scan-card]");
+    // A view that names its slices is a sheet to scroll; the slice view is
+    // one picture fitted to the window.
+    const sliced = Array.isArray(view.slices);
+    card.hidden = true;
+    frame.hidden = !view.image || sliced;
+    sheet.hidden = !view.image || !sliced;
     missing.hidden = Boolean(view.image);
+    this.boxes = [];
     if (!view.image) return;
+    if (sliced) { this.drawSheet(view, sheet, card); return; }
 
-    const image = frame.querySelector("img");
-    image.src = view.image;
-    image.alt = window.LQ.translate("scanAlt", "The entry as printed in the source volume");
-    frame.style.setProperty("--scan-ratio", view.ratio || 2);
+    frame.appendChild(card);
+    this.placeImage(frame, view);
 
     // A box is a rectangle on the scan, so it is placed as a percentage and
     // the scan can be shown at any size.
     frame.querySelectorAll(".scan-box").forEach((box) => box.remove());
-    (view.boxes || []).forEach((box, position) => {
-      const element = document.createElement("button");
-      element.type = "button";
-      element.className = `scan-box scan-box-${box.category}`;
-      element.dataset.scanBox = String(position);
+    (view.boxes || []).forEach((box) => {
+      const element = this.makeBox(box);
       element.style.top = `${box.top}%`;
-      element.style.left = `${box.left}%`;
-      element.style.width = `${box.width}%`;
       element.style.height = `${box.height}%`;
-      element.setAttribute("aria-label", `${box.latin} — ${box.ottoman}`);
-      element.dataset.action = "mouseenter->dictionary-page#showWord " +
-        "focus->dictionary-page#showWord mouseleave->dictionary-page#hideWord " +
-        "blur->dictionary-page#hideWord";
       frame.appendChild(element);
     });
+  }
+
+  placeImage(frame, view) {
+    const image = frame.querySelector("img");
+    image.src = view.image;
+    image.alt = window.LQ.translate("scanAlt", "The entry as printed in the source volume");
+    frame.style.setProperty("--scan-ratio", view.ratio || 2);
+  }
+
+  // One word on the scan. Its place across is a share of the scan's width;
+  // its place down is set by the caller, against whatever holds it.
+  makeBox(box) {
+    const element = document.createElement("button");
+    element.type = "button";
+    element.className = `scan-box scan-box-${box.category}`;
+    element.dataset.scanBox = String(this.boxes.length);
+    element.style.left = `${box.left}%`;
+    element.style.width = `${box.width}%`;
+    element.setAttribute("aria-label", `${box.latin} — ${box.ottoman}`);
+    element.dataset.action = "mouseenter->dictionary-page#showWord " +
+      "focus->dictionary-page#showWord mouseleave->dictionary-page#hideWord " +
+      "blur->dictionary-page#hideWord";
+    this.boxes.push(box);
+    return element;
+  }
+
+  // The column as a sheet of paper, with its slices laid over it. The
+  // record's own slice keeps its colours; every other slice is grey until
+  // the cursor crosses it, and then the whole slice shows -- its edges and
+  // every word in it in its own colour. A word under the cursor still opens
+  // its card as on the slice view. The boxes sit inside their slice, so the
+  // slice stays lit while the cursor is on one of its words.
+  drawSheet(view, sheet, card) {
+    const frame = sheet.querySelector("[data-scan-sheet-frame]");
+    this.placeImage(frame, view);
+    frame.querySelectorAll(".scan-slice").forEach((slice) => slice.remove());
+    view.slices.forEach((slice) => {
+      const span = slice.bottom - slice.top;
+      const element = document.createElement("div");
+      element.className = "scan-slice";
+      element.classList.toggle("is-current", slice.number === this.entry.slice);
+      element.style.top = `${slice.top}%`;
+      element.style.height = `${span}%`;
+      const number = document.createElement("span");
+      number.className = "scan-slice-number";
+      number.textContent = `${this.translate("scanSlice", "Slice")} ${slice.number}`;
+      element.appendChild(number);
+      (slice.boxes || []).forEach((box) => {
+        const word = this.makeBox(box);
+        word.style.top = `${(box.top - slice.top) / span * 100}%`;
+        word.style.height = `${box.height / span * 100}%`;
+        element.appendChild(word);
+      });
+      frame.appendChild(element);
+    });
+    frame.appendChild(card);
+    // The record's own slice is brought into the middle of the sheet. The
+    // sheet only has a size once the window is on screen.
+    const centre = () => this.centreSlice(sheet);
+    if (this.element.classList.contains("show")) requestAnimationFrame(centre);
+    else this.element.addEventListener("shown.bs.modal", centre, { once: true });
+  }
+
+  centreSlice(sheet) {
+    const current = sheet.querySelector(".scan-slice.is-current");
+    if (!current || sheet.hidden) return;
+    const sheetBox = sheet.getBoundingClientRect();
+    const sliceBox = current.getBoundingClientRect();
+    const offset = sliceBox.top - sheetBox.top + sheet.scrollTop;
+    sheet.scrollTop = Math.max(0, offset - (sheet.clientHeight - sliceBox.height) / 2);
   }
 
   // ==================== the box under the cursor ====================
@@ -217,18 +285,19 @@ class DictionaryPageController extends Stimulus.Controller {
     // The card stands over the box it describes, centred on it, in the
     // frame's own coordinates. They are custom properties rather than top and
     // left so the stylesheet can dock the card at the foot of the frame on a
-    // narrow screen, where there is no room above the box.
+    // narrow screen, where there is no room above the box. They are measured
+    // rather than read off the box, because on a sheet the box is placed
+    // inside its slice, not on the frame.
     const element = event.currentTarget;
-    const left = parseFloat(element.style.left) || 0;
-    const width = parseFloat(element.style.width) || 0;
-    const top = parseFloat(element.style.top) || 0;
-    const height = parseFloat(element.style.height) || 0;
-    card.style.setProperty("--card-left", `${left + width / 2}%`);
-    // A box close to the top of the window leaves no room above it, so there
-    // the card drops below the box instead.
-    const high = element.getBoundingClientRect().top < 120;
+    const frameBox = card.parentElement.getBoundingClientRect();
+    const place = element.getBoundingClientRect();
+    card.style.setProperty("--card-left", `${place.left + place.width / 2 - frameBox.left}px`);
+    // A box close to the top of what can be seen leaves no room above it, so
+    // there the card drops below the box instead.
+    const body = this.element.querySelector(".modal-body").getBoundingClientRect();
+    const high = place.top - Math.max(body.top, 0) < 120;
     card.style.setProperty("--card-top",
-      high ? `calc(${top + height}% + 10px)` : `calc(${top}% - 10px)`);
+      high ? `${place.bottom - frameBox.top + 10}px` : `${place.top - frameBox.top - 10}px`);
     card.style.setProperty("--card-anchor",
       high ? "translate(-50%, 0)" : "translate(-50%, -100%)");
     // The flag hangs to the right of the card; where that would take it off
@@ -251,8 +320,7 @@ class DictionaryPageController extends Stimulus.Controller {
   }
 
   boxFor(element) {
-    const view = (this.entry.views || {})[this.view] || {};
-    return (view.boxes || [])[Number(element.dataset.scanBox)];
+    return (this.boxes || [])[Number(element.dataset.scanBox)];
   }
 
   // ==================== the controls ====================

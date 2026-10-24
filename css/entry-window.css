@@ -581,8 +581,8 @@
 }
 
 /* A slice is the stretch of the column one record takes. It shows itself
-   when the cursor crosses it: its edges, a faint wash, and a tag in the
-   margin naming it. The record's own slice is always marked, in green. */
+   when the cursor crosses it: its edges and a faint wash. The record's own
+   slice is always marked, in green. */
 .entry-surface .entry-slice {
   position: absolute;
   left: 0;
@@ -605,24 +605,6 @@
   border-color: rgba(5, 150, 105, 0.6);
   background: rgba(5, 150, 105, 0.06);
 }
-.entry-surface .entry-slice-number {
-  position: absolute;
-  top: 6px;
-  right: calc(100% + 10px);
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--lq-sapphire);
-  font-size: 10.5px;
-  font-weight: 700;
-  white-space: nowrap;
-  color: #fff;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s;
-}
-.entry-surface .entry-slice.is-current .entry-slice-number { background: var(--entry-headword); opacity: 1; }
-.entry-surface .entry-slice:is(:hover, :focus-within) .entry-slice-number { opacity: 1; }
-
 /* The words: in the record's own slice, the colours the slice view uses... */
 .entry-surface .entry-sheet-box.entry-kind-headword {
   border-color: var(--entry-headword);
@@ -680,10 +662,6 @@
   border-color: var(--entry-sub);
   background: var(--entry-sub-lit);
   opacity: 1;
-}
-
-@media (max-width: 767.98px) {
-  .entry-surface .entry-slice-number { right: auto; left: 6px; }
 }
 
 /* Where a shared word sits on the page */

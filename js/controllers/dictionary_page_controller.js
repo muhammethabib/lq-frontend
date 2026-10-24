@@ -241,10 +241,6 @@ class DictionaryPageController extends Stimulus.Controller {
       element.classList.toggle("is-current", slice.number === this.entry.slice);
       element.style.top = `${slice.top}%`;
       element.style.height = `${span}%`;
-      const number = document.createElement("span");
-      number.className = "scan-slice-number";
-      number.textContent = `${this.translate("scanSlice", "Slice")} ${slice.number}`;
-      element.appendChild(number);
       (slice.boxes || []).forEach((box) => {
         const word = this.makeBox(box);
         word.style.top = `${(box.top - slice.top) / span * 100}%`;

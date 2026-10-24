@@ -231,9 +231,6 @@ class EntryWindowController extends Stimulus.Controller {
   sheetHtml(view) {
     const safe = window.LQ.escape;
     const kinds = { entry: "headword", related: "related", sub: "sub" };
-    // A slice is named the way the switch below names it.
-    const sliceView = (this.record.views || []).find((one) => one.id === "slice") || {};
-    const name = (sliceView.label || {})[this.language()] || "Slice";
     const slices = view.slices.map((slice) => {
       const span = slice.bottom - slice.top;
       const subs = (slice.boxes || []).filter((box) => box.category === "sub").length;
@@ -250,7 +247,6 @@ class EntryWindowController extends Stimulus.Controller {
       return `
         <div class="entry-slice${slice.number === view.current ? " is-current" : ""}"
              style="top:${slice.top}%;height:${span}%">
-          <span class="entry-slice-number">${safe(name)} ${safe(slice.number)}</span>
           ${words}
         </div>`;
     }).join("");

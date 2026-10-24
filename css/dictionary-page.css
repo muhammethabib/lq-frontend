@@ -164,9 +164,8 @@
 }
 
 /* A slice is the stretch of the column one record takes. It shows itself
-   only when asked: the cursor crossing it draws its edges and a faint wash,
-   and a tag in the margin names it. The record's own slice is always
-   marked, in the entry's green. */
+   only when asked: the cursor crossing it draws its edges and a faint wash.
+   The record's own slice is always marked, in the entry's green. */
 .dictionary-page-modal .scan-slice {
   position: absolute;
   left: 0;
@@ -188,24 +187,6 @@
   border-color: rgba(5, 150, 105, .6);
   background: rgba(5, 150, 105, .06);
 }
-.dictionary-page-modal .scan-slice-number {
-  position: absolute;
-  top: 6px;
-  right: calc(100% + 10px);
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--lq-sapphire);
-  font-size: 10.5px;
-  font-weight: 700;
-  white-space: nowrap;
-  color: #fff;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .15s;
-}
-.dictionary-page-modal .scan-slice.is-current .scan-slice-number { background: var(--lq-scan-entry); opacity: 1; }
-.dictionary-page-modal .scan-slice:is(:hover, :focus-within) .scan-slice-number { opacity: 1; }
-
 /* The words of every other slice are grey, as they are on the live page... */
 .dictionary-page-modal .scan-slice:not(.is-current) .scan-box {
   border-color: rgba(100, 116, 139, .45);
@@ -248,10 +229,6 @@
 }
 /* On a sheet the card stands over every slice. */
 .dictionary-page-modal .scan-sheet .scan-card { z-index: 80; }
-
-@media (max-width: 767.98px) {
-  .dictionary-page-modal .scan-slice-number { right: auto; left: 6px; }
-}
 
 /* ---------- a digitized word on the scan ---------- */
 

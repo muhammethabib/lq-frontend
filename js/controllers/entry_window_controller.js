@@ -48,7 +48,6 @@ class EntryWindowController extends Stimulus.Controller {
     document.removeEventListener("view-state:change", this.onViewState);
     window.removeEventListener("resize", this.onAway);
     this.element.removeEventListener("hidden.bs.modal", this.onHidden);
-    if (this.watcher) this.watcher.disconnect();
     if (this.modal) this.modal.dispose();
   }
 
@@ -96,7 +95,6 @@ class EntryWindowController extends Stimulus.Controller {
     const template = document.getElementById(this.templateValue);
     if (!template || !this.record) return;
     window.LQ.disposeWidgets(this.element);
-    if (this.watcher) { this.watcher.disconnect(); this.watcher = null; }
     const existing = bootstrap.Modal.getInstance(this.element);
     if (existing && !this.element.classList.contains("show")) {
       existing.dispose();
@@ -105,7 +103,6 @@ class EntryWindowController extends Stimulus.Controller {
     this.element.innerHTML = template.innerHTML;
     this.fill();
     this.markConcepts();
-    this.watchSections();
     // The panels are written here rather than in the template, so the sweep
     // comes after them; otherwise their own keys are never seen.
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(this.element);
@@ -128,8 +125,6 @@ class EntryWindowController extends Stimulus.Controller {
           <span class="entry-pair-latin">${safe(pair.latin)}</span>
         </span>`)
       .join('<i data-feather="chevron-right" class="entry-pair-arrow" aria-hidden="true"></i>');
-
-    this.find("[data-entry-notice]").textContent = (record.notice || {})[language] || "";
 
     this.find("[data-entry-tabs]").innerHTML = (record.tabs || []).map((tab, index) => `
       <button type="button" class="btn entry-tab${index === 0 ? " active" : ""}"
@@ -170,23 +165,13 @@ class EntryWindowController extends Stimulus.Controller {
     indicator.style.setProperty("--entry-indicator-x", `${Math.max(0, at) * width}px`);
   }
 
+  // One section per tab, shown one at a time: the tab says which, so the
+  // section carries no heading of its own. The window opens on the scan.
   sectionHtml(section, language) {
     const safe = window.LQ.escape;
-    const count = section.count && section.count[language]
-      ? `<span class="entry-section-count">${safe(section.count[language])}</span>` : "";
     return `
-      <section class="entry-section${section.collapsed ? " is-collapsed" : ""}"
-               id="entry-${safe(section.id)}" data-entry-section="${safe(section.id)}">
-        <h3 class="entry-section-head">
-          <button type="button" class="btn entry-section-toggle"
-                  aria-expanded="${!section.collapsed}"
-                  data-action="click->entry-window#toggleSection">
-            <span class="language-flag" data-flag="${safe(section.flag || "")}" aria-hidden="true"></span>
-            <span class="entry-section-title">${safe((section.title || {})[language] || "")}</span>
-            ${count}
-            <i data-feather="chevron-down" class="entry-chevron" aria-hidden="true"></i>
-          </button>
-        </h3>
+      <section class="entry-section" id="entry-${safe(section.id)}"
+               data-entry-section="${safe(section.id)}" ${section.id === "original" ? "" : "hidden"}>
         <div class="entry-section-body">
           ${section.id === "original" ? this.scanHtml() : this.panelHtml(section, language)}
         </div>
@@ -391,25 +376,6 @@ class EntryWindowController extends Stimulus.Controller {
 
   // ==================== the panels ====================
 
-  toggleSection(event) {
-    const section = event.currentTarget.closest(".entry-section");
-    const collapsed = section.classList.toggle("is-collapsed");
-    event.currentTarget.setAttribute("aria-expanded", String(!collapsed));
-    this.hideCards();
-  }
-
-  expandAll() { this.setAll(false); }
-  collapseAll() { this.setAll(true); }
-
-  setAll(collapsed) {
-    this.element.querySelectorAll(".entry-section").forEach((section) => {
-      section.classList.toggle("is-collapsed", collapsed);
-      const toggle = section.querySelector(".entry-section-toggle");
-      if (toggle) toggle.setAttribute("aria-expanded", String(!collapsed));
-    });
-    this.hideCards();
-  }
-
   toggleSystem(event) {
     const system = event.currentTarget.closest(".entry-system");
     const collapsed = system.classList.toggle("is-collapsed");
@@ -427,8 +393,7 @@ class EntryWindowController extends Stimulus.Controller {
     });
   }
 
-  // A tab and a panel are two ways into the same thing, so the tab opens its
-  // panel and takes the reader to it.
+  // A tab shows its section, and only its section.
   selectTab(event) {
     this.openSection(event.currentTarget.dataset.entryTab);
   }
@@ -436,16 +401,13 @@ class EntryWindowController extends Stimulus.Controller {
   openSection(id) {
     const section = this.element.querySelector(`[data-entry-section="${CSS.escape(id)}"]`);
     if (!section) return null;
-    section.classList.remove("is-collapsed");
-    const toggle = section.querySelector(".entry-section-toggle");
-    if (toggle) toggle.setAttribute("aria-expanded", "true");
+    this.element.querySelectorAll(".entry-section").forEach((one) => { one.hidden = one !== section; });
     this.markTab(id);
-    // The tab was pressed, so the reader is not scrolling: the panel under
-    // the cursor must not steal the mark back while the scroll runs.
-    this.following = false;
-    clearTimeout(this.followTimer);
-    this.followTimer = setTimeout(() => { this.following = true; }, 600);
-    section.scrollIntoView({ block: "start", behavior: "smooth" });
+    this.hideCards();
+    this.closeParallel();
+    const body = this.find("[data-entry-body]");
+    if (body) body.scrollTop = 0;
+    if (id === "original") this.settleSheet();
     return section;
   }
 
@@ -453,20 +415,6 @@ class EntryWindowController extends Stimulus.Controller {
     this.element.querySelectorAll(".entry-tab").forEach((tab) => {
       tab.classList.toggle("active", tab.dataset.entryTab === id);
     });
-  }
-
-  // Scrolling the panels moves the tab with them.
-  watchSections() {
-    const body = this.find("[data-entry-body]");
-    if (!body || !window.IntersectionObserver) return;
-    this.following = true;
-    this.watcher = new IntersectionObserver((entries) => {
-      if (!this.following) return;
-      const visible = entries.filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) this.markTab(visible.target.dataset.entrySection);
-    }, { root: body, threshold: [0.25, 0.5, 0.75], rootMargin: "-10% 0px -60% 0px" });
-    this.element.querySelectorAll(".entry-section").forEach((s) => this.watcher.observe(s));
   }
 
   // ==================== the ways of looking at the page ====================
@@ -479,13 +427,13 @@ class EntryWindowController extends Stimulus.Controller {
       button.setAttribute("aria-pressed", String(active));
     });
     this.placeIndicator();
-    // The scan area is redrawn for the view; the panels below stay as they are.
+    // The scan area is redrawn for the view, and shown if a panel was.
     const viewport = this.find("[data-entry-viewport]");
     if (!viewport) return;
     this.hideCards();
     viewport.innerHTML = this.scanViewHtml();
     if (window.LQ.applyTranslations) window.LQ.applyTranslations(viewport);
-    requestAnimationFrame(() => this.settleSheet());
+    requestAnimationFrame(() => this.openSection("original"));
   }
 
   previous() { this.step(-1); }
@@ -899,17 +847,9 @@ class EntryWindowController extends Stimulus.Controller {
   // A row's result zone asks about the sub-entry, its headword zone about the
   // entry itself, so the window opens where the reader was looking.
   focus() {
-    const body = this.find("[data-entry-body]");
-    if (!body) return;
-    if (this.focusOn !== "result") { body.scrollTop = 0; return; }
+    if (this.focusOn !== "result") return;
     const boxes = Array.from(this.element.querySelectorAll('[data-entry-pair="sub"]'));
-    if (!boxes.length) { body.scrollTop = 0; return; }
-    const area = body.getBoundingClientRect();
-    const top = Math.min(...boxes.map((box) => box.getBoundingClientRect().top));
-    const bottom = Math.max(...boxes.map((box) => box.getBoundingClientRect().bottom));
-    const middle = (top + bottom) / 2 - area.top + body.scrollTop;
-    const limit = Math.max(0, body.scrollHeight - body.clientHeight);
-    body.scrollTop = Math.max(0, Math.min(middle - body.clientHeight / 2, limit));
+    if (!boxes.length) return;
     boxes.forEach((box) => box.classList.add("is-lit"));
     clearTimeout(this.litTimer);
     this.litTimer = setTimeout(() => {

@@ -43,7 +43,7 @@ window.LQ_ENTRY_SAMPLE = {
       "id": "slice",
       "label": {
         "en": "Slice",
-        "tr": "Kesit"
+        "tr": "Dilim"
       },
       "count": "5"
     },

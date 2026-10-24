@@ -2152,25 +2152,15 @@
             <p class="entry-breadcrumb" data-entry-breadcrumb></p>
           </div>
 
+          <!-- One tab, one section: pressing a tab shows that section alone.
+               The window opens on the scan. -->
           <nav class="entry-tabs" data-entry-tabs
                aria-label="Languages" data-i18n-aria="entryLanguages"></nav>
-
-          <div class="entry-controls">
-            <button type="button" class="btn entry-control" data-action="click->entry-window#expandAll"
-                    data-i18n="entryExpandAll">Expand All</button>
-            <span class="entry-control-divider" aria-hidden="true"></span>
-            <button type="button" class="btn entry-control" data-action="click->entry-window#collapseAll"
-                    data-i18n="entryCollapseAll">Collapse All</button>
-          </div>
         </header>
 
         <main class="entry-body" data-entry-body
               data-action="click->entry-window#bodyClick mouseover->entry-window#bodyOver mouseout->entry-window#bodyOut">
-          <p class="entry-notice">
-            <i data-feather="alert-triangle" aria-hidden="true"></i>
-            <span data-entry-notice></span>
-          </p>
-          <div data-entry-sections></div>
+          <div class="entry-sections" data-entry-sections></div>
         </main>
 
         <footer class="entry-footer">

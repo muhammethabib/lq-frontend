@@ -156,7 +156,6 @@
 
 /* ---------------------------------------------------- the controls */
 
-.entry-surface .entry-controls,
 .entry-surface .entry-system-controls {
   display: flex;
   align-items: center;
@@ -192,74 +191,28 @@
 
 /* ---------------------------------------------------- the panels */
 
+/* The body shows one section at a time. A reading panel scrolls the body;
+   the scan fills it and scrolls only inside itself. */
 .entry-surface .entry-body {
+  display: flex;
+  flex-direction: column;
   flex: 1;
+  min-height: 0;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
-
-.entry-surface .entry-notice {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  padding: 8px 24px;
-  background: #fffef5;
-  border-bottom: 1px solid #fef3c7;
-  font-size: 11px;
-  line-height: 1.4;
-  color: #92806b;
-}
-
-.entry-surface .entry-notice svg {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  color: #d4b896;
-}
+.entry-surface .entry-sections { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 
 .entry-surface .entry-section {
   position: relative;
+  flex: 1 0 auto;
   background: #fafaf9;
-  border-bottom: 1px solid #e4e4e7;
 }
+.entry-surface .entry-section[hidden] { display: none; }
+.entry-surface #entry-original { flex: 1; min-height: 0; background: #f0f0ed; }
 
-.entry-surface .entry-section:last-child { border-bottom: none; }
-.entry-surface #entry-original { background: #f0f0ed; }
-
-.entry-surface .entry-section-head { margin: 0; }
-
-.entry-surface .entry-section-toggle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 18px 24px;
-  border: 0;
-  border-radius: 0;
-  text-align: left;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #475569;
-}
-
-.entry-surface .entry-section-toggle:hover { background: rgba(0, 0, 0, 0.03); }
-
-.entry-surface .entry-section-count {
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: #f1f5f9;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: none;
-  color: #94a3b8;
-  white-space: nowrap;
-}
+.entry-surface .entry-section-body { padding: 28px 48px 32px; }
 
 .entry-surface .entry-chevron {
   flex-shrink: 0;
@@ -268,30 +221,13 @@
   color: #94a3b8;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.entry-surface .entry-section-toggle .entry-chevron { margin-left: auto; }
-.entry-surface .entry-section.is-collapsed .entry-chevron { transform: rotate(-90deg); }
-.entry-surface .entry-section.is-collapsed .entry-section-body { display: none; }
-
-/* A reading section is held to a little over half the window and scrolls
-   inside it, so the window does not grow with the longest translation. */
-.entry-surface .entry-section-body {
-  padding: 0 48px 32px;
-  max-height: 55vh;
-  overflow-y: auto;
-}
-/* The page image keeps that height whatever its own is, so the window does
-   not jump as the reader steps from slice to slice. */
+/* The scan takes the whole body, whichever view it is in, so the window and
+   its arrows stay exactly where they are as the reader moves between the
+   slice and the column. */
 .entry-surface #entry-original .entry-section-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
   box-sizing: border-box;
-  min-height: 55vh;
-  max-height: none;
-  overflow: visible;
-  padding: 8px 16px 32px;
+  height: 100%;
+  padding: 0;
 }
 
 .entry-surface .entry-panel {
@@ -467,14 +403,17 @@
 /* ---------------------------------------------------- the scan */
 
 .entry-surface .entry-scan {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  position: relative;
+  height: 100%;
 }
 
+/* The arrows stand at the two edges of the body, over the ground, the same
+   in every view; a column scrolls behind them. */
 .entry-surface .entry-scan-arrow {
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  z-index: 30;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -493,15 +432,17 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+.entry-surface .entry-scan-previous { left: 24px; }
+.entry-surface .entry-scan-next { right: 24px; }
+
 .entry-surface .entry-scan-viewport {
-  flex: 1;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  height: 100%;
   overflow: hidden;
-  min-width: 0;
+  container-type: size;
 }
 
 .entry-surface .entry-scan-frame {
@@ -515,8 +456,9 @@
 
 .entry-surface .entry-scan-image {
   display: block;
-  max-width: 100%;
-  max-height: 70vh;
+  /* As large as the body allows, clear of the arrows either side. */
+  max-width: calc(100cqw - 192px);
+  max-height: calc(100cqh - 56px);
   width: auto;
   height: auto;
   object-fit: contain;
@@ -610,10 +552,9 @@
    so it is plain where the column starts and where it ends. */
 .entry-surface .entry-sheet {
   box-sizing: border-box;
-  width: min(644px, 100%);
-  height: min(70vh, 720px);
-  /* Room either side of the paper for the tag that names a slice. */
-  padding: 24px 72px;
+  width: 100%;
+  height: 100%;
+  padding: 28px 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -742,7 +683,6 @@
 }
 
 @media (max-width: 767.98px) {
-  .entry-surface .entry-sheet { padding-inline: 0; }
   .entry-surface .entry-slice-number { right: auto; left: 6px; }
 }
 
@@ -1290,12 +1230,11 @@
   .entry-surface { height: 100vh; border-radius: 0; }
   .entry-dialog { width: 100vw; margin: 0; }
   .entry-surface .entry-header-top { padding: 8px 52px 8px 16px; }
-  .entry-surface .entry-tabs,
-  .entry-surface .entry-controls { padding-inline: 16px; }
-  .entry-surface .entry-section-toggle { padding-inline: 16px; }
-  .entry-surface .entry-section-body { padding: 0 16px 24px; }
-  .entry-surface .entry-notice { padding-inline: 16px; }
-  .entry-surface .entry-scan { gap: 8px; }
+  .entry-surface .entry-tabs { padding-inline: 16px; }
+  .entry-surface .entry-section-body { padding: 20px 16px 24px; }
   .entry-surface .entry-scan-arrow { width: 36px; height: 36px; }
+  .entry-surface .entry-scan-previous { left: 8px; }
+  .entry-surface .entry-scan-next { right: 8px; }
+  .entry-surface .entry-scan-image { max-width: calc(100cqw - 96px); }
   .entry-surface .entry-systems { margin-left: 8px; padding-left: 12px; }
 }

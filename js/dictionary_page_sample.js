@@ -50,8 +50,8 @@ const KAMUS_TURKI_1417_COLUMN_3 = {
     { number: 5, top: 50.43, bottom: 61.49, boxes: [
         { category: "entry", ottoman: "منظر", latin: "manzar", top: 50.79, left: 77.4, width: 22.4, height: 4.79 },
         { category: "related", ottoman: "نظر", latin: "nazar", top: 51.33, left: 19.6, width: 11.4, height: 2.21 },
-        { category: "sub", ottoman: "كریه المنظر", latin: "kerih ül-manzar", top: 56.43, left: 3.6, width: 14.6, height: 2.39 },
-        { category: "sub", ottoman: "كریه المنظر", latin: "kerih ül-manzar", top: 59.01, left: 73.6, width: 16.8, height: 2.3 }
+        { category: "sub", ottoman: "كریه", latin: "kerîh", top: 56.43, left: 3.6, width: 14.6, height: 2.39 },
+        { category: "sub", ottoman: "المنظر", latin: "el-manzar", top: 59.01, left: 73.6, width: 16.8, height: 2.3 }
     ] },
     { number: 6, top: 61.49, bottom: 72.42, boxes: [
         { category: "entry", ottoman: "منظر", latin: "minzar", top: 61.72, left: 78.4, width: 19.4, height: 4.2 },

@@ -12,6 +12,11 @@
 // "boxes" are the places on the scan the entry occupies; "concepts" are the
 // words several panels share, so that pressing one can list what each panel
 // calls it, and "views" are the three ways of looking at the same page.
+// A view that has a scan of its own names it, with "slices": the stretches
+// of the scan each record takes (top and bottom as a percentage of the
+// scan's height) and the words in each (as percentages of the whole scan).
+// "current" is the slice this record sits in. The sample's column is the
+// one the dictionary page window shows, in js/dictionary_page_sample.js.
 //
 // The reference mock shows a flag beside each language. Flags there come from
 // an image CDN, which these pages do not use, so a language is named by its
@@ -48,7 +53,11 @@ window.LQ_ENTRY_SAMPLE = {
         "en": "Column",
         "tr": "Sütun"
       },
-      "count": "3"
+      "count": "3",
+      "image": KAMUS_TURKI_1417_COLUMN_3.image,
+      "ratio": KAMUS_TURKI_1417_COLUMN_3.ratio,
+      "current": 5,
+      "slices": KAMUS_TURKI_1417_COLUMN_3.slices
     },
     {
       "id": "page",

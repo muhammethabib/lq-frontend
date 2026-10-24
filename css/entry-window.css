@@ -603,6 +603,149 @@
   height: calc(21.6% - 3px);
 }
 
+/* ---------------------------------------------------- the column as a sheet */
+
+/* The column is not shrunk to fit: it is a sheet of paper scrolled inside the
+   scan area, with the ground showing above its top edge and below its foot,
+   so it is plain where the column starts and where it ends. */
+.entry-surface .entry-sheet {
+  box-sizing: border-box;
+  width: min(644px, 100%);
+  height: min(70vh, 720px);
+  /* Room either side of the paper for the tag that names a slice. */
+  padding: 24px 72px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  line-height: 0;
+}
+.entry-surface .entry-paper {
+  width: min(500px, 100%);
+  margin-inline: auto;
+  padding-block: 56px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+.entry-surface .entry-sheet-frame { position: relative; width: 100%; }
+.entry-surface .entry-sheet-image { display: block; width: 100%; height: 100%; }
+
+.entry-surface .entry-scan-missing {
+  margin: 0;
+  padding: 46px 24px;
+  border: 1px dashed var(--lq-line);
+  border-radius: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--lq-muted);
+}
+
+/* A slice is the stretch of the column one record takes. It shows itself
+   when the cursor crosses it: its edges, a faint wash, and a tag in the
+   margin naming it. The record's own slice is always marked, in green. */
+.entry-surface .entry-slice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  line-height: normal;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.entry-surface .entry-slice:is(:hover, :focus-within) {
+  border-color: rgba(8, 37, 103, 0.28);
+  background: rgba(8, 37, 103, 0.035);
+}
+.entry-surface .entry-slice.is-current {
+  border-color: rgba(5, 150, 105, 0.35);
+  background: rgba(5, 150, 105, 0.04);
+}
+.entry-surface .entry-slice.is-current:is(:hover, :focus-within) {
+  border-color: rgba(5, 150, 105, 0.6);
+  background: rgba(5, 150, 105, 0.06);
+}
+.entry-surface .entry-slice-number {
+  position: absolute;
+  top: 6px;
+  right: calc(100% + 10px);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--lq-sapphire);
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.entry-surface .entry-slice.is-current .entry-slice-number { background: var(--entry-headword); opacity: 1; }
+.entry-surface .entry-slice:is(:hover, :focus-within) .entry-slice-number { opacity: 1; }
+
+/* The words: in the record's own slice, the colours the slice view uses... */
+.entry-surface .entry-sheet-box.entry-kind-headword {
+  border-color: var(--entry-headword);
+  background: var(--entry-headword-bg);
+  opacity: 0.7;
+}
+.entry-surface .entry-sheet-box.entry-kind-related {
+  z-index: 50;
+  border-color: var(--entry-related);
+  background: var(--entry-related-bg);
+  opacity: 0.9;
+  animation: entry-box-breathe 3s infinite ease-in-out;
+}
+.entry-surface .entry-sheet-box.entry-kind-sub {
+  border-color: var(--entry-sub);
+  background: var(--entry-sub-bg);
+  opacity: 0.7;
+}
+/* ...in every other slice, grey... */
+.entry-surface .entry-slice:not(.is-current) .entry-sheet-box {
+  border-color: rgba(100, 116, 139, 0.45);
+  background: rgba(148, 163, 184, 0.16);
+  box-shadow: none;
+  opacity: 1;
+  animation: none;
+}
+/* ...until the cursor reaches their slice, and then all of them take their
+   own colour at once. */
+.entry-surface .entry-slice:not(.is-current):is(:hover, :focus-within) .entry-sheet-box.entry-kind-headword {
+  border-color: var(--entry-headword);
+  background: var(--entry-headword-bg);
+}
+.entry-surface .entry-slice:not(.is-current):is(:hover, :focus-within) .entry-sheet-box.entry-kind-related {
+  border-color: var(--entry-related);
+  background: var(--entry-related-bg);
+}
+.entry-surface .entry-slice:not(.is-current):is(:hover, :focus-within) .entry-sheet-box.entry-kind-sub {
+  border-color: var(--entry-sub);
+  background: var(--entry-sub-bg);
+}
+/* The word under the cursor lights up as it does on the slice view. */
+.entry-surface .entry-sheet .entry-slice .entry-sheet-box.entry-kind-headword:is(:hover, .is-lit) {
+  border-color: var(--entry-headword);
+  background: var(--entry-headword-lit);
+  opacity: 1;
+}
+.entry-surface .entry-sheet .entry-slice .entry-sheet-box.entry-kind-related:is(:hover, .is-lit) {
+  border-color: var(--entry-related);
+  background: var(--entry-related-bg);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+  opacity: 1;
+  animation: none;
+}
+.entry-surface .entry-sheet .entry-slice .entry-sheet-box.entry-kind-sub:is(:hover, .is-lit) {
+  border-color: var(--entry-sub);
+  background: var(--entry-sub-lit);
+  opacity: 1;
+}
+
+@media (max-width: 767.98px) {
+  .entry-surface .entry-sheet { padding-inline: 0; }
+  .entry-surface .entry-slice-number { right: auto; left: 6px; }
+}
+
 /* Where a shared word sits on the page */
 .entry-surface .entry-scan-mark {
   position: absolute;

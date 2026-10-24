@@ -259,6 +259,9 @@ class DictionaryPageController extends Stimulus.Controller {
     const centre = () => this.centreSlice(sheet);
     if (this.element.classList.contains("show")) requestAnimationFrame(centre);
     else this.element.addEventListener("shown.bs.modal", centre, { once: true });
+    // Until the scan has arrived the sheet may have no height to scroll in.
+    const image = frame.querySelector("img");
+    if (!image.complete) image.addEventListener("load", centre, { once: true });
   }
 
   centreSlice(sheet) {

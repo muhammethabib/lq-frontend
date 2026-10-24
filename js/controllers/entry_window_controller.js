@@ -188,21 +188,14 @@ class EntryWindowController extends Stimulus.Controller {
           </button>
         </h3>
         <div class="entry-section-body">
-          ${section.id === "original" ? this.scanHtml(section) : this.panelHtml(section, language)}
+          ${section.id === "original" ? this.scanHtml() : this.panelHtml(section, language)}
         </div>
       </section>`;
   }
 
   // The scan is its own thing: the page as printed, with the places the entry
   // occupies drawn on top of it.
-  scanHtml(section) {
-    const safe = window.LQ.escape;
-    const boxes = (section.boxes || []).map((box) => `
-      <button type="button" class="entry-box entry-box-${safe(box.slot)}"
-              data-entry-box="${safe(box.slot)}" data-entry-kind="${safe(box.kind)}"
-              ${box.pair ? `data-entry-pair="${safe(box.pair)}"` : ""}
-              data-entry-ottoman="${safe(box.ottoman)}" data-entry-latin="${safe(box.latin)}"
-              aria-label="${safe(box.latin)}"></button>`).join("");
+  scanHtml() {
     return `
       <div class="entry-scan">
         <button type="button" class="btn entry-scan-arrow entry-scan-previous"
@@ -210,19 +203,104 @@ class EntryWindowController extends Stimulus.Controller {
                 aria-label="Previous entry" data-i18n-aria="scanPrevious">
           <i data-feather="chevron-left" aria-hidden="true"></i>
         </button>
-        <div class="entry-scan-viewport">
-          <div class="entry-scan-frame" data-entry-frame>
-            <img src="${safe(this.record.scan)}" alt=""
-                 data-i18n-alt="scanAlt" class="entry-scan-image">
-            ${boxes}
-          </div>
-        </div>
+        <div class="entry-scan-viewport" data-entry-viewport>${this.scanViewHtml()}</div>
         <button type="button" class="btn entry-scan-arrow entry-scan-next"
                 data-action="click->entry-window#next"
                 aria-label="Next entry" data-i18n-aria="scanNext">
           <i data-feather="chevron-right" aria-hidden="true"></i>
         </button>
       </div>`;
+  }
+
+  // What the scan area shows for the view in hand: the slice with the
+  // entry's places drawn on it, or a column (or page) as a sheet to scroll,
+  // or a line saying the sample has no scan for it.
+  scanViewHtml() {
+    const safe = window.LQ.escape;
+    const view = (this.record.views || []).find((one) => one.id === this.view) || {};
+    if (this.view !== "slice" && Array.isArray(view.slices) && view.image) return this.sheetHtml(view);
+    if (this.view !== "slice") {
+      return '<p class="entry-scan-missing" data-i18n="scanMissing">The scan for this view is not in the sample data. The endpoint returns one image per view.</p>';
+    }
+    const section = (this.record.sections || []).find((one) => one.id === "original") || {};
+    const boxes = (section.boxes || []).map((box) => `
+      <button type="button" class="entry-box entry-box-${safe(box.slot)}"
+              data-entry-box="${safe(box.slot)}" data-entry-kind="${safe(box.kind)}"
+              ${box.pair ? `data-entry-pair="${safe(box.pair)}"` : ""}
+              data-entry-ottoman="${safe(box.ottoman)}" data-entry-latin="${safe(box.latin)}"
+              aria-label="${safe(box.latin)}"></button>`).join("");
+    return `
+          <div class="entry-scan-frame" data-entry-frame>
+            <img src="${safe(this.record.scan)}" alt=""
+                 data-i18n-alt="scanAlt" class="entry-scan-image">
+            ${boxes}
+          </div>`;
+  }
+
+  // The column as a sheet of paper scrolled inside the scan area, its top
+  // and foot edges showing, with its slices laid over it. The record's own
+  // slice is marked and keeps its colours; every other slice is grey until
+  // the cursor crosses it, and then its edges show and all its words take
+  // their colours. The words sit inside their slice, so the slice stays lit
+  // while the cursor is on one of them, and each still opens its card.
+  sheetHtml(view) {
+    const safe = window.LQ.escape;
+    const kinds = { entry: "headword", related: "related", sub: "sub" };
+    // A slice is named the way the switch below names it.
+    const sliceView = (this.record.views || []).find((one) => one.id === "slice") || {};
+    const name = (sliceView.label || {})[this.language()] || "Slice";
+    const slices = view.slices.map((slice) => {
+      const span = slice.bottom - slice.top;
+      const subs = (slice.boxes || []).filter((box) => box.category === "sub").length;
+      const words = (slice.boxes || []).map((box) => {
+        const kind = kinds[box.category] || "related";
+        const pair = kind === "sub" && subs > 1 ? `slice-${slice.number}-sub` : "";
+        return `
+          <button type="button" class="entry-box entry-sheet-box entry-kind-${kind}"
+                  data-entry-kind="${kind}" ${pair ? `data-entry-pair="${pair}"` : ""}
+                  data-entry-ottoman="${safe(box.ottoman)}" data-entry-latin="${safe(box.latin)}"
+                  aria-label="${safe(box.latin)}"
+                  style="top:${(box.top - slice.top) / span * 100}%;left:${box.left}%;width:${box.width}%;height:${box.height / span * 100}%"></button>`;
+      }).join("");
+      return `
+        <div class="entry-slice${slice.number === view.current ? " is-current" : ""}"
+             style="top:${slice.top}%;height:${span}%">
+          <span class="entry-slice-number">${safe(name)} ${safe(slice.number)}</span>
+          ${words}
+        </div>`;
+    }).join("");
+    return `
+          <div class="entry-sheet" data-entry-sheet>
+            <div class="entry-paper">
+              <div class="entry-sheet-frame" style="aspect-ratio:${view.ratio}">
+                <img src="${safe(view.image)}" alt="" data-i18n-alt="scanAlt" class="entry-sheet-image">
+                ${slices}
+              </div>
+            </div>
+          </div>`;
+  }
+
+  // The record's own slice is brought into the middle of the sheet, and the
+  // card of a word goes when the sheet is scrolled out from under it.
+  settleSheet() {
+    const sheet = this.find("[data-entry-sheet]");
+    if (!sheet) return;
+    sheet.addEventListener("scroll", () => this.hideCards(), { passive: true });
+    // Until the scan has arrived the sheet has no height to scroll in.
+    const image = sheet.querySelector("img");
+    if (image && !image.complete) {
+      image.addEventListener("load", () => this.centreSlice(sheet), { once: true });
+    }
+    this.centreSlice(sheet);
+  }
+
+  centreSlice(sheet) {
+    const current = sheet.querySelector(".entry-slice.is-current");
+    if (!current) return;
+    const sheetBox = sheet.getBoundingClientRect();
+    const sliceBox = current.getBoundingClientRect();
+    const offset = sliceBox.top - sheetBox.top + sheet.scrollTop;
+    sheet.scrollTop = Math.max(0, offset - (sheet.clientHeight - sliceBox.height) / 2);
   }
 
   panelHtml(section, language) {
@@ -401,7 +479,13 @@ class EntryWindowController extends Stimulus.Controller {
       button.setAttribute("aria-pressed", String(active));
     });
     this.placeIndicator();
-    // The endpoint returns one image per view; the sample carries the slice.
+    // The scan area is redrawn for the view; the panels below stay as they are.
+    const viewport = this.find("[data-entry-viewport]");
+    if (!viewport) return;
+    this.hideCards();
+    viewport.innerHTML = this.scanViewHtml();
+    if (window.LQ.applyTranslations) window.LQ.applyTranslations(viewport);
+    requestAnimationFrame(() => this.settleSheet());
   }
 
   previous() { this.step(-1); }

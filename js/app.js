@@ -370,11 +370,13 @@ window.LQ = {
     if (ghost) ghost.hidden = true;
   },
 
-  // The mark on every button that opens the citation window. It is a pair of
-  // quotation marks, which Feather has no icon for, so it is drawn here once
-  // rather than pasted into each of the four places that cite.
+  // The mark on every button that opens the citation window. It is a closing
+  // quotation mark, heads up and tails down, the way a quote is usually
+  // drawn; Feather has no icon for it, so it is drawn here once rather than
+  // pasted into each of the four places that cite. The two windows that are
+  // written in pages/home.html carry the same drawing.
   citeIcon() {
-    return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="translate(24,0) scale(-1,1)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
+    return `<svg class="cite-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><g transform="rotate(180 12 12)"><rect x="1.6" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M3.5 14.6V10.3C3.5 7.4 4.8 6 7.2 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path><rect x="13.2" y="10.8" width="8.4" height="8.4" rx="3"></rect><path d="M15.1 14.6V10.3C15.1 7.4 16.4 6 18.8 5.2" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>`;
   },
 
   // The button's own name, for a reader hearing the page: named by what it

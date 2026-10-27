@@ -477,6 +477,8 @@ window.LQ_TRANSLATIONS = {
     citeFormats: "Künye Formatları",
     citeCopy: "Künyeyi kopyala",
     citeCopied: "Kopyalandı",
+    copyLink: "Bağlantıyı kopyala",
+    linkCopied: "Bağlantı kopyalandı",
     citeVolumeShort: "c.",
     citePageShort: "s.",
 

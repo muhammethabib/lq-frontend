@@ -25,9 +25,14 @@ class DictionaryPageController extends Stimulus.Controller {
     document.addEventListener("dictionary-page:open", this.onOpen);
     this.onLanguageChange = () => { if (this.entry) this.render(); };
     document.addEventListener("language:changed", this.onLanguageChange);
+    // A link copied from this window opens it again on the same entry. It
+    // waits a turn, behind the search the link also asks for.
+    const linked = window.LQ.linkedEntry("page");
+    if (linked) this.openingLink = setTimeout(() => this.open(linked), 0);
   }
 
   disconnect() {
+    clearTimeout(this.openingLink);
     document.removeEventListener("dictionary-page:open", this.onOpen);
     document.removeEventListener("language:changed", this.onLanguageChange);
     if (this.modal) this.modal.dispose();
@@ -62,7 +67,8 @@ class DictionaryPageController extends Stimulus.Controller {
     this.entries = (response && response.entries) || [];
     this.index = (response && response.index) || 0;
     this.entry = this.entries[this.index] || null;
-    this.view = "slice";
+    // A link names the view it was copied in.
+    this.view = VIEWS.includes(request.view) ? request.view : "slice";
     this.request = request;
 
     this.render();
@@ -327,6 +333,21 @@ class DictionaryPageController extends Stimulus.Controller {
   selectView(event) {
     this.view = event.currentTarget.dataset.scanView;
     this.fill();
+  }
+
+  // The link follows the arrows: it names the entry on screen now, not the
+  // one the window was opened on.
+  copyLink(event) {
+    const entry = this.entry || {};
+    const link = window.LQ.entryLink("page", {
+      link: entry.link,
+      dictionary: entry.dictionary,
+      page: entry.page,
+      headwordOttoman: entry.headwordOttoman,
+      headwordLatin: entry.headwordLatin,
+      view: this.view
+    });
+    window.LQ.copyLink(event.currentTarget, link);
   }
 
   previous() { this.step(-1); }

@@ -1695,6 +1695,15 @@
             <span class="scan-dictionary" data-scan-dictionary></span>
             <span class="scan-headword"><b data-scan-headword-latin></b></span>
           </p>
+          <!-- A link to this entry alone, for a reader who wants to send it on. -->
+          <button type="button" class="btn window-link" data-action="click->dictionary-page#copyLink"
+                  aria-label="Copy link" data-i18n-aria="copyLink"
+                  data-tooltip="Copy link" data-i18n-tooltip="copyLink">
+            <svg class="window-link-chain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            <svg class="window-link-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </button>
           <button type="button" class="btn window-close" data-bs-dismiss="modal"
                   aria-label="Close" data-i18n-aria="close">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -2140,6 +2149,15 @@
   <template id="entryWindowTemplate">
     <div class="modal-dialog modal-dialog-centered entry-dialog">
       <div class="modal-content entry-surface">
+        <!-- A link to this entry alone, for a reader who wants to send it on. -->
+        <button type="button" class="btn window-link entry-link-copy" data-action="click->entry-window#copyLink"
+                aria-label="Copy link" data-i18n-aria="copyLink"
+                data-tooltip="Copy link" data-i18n-tooltip="copyLink">
+          <svg class="window-link-chain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg class="window-link-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </button>
         <button type="button" class="btn window-close entry-close" data-bs-dismiss="modal"
                 aria-label="Close" data-i18n-aria="close">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"

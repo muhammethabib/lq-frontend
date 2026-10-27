@@ -126,6 +126,59 @@ html {
   color: #fff;
 }
 
+/* Its neighbour in the corner of a window that shows one entry: copies a
+   link to that entry. Drawn as the close is, so the two read as a pair, but
+   it lights up blue -- a red would say it takes something away. Once the
+   link is copied the chain gives way to a green tick for a moment, and the
+   tooltip, which is under the button rather than over it so the window's
+   edge cannot cut it, says so. */
+.window-link {
+  position: absolute;
+  top: 14px;
+  right: 58px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lq-line);
+  border-radius: 50%;
+  background: var(--lq-paper);
+  color: var(--lq-ink-soft);
+  transition: background .2s, border-color .2s, color .2s;
+}
+.window-link svg { width: 16px; height: 16px; }
+.window-link .window-link-tick { display: none; }
+.window-link:hover,
+.window-link:focus-visible {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.window-link.is-copied,
+.window-link.is-copied:hover {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.window-link.is-copied .window-link-chain { display: none; }
+.window-link.is-copied .window-link-tick { display: block; }
+/* The tooltip rule below sets every carrier relative; this one stays put. */
+.window-link[data-tooltip] { position: absolute; }
+.window-link[data-tooltip]::after {
+  top: 100%;
+  bottom: auto;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+.window-link.is-copied[data-tooltip]::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Ottoman text: font and size are driven by data-direction, never by a hardcoded class */
 [data-direction="rtl"] {
   direction: rtl;

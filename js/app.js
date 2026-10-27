@@ -393,6 +393,84 @@ window.LQ = {
     const record = (window.LQ_DICTIONARIES || {})[name];
     const year = record && record.year;
     return year ? `${name}, ${year}` : name;
+  },
+
+  // ==================== a link to one entry ====================
+
+  // Both windows that show a single entry -- the entry window and the
+  // dictionary page -- hand out a link to it. The backend is to send a
+  // permanent address with the record ("link"); until it does, the link is
+  // this page carrying what the window was opened with, which the window reads
+  // back on load. The word goes in as ?q= too, so closing the window leaves
+  // the reader on that word's results rather than on an empty page.
+  entryLink(kind, entry) {
+    if (entry.link) return entry.link;
+    const fields = {
+      q: entry.headwordOttoman || entry.ottoman,
+      open: kind,
+      dictionary: entry.dictionary,
+      page: entry.page,
+      word: entry.ottoman,
+      headword: entry.headwordOttoman,
+      latin: entry.headwordLatin,
+      focus: entry.focus,
+      view: entry.view
+    };
+    const query = new URLSearchParams();
+    Object.keys(fields).forEach((key) => {
+      if (fields[key] != null && fields[key] !== "") query.set(key, fields[key]);
+    });
+    return `${window.location.origin}${window.location.pathname}?${query}`;
+  },
+
+  // What a link made above asks the window of that kind to open, or null.
+  linkedEntry(kind) {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("open") !== kind) return null;
+    return {
+      dictionary: query.get("dictionary"),
+      page: query.get("page"),
+      ottoman: query.get("word"),
+      headwordOttoman: query.get("headword"),
+      headwordLatin: query.get("latin"),
+      focus: query.get("focus") || undefined,
+      view: query.get("view")
+    };
+  },
+
+  // The link button answers with a tick and a tooltip that says it is done,
+  // then goes back to asking. The clipboard API only exists on a secure page,
+  // so a plain copy command stands in for it elsewhere.
+  copyLink(button, text) {
+    const asking = this.translate("copyLink", "Copy link");
+    const done = () => {
+      button.classList.add("is-copied");
+      button.dataset.tooltip = this.translate("linkCopied", "Link copied");
+      clearTimeout(button.copiedTimer);
+      button.copiedTimer = setTimeout(() => {
+        button.classList.remove("is-copied");
+        button.dataset.tooltip = asking;
+      }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, () => this.copyByCommand(text, done));
+    } else {
+      this.copyByCommand(text, done);
+    }
+  },
+
+  copyByCommand(text, done) {
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+    // Inside the open window: Bootstrap keeps focus there, and a field
+    // outside it could not be selected.
+    (document.querySelector(".modal.show") || document.body).appendChild(field);
+    field.select();
+    try { document.execCommand("copy"); } catch (error) { /* nothing left to try */ }
+    field.remove();
+    done();
   }
 };
 

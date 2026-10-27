@@ -35,6 +35,7 @@
 
 /* The shared ring; it only needs to clear the window's own layers here. */
 .entry-surface .entry-close { top: 16px; right: 16px; z-index: 100; }
+.entry-surface .entry-link-copy { top: 16px; right: 56px; z-index: 100; }
 
 /* ---------------------------------------------------- the header */
 
@@ -54,7 +55,7 @@
   flex-wrap: wrap;
   gap: 12px;
   min-height: 52px;
-  padding: 8px 56px 8px 24px;
+  padding: 8px 96px 8px 24px;
 }
 
 .entry-surface .entry-badge {

@@ -40,9 +40,14 @@ class EntryWindowController extends Stimulus.Controller {
     // from, so it is told when the window has gone.
     this.onHidden = () => document.dispatchEvent(new CustomEvent("entry:closed"));
     this.element.addEventListener("hidden.bs.modal", this.onHidden);
+    // A link copied from this window opens it again on the same entry. It
+    // waits a turn, behind the search the link also asks for.
+    const linked = window.LQ.linkedEntry("entry");
+    if (linked) this.openingLink = setTimeout(() => this.open(linked), 0);
   }
 
   disconnect() {
+    clearTimeout(this.openingLink);
     document.removeEventListener("entry:open", this.onOpen);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("view-state:change", this.onViewState);
@@ -60,6 +65,7 @@ class EntryWindowController extends Stimulus.Controller {
   }
 
   open(request) {
+    this.request = request;
     this.focusOn = request.focus || "headword";
     // Matches the Rails route this window expects:
     //   GET /dictionary_entry/show?dictionary=…&page=…&word=…
@@ -77,12 +83,17 @@ class EntryWindowController extends Stimulus.Controller {
 
   receive(record) {
     this.record = record;
-    this.view = (record.views && record.views[0] && record.views[0].id) || "slice";
+    // A link names the view it was copied in; otherwise the first one.
+    const views = record.views || [];
+    const asked = (this.request || {}).view;
+    this.view = views.some((view) => view.id === asked) ? asked
+      : (views[0] && views[0].id) || "slice";
     this.render();
     this.modal = bootstrap.Modal.getOrCreateInstance(this.element);
     this.element.addEventListener("shown.bs.modal", () => {
       this.focus();
       this.placeIndicator();
+      this.settleSheet();
     }, { once: true });
     this.modal.show();
   }
@@ -847,6 +858,25 @@ class EntryWindowController extends Stimulus.Controller {
     } else {
       done();
     }
+  }
+
+  // The link names the entry and the view in hand, so the reader it is sent
+  // to sees what the sender was looking at.
+  copyLink(event) {
+    const record = this.record;
+    const request = this.request || {};
+    const first = (record.breadcrumb || [])[0] || {};
+    const link = window.LQ.entryLink("entry", {
+      link: record.link,
+      dictionary: record.dictionary,
+      page: record.page,
+      ottoman: request.ottoman,
+      headwordOttoman: first.ottoman,
+      headwordLatin: first.latin,
+      focus: this.focusOn,
+      view: this.view
+    });
+    window.LQ.copyLink(event.currentTarget, link);
   }
 
   // ==================== opening on the right place ====================

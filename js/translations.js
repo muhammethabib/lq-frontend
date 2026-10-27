@@ -96,7 +96,7 @@ window.LQ_TRANSLATIONS = {
     joinSeparate: "Harfler ayrı",
     joinConnected: "Harfler birleşik",
     joinUncertain: "Emin değilim",
-    joinChange: "Değiştirmek için tıkla",
+    joinNext: "Tıklarsanız:",
     basedOnClues: "Verilen ipuçlarına göre",
     decoderRecords: "Sonuç",
     decoderDictionaries: "Sözlük",

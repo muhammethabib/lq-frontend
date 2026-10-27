@@ -241,9 +241,8 @@ class WordDecoderController extends Stimulus.Controller {
 
   joinHtml() {
     return `
-      <button type="button" class="btn gap-join can-hover" data-join="separate"
-              data-action="pointerdown->word-decoder#cycleJoin
-                           pointerleave->word-decoder#restoreJoinHover"
+      <button type="button" class="btn gap-join" data-join="separate"
+              data-action="pointerdown->word-decoder#cycleJoin"
               data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
               data-bs-title="${this.escape(this.joinLabel("separate"))}"
               aria-label="${this.escape(this.joinSpoken("separate"))}">
@@ -457,9 +456,6 @@ class WordDecoderController extends Stimulus.Controller {
     // From the first press the chain is the reader's, and the board stops
     // setting it from the letters.
     button.dataset.manual = "1";
-    // The rings have just been set; the hover preview would argue with them
-    // while the hand is still there, so it waits until the hand has left.
-    button.classList.remove("can-hover");
 
     this.setTooltip(button, this.joinLabel(next));
 
@@ -473,21 +469,21 @@ class WordDecoderController extends Stimulus.Controller {
     }
   }
 
-  restoreJoinHover(event) {
-    event.currentTarget.classList.add("can-hover");
-  }
-
-  // What the rings say now, and under it, in small type, that a press changes
-  // it -- as the reference words it.
+  // What the rings say now, and under it, in small type, what a press would
+  // make them. The chain itself only changes when it is pressed: a hand over
+  // it is not a choice, so the tooltip says where the next press goes.
   joinLabel(state) {
     const labels = {
       separate: ["joinSeparate", "Letters separate"],
       connected: ["joinConnected", "Letters connected"],
       uncertain: ["joinUncertain", "Uncertain"]
     };
-    const [key, fallback] = labels[state] || labels.separate;
-    return `${this.escape(this.translate(key, fallback))}` +
-      `<span class="join-tip-change">${this.escape(this.translate("joinChange", "Click to change"))}</span>`;
+    const order = ["separate", "connected", "uncertain"];
+    const now = order.includes(state) ? state : "separate";
+    const next = order[(order.indexOf(now) + 1) % order.length];
+    const name = (which) => this.escape(this.translate(...labels[which]));
+    return `${name(now)}` +
+      `<span class="join-tip-change">${this.escape(this.translate("joinNext", "On click:"))} ${name(next)}</span>`;
   }
 
   // The tooltip carries two lines; a reader who hears it gets the first.

@@ -819,7 +819,19 @@ class WordDecoderController extends Stimulus.Controller {
   // ==================== the row's hint ====================
 
   // For a first-time reader: the boxes take the reader's own keyboard too.
-  // The keyboard says the same in its own header, so one of them is enough.
+  // It is said while the cursor is on a box, the place it is about, and not
+  // over the rest of the row. The keyboard says the same in its own header,
+  // so one of them is enough.
+  rowHintOver(event) {
+    if (event.target.closest(".slot-cell")) this.showRowHint();
+  }
+
+  // Moving from one box to the next, or within a box, keeps it.
+  rowHintOut(event) {
+    const to = event.relatedTarget;
+    if (!(to && to.closest && to.closest(".slot-cell"))) this.hideRowHint();
+  }
+
   showRowHint() {
     if (this.keyboardOpen) return;
     if (document.querySelector(".search-keyboard.is-open")) return;

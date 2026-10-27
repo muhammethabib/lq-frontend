@@ -148,8 +148,7 @@
 
         <div class="decoder-card">
          <div class="decoder-mode">
-          <div class="decoder-row"
-               data-action="mouseenter->word-decoder#showRowHint mouseleave->word-decoder#hideRowHint">
+          <div class="decoder-row">
             <button type="button" class="btn decoder-clear is-hidden" data-word-decoder-target="clear"
                     data-action="click->word-decoder#clearStrip">
               <i data-feather="rotate-ccw"></i><span data-i18n="clearBtn">Clear</span>
@@ -158,6 +157,7 @@
             <!-- One slot per letter position, read right to left. Filled by
                  the controller so a slot can be added or split as you work. -->
             <div class="slot-strip" data-word-decoder-target="strip" data-direction="rtl"
+                 data-action="mouseover->word-decoder#rowHintOver mouseout->word-decoder#rowHintOut"
                  role="group" aria-label="Letters" data-i18n-aria="decoderLetters"></div>
 
             <button type="button" class="btn decoder-submit"

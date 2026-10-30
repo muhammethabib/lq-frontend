@@ -45,7 +45,7 @@ window.LQ_TRANSLATIONS = {
     sourceOttoman: "Osmanlıca",
     sourceOttomanKind: "Kelimeler",
     sourceEnglish: "İngilizce",
-    sourceEnglishKind: "Tanımlar",
+    sourceEnglishKind: "Redhouse",
     sourceEnglishTitle: "Redhouse'ta İngilizce tanımlar içinde ara",
     ariaMainSearch: "Aranacak kelime",
     placeholderLatin: "Latin harfleriyle ara",

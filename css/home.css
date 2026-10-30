@@ -234,9 +234,9 @@
   z-index: 10;
 }
 /* Each side names what it searches in two lines: the language, and under
-   it what in that language -- Ottoman words, or English definitions. The
-   names say what is searched, not which script to type, so they are not
-   taken for the bar's own two halves. */
+   it what in that language -- Ottoman words, or the Redhouse dictionary's
+   English. The names say what is searched, not which script to type, so
+   they are not taken for the bar's own two halves. */
 .home-surface .source-option {
   flex: 1;
   display: flex;

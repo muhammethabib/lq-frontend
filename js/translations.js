@@ -49,7 +49,7 @@ window.LQ_TRANSLATIONS = {
     sourceEnglishTitle: "Redhouse'ta İngilizce tanımlar içinde ara",
     ariaMainSearch: "Aranacak kelime",
     placeholderLatin: "Latin harfleriyle ara",
-    placeholderEnglish: "İngilizce tanımları arayın...",
+    placeholderEnglish: "Redhouse sözlüğünün tanımlarında arayın...",
     placeholderOttoman: "Osmanlı harfleriyle ara",
     placeholderLatinShort: "Latin harfleri",
     placeholderOttomanShort: "Osmanlı harfleri",

@@ -390,6 +390,14 @@
 }
 
 .home-surface .placeholder-layer > span[hidden] { display: none; }
+/* The English prompt names its dictionary, so it is long; on a narrow bar
+   it ends in an ellipsis rather than running out of it. */
+.home-surface .placeholder-layer > [data-home-target="placeholderEnglish"] {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .home-surface .script-chip {
   display: inline-flex;
   align-items: center;

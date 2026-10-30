@@ -2308,25 +2308,27 @@
 /* Under the half it is about, its arrow pointing up into that half. */
 .home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
 .home-surface .search-hint-card.is-ottoman { right: 96px; }
-/* The arrow is a small white square turned on its corner, drawn with the
-   same line as the card on its two upper sides; its lower half lies over
-   the card's own border and hides it, so the line runs up to the point and
-   down again unbroken, at one weight all the way. */
+/* The arrow is drawn as one line from the card's border up to the point
+   and down again, its ends rounded and centred on the border line so they
+   meet it without a step; white under it hides the border it crosses.
+   Its sloping sides are a touch heavier than the card's 1.5px, since a
+   line on the slant reads thinner than the same line level. The colour is
+   written into the drawing, one per script, because a background image
+   cannot take it from the page. */
 .home-surface .search-hint-card::before {
   content: "";
   position: absolute;
-  top: -6.75px;
-  box-sizing: border-box;
-  width: 12px;
+  /* The drawing's level line sits 10.25px down it; the card's border runs
+     0.75px above the card's padding box. */
+  top: -11px;
+  width: 26px;
   height: 12px;
-  border-top: 1.5px solid var(--hint-colour);
-  border-left: 1.5px solid var(--hint-colour);
-  border-top-left-radius: 2px;
-  background: var(--lq-paper);
-  transform: rotate(45deg);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='12' viewBox='0 0 26 12'%3E%3Cpath d='M6 10.25L13 3.25L20 10.25V12H6Z' fill='%23fff'/%3E%3Cpath d='M6 10.25L13 3.25L20 10.25' fill='none' stroke='%231c449c' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
 }
-.home-surface .search-hint-card.is-latin::before { left: 47px; }
-.home-surface .search-hint-card.is-ottoman::before { right: 47px; }
+.home-surface .search-hint-card.is-ottoman::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='12' viewBox='0 0 26 12'%3E%3Cpath d='M6 10.25L13 3.25L20 10.25V12H6Z' fill='%23fff'/%3E%3Cpath d='M6 10.25L13 3.25L20 10.25' fill='none' stroke='%239d1c51' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+/* The point sits where the old one did: 53px in from the card's edge. */
+.home-surface .search-hint-card.is-latin::before { left: 40px; }
+.home-surface .search-hint-card.is-ottoman::before { right: 40px; }
 
 /* Which step this is, beside the close mark. */
 .home-surface .search-hint-dots {

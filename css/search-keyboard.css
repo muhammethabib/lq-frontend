@@ -80,13 +80,13 @@
   transition: opacity .15s ease;
   background-image: radial-gradient(circle, #c3cedb 1.1px, transparent 1.3px);
   background-size: 9px 9px;
-  background-repeat: space;
-  /* Up into the panel's own top padding, which is handle as well: the bar
-     alone is too short to hold the pattern, and a single row of dots reads
-     as a rule drawn between things rather than a surface to hold. Out to the
-     panel's edges too, with the two keys standing over the far end. The bar
-     has no children left in the flow, so the mark keeps itself clear of the
-     two corners the controls stand in. */
+  /* One row of dots, across the middle of the strip. */
+  background-repeat: space no-repeat;
+  background-position: 0 50%;
+  /* Up into the panel's own top padding, which is handle as well, and out
+     to the panel's edges, with the two keys standing over the far end. The
+     bar has no children left in the flow, so the mark keeps itself clear of
+     the two corners the controls stand in. */
   margin: -9px 34px -5px 28px;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);

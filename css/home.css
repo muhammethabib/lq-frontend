@@ -358,7 +358,7 @@
    switch and ends 14px short, so half of it is not quite half of the bar. */
 .home-surface .placeholder-side { max-width: calc(50% - 11px); overflow: hidden; }
 .home-surface .placeholder-side-ottoman { max-width: calc(50% - 5px); }
-.home-surface .placeholder-side .script-chip { flex: none; }
+.home-surface .placeholder-side .script-sample { flex: none; }
 .home-surface .placeholder-side .script-words,
 .home-surface .placeholder-side .script-words-short { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
@@ -398,31 +398,24 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.home-surface .script-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 24px;
-  min-width: 38px;
-  padding: 0 7px;
-  border: 1px solid;
-  border-radius: 6px;
-  background: var(--lq-paper);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .2px;
+/* A few of the script's letters ahead of its prompt, in the script's
+   colour. Set as text, not in a box: a box inside the bar reads as a
+   control standing in it, and the bar has to read as somewhere to type. */
+.home-surface .script-sample {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: #6f86bd;
 }
-.home-surface .script-chip-latin { border-color: #c9d5ee; color: var(--lq-focus-latin); }
 /* The letters are set apart, as an alphabet is recited, not joined into a
    word; the face is the Naskh every Ottoman line on the page uses. */
-.home-surface .script-chip-ottoman {
-  padding: 0 6px 3px;
-  border-color: #ecc9d8;
-  font-size: 15px;
-  font-weight: 700;
+.home-surface .script-sample-ottoman {
+  margin-top: -3px;
+  font-size: 17px;
+  letter-spacing: 0;
   line-height: 1;
-  word-spacing: 1px;
-  color: var(--lq-claret);
+  word-spacing: 2px;
+  color: #c07b9a;
 }
 
 /* Once a side is chosen: its letters where the word will go, and beside

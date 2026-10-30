@@ -378,20 +378,23 @@
                     <span class="script-letters-tag" data-direction="ltr" data-i18n="scriptWriteOttoman">Type in Ottoman letters</span></span>
                 </div>
 
-                <!-- ...and the way over to the other one, at the far end -->
+                <!-- ...and the way over to the other one, at the far end: the
+                     other script's letters, named in full by its tooltip -->
                 <button type="button" class="btn script-swap script-swap-ottoman" hidden
                         data-home-target="swapOttoman" data-side="ottoman"
-                        data-action="click->home#switchSide:stop">
+                        data-action="click->home#switchSide:stop"
+                        aria-label="Switch to Ottoman letters" data-i18n-aria="scriptSwapOttoman"
+                        data-tooltip="Switch to Ottoman letters" data-i18n-tooltip="scriptSwapOttoman">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
-                  <span class="script-words" data-i18n="scriptSwapOttoman">Switch to Ottoman letters</span>
-                  <span class="script-words-short" data-direction="rtl">ا ب ت</span>
+                  <span class="script-swap-letters" data-direction="rtl">ا ب ت</span>
                 </button>
                 <button type="button" class="btn script-swap script-swap-latin" hidden
                         data-home-target="swapLatin" data-side="latin"
-                        data-action="click->home#switchSide:stop">
-                  <span class="script-words" data-i18n="scriptSwapLatin">Switch to Latin letters</span>
-                  <span class="script-words-short">Abc</span>
+                        data-action="click->home#switchSide:stop"
+                        aria-label="Switch to Latin letters" data-i18n-aria="scriptSwapLatin"
+                        data-tooltip="Switch to Latin letters" data-i18n-tooltip="scriptSwapLatin">
+                  <span class="script-swap-letters">Abc</span>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
                 </button>

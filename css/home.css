@@ -388,17 +388,7 @@
 @container (max-width: 514px) {
   .home-surface .placeholder-side .script-words-short { display: none; }
 }
-/* The way over gives up its words first, so the chosen script's own words
-   keep their room: the state matters more than the way out of it. */
-@container (max-width: 599px) {
-  .home-surface .script-swap .script-words { display: none; }
-  .home-surface .script-swap .script-words-short { display: inline; }
-}
-.home-surface .script-swap .script-words-short[data-direction="rtl"] {
-  font-size: 15px;
-  font-weight: 700;
-  word-spacing: 3px;
-}
+
 .home-surface .placeholder-layer > span[hidden] { display: none; }
 .home-surface .script-chip {
   display: inline-flex;
@@ -488,8 +478,10 @@
   background: var(--bar-wash);
 }
 
-/* The way over to the other script, at the far end: a plain line, not a
-   chip, so it reads as something to do rather than something chosen. */
+/* The way over to the other script, at the far end: an arrow and that
+   script's letters, plain rather than in a chip, so it reads as something
+   to do rather than something chosen; the tooltip names it in full. It
+   is short so the chosen script's own words keep their room. */
 .home-surface .script-swap {
   position: absolute;
   top: 50%;
@@ -509,6 +501,15 @@
   transform: translateY(-50%);
 }
 .home-surface .script-swap svg { width: 14px; height: 14px; }
+/* The tooltip rule sets its carriers relative; this one stays put. */
+.home-surface .script-swap[data-tooltip] { position: absolute; }
+.home-surface .script-swap-letters { font-size: 13px; font-weight: 600; letter-spacing: .5px; }
+.home-surface .script-swap-letters[data-direction="rtl"] {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  word-spacing: 3px;
+}
 .home-surface .script-swap-ottoman { right: 10px; }
 .home-surface .script-swap-latin { left: calc(var(--source-width) + 18px); }
 .home-surface .script-swap-ottoman:hover { color: var(--lq-claret); }

@@ -387,6 +387,10 @@
 }
 @container (max-width: 514px) {
   .home-surface .placeholder-side .script-words-short { display: none; }
+}
+/* The way over gives up its words first, so the chosen script's own words
+   keep their room: the state matters more than the way out of it. */
+@container (max-width: 599px) {
   .home-surface .script-swap .script-words { display: none; }
   .home-surface .script-swap .script-words-short { display: inline; }
 }
@@ -423,26 +427,37 @@
   color: var(--lq-claret);
 }
 
-/* Once a side is chosen: its letters, faint, where the word will go. The
-   Ottoman ones sit at the right-hand end, where that script starts. */
+/* Once a side is chosen: its letters where the word will go, and beside
+   them which script that is, said as what to do. The words are what keep
+   the letters from passing for something already typed. The Ottoman ones
+   sit at the right-hand end, where that script starts, so their words
+   fall to their left. */
 .home-surface .placeholder-layer > .script-letters {
   position: absolute;
   top: 0;
   bottom: 0;
   left: calc(var(--source-width) + 20px);
-  font-size: 18px;
+  gap: 12px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 2px;
-  color: #8ea3cf;
+  color: #4766ad;
 }
 .home-surface .placeholder-layer > .script-letters-ottoman {
   left: auto;
   right: 20px;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 0;
   word-spacing: 6px;
-  color: #cf8eaa;
+  color: #b2547d;
+}
+.home-surface .script-letters-tag {
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  word-spacing: 0;
 }
 
 /* The two halves, drawn while neither is chosen: a faint wash of each

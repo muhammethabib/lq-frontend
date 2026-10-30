@@ -55,6 +55,8 @@ window.LQ_TRANSLATIONS = {
     placeholderOttomanShort: "Osmanlı harfleri",
     scriptSwapOttoman: "Osmanlı harflerine geç",
     scriptSwapLatin: "Latin harflerine geç",
+    scriptWriteLatin: "Latin harfleriyle yazın",
+    scriptWriteOttoman: "Osmanlı harfleriyle yazın",
     librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",
     weeklyTitle: "Bu hafta LexiQamus’ta",
 

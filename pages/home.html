@@ -369,10 +369,13 @@
                     <span class="script-words-short" data-i18n="placeholderOttomanShort">Ottoman letters</span>
                     <b class="script-chip script-chip-ottoman" data-direction="rtl">ا ب ت</b>
                   </span>
-                  <!-- Once a side is chosen: its letters, where the word will go -->
-                  <span class="script-letters" data-home-target="lettersLatin" hidden>a b c</span>
+                  <!-- Once a side is chosen: its letters, where the word will go,
+                       and beside them, in words, which script that is -->
+                  <span class="script-letters" data-home-target="lettersLatin" hidden>a b c
+                    <span class="script-letters-tag" data-i18n="scriptWriteLatin">Type in Latin letters</span></span>
                   <span class="script-letters script-letters-ottoman" data-home-target="lettersOttoman"
-                        data-direction="rtl" hidden>ا ب ت</span>
+                        data-direction="rtl" hidden>ا ب ت
+                    <span class="script-letters-tag" data-direction="ltr" data-i18n="scriptWriteOttoman">Type in Ottoman letters</span></span>
                 </div>
 
                 <!-- ...and the way over to the other one, at the far end -->

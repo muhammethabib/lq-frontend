@@ -42,7 +42,7 @@ const VISITED_FADE_MS = 600;
 class HomeController extends Stimulus.Controller {
   static targets = [
     "logo", "logoRow", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
-    "lettersLatin", "lettersOttoman", "swapLatin", "swapOttoman", "ownKeyboardTip",
+    "writeLatin", "writeOttoman", "swapLatin", "swapOttoman", "ownKeyboardTip",
     "sourceOption", "submit", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
@@ -299,8 +299,8 @@ class HomeController extends Stimulus.Controller {
   }
 
   // Both prompts show until a side is chosen, so the bar advertises that it
-  // takes either script. Choosing a side swaps them for that script's letters,
-  // where the word will go, and the way over to the other script. The first
+  // takes either script. Choosing a side swaps them for a prompt naming that
+  // script, where the word will go, and the way over to the other. The first
   // letter typed clears all of it; the way over comes back while the pointer
   // is over the other half (see peekSwap).
   updatePlaceholders() {
@@ -315,8 +315,8 @@ class HomeController extends Stimulus.Controller {
     this.placeholderLatinTarget.classList.toggle("is-hidden", hasText || Boolean(side));
     this.placeholderEnglishTarget.classList.toggle("is-hidden", hasText);
     this.placeholderOttomanTarget.classList.toggle("is-hidden", hasText || Boolean(side));
-    this.lettersLatinTarget.hidden = hasText || side !== "latin";
-    this.lettersOttomanTarget.hidden = hasText || side !== "ottoman";
+    this.writeLatinTarget.hidden = hasText || side !== "latin";
+    this.writeOttomanTarget.hidden = hasText || side !== "ottoman";
     this.swapOttomanTarget.hidden = !offer || side !== "latin";
     this.swapLatinTarget.hidden = !offer || side !== "ottoman";
     this.ownKeyboardTipTarget.hidden = hasText || side !== "ottoman" ||

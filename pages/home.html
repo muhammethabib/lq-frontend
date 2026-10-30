@@ -359,12 +359,14 @@
                 <div class="placeholder-layer" aria-hidden="true">
                   <span class="placeholder-side" data-home-target="placeholderLatin">
                     <b class="script-chip script-chip-latin">Abc</b>
-                    <span data-i18n="placeholderLatin">Search in Latin letters</span>
+                    <span class="script-words" data-i18n="placeholderLatin">Search in Latin letters</span>
+                    <span class="script-words-short" data-i18n="placeholderLatinShort">Latin letters</span>
                   </span>
                   <span data-home-target="placeholderEnglish" hidden
                         data-i18n="placeholderEnglish">Search English words in Redhouse...</span>
                   <span class="placeholder-side placeholder-side-ottoman" data-home-target="placeholderOttoman">
-                    <span data-i18n="placeholderOttoman">Search in Ottoman letters</span>
+                    <span class="script-words" data-i18n="placeholderOttoman">Search in Ottoman letters</span>
+                    <span class="script-words-short" data-i18n="placeholderOttomanShort">Ottoman letters</span>
                     <b class="script-chip script-chip-ottoman" data-direction="rtl">ا ب ت</b>
                   </span>
                   <!-- Once a side is chosen: its letters, where the word will go -->
@@ -379,12 +381,14 @@
                         data-action="click->home#switchSide:stop">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
-                  <span data-i18n="scriptSwapOttoman">Switch to Ottoman letters</span>
+                  <span class="script-words" data-i18n="scriptSwapOttoman">Switch to Ottoman letters</span>
+                  <span class="script-words-short" data-direction="rtl">ا ب ت</span>
                 </button>
                 <button type="button" class="btn script-swap script-swap-latin" hidden
                         data-home-target="swapLatin" data-side="latin"
                         data-action="click->home#switchSide:stop">
-                  <span data-i18n="scriptSwapLatin">Switch to Latin letters</span>
+                  <span class="script-words" data-i18n="scriptSwapLatin">Switch to Latin letters</span>
+                  <span class="script-words-short">Abc</span>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
                 </button>

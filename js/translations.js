@@ -49,6 +49,8 @@ window.LQ_TRANSLATIONS = {
     placeholderLatin: "Latin harfleriyle ara",
     placeholderEnglish: "İngilizce tanımları arayın...",
     placeholderOttoman: "Osmanlı harfleriyle ara",
+    placeholderLatinShort: "Latin harfleri",
+    placeholderOttomanShort: "Osmanlı harfleri",
     scriptSwapOttoman: "Osmanlı harflerine geç",
     scriptSwapLatin: "Latin harflerine geç",
     librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",

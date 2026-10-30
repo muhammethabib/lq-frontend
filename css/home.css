@@ -337,6 +337,35 @@
   transition: opacity .2s, transform .2s;
 }
 .home-surface .placeholder-layer > span.is-hidden { opacity: 0; transform: translateX(5px); }
+/* Each prompt keeps to its own half, whatever the width of the bar. The
+   percentages are of the layer's content box, which starts 104px in and
+   ends 14px short, so half of it is not quite half of the bar. */
+.home-surface .placeholder-side { max-width: calc(50% - 11px); overflow: hidden; }
+.home-surface .placeholder-side-ottoman { max-width: calc(50% - 5px); }
+.home-surface .placeholder-side .script-chip { flex: none; }
+.home-surface .placeholder-side .script-words,
+.home-surface .placeholder-side .script-words-short { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* The bar's width, not the window's, decides how much the prompts say: it
+   shares its row with the filters and the dictionaries, so it is narrow on
+   a window that is not. The whole line where it fits, the script's name
+   where that does, the letters alone below that. */
+.home-surface .script-input-wrapper { container-type: inline-size; }
+.home-surface .script-words-short { display: none; }
+@container (max-width: 599px) {
+  .home-surface .placeholder-side .script-words { display: none; }
+  .home-surface .placeholder-side .script-words-short { display: inline; }
+}
+@container (max-width: 429px) {
+  .home-surface .placeholder-side .script-words-short { display: none; }
+  .home-surface .script-swap .script-words { display: none; }
+  .home-surface .script-swap .script-words-short { display: inline; }
+}
+.home-surface .script-swap .script-words-short[data-direction="rtl"] {
+  font-size: 15px;
+  font-weight: 700;
+  word-spacing: 3px;
+}
 .home-surface .placeholder-layer > span[hidden] { display: none; }
 .home-surface .script-chip {
   display: inline-flex;

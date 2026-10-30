@@ -440,8 +440,10 @@
                    aria-label="How the search bar works" data-i18n-aria="hintAria">
                 <button type="button" class="btn search-hint-close" data-action="click->search-hint#close"
                         aria-label="Close" data-i18n-aria="close">&#x2715;</button>
+                <span class="search-hint-dots" aria-hidden="true">
+                  <i data-search-hint-target="dot"></i><i data-search-hint-target="dot"></i>
+                </span>
                 <p class="search-hint-title" data-search-hint-target="title"></p>
-                <p class="search-hint-body" data-search-hint-target="body"></p>
                 <div class="search-hint-row">
                   <span class="search-hint-try">
                     <span data-i18n="hintTry">Try:</span>
@@ -449,7 +451,7 @@
                             data-action="click->search-hint#tryExample"></button>
                   </span>
                   <span class="search-hint-next">
-                    <span class="search-hint-count" data-search-hint-target="count"></span>
+                    <span class="visually-hidden" data-search-hint-target="count"></span>
                     <button type="button" class="btn search-hint-ok" data-action="click->search-hint#next"
                             data-i18n="hintOk">Got it</button>
                   </span>

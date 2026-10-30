@@ -501,11 +501,6 @@
 .home-surface .script-swap-ottoman { right: 10px; }
 .home-surface .script-swap-latin { left: calc(var(--source-width) + 18px); }
 .home-surface .script-swap-ottoman:hover { color: var(--lq-claret); }
-/* What a first visitor's hint points at over the results. */
-.home-surface .script-swap.is-pointed-at {
-  color: var(--lq-claret);
-  box-shadow: 0 0 0 2px var(--lq-claret), 0 0 0 6px rgba(157, 28, 81, .14);
-}
 .home-surface .script-swap-latin:hover { color: var(--lq-focus-latin); }
 
 .home-surface .search-submit {
@@ -2257,9 +2252,9 @@
    A first visitor's hint
    One half of the bar at a time is ringed in its script's colour, and a
    card under it says what that half takes. The card is one of the page's
-   own white cards, so it belongs to the page rather than lying over it;
-   a strip of the script's colour along its top, and the arrow under it,
-   tie it to the half it is about.
+   own white cards, so it belongs to the page rather than lying over it,
+   drawn round in the same colour as the ring on the half it is about, its
+   arrow part of the same line.
    --------------------------------------------------------------- */
 
 .home-surface .search-hint-spot {
@@ -2300,10 +2295,9 @@
   position: absolute;
   top: calc(100% + 18px);
   z-index: 45;
-  width: 336px;
-  padding: 15px 18px 13px;
-  border: 1px solid var(--lq-line);
-  border-top: 3px solid var(--hint-colour);
+  width: 376px;
+  padding: 14px 18px 13px;
+  border: 1.5px solid var(--hint-colour);
   border-radius: 12px;
   background: var(--lq-paper);
   color: #1e293b;
@@ -2314,15 +2308,44 @@
 /* Under the half it is about, its arrow pointing up into that half. */
 .home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
 .home-surface .search-hint-card.is-ottoman { right: 96px; }
-.home-surface .search-hint-card::before {
+/* The arrow is the border's colour with the card's white laid over it, so
+   the line runs on round it unbroken. */
+.home-surface .search-hint-card::before,
+.home-surface .search-hint-card::after {
   content: "";
   position: absolute;
+  border: solid transparent;
+}
+.home-surface .search-hint-card::before {
   top: -17px;
-  border: 7px solid transparent;
+  border-width: 8px;
   border-bottom-color: var(--hint-colour);
 }
-.home-surface .search-hint-card.is-latin::before { left: 46px; }
-.home-surface .search-hint-card.is-ottoman::before { right: 46px; }
+.home-surface .search-hint-card::after {
+  top: -13px;
+  border-width: 7px;
+  border-bottom-color: var(--lq-paper);
+}
+.home-surface .search-hint-card.is-latin::before { left: 45px; }
+.home-surface .search-hint-card.is-latin::after { left: 46px; }
+.home-surface .search-hint-card.is-ottoman::before { right: 45px; }
+.home-surface .search-hint-card.is-ottoman::after { right: 46px; }
+
+/* Which step this is, beside the close mark. */
+.home-surface .search-hint-dots {
+  position: absolute;
+  top: 18px;
+  right: 40px;
+  display: flex;
+  gap: 5px;
+}
+.home-surface .search-hint-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
+.home-surface .search-hint-dots i.is-on { background: var(--hint-colour); }
 
 .home-surface .search-hint-close {
   position: absolute;
@@ -2339,15 +2362,10 @@
 .home-surface .search-hint-close:hover { color: #1e293b; }
 .home-surface .search-hint-title {
   margin: 0;
-  padding-right: 22px;
+  padding-right: 52px;
   font-size: 14.5px;
   font-weight: 700;
   line-height: 1.35;
-}
-.home-surface .search-hint-body {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: #64748b;
 }
 .home-surface .search-hint-row {
   display: flex;
@@ -2365,7 +2383,7 @@
   gap: 8px;
 }
 /* Trying the word is what the card is for, so it is the button in the
-   script's colour; "Got it" is the way past it, and only a word. */
+   script's colour; "Got it" is the quieter button beside it. */
 .home-surface .search-hint-example {
   padding: 6px 12px;
   border: 0;
@@ -2380,16 +2398,16 @@
   font-size: 17px;
 }
 .home-surface .search-hint-example:hover { filter: brightness(1.12); color: #fff; }
-.home-surface .search-hint-count { font-size: 12px; color: #94a3b8; }
 .home-surface .search-hint-ok {
-  padding: 6px 4px;
-  border: 0;
-  background: transparent;
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f1f5f9;
   font-size: 13px;
   font-weight: 600;
-  color: #64748b;
+  color: #334155;
 }
-.home-surface .search-hint-ok:hover { color: #1e293b; }
+.home-surface .search-hint-ok:hover { background: #e2e8f0; color: #1e293b; }
 
 @keyframes search-hint-in {
   from { opacity: 0; transform: translateY(6px); }

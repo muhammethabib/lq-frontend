@@ -8,14 +8,15 @@
 // Ottoman one.
 //
 // Trying the first step's word looks it up, and the second step then comes
-// over the results: the bar is holding that word now, so instead of the
-// right half it points out the way over to Ottoman letters at its far end,
-// and offers the same word in Ottoman letters to try.
+// over the results, ringing the right half as before and offering the same
+// word in Ottoman letters. The bar is holding the Latin word there, so a
+// press in that half would otherwise keep Latin; while the step is up it
+// switches to Ottoman letters, so the ringed place does what it says.
 //
 // It never stands in the reader's way. Typing in the bar, pressing in it or
 // trying the second step's word ends it -- the reader has found the bar --
-// and so do the close mark and Escape. "Got it", or a press anywhere else, moves it on to the
-// next step. It waits for any window that is open (the announcement a first
+// and so do the close mark and Escape. "Got it", or a press anywhere else,
+// moves it on to the next step. It waits for any window that is open (the announcement a first
 // visitor also gets) to close first, and it does not come back once it has
 // been seen. The New Visitor screen of the view switcher shows it again
 // after the announcement, because it is there to be looked at.
@@ -28,7 +29,7 @@ const SEARCH_HINT_SEEN_KEY = "lq-search-hint-seen";
 const SEARCH_HINT_DELAY_MS = 700;
 
 class SearchHintController extends Stimulus.Controller {
-  static targets = ["spot", "card", "title", "body", "example", "count"]
+  static targets = ["spot", "card", "title", "example", "count", "dot"]
 
   connect() {
     // Not inside the innovations page's preview of this one, and not on a
@@ -101,31 +102,24 @@ class SearchHintController extends Stimulus.Controller {
 
   // ==================== the two steps ====================
 
-  // The second step over a page of results points at the way over to
-  // Ottoman letters rather than at a half the bar is no longer showing.
   show(step) {
     this.step = step;
     const latin = step === 1;
-    const searched = !latin && Boolean(this.input && this.input.value);
     const say = (key, fallback) => window.LQ.translate(key, fallback);
     this.titleTarget.textContent = latin
       ? say("hintLatinTitle", "You can search in Latin letters too")
       : say("hintOttomanTitle", "You can search in Ottoman letters too");
-    this.bodyTarget.textContent = latin
-      ? say("hintLatinBody", "Type Ottoman words in the left half of the bar.")
-      : searched
-        ? say("hintOttomanSwitchBody", "Switch to them at the right-hand end of the bar.")
-        : say("hintOttomanBody", "Type Ottoman words in the right half of the bar.");
     this.exampleTarget.textContent = latin ? "meyve" : "میوه";
     this.exampleTarget.dataset.direction = latin ? "ltr" : "rtl";
+    // Two dots say where in the hint the reader is; the words are for a
+    // reader hearing the page.
     this.countTarget.textContent = `${step} / 2`;
+    this.dotTargets.forEach((dot, index) => dot.classList.toggle("is-on", index === step - 1));
     [this.spotTarget, this.cardTarget].forEach((element) => {
       element.classList.toggle("is-latin", latin);
       element.classList.toggle("is-ottoman", !latin);
       element.hidden = false;
     });
-    this.spotTarget.hidden = searched;
-    this.pointAtSwitch(searched);
     // Each step arrives the way the first did, though the card is already
     // on the page: the animations are started again.
     [this.spotTarget, this.cardTarget].forEach((element) => {
@@ -133,11 +127,6 @@ class SearchHintController extends Stimulus.Controller {
       void element.offsetWidth;
       element.style.animation = "";
     });
-  }
-
-  pointAtSwitch(on) {
-    const swap = document.querySelector(".script-swap-ottoman");
-    if (swap) swap.classList.toggle("is-pointed-at", on);
   }
 
   next() {
@@ -151,7 +140,6 @@ class SearchHintController extends Stimulus.Controller {
     this.step = null;
     this.spotTarget.hidden = true;
     this.cardTarget.hidden = true;
-    this.pointAtSwitch(false);
     if (remember) this.remember();
   }
 
@@ -176,12 +164,28 @@ class SearchHintController extends Stimulus.Controller {
   }
 
   // A press in the bar means the reader has found it; a press anywhere else
-  // but the card moves the hint on, as "Got it" does.
+  // but the card moves the hint on, as "Got it" does. Over the results, a
+  // press in the ringed right half takes the bar over to Ottoman letters,
+  // as the way over at its far end would.
   press(event) {
     if (!this.step) return;
     if (this.cardTarget.contains(event.target)) return;
-    if (event.target.closest(".script-input-wrapper")) { this.end(); return; }
-    this.next();
+    const wrapper = event.target.closest(".script-input-wrapper");
+    if (!wrapper) { this.next(); return; }
+    const swap = wrapper.querySelector(".script-swap-ottoman");
+    const switching = this.step === 2 && this.input && this.input.value &&
+      swap && !swap.hidden && !event.target.closest(".script-swap, .source-switch") &&
+      this.inRightHalf(wrapper, event.clientX);
+    this.end();
+    if (switching) swap.click();
+  }
+
+  // The halves meet in the middle of the part of the bar that takes text.
+  inRightHalf(wrapper, x) {
+    const bounds = wrapper.getBoundingClientRect();
+    const sourceSwitch = wrapper.querySelector(".source-switch");
+    const start = sourceSwitch ? sourceSwitch.getBoundingClientRect().right : bounds.left;
+    return x >= (start + bounds.right) / 2;
   }
 }
 

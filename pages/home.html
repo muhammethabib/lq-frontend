@@ -64,6 +64,7 @@
   <script src="../js/controllers/announcement_controller.js" defer></script>
   <script src="../js/controllers/weekly_update_controller.js" defer></script>
   <script src="../js/controllers/home_controller.js" defer></script>
+  <script src="../js/controllers/search_hint_controller.js" defer></script>
   <script src="../js/controllers/word_decoder_controller.js" defer></script>
   <script src="../js/controllers/ottoman_keyboard_controller.js" defer></script>
   <script src="../js/controllers/search_keyboard_controller.js" defer></script>
@@ -327,7 +328,7 @@
         <form data-action="submit->home#submit">
           <div class="search-row">
 
-            <div class="search-input-group">
+            <div class="search-input-group" data-controller="search-hint">
               <!-- One bar, two scripts. At rest each half says which script it
                    takes; clicking one chooses it, and the whole bar then takes
                    that script's colour. The source switch overrides it. -->
@@ -403,6 +404,9 @@
                        data-action="input->home#handleInput"
                        autocomplete="off" aria-label="Word to search" data-i18n-aria="ariaMainSearch">
 
+                <!-- The half a first visitor's hint is pointing out -->
+                <span class="search-hint-spot" data-search-hint-target="spot" hidden aria-hidden="true"></span>
+
                 <!-- Over the Ottoman side's caret, the moment that side is
                      chosen: the reader's own keyboard writes it too. It goes
                      with the first letter written, by any means, and does not
@@ -428,6 +432,29 @@
 
               <button type="submit" class="btn search-submit" id="homeSearchSubmit"
                       data-home-target="submit" data-i18n="btnSearch">Search</button>
+
+              <!-- A first visitor's hint, one half of the bar at a time; see
+                   js/controllers/search_hint_controller.js. Its words are
+                   written by the controller, since they change with the step. -->
+              <div class="search-hint-card" data-search-hint-target="card" hidden role="dialog"
+                   aria-label="How the search bar works" data-i18n-aria="hintAria">
+                <button type="button" class="btn search-hint-close" data-action="click->search-hint#close"
+                        aria-label="Close" data-i18n-aria="close">&#x2715;</button>
+                <p class="search-hint-title" data-search-hint-target="title"></p>
+                <p class="search-hint-body" data-search-hint-target="body"></p>
+                <div class="search-hint-row">
+                  <span class="search-hint-try">
+                    <span data-i18n="hintTry">Try:</span>
+                    <button type="button" class="btn search-hint-example" data-search-hint-target="example"
+                            data-action="click->search-hint#tryExample"></button>
+                  </span>
+                  <span class="search-hint-next">
+                    <span class="search-hint-count" data-search-hint-target="count"></span>
+                    <button type="button" class="btn search-hint-ok" data-action="click->search-hint#next"
+                            data-i18n="hintOk">Got it</button>
+                  </span>
+                </div>
+              </div>
             </div>
 
             <!-- Filters: Bootstrap dropdown, kept open while boxes are ticked -->

@@ -596,6 +596,13 @@ window.LQ_TRANSLATIONS = {
     scriptWarning: "Lütfen Osmanlı harfli bir karakter giriniz",
     scriptWarningSub: "Klavyenizde, aşağıdaki harflere karşılık gelen tuşlara basınız",
     ownKeyboardTip: "Kendi klavyenizle de yazabilirsiniz",
+    hintAria: "Arama çubuğu nasıl çalışır",
+    hintLatinTitle: "Osmanlıca kelimeleri Latin harfleriyle de arayabilirsiniz.",
+    hintLatinBody: "Çubuğun sol tarafına yazmanız yeterli.",
+    hintOttomanTitle: "Osmanlıca kelimeleri Osmanlı harfleriyle de arayabilirsiniz.",
+    hintOttomanBody: "Çubuğun sağ tarafına yazmanız yeterli.",
+    hintTry: "Deneyin:",
+    hintOk: "Anladım",
     decoderOwnKeyboard: "Kendi klavyenizle de yazabilirsiniz",
 
     // --- Moving around a page ---

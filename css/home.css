@@ -183,6 +183,10 @@
   gap: 24px;
 }
 .home-surface .search-input-group {
+  /* The source switch's width; everything in the bar that starts after it,
+     and the first visitor's hint, is placed from this. */
+  --source-width: 166px;
+  position: relative;
   display: flex;
   align-items: stretch;
   gap: 8px;
@@ -194,9 +198,6 @@
    Clicking a half decides which, so the bar needs its own wrapper rather than
    Bootstrap's input-group. */
 .home-surface .script-input-wrapper {
-  /* The source switch's width; everything that starts after it is placed
-     from this. */
-  --source-width: 166px;
   position: relative;
   flex: 1;
   min-width: 0;
@@ -2246,6 +2247,138 @@
   .home-surface .own-keyboard-demo-out { animation: none; }
   .home-surface .own-keyboard-demo-out { opacity: 1; }
 }
+
+/* ---------------------------------------------------------------
+   A first visitor's hint
+   One half of the bar at a time is ringed in its script's colour, and a
+   card under it says what that half takes. Dark like the page's other
+   tips, so it reads as something said about the bar, not part of it.
+   --------------------------------------------------------------- */
+
+.home-surface .search-hint-spot {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  z-index: 4;
+  border: 2px solid var(--hint-colour);
+  border-radius: 7px;
+  box-shadow: 0 0 0 4px var(--hint-glow);
+  pointer-events: none;
+}
+.home-surface .search-hint-spot[hidden] { display: none; }
+.home-surface .search-hint-spot.is-latin,
+.home-surface .search-hint-card.is-latin {
+  --hint-colour: var(--lq-focus-latin);
+  --hint-glow: rgba(28, 68, 156, .14);
+}
+.home-surface .search-hint-spot.is-ottoman,
+.home-surface .search-hint-card.is-ottoman {
+  --hint-colour: var(--lq-claret);
+  --hint-glow: rgba(157, 28, 81, .14);
+}
+/* The halves meet half the switch's width right of the bar's middle. */
+.home-surface .search-hint-spot.is-latin {
+  left: calc(var(--source-width) + 8px);
+  right: calc(50% - (var(--source-width) + 4px) / 2 + 3px);
+}
+.home-surface .search-hint-spot.is-ottoman {
+  left: calc(50% + (var(--source-width) + 4px) / 2 + 3px);
+  right: 3px;
+}
+
+.home-surface .search-hint-card {
+  position: absolute;
+  top: calc(100% + 16px);
+  z-index: 45;
+  width: 370px;
+  padding: 18px 20px 16px;
+  border-radius: 14px;
+  background: #1e293b;
+  color: #fff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, .28);
+}
+.home-surface .search-hint-card[hidden] { display: none; }
+/* Under the half it is about, its arrow pointing up into that half. */
+.home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
+.home-surface .search-hint-card.is-ottoman { right: 96px; }
+.home-surface .search-hint-card::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: #1e293b;
+  transform: rotate(45deg);
+}
+.home-surface .search-hint-card.is-latin::before { left: 48px; }
+.home-surface .search-hint-card.is-ottoman::before { right: 48px; }
+
+.home-surface .search-hint-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.home-surface .search-hint-close:hover { color: #fff; }
+.home-surface .search-hint-title {
+  margin: 0;
+  padding-right: 22px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.home-surface .search-hint-body {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  color: #cbd5e1;
+}
+.home-surface .search-hint-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: #cbd5e1;
+}
+.home-surface .search-hint-try,
+.home-surface .search-hint-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.home-surface .search-hint-example {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--hint-colour);
+}
+.home-surface .search-hint-example[data-direction="rtl"] {
+  padding: 2px 12px 6px;
+  font-size: 18px;
+}
+.home-surface .search-hint-example:hover { background: #f1f5f9; color: var(--hint-colour); }
+.home-surface .search-hint-count { font-size: 12px; color: #94a3b8; }
+.home-surface .search-hint-ok {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--lq-claret);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+}
+.home-surface .search-hint-ok:hover { background: #7d1640; color: #fff; }
 
 /* ---------------------------------------------------------------
    One bar, two scripts

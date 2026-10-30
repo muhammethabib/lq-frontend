@@ -70,6 +70,10 @@ class HomeController extends Stimulus.Controller {
     this.updateFilterCount();
     this.applySide();
     this.listenForOttoman();
+    // A press anywhere off the bar, with nothing typed, puts it back to its
+    // two halves; see restSide.
+    this.onPressOutside = (event) => this.restSide(event);
+    document.addEventListener("pointerdown", this.onPressOutside);
     // The bar is what the reader came for, so the caret is already in it. Not
     // on a touch screen: there it would throw up the device's own keyboard
     // over the page before the reader has asked for anything.
@@ -115,6 +119,7 @@ class HomeController extends Stimulus.Controller {
     document.removeEventListener("entry:closed", this.onEntryClosed);
     document.removeEventListener("search-keyboard:key", this.onKeyboardKey);
     document.removeEventListener("search-keyboard:closed", this.onKeyboardClosed);
+    document.removeEventListener("pointerdown", this.onPressOutside);
     this.inputTarget.removeEventListener("keydown", this.onKeyDown);
     if (this.onPageScroll) window.removeEventListener("scroll", this.onPageScroll);
     window.removeEventListener("resize", this.onResize);
@@ -217,6 +222,18 @@ class HomeController extends Stimulus.Controller {
     // keyboard; the hint steps aside, since two floating things under one bar
     // is one too many.
     if (this.sideValue === "ottoman") this.openKeyboard(); else this.closeKeyboard();
+  }
+
+  // A side chosen but nothing typed, and the reader presses somewhere else:
+  // they have not taken it up, so the bar goes back to offering both. The
+  // on-screen keyboard is part of typing, so a press on it does not count.
+  restSide(event) {
+    if (!this.sideValue || this.inputTarget.value) return;
+    if (this.sourceValue === "english") return;
+    if (event.target.closest(".script-input-wrapper, .search-keyboard")) return;
+    this.closeKeyboard();
+    this.sideValue = "";
+    this.applySide();
   }
 
   // The halves meet in the middle of the part of the bar that takes text,

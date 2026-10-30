@@ -341,10 +341,12 @@
                      data-action="click->home#stopSideDetection">
                   <button type="button" class="btn source-option active" data-source="ottoman"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
-                          data-i18n="sourceOttoman">OTT</button>
+                          ><span class="source-name" data-i18n="sourceOttoman">Ottoman</span>
+                    <small class="source-kind" data-i18n="sourceOttomanKind">words</small></button>
                   <button type="button" class="btn source-option" data-source="english"
                           data-home-target="sourceOption" data-action="click->home#selectSource"
-                          ><span data-i18n="sourceEnglish">ENG</span>
+                          ><span class="source-name" data-i18n="sourceEnglish">English</span>
+                    <small class="source-kind" data-i18n="sourceEnglishKind">definitions</small>
                     <!-- Drawn rather than left to the browser, so it reads the
                          same on every machine and can hold a whole sentence. -->
                     <span class="source-tip" data-i18n="sourceEnglishTitle">Search English definitions in Redhouse</span>

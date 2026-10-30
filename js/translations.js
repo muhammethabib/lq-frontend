@@ -42,8 +42,10 @@ window.LQ_TRANSLATIONS = {
 
     // --- search bar ---
     btnSearch: "Ara",
-    sourceOttoman: "OSM",
-    sourceEnglish: "İNG",
+    sourceOttoman: "Osmanlıca",
+    sourceOttomanKind: "Kelimeler",
+    sourceEnglish: "İngilizce",
+    sourceEnglishKind: "Tanımlar",
     sourceEnglishTitle: "Redhouse'ta İngilizce tanımlar içinde ara",
     ariaMainSearch: "Aranacak kelime",
     placeholderLatin: "Latin harfleriyle ara",

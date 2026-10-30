@@ -194,6 +194,9 @@
    Clicking a half decides which, so the bar needs its own wrapper rather than
    Bootstrap's input-group. */
 .home-surface .script-input-wrapper {
+  /* The source switch's width; everything that starts after it is placed
+     from this. */
+  --source-width: 166px;
   position: relative;
   flex: 1;
   min-width: 0;
@@ -221,33 +224,46 @@
   left: 4px;
   top: 4px;
   bottom: 4px;
-  width: 80px;
+  width: var(--source-width);
   display: flex;
+  gap: 2px;
   padding: 3px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   z-index: 10;
 }
+/* Each side names what it searches in two lines: the language, and under
+   it what in that language -- Ottoman words, or English definitions. The
+   names say what is searched, not which script to type, so they are not
+   taken for the bar's own two halves. */
 .home-surface .source-option {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  min-width: 0;
+  padding: 0 4px;
   border: 0;
   background: transparent;
   border-radius: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .3px;
-  text-align: start;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
   color: var(--lq-ink-soft);
   transition: background .2s, color .2s;
 }
 .home-surface .source-option[data-source="ottoman"].active { background: var(--lq-claret); color: #fff; }
 .home-surface .source-option[data-source="english"].active { background: var(--lq-sapphire); color: #fff; }
 .home-surface .source-option.active { cursor: default; }
+.home-surface .source-kind {
+  margin-top: 2px;
+  font-size: 9.5px;
+  font-weight: 600;
+  opacity: .75;
+}
 
 /* What the English source does, said in a sentence rather than a word. It is
    drawn here rather than left to the browser's own tip, so it reads the same
@@ -292,8 +308,8 @@
   border: 0;
   outline: 0;
   background: transparent;
-  /* Left padding clears the 80px source switch */
-  padding: 0 20px 0 100px;
+  /* Left padding clears the source switch */
+  padding: 0 20px 0 calc(var(--source-width) + 20px);
   font-size: 18px;
   font-weight: 500;
   /* A shade softer than the page's ink, as the reference sets the bar's own */
@@ -322,7 +338,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 14px 0 104px;
+  padding: 0 14px 0 calc(var(--source-width) + 24px);
   pointer-events: none;
   z-index: 1;
 }
@@ -338,8 +354,8 @@
 }
 .home-surface .placeholder-layer > span.is-hidden { opacity: 0; transform: translateX(5px); }
 /* Each prompt keeps to its own half, whatever the width of the bar. The
-   percentages are of the layer's content box, which starts 104px in and
-   ends 14px short, so half of it is not quite half of the bar. */
+   percentages are of the layer's content box, which starts 24px past the
+   switch and ends 14px short, so half of it is not quite half of the bar. */
 .home-surface .placeholder-side { max-width: calc(50% - 11px); overflow: hidden; }
 .home-surface .placeholder-side-ottoman { max-width: calc(50% - 5px); }
 .home-surface .placeholder-side .script-chip { flex: none; }
@@ -349,14 +365,27 @@
 /* The bar's width, not the window's, decides how much the prompts say: it
    shares its row with the filters and the dictionaries, so it is narrow on
    a window that is not. The whole line where it fits, the script's name
-   where that does, the letters alone below that. */
+   where that does, the letters alone below that. The English line is the
+   longer, so it gives way sooner. */
 .home-surface .script-input-wrapper { container-type: inline-size; }
 .home-surface .script-words-short { display: none; }
-@container (max-width: 599px) {
+@container (max-width: 629px) {
   .home-surface .placeholder-side .script-words { display: none; }
   .home-surface .placeholder-side .script-words-short { display: inline; }
+  .home-surface .placeholder-layer > .placeholder-side { gap: 6px; font-size: 12.5px; }
 }
-@container (max-width: 429px) {
+@container (min-width: 630px) and (max-width: 679px) {
+  .home-surface:lang(en) .placeholder-side .script-words { display: none; }
+  .home-surface:lang(en) .placeholder-side .script-words-short { display: inline; }
+}
+/* Narrower still, not even the letters fit beside the switch, and a
+   clipped letter says less than none. Laying the row out afresh at these
+   widths is the real answer. */
+@container (max-width: 319px) {
+  .home-surface .placeholder-layer > .placeholder-side,
+  .home-surface .script-divider { display: none; }
+}
+@container (max-width: 514px) {
   .home-surface .placeholder-side .script-words-short { display: none; }
   .home-surface .script-swap .script-words { display: none; }
   .home-surface .script-swap .script-words-short { display: inline; }
@@ -385,12 +414,12 @@
 /* The letters are set apart, as an alphabet is recited, not joined into a
    word; the face is the Naskh every Ottoman line on the page uses. */
 .home-surface .script-chip-ottoman {
-  padding: 0 8px 3px;
+  padding: 0 6px 3px;
   border-color: #ecc9d8;
   font-size: 15px;
   font-weight: 700;
   line-height: 1;
-  word-spacing: 3px;
+  word-spacing: 1px;
   color: var(--lq-claret);
 }
 
@@ -400,7 +429,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 100px;
+  left: calc(var(--source-width) + 20px);
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 2px;
@@ -418,15 +447,17 @@
 
 /* The two halves, drawn while neither is chosen: a faint wash of each
    script's colour and a line where they meet, which is the middle of the
-   part of the bar that takes text (the source switch ends 84px in). */
+   part of the bar that takes text, half the switch's width (and its 4px
+   inset) right of the bar's own middle. */
 .home-surface .script-input-wrapper.is-two-sided {
-  background: linear-gradient(to right, #f6f8fc calc(50% + 42px), #fcf6f8 calc(50% + 42px));
+  --halves-meet: calc(50% + (var(--source-width) + 4px) / 2);
+  background: linear-gradient(to right, #f6f8fc var(--halves-meet), #fcf6f8 var(--halves-meet));
 }
 .home-surface .script-divider {
   position: absolute;
   top: 11px;
   bottom: 11px;
-  left: calc(50% + 42px);
+  left: calc(50% + (var(--source-width) + 4px) / 2);
   width: 1px;
   background: #d6dbe4;
   pointer-events: none;
@@ -464,7 +495,7 @@
 }
 .home-surface .script-swap svg { width: 14px; height: 14px; }
 .home-surface .script-swap-ottoman { right: 10px; }
-.home-surface .script-swap-latin { left: 98px; }
+.home-surface .script-swap-latin { left: calc(var(--source-width) + 18px); }
 .home-surface .script-swap-ottoman:hover { color: var(--lq-claret); }
 .home-surface .script-swap-latin:hover { color: var(--lq-focus-latin); }
 

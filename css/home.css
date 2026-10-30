@@ -428,27 +428,32 @@
   bottom: 0;
   left: calc(var(--source-width) + 20px);
   gap: 12px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 2px;
-  color: #4766ad;
+  color: #9fb0d8;
 }
 .home-surface .placeholder-layer > .script-letters-ottoman {
   left: auto;
   right: 20px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0;
   word-spacing: 6px;
-  color: #b2547d;
+  color: #d79fb8;
 }
+/* Both stay a prompt's weight: an empty bar that looks already filled in
+   is not taken for somewhere to type. The words are a shade stronger than
+   the letters, since they carry the meaning. */
 .home-surface .script-letters-tag {
   font-family: Inter, system-ui, sans-serif;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   word-spacing: 0;
+  color: #7d93c4;
 }
+.home-surface .script-letters-ottoman .script-letters-tag { color: #c07b9a; }
 
 /* The two halves, drawn while neither is chosen: a faint wash of each
    script's colour and a line where they meet, which is the middle of the

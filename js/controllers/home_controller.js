@@ -258,6 +258,12 @@ class HomeController extends Stimulus.Controller {
   }
 
   handleInput() {
+    // The caret is in the bar from the start, so a reader may type before
+    // choosing a side. What they type chooses it, as a click would have.
+    if (this.inputTarget.value && !this.sideValue && this.sourceValue !== "english") {
+      this.sideValue = ARABIC_LETTER.test(this.inputTarget.value) ? "ottoman" : "latin";
+      this.applySide();
+    }
     this.updatePlaceholders();
     if (this.inputTarget.value) this.hideScriptHint();
     // On the Ottoman side, a Latin letter is not a typo the reader can see:
@@ -272,9 +278,12 @@ class HomeController extends Stimulus.Controller {
   // Both prompts show until a side is chosen, so the bar advertises that it
   // takes either script. Choosing a side swaps them for that script's letters,
   // where the word will go, and the way over to the other script. The first
-  // letter typed clears all of it.
+  // letter typed clears all of it; the way over comes back while the pointer
+  // is over the other half (see peekSwap).
   updatePlaceholders() {
     const hasText = this.inputTarget.value.length > 0;
+    const offer = !hasText || Boolean(this.peeking);
+    this.inputWrapperTarget.classList.toggle("has-text", hasText);
     const english = this.sourceValue === "english";
     const side = english ? "" : this.sideValue;
     this.placeholderLatinTarget.classList.toggle("is-hidden", hasText || Boolean(side));
@@ -282,8 +291,25 @@ class HomeController extends Stimulus.Controller {
     this.placeholderOttomanTarget.classList.toggle("is-hidden", hasText || Boolean(side));
     this.lettersLatinTarget.hidden = hasText || side !== "latin";
     this.lettersOttomanTarget.hidden = hasText || side !== "ottoman";
-    this.swapOttomanTarget.hidden = hasText || side !== "latin";
-    this.swapLatinTarget.hidden = hasText || side !== "ottoman";
+    this.swapOttomanTarget.hidden = !offer || side !== "latin";
+    this.swapLatinTarget.hidden = !offer || side !== "ottoman";
+  }
+
+  // With a word in the bar, the way over to the other script is shown only
+  // when the pointer goes to that script's half, so it is there when looked
+  // for and out of the way of the word otherwise.
+  peekSwap(event) {
+    const peek = Boolean(this.inputTarget.value) && this.sourceValue !== "english" &&
+      Boolean(this.sideValue) && this.sideAt(event.clientX) !== this.sideValue;
+    if (peek === Boolean(this.peeking)) return;
+    this.peeking = peek;
+    this.updatePlaceholders();
+  }
+
+  unpeekSwap() {
+    if (!this.peeking) return;
+    this.peeking = false;
+    this.updatePlaceholders();
   }
 
   // ==================== the Ottoman side ====================

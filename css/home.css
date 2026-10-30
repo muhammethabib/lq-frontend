@@ -408,8 +408,13 @@
 
 /* A chosen side colours the whole bar, so which script is in hand is plain
    at a glance, and stays so while typing. */
-.home-surface .script-input-wrapper.is-side-chosen.focus-latin { background: #eaf0fb; }
-.home-surface .script-input-wrapper.is-side-chosen.focus-ottoman { background: #f9eaf0; }
+.home-surface .script-input-wrapper.is-side-chosen.focus-latin { --bar-wash: #eaf0fb; }
+.home-surface .script-input-wrapper.is-side-chosen.focus-ottoman { --bar-wash: #f9eaf0; }
+/* With a word in it the colour all but goes: the word is what is looked at
+   now, and the ring round the bar still says which script it is in. */
+.home-surface .script-input-wrapper.is-side-chosen.has-text.focus-latin { --bar-wash: #f8fafe; }
+.home-surface .script-input-wrapper.is-side-chosen.has-text.focus-ottoman { --bar-wash: #fdf8fa; }
+.home-surface .script-input-wrapper.is-side-chosen { background: var(--bar-wash); }
 
 /* The way over to the other script, at the far end: a plain line, not a
    chip, so it reads as something to do rather than something chosen. */
@@ -423,7 +428,9 @@
   padding: 4px 6px;
   border: 0;
   border-radius: 6px;
-  background: transparent;
+  /* Over a long word it sits on the bar's own colour rather than on the
+     letters. */
+  background: var(--bar-wash, transparent);
   font-size: 12.5px;
   font-weight: 500;
   color: #94a3b8;

@@ -335,7 +335,9 @@
                    data-home-target="inputWrapper"
                    data-action="click->home#chooseSide
                                 mouseenter->home#showScriptHint
-                                mouseleave->home#hideScriptHint">
+                                mouseleave->home#hideScriptHint
+                                mousemove->home#peekSwap
+                                mouseleave->home#unpeekSwap">
 
                 <div class="source-switch" role="group" aria-label="Search source" data-i18n-aria="ariaSearchSource"
                      data-action="click->home#stopSideDetection">

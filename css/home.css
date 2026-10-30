@@ -2295,9 +2295,14 @@
   position: absolute;
   top: calc(100% + 18px);
   z-index: 45;
+  /* The card's line, and the arrow's with it. A browser draws a border no
+     finer than a whole screen pixel, so on an ordinary screen 1.5px comes
+     out as 1px; the line is given as what will really be drawn, so the
+     arrow, which is not a border, can match it exactly. */
+  --hint-line: 1px;
   width: 376px;
   padding: 14px 18px 13px;
-  border: 1.5px solid var(--hint-colour);
+  border: var(--hint-line) solid var(--hint-colour);
   border-radius: 12px;
   background: var(--lq-paper);
   color: #1e293b;
@@ -2308,27 +2313,43 @@
 /* Under the half it is about, its arrow pointing up into that half. */
 .home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
 .home-surface .search-hint-card.is-ottoman { right: 96px; }
-/* The arrow is drawn as one line from the card's border up to the point
-   and down again, its ends rounded and centred on the border line so they
-   meet it without a step; white under it hides the border it crosses.
-   Its sloping sides are a touch heavier than the card's 1.5px, since a
-   line on the slant reads thinner than the same line level. The colour is
-   written into the drawing, one per script, because a background image
-   cannot take it from the page. */
-.home-surface .search-hint-card::before {
+@media (min-resolution: 2dppx) {
+  .home-surface .search-hint-card { --hint-line: 1.5px; }
+}
+/* The arrow: a chevron cut out of a block of the script's colour, standing
+   on the card's border so its feet run into it, with white under it to
+   hide the border it crosses. Both are shapes rather than lines, so their
+   edges fall where they are told to, and the chevron's slopes are a touch
+   heavier than the border, since a slanted line reads thinner than a
+   level one. Its sides are at 45 degrees, so a slope of thickness t cuts
+   the level by t x 1.414. */
+.home-surface .search-hint-card::before,
+.home-surface .search-hint-card::after {
+  --arrow-rise: 6px;
+  --arrow-slope: calc(var(--hint-line) * 1.15 * 1.414);
+  --arrow-width: calc((var(--arrow-rise) + var(--hint-line)) * 2);
   content: "";
   position: absolute;
-  /* The drawing's level line sits 10.25px down it; the card's border runs
-     0.75px above the card's padding box. */
-  top: -11px;
-  width: 26px;
-  height: 12px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='12' viewBox='0 0 26 12'%3E%3Cpath d='M6 10.25L13 3.25L20 10.25V12H6Z' fill='%23fff'/%3E%3Cpath d='M6 10.25L13 3.25L20 10.25' fill='none' stroke='%231c449c' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
+  top: calc(-1 * (var(--arrow-rise) + var(--hint-line)));
+  width: var(--arrow-width);
+  height: calc(var(--arrow-rise) + var(--hint-line));
 }
-.home-surface .search-hint-card.is-ottoman::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='12' viewBox='0 0 26 12'%3E%3Cpath d='M6 10.25L13 3.25L20 10.25V12H6Z' fill='%23fff'/%3E%3Cpath d='M6 10.25L13 3.25L20 10.25' fill='none' stroke='%239d1c51' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
-/* The point sits where the old one did: 53px in from the card's edge. */
-.home-surface .search-hint-card.is-latin::before { left: 40px; }
-.home-surface .search-hint-card.is-ottoman::before { right: 40px; }
+/* The white goes down first, so the colour's inner edge lies over its
+   edge and no seam shows. */
+.home-surface .search-hint-card::before {
+  background: var(--lq-paper);
+  clip-path: polygon(var(--arrow-slope) 100%, 50% var(--arrow-slope), calc(100% - var(--arrow-slope)) 100%);
+}
+.home-surface .search-hint-card::after {
+  background: var(--hint-colour);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - var(--arrow-slope)) 100%,
+                     50% var(--arrow-slope), var(--arrow-slope) 100%);
+}
+/* The point sits 53px in from the card's edge. */
+.home-surface .search-hint-card.is-latin::before,
+.home-surface .search-hint-card.is-latin::after { left: calc(53px - var(--arrow-width) / 2); }
+.home-surface .search-hint-card.is-ottoman::before,
+.home-surface .search-hint-card.is-ottoman::after { right: calc(53px - var(--arrow-width) / 2); }
 
 /* Which step this is, beside the close mark. */
 .home-surface .search-hint-dots {

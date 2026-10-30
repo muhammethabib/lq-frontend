@@ -2308,30 +2308,25 @@
 /* Under the half it is about, its arrow pointing up into that half. */
 .home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
 .home-surface .search-hint-card.is-ottoman { right: 96px; }
-/* The arrow is the border's colour with the card's white laid over it, so
-   the line runs on round it unbroken. The white is the same size, moved
-   down by the border's width along the arrow's 45-degree sides
-   (1.5px x 1.414), so the arrow's line is as thin as the card's. */
-.home-surface .search-hint-card::before,
-.home-surface .search-hint-card::after {
+/* The arrow is a small white square turned on its corner, drawn with the
+   same line as the card on its two upper sides; its lower half lies over
+   the card's own border and hides it, so the line runs up to the point and
+   down again unbroken, at one weight all the way. */
+.home-surface .search-hint-card::before {
   content: "";
   position: absolute;
-  border: solid transparent;
+  top: -6.75px;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border-top: 1.5px solid var(--hint-colour);
+  border-left: 1.5px solid var(--hint-colour);
+  border-top-left-radius: 2px;
+  background: var(--lq-paper);
+  transform: rotate(45deg);
 }
-.home-surface .search-hint-card::before {
-  top: -17px;
-  border-width: 8px;
-  border-bottom-color: var(--hint-colour);
-}
-.home-surface .search-hint-card::after {
-  top: -14.9px;
-  border-width: 8px;
-  border-bottom-color: var(--lq-paper);
-}
-.home-surface .search-hint-card.is-latin::before,
-.home-surface .search-hint-card.is-latin::after { left: 45px; }
-.home-surface .search-hint-card.is-ottoman::before,
-.home-surface .search-hint-card.is-ottoman::after { right: 45px; }
+.home-surface .search-hint-card.is-latin::before { left: 47px; }
+.home-surface .search-hint-card.is-ottoman::before { right: 47px; }
 
 /* Which step this is, beside the close mark. */
 .home-surface .search-hint-dots {

@@ -2309,7 +2309,9 @@
 .home-surface .search-hint-card.is-latin { left: calc(var(--source-width) + 8px); }
 .home-surface .search-hint-card.is-ottoman { right: 96px; }
 /* The arrow is the border's colour with the card's white laid over it, so
-   the line runs on round it unbroken. */
+   the line runs on round it unbroken. The white is the same size, moved
+   down by the border's width along the arrow's 45-degree sides
+   (1.5px x 1.414), so the arrow's line is as thin as the card's. */
 .home-surface .search-hint-card::before,
 .home-surface .search-hint-card::after {
   content: "";
@@ -2322,14 +2324,14 @@
   border-bottom-color: var(--hint-colour);
 }
 .home-surface .search-hint-card::after {
-  top: -13px;
-  border-width: 7px;
+  top: -14.9px;
+  border-width: 8px;
   border-bottom-color: var(--lq-paper);
 }
-.home-surface .search-hint-card.is-latin::before { left: 45px; }
-.home-surface .search-hint-card.is-latin::after { left: 46px; }
-.home-surface .search-hint-card.is-ottoman::before { right: 45px; }
-.home-surface .search-hint-card.is-ottoman::after { right: 46px; }
+.home-surface .search-hint-card.is-latin::before,
+.home-surface .search-hint-card.is-latin::after { left: 45px; }
+.home-surface .search-hint-card.is-ottoman::before,
+.home-surface .search-hint-card.is-ottoman::after { right: 45px; }
 
 /* Which step this is, beside the close mark. */
 .home-surface .search-hint-dots {

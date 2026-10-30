@@ -147,6 +147,7 @@ class HomeController extends Stimulus.Controller {
     this.closeKeyboard();
     this.element.classList.add("state-landing");
     this.element.classList.remove("state-results");
+    this.updatePlaceholders();
     this.fitTagline();
     this.resultsSurfaceTarget.hidden = true;
     this.noMatchesTarget.hidden = true;
@@ -282,7 +283,10 @@ class HomeController extends Stimulus.Controller {
   // is over the other half (see peekSwap).
   updatePlaceholders() {
     const hasText = this.inputTarget.value.length > 0;
-    const offer = !hasText || Boolean(this.peeking);
+    // Over a page of results the word in the bar has been looked up, so the
+    // way over to the other script stays in view without being looked for.
+    const searched = this.element.classList.contains("state-results");
+    const offer = !hasText || searched || Boolean(this.peeking);
     this.inputWrapperTarget.classList.toggle("has-text", hasText);
     const english = this.sourceValue === "english";
     const side = english ? "" : this.sideValue;
@@ -624,6 +628,7 @@ class HomeController extends Stimulus.Controller {
   showError() {
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
+    this.updatePlaceholders();
     this.fitTagline();
     this.resultsSurfaceTarget.hidden = false;
     this.resultsTableTarget.querySelectorAll("tbody.result-group").forEach((body) => body.remove());
@@ -664,6 +669,7 @@ class HomeController extends Stimulus.Controller {
     this.activeSpelling = (results.spellings || []).find((s) => s.active) || null;
     this.element.classList.remove("state-landing");
     this.element.classList.add("state-results");
+    this.updatePlaceholders();
     this.fitTagline();
     this.resultsSurfaceTarget.hidden = false;
 

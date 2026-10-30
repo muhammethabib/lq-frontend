@@ -410,10 +410,9 @@
    at a glance, and stays so while typing. */
 .home-surface .script-input-wrapper.is-side-chosen.focus-latin { --bar-wash: #eaf0fb; }
 .home-surface .script-input-wrapper.is-side-chosen.focus-ottoman { --bar-wash: #f9eaf0; }
-/* With a word in it the colour all but goes: the word is what is looked at
-   now, and the ring round the bar still says which script it is in. */
-.home-surface .script-input-wrapper.is-side-chosen.has-text.focus-latin { --bar-wash: #f8fafe; }
-.home-surface .script-input-wrapper.is-side-chosen.has-text.focus-ottoman { --bar-wash: #fdf8fa; }
+/* With a word in it the colour goes: the word is what is looked at now,
+   and the ring round the bar still says which script it is in. */
+.home-surface .script-input-wrapper.is-side-chosen.has-text { --bar-wash: var(--lq-paper); }
 .home-surface .script-input-wrapper.is-side-chosen { background: var(--bar-wash); }
 
 /* The way over to the other script, at the far end: a plain line, not a

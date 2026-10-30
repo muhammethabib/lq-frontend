@@ -328,8 +328,9 @@
           <div class="search-row">
 
             <div class="search-input-group">
-              <!-- One bar, two scripts. Clicking the left half types Latin,
-                   the right half types Ottoman; the source switch overrides it. -->
+              <!-- One bar, two scripts. At rest each half says which script it
+                   takes; clicking one chooses it, and the whole bar then takes
+                   that script's colour. The source switch overrides it. -->
               <div class="script-input-wrapper focus-latin"
                    data-home-target="inputWrapper"
                    data-action="click->home#chooseSide
@@ -350,14 +351,41 @@
                   </button>
                 </div>
 
+                <!-- The line between the two halves, shown while neither is chosen -->
+                <span class="script-divider" aria-hidden="true"></span>
+
                 <div class="placeholder-layer" aria-hidden="true">
-                  <span data-home-target="placeholderLatin"
-                        data-i18n="placeholderLatin">Search using Latin letters...</span>
+                  <span class="placeholder-side" data-home-target="placeholderLatin">
+                    <b class="script-chip script-chip-latin">Abc</b>
+                    <span data-i18n="placeholderLatin">Search in Latin letters</span>
+                  </span>
                   <span data-home-target="placeholderEnglish" hidden
                         data-i18n="placeholderEnglish">Search English words in Redhouse...</span>
-                  <span class="placeholder-ottoman" data-home-target="placeholderOttoman"
-                        data-direction="rtl" data-i18n="placeholderOttoman">عثمانلی حرفلریلە آرە...</span>
+                  <span class="placeholder-side placeholder-side-ottoman" data-home-target="placeholderOttoman">
+                    <span data-i18n="placeholderOttoman">Search in Ottoman letters</span>
+                    <b class="script-chip script-chip-ottoman" data-direction="rtl">ا ب ت</b>
+                  </span>
+                  <!-- Once a side is chosen: its letters, where the word will go -->
+                  <span class="script-letters" data-home-target="lettersLatin" hidden>a b c</span>
+                  <span class="script-letters script-letters-ottoman" data-home-target="lettersOttoman"
+                        data-direction="rtl" hidden>ا ب ت</span>
                 </div>
+
+                <!-- ...and the way over to the other one, at the far end -->
+                <button type="button" class="btn script-swap script-swap-ottoman" hidden
+                        data-home-target="swapOttoman" data-side="ottoman"
+                        data-action="click->home#switchSide:stop">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
+                  <span data-i18n="scriptSwapOttoman">Switch to Ottoman letters</span>
+                </button>
+                <button type="button" class="btn script-swap script-swap-latin" hidden
+                        data-home-target="swapLatin" data-side="latin"
+                        data-action="click->home#switchSide:stop">
+                  <span data-i18n="scriptSwapLatin">Switch to Latin letters</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h13"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H8"></path></svg>
+                </button>
 
                 <input type="text" class="script-input" id="homeSearchInput"
                        data-home-target="input" data-direction="ltr"

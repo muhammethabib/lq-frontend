@@ -39,6 +39,7 @@ const VISITED_FADE_MS = 600;
 class HomeController extends Stimulus.Controller {
   static targets = [
     "logo", "logoRow", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
+    "lettersLatin", "lettersOttoman", "swapLatin", "swapOttoman",
     "sourceOption", "submit", "scriptHint", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
@@ -198,16 +199,14 @@ class HomeController extends Stimulus.Controller {
     this.inputTarget.focus();
   }
 
-  // Clicking the left half types Latin, the right half types Ottoman.
+  // Clicking the left half types Latin, the right half types Ottoman. Once a
+  // side is chosen the halves are no longer drawn, so a click anywhere in the
+  // bar keeps it; the line at the far end is the way over to the other.
   chooseSide(event) {
     if (this.sourceValue === "english") {
       this.sideValue = "latin";
-    } else {
-      const bounds = this.inputWrapperTarget.getBoundingClientRect();
-      const side = (event.clientX - bounds.left) < bounds.width / 2 ? "latin" : "ottoman";
-      // Switching sides mid-query would mix the two scripts in one term
-      if (side !== this.sideValue) this.inputTarget.value = "";
-      this.sideValue = side;
+    } else if (!this.sideValue) {
+      this.sideValue = this.sideAt(event.clientX);
     }
     this.applySide();
     this.inputTarget.focus();
@@ -217,11 +216,36 @@ class HomeController extends Stimulus.Controller {
     if (this.sideValue === "ottoman") this.openKeyboard(); else this.closeKeyboard();
   }
 
+  // The halves meet in the middle of the part of the bar that takes text,
+  // not of the whole bar: the source switch is not the left half's.
+  sideAt(x) {
+    const bounds = this.inputWrapperTarget.getBoundingClientRect();
+    const sourceSwitch = this.inputWrapperTarget.querySelector(".source-switch");
+    const start = sourceSwitch ? sourceSwitch.getBoundingClientRect().right : bounds.left;
+    return x < (start + bounds.right) / 2 ? "latin" : "ottoman";
+  }
+
+  // The line at the far end of a chosen bar. The keyboard goes first: closing
+  // it on an empty bar puts the bar back to rest, which would undo the switch.
+  switchSide(event) {
+    const side = event.currentTarget.dataset.side;
+    this.closeKeyboard();
+    this.inputTarget.value = "";
+    this.sideValue = side;
+    this.applySide();
+    this.inputTarget.focus();
+    if (side === "ottoman") this.openKeyboard();
+  }
+
   applySide() {
     const isOttoman = this.sideValue === "ottoman" && this.sourceValue !== "english";
     this.inputTarget.dataset.direction = isOttoman ? "rtl" : "ltr";
     this.inputWrapperTarget.classList.toggle("focus-ottoman", isOttoman);
     this.inputWrapperTarget.classList.toggle("focus-latin", this.sideValue === "latin" || this.sourceValue === "english");
+    // At rest the bar is drawn as two halves; once one is chosen, as that one.
+    this.inputWrapperTarget.classList.toggle("is-two-sided", this.sourceValue !== "english");
+    this.inputWrapperTarget.classList.toggle("is-side-chosen",
+      Boolean(this.sideValue) && this.sourceValue !== "english");
 
     // English mode searches definitions, so it shows its own prompt and drops
     // the Ottoman one.
@@ -246,15 +270,20 @@ class HomeController extends Stimulus.Controller {
   }
 
   // Both prompts show until a side is chosen, so the bar advertises that it
-  // takes either script. Choosing a side drops that side's prompt, and any
-  // text drops both.
+  // takes either script. Choosing a side swaps them for that script's letters,
+  // where the word will go, and the way over to the other script. The first
+  // letter typed clears all of it.
   updatePlaceholders() {
     const hasText = this.inputTarget.value.length > 0;
     const english = this.sourceValue === "english";
-    const side = english ? "latin" : this.sideValue;
-    this.placeholderLatinTarget.classList.toggle("is-hidden", hasText || side === "latin");
+    const side = english ? "" : this.sideValue;
+    this.placeholderLatinTarget.classList.toggle("is-hidden", hasText || Boolean(side));
     this.placeholderEnglishTarget.classList.toggle("is-hidden", hasText);
-    this.placeholderOttomanTarget.classList.toggle("is-hidden", hasText || side === "ottoman");
+    this.placeholderOttomanTarget.classList.toggle("is-hidden", hasText || Boolean(side));
+    this.lettersLatinTarget.hidden = hasText || side !== "latin";
+    this.lettersOttomanTarget.hidden = hasText || side !== "ottoman";
+    this.swapOttomanTarget.hidden = hasText || side !== "latin";
+    this.swapLatinTarget.hidden = hasText || side !== "ottoman";
   }
 
   // ==================== the Ottoman side ====================

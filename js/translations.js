@@ -46,9 +46,11 @@ window.LQ_TRANSLATIONS = {
     sourceEnglish: "İNG",
     sourceEnglishTitle: "Redhouse'ta İngilizce tanımlar içinde ara",
     ariaMainSearch: "Aranacak kelime",
-    placeholderLatin: "Latin harfleriyle ara...",
+    placeholderLatin: "Latin harfleriyle ara",
     placeholderEnglish: "İngilizce tanımları arayın...",
-    placeholderOttoman: "عثمانلی حرفلریلە آرە...",
+    placeholderOttoman: "Osmanlı harfleriyle ara",
+    scriptSwapOttoman: "Osmanlı harflerine geç",
+    scriptSwapLatin: "Latin harflerine geç",
     librarySubscriptionButton: "Kütüphaneniz LexiQamus’a üye mi?",
     weeklyTitle: "Bu hafta LexiQamus’ta",
 

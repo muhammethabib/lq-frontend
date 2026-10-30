@@ -310,7 +310,11 @@
   font-weight: 700;
 }
 
-/* Two placeholders, one per script, shown while the bar is empty */
+/* Two placeholders, one per script, shown while the bar is empty. Each
+   says in the reader's own language which script its half takes, and
+   carries a few of that script's letters, which say it before a word is
+   read: a newcomer who only knew the Latin side sees ا ب ت, an old hand who
+   only knew the Ottoman one sees Abc. */
 .home-surface .placeholder-layer {
   position: absolute;
   inset: 0;
@@ -318,31 +322,118 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 20px 0 100px;
+  padding: 0 14px 0 104px;
   pointer-events: none;
   z-index: 1;
 }
-.home-surface .placeholder-layer span {
+.home-surface .placeholder-layer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13.5px;
   letter-spacing: -.15px;
   color: #94a3b8;
   white-space: nowrap;
-  max-width: 55%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   transition: opacity .2s, transform .2s;
 }
-.home-surface .placeholder-layer span.is-hidden { opacity: 0; transform: translateX(5px); }
-/* Direction comes from the element's data-direction, as everywhere else;
-   only the face and the size are this placeholder's own. The Ottoman line is
-   set larger than the Latin one, as the reference sets it: at the Latin's
-   size the script is too small to read at a glance. */
-.home-surface .placeholder-layer span.placeholder-ottoman {
-  font-family: 'Noto Naskh Arabic', serif;
-  font-size: 19px;
-  margin-top: -3px;
-  text-align: right;
+.home-surface .placeholder-layer > span.is-hidden { opacity: 0; transform: translateX(5px); }
+.home-surface .placeholder-layer > span[hidden] { display: none; }
+.home-surface .script-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 38px;
+  padding: 0 7px;
+  border: 1px solid;
+  border-radius: 6px;
+  background: var(--lq-paper);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .2px;
 }
+.home-surface .script-chip-latin { border-color: #c9d5ee; color: var(--lq-focus-latin); }
+/* The letters are set apart, as an alphabet is recited, not joined into a
+   word; the face is the Naskh every Ottoman line on the page uses. */
+.home-surface .script-chip-ottoman {
+  padding: 0 8px 3px;
+  border-color: #ecc9d8;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  word-spacing: 3px;
+  color: var(--lq-claret);
+}
+
+/* Once a side is chosen: its letters, faint, where the word will go. The
+   Ottoman ones sit at the right-hand end, where that script starts. */
+.home-surface .placeholder-layer > .script-letters {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #8ea3cf;
+}
+.home-surface .placeholder-layer > .script-letters-ottoman {
+  left: auto;
+  right: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  word-spacing: 6px;
+  color: #cf8eaa;
+}
+
+/* The two halves, drawn while neither is chosen: a faint wash of each
+   script's colour and a line where they meet, which is the middle of the
+   part of the bar that takes text (the source switch ends 84px in). */
+.home-surface .script-input-wrapper.is-two-sided {
+  background: linear-gradient(to right, #f6f8fc calc(50% + 42px), #fcf6f8 calc(50% + 42px));
+}
+.home-surface .script-divider {
+  position: absolute;
+  top: 11px;
+  bottom: 11px;
+  left: calc(50% + 42px);
+  width: 1px;
+  background: #d6dbe4;
+  pointer-events: none;
+  z-index: 1;
+}
+.home-surface .script-input-wrapper:not(.is-two-sided) .script-divider,
+.home-surface .script-input-wrapper.is-side-chosen .script-divider { display: none; }
+
+/* A chosen side colours the whole bar, so which script is in hand is plain
+   at a glance, and stays so while typing. */
+.home-surface .script-input-wrapper.is-side-chosen.focus-latin { background: #eaf0fb; }
+.home-surface .script-input-wrapper.is-side-chosen.focus-ottoman { background: #f9eaf0; }
+
+/* The way over to the other script, at the far end: a plain line, not a
+   chip, so it reads as something to do rather than something chosen. */
+.home-surface .script-swap {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #94a3b8;
+  transform: translateY(-50%);
+}
+.home-surface .script-swap svg { width: 14px; height: 14px; }
+.home-surface .script-swap-ottoman { right: 10px; }
+.home-surface .script-swap-latin { left: 98px; }
+.home-surface .script-swap-ottoman:hover { color: var(--lq-claret); }
+.home-surface .script-swap-latin:hover { color: var(--lq-focus-latin); }
 
 .home-surface .search-submit {
   height: 52px;
@@ -1743,7 +1834,7 @@
 
 @media (max-width: 900px) {
   /* The Ottoman placeholder would collide with the Latin one on a narrow bar */
-  .home-surface .placeholder-ottoman { display: none; }
+  .home-surface .placeholder-layer > .placeholder-side-ottoman { display: none; }
 }
 
 /* ---------------------------------------------------------------

@@ -2335,10 +2335,15 @@
   height: calc(var(--arrow-rise) + var(--hint-line));
 }
 /* The white goes down first, so the colour's inner edge lies over its
-   edge and no seam shows. */
+   edge and no seam shows. It reaches 2px below the border into the card,
+   which is white anyway: a border that falls between screen pixels leaves
+   a faint last row, and the white has to cover that too. */
 .home-surface .search-hint-card::before {
+  height: calc(var(--arrow-rise) + var(--hint-line) + 2px);
   background: var(--lq-paper);
-  clip-path: polygon(var(--arrow-slope) 100%, 50% var(--arrow-slope), calc(100% - var(--arrow-slope)) 100%);
+  clip-path: polygon(var(--arrow-slope) calc(100% - 2px), 50% var(--arrow-slope),
+                     calc(100% - var(--arrow-slope)) calc(100% - 2px),
+                     calc(100% - var(--arrow-slope)) 100%, var(--arrow-slope) 100%);
 }
 .home-surface .search-hint-card::after {
   background: var(--hint-colour);

@@ -14,7 +14,7 @@
 //
 // It never stands in the reader's way. Typing in the bar, pressing in it or
 // trying the second step's word ends it -- the reader has found the bar --
-// and so does the close mark. "Got it", or a press anywhere else, moves it on to the
+// and so do the close mark and Escape. "Got it", or a press anywhere else, moves it on to the
 // next step. It waits for any window that is open (the announcement a first
 // visitor also gets) to close first, and it does not come back once it has
 // been seen. The New Visitor screen of the view switcher shows it again
@@ -51,6 +51,8 @@ class SearchHintController extends Stimulus.Controller {
     this.input = document.getElementById("homeSearchInput");
     if (this.input) this.input.addEventListener("input", this.onType);
     this.onLanguageChange = () => { if (this.step) this.show(this.step); };
+    this.onKey = (event) => { if (this.step && event.key === "Escape") this.end(); };
+    document.addEventListener("keydown", this.onKey);
     document.addEventListener("language:changed", this.onLanguageChange);
   }
 
@@ -59,6 +61,7 @@ class SearchHintController extends Stimulus.Controller {
     document.removeEventListener("view-state:change", this.onViewState);
     document.removeEventListener("pointerdown", this.onPress);
     document.removeEventListener("language:changed", this.onLanguageChange);
+    document.removeEventListener("keydown", this.onKey);
     if (this.input) this.input.removeEventListener("input", this.onType);
   }
 
@@ -106,13 +109,13 @@ class SearchHintController extends Stimulus.Controller {
     const searched = !latin && Boolean(this.input && this.input.value);
     const say = (key, fallback) => window.LQ.translate(key, fallback);
     this.titleTarget.textContent = latin
-      ? say("hintLatinTitle", "You can search Ottoman words in Latin letters too.")
-      : say("hintOttomanTitle", "You can search Ottoman words in Ottoman letters too.");
+      ? say("hintLatinTitle", "You can search in Latin letters too")
+      : say("hintOttomanTitle", "You can search in Ottoman letters too");
     this.bodyTarget.textContent = latin
-      ? say("hintLatinBody", "Just type in the left side of the bar.")
+      ? say("hintLatinBody", "Type Ottoman words in the left half of the bar.")
       : searched
         ? say("hintOttomanSwitchBody", "Switch to them at the right-hand end of the bar.")
-        : say("hintOttomanBody", "Just type in the right side of the bar.");
+        : say("hintOttomanBody", "Type Ottoman words in the right half of the bar.");
     this.exampleTarget.textContent = latin ? "meyve" : "میوه";
     this.exampleTarget.dataset.direction = latin ? "ltr" : "rtl";
     this.countTarget.textContent = `${step} / 2`;
@@ -123,6 +126,13 @@ class SearchHintController extends Stimulus.Controller {
     });
     this.spotTarget.hidden = searched;
     this.pointAtSwitch(searched);
+    // Each step arrives the way the first did, though the card is already
+    // on the page: the animations are started again.
+    [this.spotTarget, this.cardTarget].forEach((element) => {
+      element.style.animation = "none";
+      void element.offsetWidth;
+      element.style.animation = "";
+    });
   }
 
   pointAtSwitch(on) {

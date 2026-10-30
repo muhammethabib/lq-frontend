@@ -2256,8 +2256,10 @@
 /* ---------------------------------------------------------------
    A first visitor's hint
    One half of the bar at a time is ringed in its script's colour, and a
-   card under it says what that half takes. Dark like the page's other
-   tips, so it reads as something said about the bar, not part of it.
+   card under it says what that half takes. The card is one of the page's
+   own white cards, so it belongs to the page rather than lying over it;
+   a strip of the script's colour along its top, and the arrow under it,
+   tie it to the half it is about.
    --------------------------------------------------------------- */
 
 .home-surface .search-hint-spot {
@@ -2269,6 +2271,9 @@
   border-radius: 7px;
   box-shadow: 0 0 0 4px var(--hint-glow);
   pointer-events: none;
+  /* One soft swell as it arrives, so the eye finds it; then it keeps
+     still. */
+  animation: search-hint-glow 1.1s ease-out 1;
 }
 .home-surface .search-hint-spot[hidden] { display: none; }
 .home-surface .search-hint-spot.is-latin,
@@ -2293,14 +2298,17 @@
 
 .home-surface .search-hint-card {
   position: absolute;
-  top: calc(100% + 16px);
+  top: calc(100% + 18px);
   z-index: 45;
-  width: 370px;
-  padding: 18px 20px 16px;
-  border-radius: 14px;
-  background: #1e293b;
-  color: #fff;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, .28);
+  width: 336px;
+  padding: 15px 18px 13px;
+  border: 1px solid var(--lq-line);
+  border-top: 3px solid var(--hint-colour);
+  border-radius: 12px;
+  background: var(--lq-paper);
+  color: #1e293b;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, .12);
+  animation: search-hint-in .22s ease-out;
 }
 .home-surface .search-hint-card[hidden] { display: none; }
 /* Under the half it is about, its arrow pointing up into that half. */
@@ -2309,49 +2317,46 @@
 .home-surface .search-hint-card::before {
   content: "";
   position: absolute;
-  top: -7px;
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
-  background: #1e293b;
-  transform: rotate(45deg);
+  top: -17px;
+  border: 7px solid transparent;
+  border-bottom-color: var(--hint-colour);
 }
-.home-surface .search-hint-card.is-latin::before { left: 48px; }
-.home-surface .search-hint-card.is-ottoman::before { right: 48px; }
+.home-surface .search-hint-card.is-latin::before { left: 46px; }
+.home-surface .search-hint-card.is-ottoman::before { right: 46px; }
 
 .home-surface .search-hint-close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   width: 30px;
   height: 30px;
   padding: 0;
   border: 0;
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
   color: #94a3b8;
 }
-.home-surface .search-hint-close:hover { color: #fff; }
+.home-surface .search-hint-close:hover { color: #1e293b; }
 .home-surface .search-hint-title {
   margin: 0;
   padding-right: 22px;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .home-surface .search-hint-body {
-  margin: 6px 0 0;
-  font-size: 13.5px;
-  color: #cbd5e1;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
 }
 .home-surface .search-hint-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 14px;
-  font-size: 13.5px;
-  color: #cbd5e1;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #64748b;
 }
 .home-surface .search-hint-try,
 .home-surface .search-hint-next {
@@ -2359,31 +2364,46 @@
   align-items: center;
   gap: 8px;
 }
+/* Trying the word is what the card is for, so it is the button in the
+   script's colour; "Got it" is the way past it, and only a word. */
 .home-surface .search-hint-example {
-  padding: 5px 12px;
+  padding: 6px 12px;
   border: 0;
   border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
+  background: var(--hint-colour);
+  font-size: 13.5px;
   font-weight: 700;
-  color: var(--hint-colour);
+  color: #fff;
 }
 .home-surface .search-hint-example[data-direction="rtl"] {
   padding: 2px 12px 6px;
-  font-size: 18px;
+  font-size: 17px;
 }
-.home-surface .search-hint-example:hover { background: #f1f5f9; color: var(--hint-colour); }
+.home-surface .search-hint-example:hover { filter: brightness(1.12); color: #fff; }
 .home-surface .search-hint-count { font-size: 12px; color: #94a3b8; }
 .home-surface .search-hint-ok {
-  padding: 8px 14px;
+  padding: 6px 4px;
   border: 0;
-  border-radius: 8px;
-  background: var(--lq-claret);
-  font-size: 13.5px;
+  background: transparent;
+  font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: #64748b;
 }
-.home-surface .search-hint-ok:hover { background: #7d1640; color: #fff; }
+.home-surface .search-hint-ok:hover { color: #1e293b; }
+
+@keyframes search-hint-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes search-hint-glow {
+  0% { box-shadow: 0 0 0 0 var(--hint-glow); }
+  45% { box-shadow: 0 0 0 9px var(--hint-glow); }
+  100% { box-shadow: 0 0 0 4px var(--hint-glow); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-surface .search-hint-card,
+  .home-surface .search-hint-spot { animation: none; }
+}
 
 /* ---------------------------------------------------------------
    One bar, two scripts

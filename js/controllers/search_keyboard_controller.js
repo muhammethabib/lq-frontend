@@ -70,10 +70,6 @@ class SearchKeyboardController extends Stimulus.Controller {
     document.addEventListener("search-keyboard:request", this.onRequest);
     document.addEventListener("search-keyboard:dismiss", this.onDismiss);
 
-    // Whichever way the reader typed, the line has done its work.
-    this.onTyped = () => this.retireHint();
-    document.addEventListener("search-keyboard:typed", this.onTyped);
-
     // A letter written on the reader's own keyboard shows its key going down
     // here too, so the two boards read as one.
     this.onEcho = (event) => this.echo((event.detail || {}).char);
@@ -124,7 +120,6 @@ class SearchKeyboardController extends Stimulus.Controller {
   disconnect() {
     document.removeEventListener("search-keyboard:request", this.onRequest);
     document.removeEventListener("search-keyboard:dismiss", this.onDismiss);
-    document.removeEventListener("search-keyboard:typed", this.onTyped);
     document.removeEventListener("search-keyboard:echo", this.onEcho);
     document.removeEventListener("language:changed", this.onLanguageChange);
     document.removeEventListener("pointerdown", this.onAway);
@@ -239,7 +234,6 @@ class SearchKeyboardController extends Stimulus.Controller {
     document.dispatchEvent(new CustomEvent("search-keyboard:key", {
       detail: { char: event.currentTarget.dataset.searchChar }
     }));
-    this.retireHint();
   }
 
   backspace(event) {
@@ -265,16 +259,6 @@ class SearchKeyboardController extends Stimulus.Controller {
     key.classList.add("is-echo");
     clearTimeout(key.echoTimer);
     key.echoTimer = setTimeout(() => key.classList.remove("is-echo"), SEARCH_ECHO_MS);
-  }
-
-  // ==================== the line that teaches the keyboard ====================
-
-  // It says it once, shows it on a loop, and stops the moment the reader has
-  // typed anything, by any means. It does not come back this session.
-  retireHint() {
-    if (this.retired) return;
-    this.retired = true;
-    this.element.classList.add("is-learned");
   }
 
   // ==================== showing and placing ====================

@@ -2195,6 +2195,84 @@
   color: #cbd5e1;
 }
 
+/* The tip over the Ottoman side's caret: the reader's own keyboard writes
+   Ottoman too. Above the bar, since the on-screen keyboard opens below it,
+   and pointing down at the right-hand end where that script starts. Its
+   little key shows the thing done: K pressed, ك written. Dark, like every
+   tooltip on the page, so it reads as something said about the bar rather
+   than part of it. */
+.home-surface .own-keyboard-tip {
+  position: absolute;
+  right: 6px;
+  bottom: calc(100% + 10px);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .28);
+  pointer-events: none;
+}
+.home-surface .own-keyboard-tip[hidden] { display: none; }
+.home-surface .own-keyboard-tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 18px;
+  border: 6px solid transparent;
+  border-top-color: #1e293b;
+}
+.home-surface .own-keyboard-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.home-surface .own-keyboard-demo-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #cbd5e1;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  color: #334155;
+  animation: own-key-press 2s infinite;
+}
+.home-surface .own-keyboard-demo-arrow { font-size: 11px; color: #94a3b8; }
+.home-surface .own-keyboard-demo-out {
+  font-family: 'Noto Naskh Arabic', serif;
+  font-size: 17px;
+  color: #f9a8d4;
+  animation: own-key-pop 2s infinite;
+}
+@keyframes own-key-press {
+  0%, 100% { transform: none; border-bottom-width: 3px; }
+  5% { transform: translateY(2px); border-bottom-width: 1px; border-color: #f9a8d4; color: var(--lq-claret); }
+  11% { transform: none; border-bottom-width: 3px; }
+}
+@keyframes own-key-pop {
+  0%, 4%, 100% { opacity: .35; transform: none; }
+  8% { opacity: 1; transform: scale(1.25); }
+  16% { opacity: .35; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-surface .own-keyboard-demo-key,
+  .home-surface .own-keyboard-demo-out { animation: none; }
+  .home-surface .own-keyboard-demo-out { opacity: 1; }
+}
+
 /* ---------------------------------------------------------------
    One bar, two scripts
    Everything the bar says about this is temporary: it appears

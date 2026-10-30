@@ -39,7 +39,7 @@ const VISITED_FADE_MS = 600;
 class HomeController extends Stimulus.Controller {
   static targets = [
     "logo", "logoRow", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
-    "lettersLatin", "lettersOttoman", "swapLatin", "swapOttoman",
+    "lettersLatin", "lettersOttoman", "swapLatin", "swapOttoman", "ownKeyboardTip",
     "sourceOption", "submit", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
@@ -295,6 +295,7 @@ class HomeController extends Stimulus.Controller {
     this.lettersOttomanTarget.hidden = hasText || side !== "ottoman";
     this.swapOttomanTarget.hidden = !offer || side !== "latin";
     this.swapLatinTarget.hidden = !offer || side !== "ottoman";
+    this.ownKeyboardTipTarget.hidden = hasText || side !== "ottoman" || Boolean(this.ownKeyboardLearned);
   }
 
   // With a word in the bar, the way over to the other script is shown only
@@ -365,8 +366,11 @@ class HomeController extends Stimulus.Controller {
     document.dispatchEvent(new CustomEvent("search-keyboard:dismiss"));
   }
 
+  // Once a letter has been written on the Ottoman side, by whatever means,
+  // the reader knows how it is done and the tip over the caret has said its
+  // piece for as long as the page is open.
   markKeyboardLearned() {
-    document.dispatchEvent(new CustomEvent("search-keyboard:typed"));
+    if (this.isOttomanSide()) this.ownKeyboardLearned = true;
   }
 
   // ---- what goes into the field

@@ -595,8 +595,7 @@ window.LQ_TRANSLATIONS = {
     // --- One bar, two scripts ---
     scriptWarning: "Lütfen Osmanlı harfli bir karakter giriniz",
     scriptWarningSub: "Klavyenizde, aşağıdaki harflere karşılık gelen tuşlara basınız",
-    keyboardTeach: "Kendi klavyenizden yazabilirsiniz",
-    keyboardTeachRest: "veya aşağıdaki tuşlara tıklayın",
+    ownKeyboardTip: "Kendi klavyenizle yazabilirsiniz",
     decoderOwnKeyboard: "Kendi klavyenizle de yazabilirsiniz",
 
     // --- Moving around a page ---

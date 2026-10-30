@@ -404,6 +404,19 @@
                        data-action="input->home#handleInput"
                        autocomplete="off" aria-label="Word to search" data-i18n-aria="ariaMainSearch">
 
+                <!-- Over the Ottoman side's caret, the moment that side is
+                     chosen: the reader's own keyboard writes it too. It goes
+                     with the first letter written, by any means, and does not
+                     come back until the page is opened again. -->
+                <p class="own-keyboard-tip" data-home-target="ownKeyboardTip" hidden role="status">
+                  <span data-i18n="ownKeyboardTip">You can type with your own keyboard</span>
+                  <span class="own-keyboard-demo" aria-hidden="true">
+                    <span class="own-keyboard-demo-key">K</span>
+                    <span class="own-keyboard-demo-arrow">&rarr;</span>
+                    <span class="own-keyboard-demo-out">&#x0643;</span>
+                  </span>
+                </p>
+
                 <!-- Said when a letter that cannot be looked for is refused -->
                 <p class="script-warning" data-home-target="scriptWarning" hidden role="status">
                   <i data-feather="alert-triangle" aria-hidden="true"></i>
@@ -1581,17 +1594,6 @@
                corner, and one line centred on it would hang off the edge. -->
           <span class="keyboard-pin-flag" data-search-keyboard-target="flag" role="status"
                 data-i18n="keyboardPinSay" hidden>Put it back</span>
-        </span>
-      </span>
-      <span class="search-keyboard-teach">
-        <span class="search-keyboard-demo" aria-hidden="true">
-          <span class="search-keyboard-demo-key">K</span>
-          <span class="search-keyboard-demo-arrow">&rarr;</span>
-          <span class="search-keyboard-demo-out">&#x0643;</span>
-        </span>
-        <span class="search-keyboard-teach-text">
-          <b data-i18n="keyboardTeach">Use your own keyboard</b>
-          <span data-i18n="keyboardTeachRest">or click the keys below</span>
         </span>
       </span>
       <span class="search-keyboard-buttons">

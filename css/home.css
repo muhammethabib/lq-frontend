@@ -2325,7 +2325,7 @@
    the level by t x 1.414. */
 .home-surface .search-hint-card::before,
 .home-surface .search-hint-card::after {
-  --arrow-rise: 6px;
+  --arrow-rise: 8px;
   --arrow-slope: calc(var(--hint-line) * 1.15 * 1.414);
   --arrow-width: calc((var(--arrow-rise) + var(--hint-line)) * 2);
   content: "";

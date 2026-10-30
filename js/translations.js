@@ -589,9 +589,6 @@ window.LQ_TRANSLATIONS = {
     redhouseNoNeighbour: "Komşu görsel örnek veride yok.",
 
     // --- One bar, two scripts ---
-    hintLatin: "Latin harfleriyle",
-    hintMiddle: "tek çubuk, iki yön",
-    hintOttoman: "Osmanlı harfleriyle",
     scriptWarning: "Lütfen Osmanlı harfli bir karakter giriniz",
     scriptWarningSub: "Klavyenizde, aşağıdaki harflere karşılık gelen tuşlara basınız",
     keyboardTeach: "Kendi klavyenizden yazabilirsiniz",

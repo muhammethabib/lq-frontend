@@ -334,8 +334,6 @@
               <div class="script-input-wrapper focus-latin"
                    data-home-target="inputWrapper"
                    data-action="click->home#chooseSide
-                                mouseenter->home#showScriptHint
-                                mouseleave->home#hideScriptHint
                                 mousemove->home#peekSwap
                                 mouseleave->home#unpeekSwap">
 
@@ -397,20 +395,6 @@
                        data-home-target="input" data-direction="ltr"
                        data-action="input->home#handleInput"
                        autocomplete="off" aria-label="Word to search" data-i18n-aria="ariaMainSearch">
-
-                <!-- Which script goes in which side. It appears on hover and
-                     only while the bar has nothing in it. -->
-                <p class="script-hint" data-home-target="scriptHint" hidden aria-hidden="true">
-                  <span class="script-hint-side">
-                    <i data-feather="arrow-left" aria-hidden="true"></i>
-                    <span data-i18n="hintLatin">Latin script</span>
-                  </span>
-                  <span class="script-hint-middle" data-i18n="hintMiddle">one bar, two directions</span>
-                  <span class="script-hint-side">
-                    <span data-i18n="hintOttoman">Ottoman script</span>
-                    <i data-feather="arrow-right" aria-hidden="true"></i>
-                  </span>
-                </p>
 
                 <!-- Said when a letter that cannot be looked for is refused -->
                 <p class="script-warning" data-home-target="scriptWarning" hidden role="status">

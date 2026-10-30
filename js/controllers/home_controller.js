@@ -40,7 +40,7 @@ class HomeController extends Stimulus.Controller {
   static targets = [
     "logo", "logoRow", "tagline", "inputWrapper", "input", "placeholderLatin", "placeholderEnglish", "placeholderOttoman",
     "lettersLatin", "lettersOttoman", "swapLatin", "swapOttoman",
-    "sourceOption", "submit", "scriptHint", "scriptWarning",
+    "sourceOption", "submit", "scriptWarning",
     "filter", "filterCount", "filterDescription", "dictionary", "dictionaryLabel", "allDictionaries",
     "resultsSurface", "resultsTable", "zoneTip", "resultsAccent", "resultsTerm", "recordCount", "dictionaryCount",
     "groupCopy",
@@ -112,7 +112,6 @@ class HomeController extends Stimulus.Controller {
     document.removeEventListener("entry:closed", this.onEntryClosed);
     document.removeEventListener("search-keyboard:key", this.onKeyboardKey);
     document.removeEventListener("search-keyboard:closed", this.onKeyboardClosed);
-    document.removeEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
     this.inputTarget.removeEventListener("keydown", this.onKeyDown);
     if (this.onPageScroll) window.removeEventListener("scroll", this.onPageScroll);
     window.removeEventListener("resize", this.onResize);
@@ -266,7 +265,6 @@ class HomeController extends Stimulus.Controller {
       this.applySide();
     }
     this.updatePlaceholders();
-    if (this.inputTarget.value) this.hideScriptHint();
     // On the Ottoman side, a Latin letter is not a typo the reader can see:
     // it is a word that will never be found. It is taken back out and the
     // bar says why.
@@ -349,16 +347,10 @@ class HomeController extends Stimulus.Controller {
     // the keyboard's header promises.
     this.onKeyDown = (event) => this.typeOttoman(event);
     this.inputTarget.addEventListener("keydown", this.onKeyDown);
-
-    // The decoder has a keyboard of its own; while either is open the bar
-    // keeps its hint to itself.
-    this.onDecoderKeyboard = () => this.hideScriptHint();
-    document.addEventListener("ottoman-keyboard:request", this.onDecoderKeyboard);
   }
 
   openKeyboard() {
     this.keyboardOpen = true;
-    this.hideScriptHint();
     document.dispatchEvent(new CustomEvent("search-keyboard:request", {
       // The whole row, not just the field: the panel opens below all of it,
       // and on a narrow window the source switch and the dictionary picker
@@ -493,37 +485,6 @@ class HomeController extends Stimulus.Controller {
     if (!this.keyboardOpen) this.openKeyboard();
     clearTimeout(this.warningTimer);
     this.warningTimer = setTimeout(() => { warning.hidden = true; }, 2800);
-  }
-
-  // ---- the hint under the bar
-
-  // It says which script goes in which side, and it is worth saying only
-  // while the bar is empty and nothing else is already under it.
-  showScriptHint() {
-    if (this.inputTarget.value) return;
-    if (this.sourceValue === "english") return;
-    if (this.keyboardOpen) return;
-    if (document.querySelector(".ottoman-keyboard.is-open")) return;
-    if (!this.element.classList.contains("state-landing")) return;
-    this.placeScriptHint();
-    this.scriptHintTarget.hidden = false;
-  }
-
-  hideScriptHint() {
-    this.scriptHintTarget.hidden = true;
-  }
-
-  // Centred between the two carets rather than on the bar: the Latin caret
-  // sits at the start of the left prompt, the Ottoman one at the end of the
-  // right.
-  placeScriptHint() {
-    const wrapper = this.inputWrapperTarget.getBoundingClientRect();
-    const latin = this.placeholderLatinTarget.getBoundingClientRect();
-    const ottoman = this.placeholderOttomanTarget.getBoundingClientRect();
-    const between = this.placeholderOttomanTarget.hidden
-      ? wrapper.width / 2
-      : ((latin.left - wrapper.left) + (ottoman.right - wrapper.left)) / 2;
-    this.scriptHintTarget.style.left = `${Math.round(between)}px`;
   }
 
   // ==================== filters ====================

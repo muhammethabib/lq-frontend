@@ -6,6 +6,9 @@
 // else belongs in a word that is going to be looked for.
 const OTTOMAN_ALLOWED = /[\p{Script=Arabic}\p{Mn}\u200b\u200c\u200d \u00a0*]/u;
 const NOT_OTTOMAN = /[^\p{Script=Arabic}\p{Mn}\u200b\u200c\u200d \u00a0*]/gu;
+// How many times the reader writes on the Ottoman side before the tip
+// saying their own keyboard writes it stops coming back.
+const OWN_KEYBOARD_TIMES = 2;
 const ARABIC_LETTER = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
 // Every ye is written as the Persian ye, U+06CC, the one the dictionary
 // uses. The face gives it its dots inside a word and leaves them off at the
@@ -239,6 +242,10 @@ class HomeController extends Stimulus.Controller {
 
   applySide() {
     const isOttoman = this.sideValue === "ottoman" && this.sourceValue !== "english";
+    // Each time the Ottoman side is taken up afresh is a new chance for the
+    // tip over its caret (see markKeyboardLearned).
+    if (isOttoman && !this.wasOttoman) this.ownKeyboardSaid = false;
+    this.wasOttoman = isOttoman;
     this.inputTarget.dataset.direction = isOttoman ? "rtl" : "ltr";
     this.inputWrapperTarget.classList.toggle("focus-ottoman", isOttoman);
     this.inputWrapperTarget.classList.toggle("focus-latin", this.sideValue === "latin" || this.sourceValue === "english");
@@ -295,7 +302,8 @@ class HomeController extends Stimulus.Controller {
     this.lettersOttomanTarget.hidden = hasText || side !== "ottoman";
     this.swapOttomanTarget.hidden = !offer || side !== "latin";
     this.swapLatinTarget.hidden = !offer || side !== "ottoman";
-    this.ownKeyboardTipTarget.hidden = hasText || side !== "ottoman" || Boolean(this.ownKeyboardLearned);
+    this.ownKeyboardTipTarget.hidden = hasText || side !== "ottoman" ||
+      Boolean(this.ownKeyboardSaid) || (this.ownKeyboardTimes || 0) >= OWN_KEYBOARD_TIMES;
   }
 
   // With a word in the bar, the way over to the other script is shown only
@@ -366,11 +374,14 @@ class HomeController extends Stimulus.Controller {
     document.dispatchEvent(new CustomEvent("search-keyboard:dismiss"));
   }
 
-  // Once a letter has been written on the Ottoman side, by whatever means,
-  // the reader knows how it is done and the tip over the caret has said its
-  // piece for as long as the page is open.
+  // A letter written on the Ottoman side, by whatever means, ends the tip
+  // over the caret for this visit to the side. It comes back the next time
+  // the side is taken up, until the reader has written there twice; then it
+  // has said its piece for as long as the page is open.
   markKeyboardLearned() {
-    if (this.isOttomanSide()) this.ownKeyboardLearned = true;
+    if (!this.isOttomanSide() || this.ownKeyboardSaid) return;
+    this.ownKeyboardSaid = true;
+    this.ownKeyboardTimes = (this.ownKeyboardTimes || 0) + 1;
   }
 
   // ---- what goes into the field

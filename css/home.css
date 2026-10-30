@@ -501,6 +501,11 @@
 .home-surface .script-swap-ottoman { right: 10px; }
 .home-surface .script-swap-latin { left: calc(var(--source-width) + 18px); }
 .home-surface .script-swap-ottoman:hover { color: var(--lq-claret); }
+/* What a first visitor's hint points at over the results. */
+.home-surface .script-swap.is-pointed-at {
+  color: var(--lq-claret);
+  box-shadow: 0 0 0 2px var(--lq-claret), 0 0 0 6px rgba(157, 28, 81, .14);
+}
 .home-surface .script-swap-latin:hover { color: var(--lq-focus-latin); }
 
 .home-surface .search-submit {

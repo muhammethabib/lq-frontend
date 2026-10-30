@@ -601,6 +601,7 @@ window.LQ_TRANSLATIONS = {
     hintLatinBody: "Çubuğun sol tarafına yazmanız yeterli.",
     hintOttomanTitle: "Osmanlıca kelimeleri Osmanlı harfleriyle de arayabilirsiniz.",
     hintOttomanBody: "Çubuğun sağ tarafına yazmanız yeterli.",
+    hintOttomanSwitchBody: "Çubuğun sağ ucundan Osmanlı harflerine geçebilirsiniz.",
     hintTry: "Deneyin:",
     hintOk: "Anladım",
     decoderOwnKeyboard: "Kendi klavyenizle de yazabilirsiniz",
